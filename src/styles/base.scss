@@ -1,0 +1,31 @@
+$global-font-size: 14px;
+
+$white: #fff;
+$black: #000;
+
+$breakpoints: (
+  small: 0,
+  medium: 750px,
+  large: 1050px,
+  xlarge: 1200px,
+  xxlarge: 1440px,
+);
+
+$header-styles: (
+  small: (
+    'h1': ('font-size': 25),
+    'h2': ('font-size': 20),
+    'h3': ('font-size': 18),
+    'h4': ('font-size': 15),
+    'h5': ('font-size': 14),
+    'h6': ('font-size': 12),
+  ),
+  medium: (
+    'h1': ('font-size': 30),
+    'h2': ('font-size': 25),
+    'h3': ('font-size': 20),
+    'h4': ('font-size': 17),
+    'h5': ('font-size': 15),
+    'h6': ('font-size': 14),
+  ),
+);

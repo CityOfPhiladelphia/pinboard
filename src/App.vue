@@ -1,10 +1,28 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
+    <div class="grid-x">
+      <div class="cell small-24">
+        header
+      </div>
+      <div class="grid-x">
+        <div class="cell small-24">
+          refine
+        </div>
+      </div>
+      <div class="grid-x">
+        <div class="cell small-12">
+          nav
+        </div>
+        <div class="cell small-12">
+          map
+        </div>
+      </div>
+      <div class="grid-x">
+        <div class="cell small-24">
+          footer
+        </div>
+      </div>
     </div>
-    <router-view/>
   </div>
 </template>
 
