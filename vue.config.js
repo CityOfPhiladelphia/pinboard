@@ -1,4 +1,5 @@
 const path = require('path')
+const Visualizer = require('webpack-visualizer-plugin')
 
 module.exports = {
   lintOnSave: false,
@@ -7,19 +8,12 @@ module.exports = {
       preProcessor: 'scss',
       patterns: [
         path.resolve(__dirname, './src/styles/global.scss'),
-        path.resolve(__dirname, './node_modules/foundation-sites/foundation.scss'),
-
       ],
     },
   },
-  css: {
-    loaderOptions: {
-      // pass options to sass-loader
-      sass: {
-        data: `
-        @import "/node_modules/foundation-sites/foundation.scss";
-      `,
-      },
-    },
+  configureWebpack: {
+    plugins: [
+      new Visualizer({ filename: './statistics.html' }),
+    ],
   },
 }
