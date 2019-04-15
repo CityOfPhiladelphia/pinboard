@@ -1,4 +1,4 @@
-const path = require('path');
+const path = require('path')
 
 module.exports = {
   lintOnSave: false,
@@ -8,4 +8,4 @@ module.exports = {
       patterns: [path.resolve(__dirname, './src/styles/global.scss')],
     },
   },
-};
+}
