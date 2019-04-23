@@ -1,5 +1,5 @@
 module.exports = {
-  lintOnSave: false,
+  lintOnSave: undefined,
   // css: {
   //   loaderOptions: {
   //     sass: {

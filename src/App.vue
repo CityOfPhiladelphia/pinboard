@@ -2,37 +2,41 @@
   <div id="app">
     <PhilaHeader
       app-title="Resource finder title"
-      app-tag-line="Find what you're looking for"/>
+      app-tag-line="Find what you're looking for"
+    />
 
     <router-view/>
 
-      <div class="grid-x">
-        <div class="cell small-24">
-          refine
-        </div>
-      </div>
-      <div class="grid-x">
-        <div class="cell small-12">
-          nav
-        </div>
-        <div class="cell small-12">
-          map
-        </div>
-      </div>
-      <div class="grid-x">
-        <div class="cell small-24">
-          footer
-        </div>
-      </div>
+    <RefinePanel
+    />
+
+    <div class="grid-x">
+      <LocationsPanel
+      />
+      <MapPanel
+      />
+    </div>
+
+
+    <PhilaFooter
+    />
     </div>
 </template>
 <script>
 import PhilaHeader from './components/PhilaHeader.vue'
+import PhilaFooter from './components/PhilaFooter.vue'
+import RefinePanel from './components/RefinePanel.vue'
+import LocationsPanel from './components/LocationsPanel.vue'
+import MapPanel from './components/MapPanel.vue'
 
 export default {
   name: 'App',
   components: {
     PhilaHeader,
+    PhilaFooter,
+    RefinePanel,
+    LocationsPanel,
+    MapPanel,
   },
 }
 </script>
