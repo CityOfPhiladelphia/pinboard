@@ -1,9 +1,12 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 
+import pvmStore from '@philly/vue-mapping/src/store';
+import mergeDeep from './util/merge-deep';
+
 Vue.use(Vuex);
 
-export default new Vuex.Store({
+const rfStore = {
   state: {
 
   },
@@ -13,4 +16,12 @@ export default new Vuex.Store({
   actions: {
 
   },
+}
+
+const mergeStore = mergeDeep(pvmStore, rfStore);
+
+export default new Vuex.Store({
+  state: mergeStore.state,
+  getters: mergeStore.getters,
+  mutations: mergeStore.mutations,
 });
