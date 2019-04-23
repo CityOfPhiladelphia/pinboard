@@ -6,6 +6,6 @@
 <style lang="scss">
 
 .locations-panel{
-  overflow-y: scroll;
+  overflow-y: auto;
 }
 </style>
