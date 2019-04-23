@@ -3,6 +3,11 @@ import App from './App.vue';
 import router from './router';
 import store from './store';
 
+import configMixin from './util/config-mixin';
+import config from './config';
+
+Vue.use(configMixin, config);
+
 Vue.config.productionTip = false;
 
 new Vue({
