@@ -1,9 +1,11 @@
 <template>
   <div id="app">
-    <div class="grid-x">
-      <div class="cell small-24">
-        header
-      </div>
+    <PhilaHeader
+      app-title="Resource finder title"
+      app-tag-line="Find what you're looking for"/>
+
+    <router-view/>
+
       <div class="grid-x">
         <div class="cell small-24">
           refine
@@ -23,27 +25,19 @@
         </div>
       </div>
     </div>
-  </div>
 </template>
+<script>
+import PhilaHeader from './components/PhilaHeader.vue'
+
+export default {
+  name: 'App',
+  components: {
+    PhilaHeader,
+  },
+}
+</script>
 
 <style lang="scss">
-@import "styles/global.scss";
+//@import "@/scss/global.scss";
 
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
-#nav {
-  padding: 30px;
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-    &.router-link-exact-active {
-      color: #42b983;
-    }
-  }
-}
 </style>

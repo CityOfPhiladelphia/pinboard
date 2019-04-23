@@ -1,19 +1,31 @@
-const path = require('path')
-const Visualizer = require('webpack-visualizer-plugin')
-
 module.exports = {
   lintOnSave: false,
-  pluginOptions: {
-    'style-resources-loader': {
-      preProcessor: 'scss',
-      patterns: [
-        path.resolve(__dirname, './src/styles/global.scss'),
-      ],
+  // css: {
+  //   loaderOptions: {
+  //     sass: {
+  //       data: `@import "@/scss/global.scss;
+  //               @import "src/scss/basic/_colors.scss"`,
+  //     },
+  //   },
+  // },
+
+  css: {
+    loaderOptions: {
+      sass: {
+        data: '@import "@/scss/global.scss";',
+      },
     },
   },
-  configureWebpack: {
-    plugins: [
-      new Visualizer({ filename: './statistics.html' }),
-    ],
-  },
+
+  // pluginOptions: {
+  // //   'style-resources-loader': {
+  // //     preProcessor: 'scss',
+  // //     patterns: [
+  // //       path.resolve(__dirname, '@/styles/global.scss'),
+  // //     ],
+  // //   },
+  // // },
+  // },
+  assetsDir: 'static',
+
 }

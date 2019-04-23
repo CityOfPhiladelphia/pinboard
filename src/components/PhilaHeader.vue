@@ -1,0 +1,80 @@
+<template>
+  <header class="app-header">
+    <div class="grid-x grid-padding-x grid-padding-y align-middle">
+      <div class="cell medium-14">
+        <a href="https://www.phila.gov/" class="logo flex-child-auto">
+          <img :src="appLogo" width="170" height="45" alt="City of Philadelphia">
+        </a>
+        <div class="app-divide hide-for-small-only flex-child-auto"></div>
+        <div class="title flex-child-auto">
+          <router-link :to="appLink">
+            <h1 class="h2">{{ appTitle }}</h1>
+            <h2 class="h6">{{ appTagLine }}</h2>
+          </router-link>
+        </div>
+      </div>
+    </div>
+    <div class="cell medium-auto small-centered text-center">
+      <div class="search">
+        <slot></slot>
+      </div>
+    </div>
+    <div class="stripe"></div>
+  </header>
+</template>
+<script>
+import Logo from '@/assets/city-of-philadelphia-logo.png'
+
+export default {
+  props: {
+    appLink: {
+      type: String,
+      default: '/',
+    },
+    appLogo: {
+      type: String,
+      default: Logo,
+    },
+    appTagLine: {
+      type: String,
+      default: 'App Tag Line',
+    },
+    appTitle: {
+      type: String,
+      default: 'App Title',
+    },
+  },
+}
+</script>
+<style lang="scss">
+
+.app-header{
+  vertical-align: middle;
+  background: color(dark-ben-franklin);
+  .title{
+    display: inline-flex;
+    word-break: break-word;
+    h1, h2{
+      margin:0;
+      padding:0;
+    }
+    a {
+      color: white;
+    }
+  }
+}
+
+.app-divide{
+  display: inline-block;
+  min-height:4rem;
+  vertical-align: middle;
+  @media screen and (min-width: 40em) {
+    margin: 0 1rem;
+    border-left:1px solid white;
+  }
+}
+.stripe {
+  min-height: 5px;
+  background: color(electric-blue)
+}
+</style>

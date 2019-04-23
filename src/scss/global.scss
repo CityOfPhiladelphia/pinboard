@@ -1,32 +1,36 @@
-/**
- * Foundation for Sites by ZURB
- * Version 6.5.3
- * foundation.zurb.com
- * Licensed under MIT Open Source
- */
-
-// Dependencies
-
-// --- Settings ---
-// import your own `settings` here or
-// import and modify the default settings through
-// @import 'settings/settings';
-
-// --- Components ---
-// Utilities
-//this works
-//@import 'node_modules/foundation-sites/dist/css/foundation';
 @import 'node_modules/foundation-sites/scss/foundation';
+
+@import 'basic/mixins';
+@import 'basic/base';
+@import 'basic/colors';
+@import 'basic/typography';
+@import 'settings';
+
+@include foundation-global-styles;
+@include foundation-grid;
+@include foundation-flex-classes;
+@include foundation-typography;
+@include foundation-forms;
+@include foundation-button;
+@include foundation-responsive-embed;
+@include foundation-table;
+@include foundation-visibility-classes;
+@include foundation-float-classes;
 @include foundation-xy-grid-classes;
 
-@import 'mixins';
-@import 'base';
-@import 'colors';
-@import 'typography'
+// @import 'node_modules/foundation-sites/scss/foundation';
+// @include foundation-xy-grid-classes;
 
-// // Generic components
+// @import 'basic/mixins';
+// @import 'basic/base';
+// @import 'basic/colors';
+// @import 'basic/typography';
+
+// // // Generic components
 // @include foundation-button;
-// @include foundation-button-group;
+
+// @include foundation-visibility-classes;
+// // @include foundation-button-group;
 // @include foundation-close-button;
 // @include foundation-label;
 // @include foundation-progress-bar;
@@ -65,6 +69,4 @@
 
 // // Helpers
 // @include foundation-float-classes;
-// @if $flex { @include foundation-flex-classes; }
-// @include foundation-visibility-classes;
 // @if $prototype { @include foundation-prototype-classes; }
