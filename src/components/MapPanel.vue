@@ -1,5 +1,5 @@
 <template>
-  <div class="cell medium-12 purple-div height100">
+  <div class="cell medium-12 purple-div height100 mb-panel mb-panel-map">
 
     <Map_ id="map-tag"
           :center="[-75.163471, 39.953338]"
@@ -28,6 +28,8 @@
 </template>
 
 <script>
+/* eslint-disable import/no-extraneous-dependencies */
+import 'leaflet/dist/leaflet.css';
 import Map_ from '@philly/vue-mapping/src/leaflet/Map.vue';
 
 export default {
