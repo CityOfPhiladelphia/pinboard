@@ -71,9 +71,9 @@
 // @include foundation-float-classes;
 // @if $prototype { @include foundation-prototype-classes; }
 
-$header-height: 84px;
-$footer-height: 22px;
-$refine-panel-height: 80px;
+$header-height: 85px;
+$footer-height: 23px;
+$refine-panel-height: 81px;
 
 .height100 {
   height: calc(100vh - #{$header-height} - #{$footer-height} - #{$refine-panel-height});
