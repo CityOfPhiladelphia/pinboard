@@ -6,5 +6,22 @@
 // if that is not needed, we can move this info to main.js
 
 export default {
-  map: '',
+  map: {
+    basemaps: {
+      pwd: {
+        url: '//tiles.arcgis.com/tiles/fLeGjb7u4uXqeF9q/arcgis/rest/services/CityBasemap/MapServer',
+        tiledLayers: [
+          'cityBasemapLabels',
+        ],
+        type: 'featuremap',
+        attribution: 'Parcels: Philadelphia Water',
+      },
+    },
+    tiledLayers: {
+      cityBasemapLabels: {
+        url: '//tiles.arcgis.com/tiles/fLeGjb7u4uXqeF9q/arcgis/rest/services/CityBasemap_Labels/MapServer',
+        zIndex: '3',
+      },
+    },
+  },
 }

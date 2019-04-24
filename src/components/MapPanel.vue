@@ -8,14 +8,14 @@
           :min-zoom="11"
           :max-zoom="22"
     >
-      <esri-tiled-map-layer v-for="(basemap, key) in this.basemaps"
+      <esri-tiled-map-layer v-for="(basemap, key) in this.$config.map.basemaps"
                             :key="key"
                             :url="basemap.url"
       />
       <!-- v-if="activeBasemap === key" -->
 
       <!-- basemap labels and parcels outlines -->
-      <esri-tiled-map-layer v-for="(tiledLayer, key) in this.tiledLayers"
+      <esri-tiled-map-layer v-for="(tiledLayer, key) in this.$config.map.tiledLayers"
                             :key="key"
                             :url="tiledLayer.url"
                             :zIndex="tiledLayer.zIndex"
@@ -36,28 +36,6 @@ export default {
   components: {
     Map_,
     EsriTiledMapLayer: () => import(/* webpackChunkName: "pvm_EsriTiledMapLayer" */'@philly/vue-mapping/src/esri-leaflet/TiledMapLayer.vue'),
-
-  },
-  data() {
-    return {
-      basemaps: {
-        pwd: {
-          url: '//tiles.arcgis.com/tiles/fLeGjb7u4uXqeF9q/arcgis/rest/services/CityBasemap/MapServer',
-          tiledLayers: [
-            'cityBasemapLabels',
-          ],
-          type: 'featuremap',
-          attribution: 'Parcels: Philadelphia Water',
-        },
-      },
-      tiledLayers: {
-        cityBasemapLabels: {
-          // type: 'labels',
-          url: '//tiles.arcgis.com/tiles/fLeGjb7u4uXqeF9q/arcgis/rest/services/CityBasemap_Labels/MapServer',
-          zIndex: '3',
-        },
-      },
-    }
   },
 }
 </script>
