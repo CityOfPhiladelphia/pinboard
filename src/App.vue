@@ -23,6 +23,7 @@
     </div>
 </template>
 <script>
+/* eslint-disable no-console */
 import PhilaHeader from './components/PhilaHeader.vue'
 import PhilaFooter from './components/PhilaFooter.vue'
 import RefinePanel from './components/RefinePanel.vue'

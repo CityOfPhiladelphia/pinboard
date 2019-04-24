@@ -21,6 +21,12 @@
                             :zIndex="tiledLayer.zIndex"
       />
       <!-- v-if="tiledLayers.includes(key)" -->
+      <vector-marker v-for="(marker) in resourceMarkers"
+                     :latlng="marker.latlng"
+                     :key="marker.key"
+                     :markerColor="marker.color"
+                     :icon="marker.icon"
+      />
     </Map_>
 
 
@@ -29,13 +35,23 @@
 
 <script>
 /* eslint-disable import/no-extraneous-dependencies */
+/* eslint-disable no-unused-vars */
 import 'leaflet/dist/leaflet.css';
+// import all fontawesome icons included in phila-vue-mapping
+import * as faMapping from '@philly/vue-mapping/src/fa';
 import Map_ from '@philly/vue-mapping/src/leaflet/Map.vue';
+
 
 export default {
   components: {
     Map_,
     EsriTiledMapLayer: () => import(/* webpackChunkName: "pvm_EsriTiledMapLayer" */'@philly/vue-mapping/src/esri-leaflet/TiledMapLayer.vue'),
+    VectorMarker: () => import(/* webpackChunkName: "mbmp_pvm_VectorMarker" */'@philly/vue-mapping/src/components/VectorMarker.vue'),
+  },
+  computed: {
+    resourceMarkers() {
+      return this.$store.state.map.resourceMarkers;
+    },
   },
 }
 </script>
