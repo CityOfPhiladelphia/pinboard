@@ -38,6 +38,9 @@ export default {
     LocationsPanel,
     MapPanel,
   },
+  mounted() {
+    console.log('in App.vue mounted, this.$config:', this.$config);
+  },
 }
 </script>
 
