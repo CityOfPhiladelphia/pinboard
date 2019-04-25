@@ -6,6 +6,10 @@
 // if that is not needed, we can move this info to main.js
 
 export default {
+  app: {
+    title: 'Immigrant resource finder',
+    tagLine: 'Find resources for immigrants in the City',
+  },
   map: {
     basemaps: {
       pwd: {

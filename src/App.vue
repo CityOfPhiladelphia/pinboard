@@ -1,8 +1,8 @@
 <template>
   <div id="app">
     <PhilaHeader
-      app-title="Resource finder title"
-      app-tag-line="Find what you're looking for"
+      :app-title="this.$config.app.title"
+      :app-tag-line="this.$config.app.tagLine"
     />
 
     <router-view/>
