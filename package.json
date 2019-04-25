@@ -8,7 +8,8 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
-    "@philly/vue-mapping": "^1.0.28",
+    "@philly/vue-comps": "^1.0.28",
+    "@philly/vue-mapping": "^1.0.29",
     "core-js": "^2.6.5",
     "foundation-sites": "^6.5.3",
     "vue": "^2.6.10",
