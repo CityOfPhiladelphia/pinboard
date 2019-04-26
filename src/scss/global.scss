@@ -71,11 +71,24 @@
 // @include foundation-float-classes;
 // @if $prototype { @include foundation-prototype-classes; }
 
-$header-height: 85px;
-$footer-height: 23px;
-$refine-panel-height: 81px;
+$header-height: 9vh;
+$footer-height: 4vh;
+$refine-panel-height: 19vh;
 
-.height100 {
+// header{
+//   height: $header-height;
+// }
+// footer{
+//   height: $footer-height;
+// }
+// .refine-panel{
+//   min-height: $refine-panel-height;
+// }
+// .height100 {
+//   height: calc(100vh - #{$header-height} - #{$footer-height} - #{$refine-panel-height});
+// }
+
+.map-height{
   height: calc(100vh - #{$header-height} - #{$footer-height} - #{$refine-panel-height});
 }
 

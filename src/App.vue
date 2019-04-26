@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="app" class="grid-y medium-grid-frame">
     <PhilaHeader
       :app-title="this.$config.app.title"
       :app-tag-line="this.$config.app.tagLine"
@@ -10,11 +10,13 @@
     <RefinePanel
     />
 
-    <div class="grid-x">
-      <LocationsPanel
-      />
-      <MapPanel
-      />
+    <div class="cell medium-auto medium-cell-block-container">
+      <div class="grid-x">
+        <LocationsPanel
+        />
+        <MapPanel
+        />
+      </div>
     </div>
 
 

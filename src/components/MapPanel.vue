@@ -1,5 +1,5 @@
 <template>
-  <div class="cell medium-12 purple-div height100 mb-panel mb-panel-map">
+  <div class="cell medium-12 mb-panel mb-panel-map map-height">
 
     <Map_ id="map-tag"
           :center="[-75.163471, 39.953338]"
@@ -52,9 +52,18 @@ export default {
     resourceMarkers() {
       return this.$store.state.map.resourceMarkers;
     },
+    // resizeMap() {
+    //   window.onresize = function (event) {
+    //     console.log(event)
+    //     Map_.invalidateSize()
+    //   }
+    // },
   },
 }
 </script>
 
 <style>
+.map-height{
+  min-height: 100vh;
+}
 </style>

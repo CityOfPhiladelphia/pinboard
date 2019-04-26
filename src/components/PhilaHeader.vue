@@ -1,5 +1,5 @@
 <template>
-  <header class="app-header">
+  <header class="app-header cell shrink">
     <div class="grid-x grid-padding-x grid-padding-y align-middle">
       <div class="cell medium-14">
         <a href="https://www.phila.gov/" class="logo flex-child-auto">
