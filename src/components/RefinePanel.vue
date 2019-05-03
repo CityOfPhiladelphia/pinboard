@@ -2,7 +2,7 @@
   <div class="cell medium-cell-block-container bg-ghost-gray refine-panel">
     <div class="grid-x">
       <fieldset class="cell">
-        <div class="labels">
+        <div class="refine-title">
           <legend class="legend-title h3">{{ legendTitle }}</legend>
           <a href="#"
             @click="clearAll"
@@ -73,7 +73,7 @@ export default {
   overflow-y: scroll;
   padding: 1rem;
 
-  .labels{
+  .refine-title{
     height:5vh;
     color: color(dark-ben-franklin);
     .clear-all{
@@ -95,6 +95,9 @@ export default {
       line-height: 1.3rem;
       vertical-align: text-top;
     }
+  }
+  label {
+    font-weight: normal;
   }
 }
 
