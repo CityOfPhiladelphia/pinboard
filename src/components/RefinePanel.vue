@@ -1,7 +1,7 @@
 <template>
   <div class="cell medium-cell-block-container bg-ghost-gray refine-panel">
-    <div class="cell">
-      <fieldset>
+    <div class="grid-x">
+      <fieldset class="cell">
         <div class="labels">
           <legend class="legend-title h3">{{ legendTitle }}</legend>
           <a href="#"
@@ -70,7 +70,7 @@ export default {
 <style lang="scss">
 .refine-panel{
   max-height: $refine-panel-height;
-  overflow: scroll;
+  overflow-y: scroll;
   padding: 1rem;
 
   .labels{
