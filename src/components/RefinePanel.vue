@@ -1,24 +1,29 @@
 <template>
   <div class="cell medium-cell-block-container bg-ghost-gray refine-panel">
-    <div class="cell">
-      <fieldset>
-        <legend class="legend-title h3">{{ legendTitle }}</legend>
-        <a href="#"
-          @click="clearAll"
-          class="clear-all">Clear all</a>
-        <div class="refine-columns">
-          <div v-for="(item, index) in refineList"
-          :key="index">
-            <input
-              :id="item.service"
-              type="checkbox"
-              :name="item.service"
-              :value="item.service"
-              v-model="selected">
-            <label :for="item.service">{{ item.service }}</label>
+    <div class="grid-x">
+      <fieldset class="cell">
+        <div class="refine-title">
+          <legend class="legend-title h3">{{ legendTitle }}</legend>
+          <a href="#"
+            @click="clearAll"
+            class="clear-all">Clear all</a>
+        </div>
+        <div class="grid-x service-list">
+          <div class="cell medium-6"
+            v-for="(item, index) in refineList"
+            :key="index">
+            <label :for="item.service">
+              <input
+                :id="item.service"
+                type="checkbox"
+                :name="item.service"
+                :value="item.service"
+                v-model="selected">
+                <span class="service-item">{{ item.service }}</span>
+              </label>
             </div>
           </div>
-        </fieldset>
+      </fieldset>
     </div>
   </div>
 </template>
@@ -65,12 +70,35 @@ export default {
 <style lang="scss">
 .refine-panel{
   max-height: $refine-panel-height;
-  overflow: scroll;
+  overflow-y: scroll;
+  padding: 1rem;
+
+  .refine-title{
+    height:5vh;
+    color: color(dark-ben-franklin);
+    .clear-all{
+      margin: 0 0 0 4rem;
+    }
+  }
+
+  legend.legend-title, .clear-all{
+    float: left;
+  }
+
+  .service-list{
+    input{
+      margin-right: -2rem;
+    }
+    .service-item {
+      margin-left: 3rem;
+      display: inline-block;
+      line-height: 1.3rem;
+      vertical-align: text-top;
+    }
+  }
+  label {
+    font-weight: normal;
+  }
 }
-.legend-title, .clear-all{
-  display: inline-block;
-}
-.refine-columns{
-  columns: 4;
-}
+
 </style>
