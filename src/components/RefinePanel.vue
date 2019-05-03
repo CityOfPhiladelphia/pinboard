@@ -74,7 +74,6 @@ export default {
   padding: 1rem;
 
   .labels{
-    width: 100vh;
     height:5vh;
     color: color(dark-ben-franklin);
     .clear-all{
