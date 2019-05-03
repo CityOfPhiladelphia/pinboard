@@ -4,9 +4,9 @@
       <div class="cell">
         <nav>
           <ul class="footer-nav">
-            <li>City of Philadelphia</li>
-            <li>How To Use</li>
-            <li>Feedback</li>
+            <li><a href="https://www.phila.gov">City of Philadelphia</a></li>
+            <li><a :href="howToUseLink">How To Use</a></li>
+            <li><a :href="feedbackLink">Feedback</a></li>
           </ul>
         </nav>
       </div>
@@ -21,6 +21,10 @@ export default {
       type: String,
       default: '/feedback',
     },
+    howToUseLink: {
+      type: String,
+      default: '/how',
+    },
   },
 }
 </script>
@@ -30,17 +34,26 @@ export default {
   vertical-align: middle;
   background: color(dark-ben-franklin);
   text-align: center;
-}
+  a:link, a:visited{
+    color: white;
+  }
+  a:hover, a:active{
+    color: color(electric-blue);
+  }
 
-.footer-nav {
-  margin: 0;
-  padding: 0;
-}
+  .footer-nav {
+    margin: .5rem 0;
+    padding: 0;
+  }
 
-.footer-nav li{
-  display: inline-block;
-  color: white;
-
+  .footer-nav li{
+    display: inline-block;
+    padding: 0 1rem;
+    border-right: solid 1px #fff;
+    &:last-of-type{
+      border: none;
+    }
+  }
 }
 
 
