@@ -1,5 +1,7 @@
 import Vue from 'vue';
 import controllerMixin from '@philly/vue-datafetch/src/controller/index';
+/* eslint-disable import/no-extraneous-dependencies */
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import App from './App.vue';
 import router from './router';
 import createStore from './store';
@@ -29,6 +31,7 @@ const store = createStore(config);
 
 Vue.use(controllerMixin, { config, store });
 Vue.use(configMixin, config);
+Vue.component('font-awesome-icon', FontAwesomeIcon);
 
 Vue.config.productionTip = false;
 
