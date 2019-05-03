@@ -2,13 +2,10 @@ export default {
   id: 'immigrant',
   type: 'http-get',
   dependent: 'none',
-  url: 'https://sheets.googleapis.com/v4/spreadsheets/1j0m09ImgJbuzpPgiia-nYuVs8dzEr9tzJAv1uDsj_AU/values/A2:X49',
+  url: 'https://phl.carto.com:443/api/v2/sql',
   options: {
     params: {
-      key: 'key',
-    },
-    success(data) {
-      return data;
+      q: 'select * from phl.oia_services',
     },
   },
 }

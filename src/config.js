@@ -6,12 +6,12 @@
 // if that is not needed, we can move this info to main.js
 
 // data-sources
-// import immigrant from './data-sources/immigrant';
+import immigrant from './data-sources/immigrant';
 
 export default {
-  // dataSources: {
-  //   immigrant,
-  // },
+  dataSources: {
+    immigrant,
+  },
   router: {
     enabled: true,
   },
