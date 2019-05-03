@@ -1,5 +1,5 @@
 <template>
-  <div class="cell medium-12 mb-panel mb-panel-map map-height">
+  <div class="cell medium-12 medium-cell-block-y mb-panel mb-panel-map map-height">
 
     <Map_ id="map-tag"
           :center="[-75.163471, 39.953338]"
