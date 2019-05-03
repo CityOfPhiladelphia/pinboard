@@ -14,6 +14,7 @@
         </div>
       </div>
     </div>
+    <combo-search />
     <div class="cell medium-auto small-centered text-center">
       <div class="search">
         <slot></slot>
@@ -22,8 +23,15 @@
     <div class="stripe"></div>
   </header>
 </template>
+
 <script>
+/* eslint-disable vue/no-unused-components */
+/* eslint-disable max-len */
+
 import Logo from '@/assets/city-of-philadelphia-logo.png'
+// import AddressInput from '@philly/vue-comps/src/components/AddressInput.vue'
+// import Paragraph from '@philly/vue-comps/src/components/Paragraph.vue'
+// import '@philly/vue-comps'
 
 export default {
   props: {
@@ -44,8 +52,12 @@ export default {
       default: 'App Title',
     },
   },
+  components: {
+    ComboSearch: () => import(/* webpackChunkName: "pvc_ComboSearch" */'@philly/vue-comps/src/components/ComboSearch.vue'),
+  },
 }
 </script>
+
 <style lang="scss">
 
 .app-header{
