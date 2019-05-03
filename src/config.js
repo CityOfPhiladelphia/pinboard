@@ -5,7 +5,16 @@
 // (we might not need to use axios with new vue async tools)
 // if that is not needed, we can move this info to main.js
 
+// data-sources
+// import immigrant from './data-sources/immigrant';
+
 export default {
+  // dataSources: {
+  //   immigrant,
+  // },
+  router: {
+    enabled: true,
+  },
   app: {
     title: 'Immigrant resource finder',
     tagLine: 'Find resources for immigrants in the City',

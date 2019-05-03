@@ -43,6 +43,9 @@ export default {
   },
   mounted() {
     console.log('in App.vue mounted, this.$config:', this.$config);
+    if (this.$config.dataSources) {
+      this.$controller.dataManager.fetchData();
+    }
   },
 }
 </script>
