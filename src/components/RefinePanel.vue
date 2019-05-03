@@ -62,7 +62,11 @@ export default {
 
 }
 </script>
-<style>
+<style lang="scss">
+.refine-panel{
+  max-height: $refine-panel-height;
+  overflow: scroll;
+}
 .legend-title, .clear-all{
   display: inline-block;
 }
