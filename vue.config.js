@@ -1,4 +1,7 @@
 module.exports = {
+  chainWebpack: (config) => {
+    config.resolve.symlinks(false)
+  },
   lintOnSave: undefined,
   // css: {
   //   loaderOptions: {
