@@ -1,5 +1,5 @@
 <template>
-  <div class="grid-x grid-padding-x grid-margin-x bg-ghost-gray">
+  <div class="cell medium-cell-block-container bg-ghost-gray refine-panel">
     <div class="cell">
       <fieldset>
         <legend class="legend-title h3">{{ legendTitle }}</legend>
@@ -62,7 +62,11 @@ export default {
 
 }
 </script>
-<style>
+<style lang="scss">
+.refine-panel{
+  max-height: $refine-panel-height;
+  overflow: scroll;
+}
 .legend-title, .clear-all{
   display: inline-block;
 }

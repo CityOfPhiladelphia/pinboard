@@ -1,5 +1,5 @@
 <template>
-  <header class="app-header">
+  <header class="app-header cell shrink">
     <div class="grid-x grid-padding-x grid-padding-y align-middle">
       <div class="cell medium-14">
         <a href="https://www.phila.gov/" class="logo flex-child-auto">
@@ -13,11 +13,11 @@
           </router-link>
         </div>
       </div>
-    </div>
-    <combo-search />
-    <div class="cell medium-auto small-centered text-center">
-      <div class="search">
-        <slot></slot>
+      <div class="cell medium-auto small-centered text-center">
+        <combo-search />
+        <div class="search">
+          <slot></slot>
+        </div>
       </div>
     </div>
     <div class="stripe"></div>
@@ -63,6 +63,7 @@ export default {
 .app-header{
   vertical-align: middle;
   background: color(dark-ben-franklin);
+
   .title{
     display: inline-flex;
     word-break: break-word;
