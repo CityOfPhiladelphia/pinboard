@@ -1,24 +1,23 @@
 <template>
   <header class="app-header cell shrink">
-    <div class="mobile-menu">
-      <font-awesome-icon icon="bars" size="2x" class="show-for-small-only"/>
-      <div class="menu-content">
-        <a :href="appLogoLink" class="logo flex-child-auto">
-          <img :src="appLogo" width="170" height="45" :alt="appLogoAlt">
-        </a>
-      </div>
-    </div>
     <div class="grid-x grid-padding-x grid-padding-y align-middle">
-      <div class="cell medium-14">
-          <a :href="appLogoLink" class="logo flex-child-auto">
-            <img :src="appLogo" :alt="appLogoAlt" class="app-logo hide-for-small-only">
-          </a>
+    <div 
+      @click="toggleMenu"
+      class="cell mobile-menu show-for-small-only small-4">
+      <font-awesome-icon icon="bars" size="2x" />
+    </div>
+    <MobileMenu 
+      v-show="isOpen" />
+      <div class="cell medium-14 small-20">
+        <a :href="appLogoLink" class="logo flex-child-auto">
+          <img :src="appLogo" :alt="appLogoAlt" class="app-logo hide-for-small-only">
+        </a>
 
         <div class="app-divide hide-for-small-only flex-child-auto"></div>
         <div class="title flex-child-auto">
           <router-link :to="appLink">
             <h1 class="h2">{{ appTitle }}</h1>
-            <h2 class="h6">{{ appTagLine }}</h2>
+            <h2 class="h6 hide-for-small-only">{{ appTagLine }}</h2>
           </router-link>
         </div>
       </div>
@@ -37,9 +36,9 @@
 <script>
 /* eslint-disable vue/no-unused-components */
 /* eslint-disable max-len */
-
+//TODO: move logo, link etc to app config.
 import Logo from '@/assets/city-of-philadelphia-logo.png'
-
+import MobileMenu from './MobileMenu'
 // import AddressInput from '@philly/vue-comps/src/components/AddressInput.vue'
 // import Paragraph from '@philly/vue-comps/src/components/Paragraph.vue'
 // import '@philly/vue-comps'
@@ -51,6 +50,7 @@ export default {
         address: 'Address',
         keyword: 'Keyword',
       },
+      isOpen: false
     }
   },
   props: {
@@ -81,8 +81,13 @@ export default {
   },
   components: {
     ComboSearch: () => import(/* webpackChunkName: "pvc_ComboSearch" */'@philly/vue-comps/src/components/ComboSearch.vue'),
+    MobileMenu
   },
-
+  methods: {
+    toggleMenu(){
+      this.isOpen = !this.isOpen
+    }
+  }
 }
 </script>
 
@@ -91,10 +96,11 @@ export default {
   vertical-align: middle;
   background: color(dark-ben-franklin);
 
-  .app-logo {
+  .app-logo{
     width: 170px;
     height: 45px;
   }
+
   .title{
     display: inline-flex;
     word-break: break-word;
