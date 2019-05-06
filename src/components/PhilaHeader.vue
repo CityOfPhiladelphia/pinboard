@@ -2,7 +2,6 @@
   <header class="app-header cell shrink">
     <div class="grid-x grid-padding-x grid-padding-y align-middle">
       <div class="cell medium-14">
-        <div class="mobile-menu">
           <font-awesome-icon icon="bars" />
 
           <font-awesome-icon icon="times" />
@@ -10,7 +9,6 @@
             <img :src="appLogo" width="170" height="45" :alt="appLogoAlt">
           </a>
 
-        </div>
         <div class="app-divide hide-for-small-only flex-child-auto"></div>
         <div class="title flex-child-auto">
           <router-link :to="appLink">
