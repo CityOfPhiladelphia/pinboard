@@ -1,12 +1,17 @@
 <template>
   <header class="app-header cell shrink">
+    <div class="mobile-menu">
+      <font-awesome-icon icon="bars" size="2x" class="show-for-small-only"/>
+      <div class="menu-content">
+        <a :href="appLogoLink" class="logo flex-child-auto">
+          <img :src="appLogo" width="170" height="45" :alt="appLogoAlt">
+        </a>
+      </div>
+    </div>
     <div class="grid-x grid-padding-x grid-padding-y align-middle">
       <div class="cell medium-14">
-          <font-awesome-icon icon="bars" />
-
-          <font-awesome-icon icon="times" />
           <a :href="appLogoLink" class="logo flex-child-auto">
-            <img :src="appLogo" width="170" height="45" :alt="appLogoAlt">
+            <img :src="appLogo" :alt="appLogoAlt" class="app-logo hide-for-small-only">
           </a>
 
         <div class="app-divide hide-for-small-only flex-child-auto"></div>
@@ -34,6 +39,7 @@
 /* eslint-disable max-len */
 
 import Logo from '@/assets/city-of-philadelphia-logo.png'
+
 // import AddressInput from '@philly/vue-comps/src/components/AddressInput.vue'
 // import Paragraph from '@philly/vue-comps/src/components/Paragraph.vue'
 // import '@philly/vue-comps'
@@ -85,6 +91,10 @@ export default {
   vertical-align: middle;
   background: color(dark-ben-franklin);
 
+  .app-logo {
+    width: 170px;
+    height: 45px;
+  }
   .title{
     display: inline-flex;
     word-break: break-word;
