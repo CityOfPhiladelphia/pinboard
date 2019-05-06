@@ -1,7 +1,3 @@
-html, body, h1, h2, h3, h4, h5, h6{
-  padding: 0;
-  margin: 0;
-}
 $global-font-size: 14px;
 
 $white: #fff;
@@ -45,3 +41,34 @@ $spacing-extra-large: 6rem;
 $spacing-extra-extra-large: 10rem;
 
 $large-font-base: 6rem;
+
+$colors: (
+  ben-franklin-blue: #2176d2,
+  dark-ben-franklin: #0f4d90,
+  light-ben-franklin: #96c9ff,
+  electric-blue: #25cef7,
+
+  bell-yellow: #f3c613,
+  light-bell: #ffefa2,
+
+  pride-purple:#9400c6,
+  punk-pink: #dd2662,
+
+  phanatic-green: #3a833c,
+  kelly-drive-green: #58c04d,
+  light-kelly-drive: #b9f2b1,
+
+  flyers-orange: #f99300,
+  love-park-red: #cc3000,
+  light-red: #fed0d0,
+  light-blue: #daedfe,
+
+  dark-gray: #444,
+  medium-gray: #a1a1a1,
+  sidewalk: #cfcfcf,
+  ghost-gray: #f0f0f0,
+);
+
+@function color($color-name) {
+  @return map-get($colors, $color-name);
+}

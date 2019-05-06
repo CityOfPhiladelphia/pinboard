@@ -1,9 +1,5 @@
 @import 'node_modules/foundation-sites/scss/foundation';
 
-@import 'basic/mixins';
-@import 'basic/base';
-@import 'basic/colors';
-@import 'basic/typography';
 @import 'settings';
 
 @include foundation-global-styles;
@@ -20,11 +16,6 @@
 
 // @import 'node_modules/foundation-sites/scss/foundation';
 // @include foundation-xy-grid-classes;
-
-// @import 'basic/mixins';
-// @import 'basic/base';
-// @import 'basic/colors';
-// @import 'basic/typography';
 
 // // // Generic components
 // @include foundation-button;
@@ -70,5 +61,3 @@
 // // Helpers
 // @include foundation-float-classes;
 // @if $prototype { @include foundation-prototype-classes; }
-
-$refine-panel-height: 19vh;

@@ -2,12 +2,12 @@ module.exports = {
   chainWebpack: (config) => {
     config.resolve.symlinks(false)
   },
-  lintOnSave: undefined,
+  lintOnSave: true,
+
   // css: {
   //   loaderOptions: {
   //     sass: {
-  //       data: `@import "@/scss/global.scss;
-  //               @import "src/scss/basic/_colors.scss"`,
+  //       data: '@import "@/scss/global.scss;',
   //     },
   //   },
   // },
@@ -15,7 +15,8 @@ module.exports = {
   css: {
     loaderOptions: {
       sass: {
-        data: '@import "@/scss/global.scss";',
+        data: `@import "@/scss/_variables.scss";
+              @import "@/scss/_mixins.scss";`,
       },
     },
   },
