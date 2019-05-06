@@ -2,9 +2,15 @@
   <header class="app-header cell shrink">
     <div class="grid-x grid-padding-x grid-padding-y align-middle">
       <div class="cell medium-14">
-        <a href="https://www.phila.gov/" class="logo flex-child-auto">
-          <img :src="appLogo" width="170" height="45" alt="City of Philadelphia">
-        </a>
+        <div class="mobile-menu">
+          <font-awesome-icon icon="bars" />
+
+          <font-awesome-icon icon="times" />
+          <a :href="appLogoLink" class="logo flex-child-auto">
+            <img :src="appLogo" width="170" height="45" :alt="appLogoAlt">
+          </a>
+
+        </div>
         <div class="app-divide hide-for-small-only flex-child-auto"></div>
         <div class="title flex-child-auto">
           <router-link :to="appLink">
@@ -14,7 +20,8 @@
         </div>
       </div>
       <div class="cell medium-auto small-centered text-center">
-        <combo-search />
+        <combo-search
+          :dropdown="this.dropdownData"/>
         <div class="search">
           <slot></slot>
         </div>
@@ -34,6 +41,14 @@ import Logo from '@/assets/city-of-philadelphia-logo.png'
 // import '@philly/vue-comps'
 
 export default {
+  data() {
+    return {
+      dropdownData: {
+        address: 'Address',
+        keyword: 'Keyword',
+      },
+    }
+  },
   props: {
     appLink: {
       type: String,
@@ -42,6 +57,14 @@ export default {
     appLogo: {
       type: String,
       default: Logo,
+    },
+    appLogoAlt: {
+      type: String,
+      default: 'City of Philadelphia',
+    },
+    appLogoLink: {
+      type: String,
+      default: 'https://www.phila.gov',
     },
     appTagLine: {
       type: String,
@@ -55,11 +78,11 @@ export default {
   components: {
     ComboSearch: () => import(/* webpackChunkName: "pvc_ComboSearch" */'@philly/vue-comps/src/components/ComboSearch.vue'),
   },
+
 }
 </script>
 
 <style lang="scss">
-
 .app-header{
   vertical-align: middle;
   background: color(dark-ben-franklin);

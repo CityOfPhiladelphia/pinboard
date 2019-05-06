@@ -68,6 +68,7 @@ export default {
 }
 </script>
 <style lang="scss">
+$refine-panel-height: 19vh;
 .refine-panel{
   max-height: $refine-panel-height;
   overflow-y: scroll;

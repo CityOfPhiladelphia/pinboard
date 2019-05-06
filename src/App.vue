@@ -51,6 +51,21 @@ export default {
 </script>
 
 <style lang="scss">
-//@import "@/scss/global.scss";
+@import "@/scss/global.scss";
+
+//TODO, move to stad
+@each $value in $colors {
+  //sass-lint:disable-block no-important
+  .#{nth($value, 1)} {
+    color: nth($value, 2) !important;
+  }
+  .bg-#{nth($value, 1)} {
+    background-color: nth($value, 2) !important;
+  }
+  .bdr-#{nth($value, 1)} {
+    border-color: nth($value, 2) !important;
+  }
+}
+
 
 </style>
