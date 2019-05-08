@@ -39,7 +39,8 @@
         </div>
       </div>
     </div>
-    <div class="stripe hide-for-small-only"></div>
+    <div class="stripe"
+    v-show="!isOpen"></div>
     <div class="mobile-menu-content-container show-for-small-only"
       v-show="isOpen">
       <div class="mobile-menu-content">
@@ -118,9 +119,6 @@ export default {
 .app-header{
   vertical-align: middle;
   background: color(dark-ben-franklin);
-  @media screen and (max-width: 39.9375em) {
-    padding-bottom: 1rem;
-  }
 
   .app-logo{
     width: 170px;
@@ -172,6 +170,9 @@ export default {
 }
 .stripe {
   min-height: 5px;
-  background: color(electric-blue)
+  background: color(electric-blue);
+  @media screen and (max-width: 39.9375em) {
+    margin-top: .5rem;
+  }
 }
 </style>
