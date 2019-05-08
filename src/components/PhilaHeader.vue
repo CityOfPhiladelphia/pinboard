@@ -1,18 +1,20 @@
 <template>
   <header class="app-header cell shrink">
     <div class="grid-x grid-padding-x grid-padding-y align-middle">
-    <div 
-      @click="toggleMenu"
-      class="cell mobile-menu show-for-small-only small-4">
-      <font-awesome-icon icon="bars" size="2x" />
-    </div>
-    <MobileMenu 
-      v-show="isOpen" />
+      <div class="cell mobile-menu show-for-small-only small-3">
+        <font-awesome-icon icon="bars" size="2x"
+        v-show="!isOpen"
+        :style="{ color: 'white' }"
+        @click="toggleMenu" />
+        <font-awesome-icon icon="times" size="2x"
+          v-show="isOpen"
+          :style="{ color: 'white' }"
+          @click="toggleMenu" />
+      </div>
       <div class="cell medium-14 small-20">
         <a :href="appLogoLink" class="logo flex-child-auto">
           <img :src="appLogo" :alt="appLogoAlt" class="app-logo hide-for-small-only">
         </a>
-
         <div class="app-divide hide-for-small-only flex-child-auto"></div>
         <div class="title flex-child-auto">
           <router-link :to="appLink">
@@ -29,16 +31,27 @@
         </div>
       </div>
     </div>
-    <div class="stripe"></div>
+    <div class="stripe hide-for-small-only"></div>
+    <div class="mobile-menu-content-container show-for-small-only"
+      v-show="isOpen">
+      <div class="mobile-menu-content"
+        v-show="isOpen">
+        <div class="">
+          <a :href="appLogoLink" class="logo flex-child-auto">
+            <img :src="appLogo" :alt="appLogoAlt" class="app-logo">
+          </a>
+        </div>
+      </div>
+    </div>
   </header>
 </template>
 
 <script>
 /* eslint-disable vue/no-unused-components */
 /* eslint-disable max-len */
-//TODO: move logo, link etc to app config.
+// TODO: move logo, link etc to app config.
 import Logo from '@/assets/city-of-philadelphia-logo.png'
-import MobileMenu from './MobileMenu'
+
 // import AddressInput from '@philly/vue-comps/src/components/AddressInput.vue'
 // import Paragraph from '@philly/vue-comps/src/components/Paragraph.vue'
 // import '@philly/vue-comps'
@@ -50,7 +63,7 @@ export default {
         address: 'Address',
         keyword: 'Keyword',
       },
-      isOpen: false
+      isOpen: false,
     }
   },
   props: {
@@ -81,13 +94,12 @@ export default {
   },
   components: {
     ComboSearch: () => import(/* webpackChunkName: "pvc_ComboSearch" */'@philly/vue-comps/src/components/ComboSearch.vue'),
-    MobileMenu
   },
   methods: {
-    toggleMenu(){
+    toggleMenu() {
       this.isOpen = !this.isOpen
-    }
-  }
+    },
+  },
 }
 </script>
 
@@ -111,6 +123,19 @@ export default {
     a {
       color: white;
     }
+  }
+}
+.mobile-menu-content-container{
+  margin-top:1rem;
+  overflow: hidden;
+  color: white;
+  z-index: 100;
+  background: color(dark-ben-franklin);
+  height: 100vh;
+  width:100%;
+
+  .mobile-menu-content{
+    text-align: center;
   }
 }
 
