@@ -1,6 +1,6 @@
 <template>
   <header class="app-header cell shrink">
-    <div class="grid-x grid-padding-x grid-padding-y align-middle ">
+    <div class="grid-x grid-padding-x grid-padding-y align-middle">
       <div class="cell mobile-menu show-for-small-only small-2">
         <font-awesome-icon icon="bars" size="2x"
         v-show="!isOpen"
@@ -18,7 +18,7 @@
               <img :src="appLogo" :alt="appLogoAlt" class="app-logo">
             </a>
           </div>
-          <div class="cell shrink hide-for-small-only ">
+          <div class="cell shrink hide-for-small-only">
             <div class="app-divide flex-child-auto"></div>
           </div>
           <div class="cell shrink">
@@ -39,16 +39,14 @@
         </div>
       </div>
     </div>
-    <div class="stripe hide-for-small-only"></div>
+    <div class="stripe"
+    v-show="!isOpen"></div>
     <div class="mobile-menu-content-container show-for-small-only"
       v-show="isOpen">
-      <div class="mobile-menu-content"
-        v-show="isOpen">
-        <div class="">
-          <a :href="appLogoLink" class="logo flex-child-auto">
-            <img :src="appLogo" :alt="appLogoAlt" class="app-logo">
-          </a>
-        </div>
+      <div class="mobile-menu-content">
+        <a :href="appLogoLink" class="logo flex-child-auto">
+          <img :src="appLogo" :alt="appLogoAlt" class="app-logo">
+        </a>
       </div>
     </div>
   </header>
@@ -106,6 +104,12 @@ export default {
   methods: {
     toggleMenu() {
       this.isOpen = !this.isOpen
+      this.toggleBodyClass('no-scroll');
+    },
+    // TODO: make generic toggle class
+    toggleBodyClass(className) {
+      const el = document.body;
+      return this.isOpen ? el.classList.add(className) : el.classList.remove(className)
     },
   },
 }
@@ -115,9 +119,6 @@ export default {
 .app-header{
   vertical-align: middle;
   background: color(dark-ben-franklin);
-  @media screen and (max-width: 39.9375em) {
-    padding-bottom: 1rem;
-  }
 
   .app-logo{
     width: 170px;
@@ -169,6 +170,9 @@ export default {
 }
 .stripe {
   min-height: 5px;
-  background: color(electric-blue)
+  background: color(electric-blue);
+  @media screen and (max-width: 39.9375em) {
+    margin-top: .5rem;
+  }
 }
 </style>
