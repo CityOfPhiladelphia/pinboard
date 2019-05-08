@@ -25,9 +25,10 @@
               </label>
             </div>
           </div>
-          <div class="filter-actions">
+          <div class="mobile-filter-actions show-for-small-only">
             <PhilaButton
-              buttonText="Apply filters" />
+              buttonText="Apply filters"
+              disabled />
             <a href="#"
               @click="clearAll"
               class="">Clear all</a>

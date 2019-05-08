@@ -1,5 +1,5 @@
 <template>
-  <button>{{ buttonText }}</button>
+  <button @click="buttonAction">{{ buttonText }}</button>
 </template>
 
 <script>
@@ -9,12 +9,15 @@ export default {
       type: String,
       default: 'Go do a thing',
     },
+    buttonAction: {
+      type: Function,
+      default() { },
+    },
   },
 }
 </script>
 
 <style lang="scss">
-
 button,
 .button {
   @include secondary-font(700);
