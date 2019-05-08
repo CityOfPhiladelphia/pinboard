@@ -11,23 +11,31 @@
           :style="{ color: 'white' }"
           @click="toggleMenu" />
       </div>
-      <div class="cell medium-14 small-20">
-        <a :href="appLogoLink" class="logo flex-child-auto">
-          <img :src="appLogo" :alt="appLogoAlt" class="app-logo hide-for-small-only">
-        </a>
-        <div class="app-divide hide-for-small-only flex-child-auto"></div>
-        <div class="title flex-child-auto">
-          <router-link :to="appLink">
-            <h1 class="h2">{{ appTitle }}</h1>
-            <h2 class="h6 hide-for-small-only">{{ appTagLine }}</h2>
-          </router-link>
-        </div>
-      </div>
-      <div class="cell medium-auto small-centered text-center">
-        <combo-search
-          :dropdown="this.dropdownData"/>
-        <div class="search">
-          <slot></slot>
+      <div class="cell medium-auto small-20">
+        <div class="grid-x grid-padding-x align-middle">
+          <div class="cell shrink hide-for-small-only">
+            <a :href="appLogoLink" class="logo flex-child-auto">
+              <img :src="appLogo" :alt="appLogoAlt" class="app-logo">
+            </a>
+          </div>
+          <div class="cell shrink hide-for-small-only ">
+            <div class="app-divide flex-child-auto"></div>
+          </div>
+          <div class="cell shrink">
+            <section class="title-container flex-child-auto">
+              <router-link :to="appLink">
+                <h1 class="title">{{ appTitle }}</h1>
+                <h2 class="h6 hide-for-small-only tagline">{{ appTagLine }}</h2>
+              </router-link>
+            </section>
+          </div>
+          <div class="cell large-auto small-auto small-centered text-center">
+            <combo-search
+              :dropdown="this.dropdownData"/>
+            <div class="search">
+              <slot></slot>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -113,16 +121,19 @@ export default {
     height: 45px;
   }
 
-  .title{
+  .title-container{
     display: inline-flex;
     word-break: break-word;
+
     h1, h2{
-      margin:0;
       padding:0;
     }
     a {
       color: white;
     }
+  }
+  .title{
+    line-height: 2rem;
   }
 }
 .mobile-menu-content-container{
@@ -143,8 +154,9 @@ export default {
   display: inline-block;
   min-height:4rem;
   vertical-align: middle;
+  margin-bottom: 1rem;
+
   @media screen and (min-width: 40em) {
-    margin: 0 1rem;
     border-left:1px solid white;
   }
 }
