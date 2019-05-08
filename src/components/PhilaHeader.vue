@@ -1,7 +1,7 @@
 <template>
   <header class="app-header cell shrink">
-    <div class="grid-x grid-padding-x grid-padding-y align-middle">
-      <div class="cell mobile-menu show-for-small-only small-3">
+    <div class="grid-x grid-padding-x grid-padding-y align-middle ">
+      <div class="cell mobile-menu show-for-small-only small-2">
         <font-awesome-icon icon="bars" size="2x"
         v-show="!isOpen"
         :style="{ color: 'white' }"
@@ -11,7 +11,7 @@
           :style="{ color: 'white' }"
           @click="toggleMenu" />
       </div>
-      <div class="cell medium-auto small-20">
+      <div class="cell medium-auto small-21">
         <div class="grid-x grid-padding-x align-middle">
           <div class="cell shrink hide-for-small-only">
             <a :href="appLogoLink" class="logo flex-child-auto">
@@ -115,6 +115,9 @@ export default {
 .app-header{
   vertical-align: middle;
   background: color(dark-ben-franklin);
+  @media screen and (max-width: 39.9375em) {
+    padding-bottom: 1rem;
+  }
 
   .app-logo{
     width: 170px;
@@ -133,6 +136,10 @@ export default {
     }
   }
   .title{
+    @media screen and (max-width: 20rem) {
+      max-width: 20rem;
+    }
+
     line-height: 2rem;
   }
 }
