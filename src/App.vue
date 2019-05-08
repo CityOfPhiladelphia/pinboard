@@ -22,7 +22,7 @@
 
     <PhilaFooter
     />
-    </div>
+  </div>
 </template>
 <script>
 /* eslint-disable no-console */

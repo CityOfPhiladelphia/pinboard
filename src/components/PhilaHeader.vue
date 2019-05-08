@@ -1,39 +1,65 @@
 <template>
   <header class="app-header cell shrink">
-    <div class="grid-x grid-padding-x grid-padding-y align-middle">
-      <div class="cell medium-14">
-          <font-awesome-icon icon="bars" />
-
-          <font-awesome-icon icon="times" />
-          <a :href="appLogoLink" class="logo flex-child-auto">
-            <img :src="appLogo" width="170" height="45" :alt="appLogoAlt">
-          </a>
-
-        <div class="app-divide hide-for-small-only flex-child-auto"></div>
-        <div class="title flex-child-auto">
-          <router-link :to="appLink">
-            <h1 class="h2">{{ appTitle }}</h1>
-            <h2 class="h6">{{ appTagLine }}</h2>
-          </router-link>
-        </div>
+    <div class="grid-x grid-padding-x grid-padding-y align-middle ">
+      <div class="cell mobile-menu show-for-small-only small-2">
+        <font-awesome-icon icon="bars" size="2x"
+        v-show="!isOpen"
+        :style="{ color: 'white' }"
+        @click="toggleMenu" />
+        <font-awesome-icon icon="times" size="2x"
+          v-show="isOpen"
+          :style="{ color: 'white' }"
+          @click="toggleMenu" />
       </div>
-      <div class="cell medium-auto small-centered text-center">
-        <combo-search
-          :dropdown="this.dropdownData"/>
-        <div class="search">
-          <slot></slot>
+      <div class="cell medium-auto small-21">
+        <div class="grid-x grid-padding-x align-middle">
+          <div class="cell shrink hide-for-small-only">
+            <a :href="appLogoLink" class="logo flex-child-auto">
+              <img :src="appLogo" :alt="appLogoAlt" class="app-logo">
+            </a>
+          </div>
+          <div class="cell shrink hide-for-small-only ">
+            <div class="app-divide flex-child-auto"></div>
+          </div>
+          <div class="cell shrink">
+            <section class="title-container flex-child-auto">
+              <router-link :to="appLink">
+                <h1 class="title">{{ appTitle }}</h1>
+                <h2 class="h6 hide-for-small-only tagline">{{ appTagLine }}</h2>
+              </router-link>
+            </section>
+          </div>
+          <div class="cell large-auto small-auto small-centered text-center">
+            <combo-search
+              :dropdown="this.dropdownData"/>
+            <div class="search">
+              <slot></slot>
+            </div>
+          </div>
         </div>
       </div>
     </div>
-    <div class="stripe"></div>
+    <div class="stripe hide-for-small-only"></div>
+    <div class="mobile-menu-content-container show-for-small-only"
+      v-show="isOpen">
+      <div class="mobile-menu-content"
+        v-show="isOpen">
+        <div class="">
+          <a :href="appLogoLink" class="logo flex-child-auto">
+            <img :src="appLogo" :alt="appLogoAlt" class="app-logo">
+          </a>
+        </div>
+      </div>
+    </div>
   </header>
 </template>
 
 <script>
 /* eslint-disable vue/no-unused-components */
 /* eslint-disable max-len */
-
+// TODO: move logo, link etc to app config.
 import Logo from '@/assets/city-of-philadelphia-logo.png'
+
 // import AddressInput from '@philly/vue-comps/src/components/AddressInput.vue'
 // import Paragraph from '@philly/vue-comps/src/components/Paragraph.vue'
 // import '@philly/vue-comps'
@@ -45,6 +71,7 @@ export default {
         address: 'Address',
         keyword: 'Keyword',
       },
+      isOpen: false,
     }
   },
   props: {
@@ -76,7 +103,11 @@ export default {
   components: {
     ComboSearch: () => import(/* webpackChunkName: "pvc_ComboSearch" */'@philly/vue-comps/src/components/ComboSearch.vue'),
   },
-
+  methods: {
+    toggleMenu() {
+      this.isOpen = !this.isOpen
+    },
+  },
 }
 </script>
 
@@ -84,17 +115,45 @@ export default {
 .app-header{
   vertical-align: middle;
   background: color(dark-ben-franklin);
+  @media screen and (max-width: 39.9375em) {
+    padding-bottom: 1rem;
+  }
 
-  .title{
+  .app-logo{
+    width: 170px;
+    height: 45px;
+  }
+
+  .title-container{
     display: inline-flex;
     word-break: break-word;
+
     h1, h2{
-      margin:0;
       padding:0;
     }
     a {
       color: white;
     }
+  }
+  .title{
+    @media screen and (max-width: 20rem) {
+      max-width: 20rem;
+    }
+
+    line-height: 2rem;
+  }
+}
+.mobile-menu-content-container{
+  margin-top:1rem;
+  overflow: hidden;
+  color: white;
+  z-index: 100;
+  background: color(dark-ben-franklin);
+  height: 100vh;
+  width:100%;
+
+  .mobile-menu-content{
+    text-align: center;
   }
 }
 
@@ -102,8 +161,9 @@ export default {
   display: inline-block;
   min-height:4rem;
   vertical-align: middle;
+  margin-bottom: 1rem;
+
   @media screen and (min-width: 40em) {
-    margin: 0 1rem;
     border-left:1px solid white;
   }
 }
