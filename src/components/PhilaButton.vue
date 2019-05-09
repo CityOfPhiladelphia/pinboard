@@ -1,5 +1,5 @@
 <template>
-  <button @click="buttonAction">{{ buttonText }}</button>
+  <button @click="buttonAction"><slot></slot> {{ buttonText }}</button>
 </template>
 
 <script>
@@ -17,7 +17,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 button,
 .button {
   @include secondary-font(700);
@@ -26,9 +26,10 @@ button,
   text-transform: uppercase;
   padding:.75rem .5rem;
   letter-spacing: .03rem;
+  transition: background-color 0.25s ease-out, color 0.25s ease-out;
+  cursor: pointer;
 
-
-  &:focus {
+  &:focus, &:hover {
     color:white;
     background: color(dark-gray);
   }
