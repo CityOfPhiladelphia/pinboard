@@ -8,7 +8,7 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
-    "@philly/vue-comps": "https://github.com/CityOfPhiladelphia/phila-vue-comps#d0afe8eff370677b59fe2f10f41f8c276d98c07f",
+    "@philly/vue-comps": "https://github.com/CityOfPhiladelphia/phila-vue-comps#1338797ae526ce690b453c9ff92b47a8466f95d0",
     "@philly/vue-datafetch": "https://github.com/CityOfPhiladelphia/phila-vue-datafetch#b2a06c17727bddf5a59b75bab6e4965a24f66484",
     "@philly/vue-mapping": "^1.0.29",
     "axios": "^0.18.0",
