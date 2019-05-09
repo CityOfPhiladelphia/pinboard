@@ -14,14 +14,14 @@
           <div class="cell medium-6"
             v-for="(item, index) in refineList"
             :key="index">
-            <label :for="item.service">
+            <label :for="item">
               <input
-                :id="item.service"
+                :id="item"
                 type="checkbox"
-                :name="item.service"
-                :value="item.service"
+                :name="item"
+                :value="item"
                 v-model="selected">
-                <span class="service-item">{{ item.service }}</span>
+                <span class="service-item">{{ item }}</span>
               </label>
             </div>
           </div>
@@ -40,7 +40,6 @@
   </div>
 </template>
 <script>
-import axios from 'axios'
 import PhilaButton from './PhilaButton.vue'
 
 export default {
@@ -71,19 +70,50 @@ export default {
         this.selected = []
       }
     },
-    getRefineSearchList() {
-      axios.get(`${this.baseUrl}temp-refine-list.json`).then((response) => {
-        this.$data.refineList = response.data
+    async getRefineSearchList() {
+      /* eslint-disable no-unused-vars */
+
+      const response = await (this.$store.state.sources.immigrant === 'success');
+      const promise = new Promise((resolve, reject) => {
+        setTimeout(() => resolve(), 1000)
+      });
+
+      const result = await promise; // wait till the promise resolves (*)
+
+      const refineData = this.$store.state.sources.immigrant.data.rows
+
+      let service = ''
+
+      refineData.forEach((arrayElem) => {
+        service += `${arrayElem.services_offered},`
       })
-        .catch((error) => {
-          console.log(error)
-        // this.errored = true
-        })
+      // TODO: break this into smaller chunks
+      let serviceArray = service.split(/(,|;)/);
+      serviceArray = serviceArray.map(s => s.trim())
+
+      const uniqArray = [...new Set(serviceArray)];
+
+      // clean up any dangling , or ;
+      const uniq = uniqArray.filter(a => a.length > 2)
+
+      uniq.filter(Boolean) // remove empties
+      uniq.sort()
+      this.$data.refineList = uniq
+
+      return Promise.resolve();
     },
     expandRefine() {
       this.refineOpen = !this.refineOpen;
     },
   },
+  computed: {
+    stringify(string) {
+      console.log(string)
+      const newString = string.replace(/\s+/g, '-').toLowerCase()
+      return newString
+    },
+  },
+
 
 }
 </script>
