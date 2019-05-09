@@ -1,6 +1,6 @@
 <template>
   <div class="cell medium-cell-block-container bg-ghost-gray refine-panel"
-  :class="{ open: refineOpen }">
+  :class="{ 'refine-open': refineOpen }">
     <div class="grid-x">
       <fieldset class="cell">
         <div class="refine-title"
@@ -28,7 +28,9 @@
           <div class="mobile-filter-actions show-for-small-only">
             <PhilaButton
               buttonText="Apply filters"
-              disabled />
+              disabled>
+              <font-awesome-icon icon="filter" />
+            </PhilaButton>
             <a href="#"
               @click="clearAll"
               class="">Clear all</a>
@@ -135,8 +137,13 @@ $refine-panel-height: 19vh;
   }
 }
 
-.open{
+.refine-open{
   min-height: 100vh !important;
+  .refine-title{
+    &::after{
+      content: '-';
+    }
+  }
 }
 
 </style>
