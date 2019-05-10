@@ -10,9 +10,10 @@
             @click="clearAll"
             class="clear-all hide-for-small-only">Clear all</a>
         </div>
-        <div class="grid-x service-list">
+        <div class="grid-x service-list"
+          v-if="sources.immigrant.status === 'success'">
           <div class="cell medium-6"
-            v-for="(item, index) in refineList"
+            v-for="(item, index) in getRefineSearchList()"
             :key="index">
             <label :for="item">
               <input
@@ -40,6 +41,7 @@
   </div>
 </template>
 <script>
+import { mapState } from 'vuex'
 import PhilaButton from './PhilaButton.vue'
 
 export default {
@@ -60,8 +62,8 @@ export default {
       refineOpen: false,
     }
   },
-  created() {
-    this.init()
+  computed: {
+    ...mapState(['sources']),
   },
   methods: {
     clearAll() {
@@ -69,13 +71,8 @@ export default {
         this.selected = []
       }
     },
-    init() {
-      this.getRefineSearchList()
-    },
-    async getRefineSearchList() {
-      await new Promise(resolve => setTimeout(resolve, 500))
-
-      const refineData = this.$store.state.sources.immigrant.data.rows
+    getRefineSearchList() {
+      const refineData = this.sources.immigrant.data.rows
 
       let service = ''
 
@@ -84,21 +81,22 @@ export default {
       })
 
       // TODO: break this into smaller chunks
-      let serviceArray = service.split(/(,|;)/);
+      let serviceArray = service.split(/(,|;)/)
       serviceArray = serviceArray.map(s => s.trim())
 
-      const uniqArray = [...new Set(serviceArray)];
+      const uniqArray = [...new Set(serviceArray)]
 
       // clean up any dangling , or ;
       const uniq = uniqArray.filter(a => a.length > 2)
 
       uniq.filter(Boolean) // remove empties
       uniq.sort()
-      this.$data.refineList = uniq
+      return uniq
     },
+
     expandRefine() {
       if (window.innerWidth <= 639) { // converted from rems
-        this.refineOpen = !this.refineOpen;
+        this.refineOpen = !this.refineOpen
       }
     },
   },
