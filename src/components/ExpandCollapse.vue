@@ -1,8 +1,12 @@
 <template>
-  <div class="cell medium-cell-block-container bg-ghost-gray location-item"
-  :class="{ 'location-open': locationOpen }"
+  <div class="cell medium-cell-block-container location-item"
+  :class="{ 'open': locationOpen }"
   @click="expandLocation">
-    <h2 class="title">{{ title }}</h2><slot></slot></div>
+    <h2 class="h4 title">{{ title }}</h2>
+    <div :class="{ 'location-open': locationOpen }" class="location-content">
+      <slot></slot>
+    </div>
+  </div>
 </template>
 <script>
 export default {
@@ -25,22 +29,49 @@ export default {
 }
 </script>
 <style lang="scss">
-.location-item{
-    padding: 1rem;
-    cursor: pointer;
-    height: 4rem;
-    overflow: hidden;
+.location-item {
+  position: relative;
+  cursor: pointer;
+  max-height: 4rem;
+  border-bottom: 1px solid black;
+  height:100%;
 
-  .title{
-    &::after{
-      content: '+';
-      float: right;
-      font-weight: 900;
-      font-size:1.5rem;
+  h2 {
+    padding: 1rem;
+    margin-bottom: 0;
+    &:hover{
+      background: #2176d2;
+      color: white;
     }
   }
-  &.location-open{
-    height: auto;
+
+  &::after{
+    content: '+';
+    font-weight: 900;
+    font-size:1.5rem;
+    position: absolute;
+    right:1rem;
+  }
+  &.open{
+    h2{
+      color:white;
+      background-color: #2176d2;
+      font-weight: 900;
+    }
+    &::after{
+      content: '-';
+      color:white;
+    }
+  }
+  .location-content{
+    overflow: hidden;
+    height:0;
+
+    &.location-open{
+      padding: 1rem;
+      height: 100%;
+      overflow: initial;
+    }
   }
 }
 </style>
