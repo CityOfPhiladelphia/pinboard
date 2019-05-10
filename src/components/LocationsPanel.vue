@@ -1,7 +1,10 @@
 <template>
   <div class="cell medium-12 medium-cell-block-y locations-panel">
     <div class="location-container">
-      <div class="step-group">
+      <ExpandCollapse>
+        content!
+      </ExpandCollapse>
+      <!-- <div class="step-group">
           <div class="step-label">1</div>
 
           <div class="step">
@@ -23,10 +26,33 @@
             <div class="step-content">
             </div>
           </div>
-      </div>
+      </div> -->
     </div>
   </div>
 </template>
+<script>
+import ExpandCollapse from './ExpandCollapse.vue'
+
+export default {
+  components: {
+    ExpandCollapse,
+  },
+  created() {
+    this.init()
+  },
+  methods: {
+    init() {
+      this.getLocationsList()
+    },
+    async getLocationsList() {
+      await new Promise(resolve => setTimeout(resolve, 500))
+
+      const locations = this.$store.state.sources.immigrant.data.rows
+      console.log(locations)
+    },
+  },
+}
+</script>
 
 <style lang="scss">
 
