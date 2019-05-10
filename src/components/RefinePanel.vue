@@ -62,7 +62,7 @@ export default {
   },
   created() {
     // Fetch Data
-    this.getRefineSearchList();
+    this.init()
   },
   methods: {
     clearAll() {
@@ -70,15 +70,11 @@ export default {
         this.selected = []
       }
     },
+    init() {
+      this.getRefineSearchList()
+    },
     async getRefineSearchList() {
-      /* eslint-disable no-unused-vars */
-
-      const response = await (this.$store.state.sources.immigrant === 'success');
-      const promise = new Promise((resolve, reject) => {
-        setTimeout(() => resolve(), 1000)
-      });
-
-      const result = await promise; // wait till the promise resolves (*)
+      await new Promise(resolve => setTimeout(resolve, 500))
 
       const refineData = this.$store.state.sources.immigrant.data.rows
 
@@ -87,6 +83,7 @@ export default {
       refineData.forEach((arrayElem) => {
         service += `${arrayElem.services_offered},`
       })
+
       // TODO: break this into smaller chunks
       let serviceArray = service.split(/(,|;)/);
       serviceArray = serviceArray.map(s => s.trim())
@@ -99,8 +96,6 @@ export default {
       uniq.filter(Boolean) // remove empties
       uniq.sort()
       this.$data.refineList = uniq
-
-      return Promise.resolve();
     },
     expandRefine() {
       this.refineOpen = !this.refineOpen;
