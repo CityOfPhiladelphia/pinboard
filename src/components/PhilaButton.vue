@@ -1,5 +1,5 @@
 <template>
-  <button @click="buttonAction"><slot></slot> {{ buttonText }}</button>
+  <button><slot></slot> {{ buttonText }}</button>
 </template>
 
 <script>

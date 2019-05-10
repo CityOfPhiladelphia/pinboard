@@ -28,7 +28,7 @@
           <div class="mobile-filter-actions show-for-small-only">
             <PhilaButton
               buttonText="Apply filters"
-              disabled>
+              @click.native="expandRefine">
               <font-awesome-icon icon="filter" />
             </PhilaButton>
             <a href="#"
@@ -61,7 +61,6 @@ export default {
     }
   },
   created() {
-    // Fetch Data
     this.init()
   },
   methods: {
@@ -98,18 +97,11 @@ export default {
       this.$data.refineList = uniq
     },
     expandRefine() {
-      this.refineOpen = !this.refineOpen;
+      if (window.innerWidth <= 639) { // converted from rems
+        this.refineOpen = !this.refineOpen;
+      }
     },
   },
-  computed: {
-    stringify(string) {
-      console.log(string)
-      const newString = string.replace(/\s+/g, '-').toLowerCase()
-      return newString
-    },
-  },
-
-
 }
 </script>
 <style lang="scss">
@@ -160,13 +152,12 @@ $refine-panel-height: 19vh;
       }
     }
   }
-}
-
-.refine-open{
-  min-height: 100vh !important;
-  .refine-title{
-    &::after{
-      content: '-';
+  &.refine-open{
+    min-height: 100vh !important;
+    .refine-title{
+      &::after{
+        content: '-';
+      }
     }
   }
 }
