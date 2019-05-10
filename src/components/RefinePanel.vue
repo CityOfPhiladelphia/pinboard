@@ -58,10 +58,24 @@ export default {
       refineList: null,
       selected: [],
       refineOpen: false,
+      loaded: false,
     }
   },
-  created() {
-    this.init()
+  computed: {
+    sources() {
+      return this.$store.state.sources
+    },
+  },
+  watch: {
+    sources: {
+      handler(newValue) {
+        if (!this.loaded && newValue.immigrant.data) {
+          this.loaded = true
+          this.init()
+        }
+      },
+      deep: true,
+    },
   },
   methods: {
     clearAll() {
@@ -73,9 +87,7 @@ export default {
       this.getRefineSearchList()
     },
     async getRefineSearchList() {
-      await new Promise(resolve => setTimeout(resolve, 500))
-
-      const refineData = this.$store.state.sources.immigrant.data.rows
+      const refineData = this.sources.immigrant.data.rows
 
       let service = ''
 
