@@ -1,5 +1,5 @@
 <template>
-  <footer class="app-footer cell shrink">
+  <footer class="app-footer cell shrink hide-for-small-only">
     <div class="grid-x align-middle">
       <div class="cell">
         <nav>

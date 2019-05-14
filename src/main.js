@@ -3,6 +3,7 @@ import controllerMixin from '@philly/vue-datafetch/src/controller/index';
 /* eslint-disable import/no-extraneous-dependencies */
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 
+import VueMq from 'vue-mq'
 import fonts from './fa';
 
 import App from './App.vue';
@@ -25,6 +26,7 @@ const clientConfig = {
   // map: '',
 }
 
+
 // if there is a baseConfig, it is merged with the clientConfig here
 // in the parameters of mergeDeep, whichever one comes second
 // will have overwrite power over the first
@@ -36,6 +38,14 @@ Vue.use(controllerMixin, { config, store });
 Vue.use(configMixin, config);
 Vue.use(fonts);
 Vue.component('font-awesome-icon', FontAwesomeIcon);
+
+Vue.use(VueMq, {
+  breakpoints: {
+    sm: '39.9375em',
+    md: '63.9375em',
+    lg: Infinity,
+  },
+})
 
 Vue.config.productionTip = false;
 

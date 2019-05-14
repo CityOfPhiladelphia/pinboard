@@ -87,19 +87,29 @@ export default {
       this.rows = newRows;
       return Promise.resolve();
     },
+
+    handleResize(event) {
+      console.log(this.$store.state.map.map)
+
+      // this.fullHeight = document.documentElement.clientHeight - headerHeight
+      // this.$refs.map.invalidateSize()
+      this.$store.state.map.map.invalidateSize();
+      // Map_.$leafletElement.invalidateSize()
+    },
   },
-  //   // resizeMap() {
-  //   //   window.onresize = function (event) {
-  //   //     console.log(event)
-  //   //     Map_.invalidateSize()
-  //   //   }
-  //   // },
-  // },
+  mounted() {
+    window.addEventListener('resize', this.handleResize)
+  },
+  beforeDestroy() {
+    window.removeEventListener('resize', this.handleResize)
+  },
 }
 </script>
 
 <style>
-.map-height{
-  min-height: 100vh;
+@media screen and (max-width: 39.9375em) {
+  .map-container{
+    min-height: 100vh !important;
+  }
 }
 </style>
