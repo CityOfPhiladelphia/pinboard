@@ -45,11 +45,13 @@ export default {
   }
 
   &::after{
+    position: absolute;
+    right:1rem;
+    top: 0;
     content: '+';
     font-weight: 900;
     font-size:1.5rem;
-    position: absolute;
-    right:1rem;
+    z-index: 100;
   }
   &.open{
     h2{
