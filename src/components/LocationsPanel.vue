@@ -10,7 +10,9 @@
             <div class="cell medium-12">
               <div class="detail" v-if="item.street_address">
                 <font-awesome-icon icon="map-marker-alt"/>
-                <span>{{ item.street_address }}</span>
+                <span v-html="parseAddress(item.street_address)">
+                  {{parseAddress(item.street_address)}}
+                </span>
               </div>
             </div>
             <div class="cell medium-12">
@@ -36,7 +38,8 @@
             <section class="services grid-x grid-padding-x">
               <div class="cell">
                 <h3 class="h4">Services offered</h3>
-                {{ item.services_offered }}
+                <div v-for="i in parseServiceList(item.services_offered)"
+                :key="i">{{i}}</div>
               </div>
             </section>
           </div>
@@ -78,11 +81,21 @@ export default {
   },
   computed: {
     ...mapState(['sources']),
+
   },
   methods: {
     getLocationsList() {
-      const locations = this.$store.state.sources.immigrant.data.rows
+      const locations = this.sources.immigrant.data.rows
       return locations
+    },
+    // TODO: handle edge cases
+    parseAddress(address) {
+      const formattedAddress = address.replace(/(Phila.+)/g, city => `<div>${city}</div>`).replace(/^\d+\s[A-z]+\s[A-z]+/g, lineOne => `<div>${lineOne}</div>`).replace(/,/, '')
+      return formattedAddress
+    },
+    parseServiceList(list) {
+      const formattedService = list.split(',')
+      return formattedService
     },
   },
 }
