@@ -1,7 +1,7 @@
 <template>
   <div class="cell medium-cell-block-container location-item"
     :class="{ 'open': locationOpen }">
-    <h2 class="h4 title"
+    <h2 class="h4 location-title"
       @click="expandLocation">{{ title }}</h2>
     <div :class="{ 'location-open': locationOpen }" class="location-content">
       <slot></slot>
@@ -31,11 +31,11 @@ export default {
 <style lang="scss">
 .location-item {
   position: relative;
-  cursor: pointer;
   border-bottom: 1px solid black;
   height:100%;
 
-  h2 {
+  .location-title {
+    cursor: pointer;
     padding: 1rem;
     margin-bottom: 0;
     &:hover{
