@@ -24,7 +24,7 @@
                 <a :href="`mailto:${item.email}`">{{ item.email }}</a>
               </div>
               <div v-if="item.facebook_name">
-                <font-awesome-icon icon="facebook"/>
+                <font-awesome-icon :icon="['fab', 'facebook']"/>
                   {{ item.facebook_name }}
               </div>
               <div v-if="item.twitter">
