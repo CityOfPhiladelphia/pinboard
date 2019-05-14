@@ -1,8 +1,8 @@
 <template>
   <div class="cell medium-cell-block-container location-item"
-  :class="{ 'open': locationOpen }"
-  @click="expandLocation">
-    <h2 class="h4 title">{{ title }}</h2>
+    :class="{ 'open': locationOpen }">
+    <h2 class="h4 title"
+      @click="expandLocation">{{ title }}</h2>
     <div :class="{ 'location-open': locationOpen }" class="location-content">
       <slot></slot>
     </div>

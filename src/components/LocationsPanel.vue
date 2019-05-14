@@ -6,7 +6,7 @@
         :key="item.cartodb_id">
 
         <ExpandCollapse :title="item.organization_name">
-          <div class="grid-x">
+          <div class="grid-x grid-padding-x">
             <div class="cell medium-12">
               <div class="detail" v-if="item.street_address">
                 <font-awesome-icon icon="map-marker-alt"/>
@@ -24,18 +24,22 @@
               </div>
               <div class="detail" v-if="item.facebook_name">
                 <font-awesome-icon :icon="['fab', 'facebook']"/>
-                <span>{{ item.facebook_name }}</span>
+                <span><a :href="item.facebook_name">Facebook</a></span>
               </div>
               <div class="detail" v-if="item.twitter">
                 <font-awesome-icon :icon="['fab', 'twitter']"/>
-                <span>{{ item.twitter }}</span>
+                <span><a :href="tem.twitter">Twitter</a></span>
               </div>
             </div>
           </div>
-          <section>
-            <h3 class="h5 services">Services offered</h3>
-            {{ item.services_offered }}
-          </section>
+          <div v-if="item.services_offered != ''">
+            <section class="services grid-x grid-padding-x">
+              <div class="cell">
+                <h3 class="h4">Services offered</h3>
+                {{ item.services_offered }}
+              </div>
+            </section>
+          </div>
         </ExpandCollapse>
       <!-- <div class="step-group">
           <div class="step-label">1</div>
@@ -78,7 +82,6 @@ export default {
   methods: {
     getLocationsList() {
       const locations = this.$store.state.sources.immigrant.data.rows
-      console.log(locations)
       return locations
     },
   },
@@ -91,13 +94,19 @@ export default {
   overflow-y: auto;
   height: 100vh;
   .detail{
-    @media screen and (max-width: 39.9375em) {
-      margin-bottom: 2rem;
+    margin-bottom: 1rem;
+    svg {
+      vertical-align: top;
+      margin-top: .5rem;
     }
     span {
       display: inline-block;
       padding-left: 2rem;
+      max-width: calc(100% - .75em);
     }
+  }
+  .services{
+    margin-top: 3rem;
   }
 }
 .location-container{
