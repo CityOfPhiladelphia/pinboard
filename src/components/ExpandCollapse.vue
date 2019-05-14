@@ -32,7 +32,6 @@ export default {
 .location-item {
   position: relative;
   cursor: pointer;
-  max-height: 4rem;
   border-bottom: 1px solid black;
   height:100%;
 
