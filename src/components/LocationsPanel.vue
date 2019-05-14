@@ -8,28 +8,27 @@
         <ExpandCollapse :title="item.organization_name">
           <div class="grid-x">
             <div class="cell medium-12">
-              <div
-                v-if="item.street_address">
+              <div class="detail" v-if="item.street_address">
                 <font-awesome-icon icon="map-marker-alt"/>
-                {{ item.street_address }}
+                <span>{{ item.street_address }}</span>
               </div>
             </div>
             <div class="cell medium-12">
-              <div v-if="item.phone_number">
+              <div class="detail" v-if="item.phone_number">
                 <font-awesome-icon icon="phone"/>
-                  {{ item.phone_number }}
+                <span>{{ item.phone_number }}</span>
               </div>
-              <div v-if="item.email">
+              <div class="detail" v-if="item.email">
                 <font-awesome-icon icon="envelope"/>
-                <a :href="`mailto:${item.email}`">{{ item.email }}</a>
+                <span><a :href="`mailto:${item.email}`">{{ item.email }}</a></span>
               </div>
-              <div v-if="item.facebook_name">
+              <div class="detail" v-if="item.facebook_name">
                 <font-awesome-icon :icon="['fab', 'facebook']"/>
-                  {{ item.facebook_name }}
+                <span>{{ item.facebook_name }}</span>
               </div>
-              <div v-if="item.twitter">
-                <font-awesome-icon icon="twitter"/>
-                  {{ item.twitter }}
+              <div class="detail" v-if="item.twitter">
+                <font-awesome-icon :icon="['fab', 'twitter']"/>
+                <span>{{ item.twitter }}</span>
               </div>
             </div>
           </div>
@@ -91,6 +90,15 @@ export default {
 .locations-panel{
   overflow-y: auto;
   height: 100vh;
+  .detail{
+    @media screen and (max-width: 39.9375em) {
+      margin-bottom: 2rem;
+    }
+    span {
+      display: inline-block;
+      padding-left: 2rem;
+    }
+  }
 }
 .location-container{
   padding: 1rem;
