@@ -2,30 +2,29 @@
   <div id="app" class="grid-y medium-grid-frame">
     <PhilaHeader
       :app-title="this.$config.app.title"
-      :app-tag-line="this.$config.app.tagLine"
-    />
+      :app-tag-line="this.$config.app.tagLine">
+      <RefinePanel slot="after-stripe" />
+    </PhilaHeader>
 
-    <router-view/>
-
-    <RefinePanel
-    />
-
-    <div class="cell medium-auto medium-cell-block-container">
+    <div class="cell medium-auto medium-cell-block-container main-content">
       <div class="grid-x">
         <LocationsPanel
-        />
-        <MapPanel
-        />
+          v-if="isMapVisible || isLarge" />
+          <MapPanel
+          v-if="!isMapVisible || isLarge" />
       </div>
     </div>
 
-
-    <PhilaFooter
-    />
+    <PhilaButton
+      class="button toggle-map hide-for-medium"
+      @click.native="toggleMap"
+      buttonText="Toggle map"/>
+    <PhilaFooter />
   </div>
 </template>
 <script>
 /* eslint-disable no-console */
+import PhilaButton from './components/PhilaButton.vue'
 import PhilaHeader from './components/PhilaHeader.vue'
 import PhilaFooter from './components/PhilaFooter.vue'
 import RefinePanel from './components/RefinePanel.vue'
@@ -33,8 +32,15 @@ import LocationsPanel from './components/LocationsPanel.vue'
 import MapPanel from './components/MapPanel.vue'
 
 export default {
+  data() {
+    return {
+      isMapVisible: true,
+      isLarge: true,
+    }
+  },
   name: 'App',
   components: {
+    PhilaButton,
     PhilaHeader,
     PhilaFooter,
     RefinePanel,
@@ -47,13 +53,38 @@ export default {
       this.$controller.dataManager.fetchData();
     }
   },
+  methods: {
+    toggleMap() {
+      if (window.innerWidth > 749) {
+        this.$data.isMapVisible = true
+      } else {
+        this.$data.isMapVisible = !this.$data.isMapVisible
+      }
+    },
+    onResize() {
+      if (window.innerWidth > 749) {
+        this.$data.isMapVisible = true
+        this.$data.isLarge = true
+      } else {
+        this.$data.isLarge = false
+      }
+    },
+  },
+  created() {
+    window.addEventListener('resize', this.onResize)
+    console.log('resize, created')
+  },
+
+  beforeDestroy() {
+    window.removeEventListener('resize', this.onResize)
+  },
 }
 </script>
 
 <style lang="scss">
 @import "@/scss/global.scss";
 
-//TODO, move to stad
+//TODO, move to standards
 @each $value in $colors {
   //sass-lint:disable-block no-important
   .#{nth($value, 1)} {
@@ -66,10 +97,20 @@ export default {
     border-color: nth($value, 2) !important;
   }
 }
-
+@media screen and (max-width: 749px) {
+  .main-content{
+    margin-top:9rem;
+    margin-bottom:2rem;
+  }
+}
 .no-scroll{
   overflow: hidden;
   height: 100vh;
 }
-
+.toggle-map{
+  position: fixed;
+  bottom:0;
+  width: 100%;
+  z-index: 1002;
+}
 </style>

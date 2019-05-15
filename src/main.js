@@ -2,7 +2,6 @@ import Vue from 'vue';
 import controllerMixin from '@philly/vue-datafetch/src/controller/index';
 /* eslint-disable import/no-extraneous-dependencies */
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-
 import fonts from './fa';
 
 import App from './App.vue';
@@ -24,6 +23,7 @@ import baseConfig from './config';
 const clientConfig = {
   // map: '',
 }
+
 
 // if there is a baseConfig, it is merged with the clientConfig here
 // in the parameters of mergeDeep, whichever one comes second

@@ -33,7 +33,7 @@
             <combo-search
               :dropdown="this.dropdownData"/>
             <div class="search">
-              <slot></slot>
+              <slot name="search"></slot>
             </div>
           </div>
         </div>
@@ -49,6 +49,7 @@
         </a>
       </div>
     </div>
+    <slot name="after-stripe"></slot>
   </header>
 </template>
 
@@ -120,6 +121,12 @@ export default {
   vertical-align: middle;
   background: color(dark-ben-franklin);
 
+  @media screen and (max-width: 749px) {
+    position: fixed;
+    top:0;
+    z-index: 10000;
+  }
+
   .app-logo{
     width: 170px;
     height: 45px;
@@ -171,8 +178,5 @@ export default {
 .stripe {
   min-height: 5px;
   background: color(electric-blue);
-  @media screen and (max-width: 39.9375em) {
-    margin-top: .5rem;
-  }
 }
 </style>

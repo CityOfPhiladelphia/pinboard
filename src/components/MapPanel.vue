@@ -87,19 +87,24 @@ export default {
       this.rows = newRows;
       return Promise.resolve();
     },
+
+    handleResize(event) {
+      this.$store.state.map.map.invalidateSize();
+    },
   },
-  //   // resizeMap() {
-  //   //   window.onresize = function (event) {
-  //   //     console.log(event)
-  //   //     Map_.invalidateSize()
-  //   //   }
-  //   // },
-  // },
+  mounted() {
+    window.addEventListener('resize', this.handleResize)
+  },
+  beforeDestroy() {
+    window.removeEventListener('resize', this.handleResize)
+  },
 }
 </script>
 
 <style>
-.map-height{
-  min-height: 100vh;
+@media screen and (max-width: 749px) {
+  .map-container{
+    min-height: 100vh !important;
+  }
 }
 </style>
