@@ -26,6 +26,7 @@
                      :key="marker.key"
                      :markerColor="marker.color"
                      :icon="marker.icon"
+                     :_featureId="marker._featureId"
       />
     </Map_>
 

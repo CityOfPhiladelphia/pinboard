@@ -5,7 +5,9 @@
       <div v-for="item in getLocationsList()"
         :key="item.cartodb_id">
 
-        <ExpandCollapse :title="item.organization_name">
+        <ExpandCollapse :title="item.organization_name"
+                        :item="item"
+        >
           <div class="grid-x grid-padding-x">
             <div class="cell medium-12">
               <div class="detail" v-if="item.street_address">
