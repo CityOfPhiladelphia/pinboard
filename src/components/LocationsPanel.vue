@@ -7,6 +7,7 @@
 
         <ExpandCollapse :title="item.organization_name"
                         :item="item"
+                        v-if="filterExpand(item.services_offered)"
         >
           <div class="grid-x grid-padding-x">
             <div class="cell medium-12">
@@ -86,6 +87,17 @@ export default {
 
   },
   methods: {
+    filterExpand(servicesOffered) {
+      // console.log('filterExpand is running, servicesOffered:', servicesOffered);
+      const servicesSplit = servicesOffered.split(',');
+      const { selectedServices } = this.$store.state;
+      if (selectedServices.length === 0) {
+        return true;
+      }
+      const servicesFiltered = servicesSplit.filter(f => selectedServices.includes(f));
+      const tf = servicesFiltered.length > 0;
+      return tf;
+    },
     getLocationsList() {
       const locations = this.sources.immigrant.data.rows
       return locations

@@ -24,6 +24,11 @@ export default {
       default: 'Title',
     },
   },
+  computed: {
+    servicesOffered() {
+      return this.$props.item.services_offered.split(',');
+    },
+  },
   methods: {
     expandLocation() {
       this.locationOpen = !this.locationOpen;
