@@ -2,17 +2,16 @@
   <div id="app" class="grid-y medium-grid-frame">
     <PhilaHeader
       :app-title="this.$config.app.title"
-      :app-tag-line="this.$config.app.tagLine" />
+      :app-tag-line="this.$config.app.tagLine">
+      <RefinePanel slot="after-stripe" />
+    </PhilaHeader>
 
-    <RefinePanel
-      v-if="isMapVisible"/>
-
-    <div class="cell medium-auto medium-cell-block-container">
+    <div class="cell medium-auto medium-cell-block-container main-content">
       <div class="grid-x">
         <LocationsPanel
-          v-if="isMapVisible"/>
-        <MapPanel
-          v-if="$mq === 'lg' || !isMapVisible"/>
+          v-if="isMapVisible || isLarge" />
+          <MapPanel
+          v-if="!isMapVisible || isLarge" />
       </div>
     </div>
 
@@ -36,6 +35,7 @@ export default {
   data() {
     return {
       isMapVisible: true,
+      isLarge: true,
     }
   },
   name: 'App',
@@ -55,10 +55,31 @@ export default {
   },
   methods: {
     toggleMap() {
-      console.log('toggle')
       console.log(this.isMapVisible)
-      this.$data.isMapVisible = !this.$data.isMapVisible
+      if (window.innerWidth > 750) {
+        this.$data.isMapVisible = true
+      } else {
+        this.$data.isMapVisible = !this.$data.isMapVisible
+      }
     },
+    onResize() {
+      if (window.innerWidth > 750) {
+        this.$data.isMapVisible = true
+        this.$data.isLarge = true
+      } else {
+        this.$data.isLarge = false
+      }
+      console.log(this.$data.isMapVisible)
+      console.log(this.$data.isLarge)
+    },
+  },
+  created() {
+    window.addEventListener('resize', this.onResize)
+    console.log('resize, created')
+  },
+
+  beforeDestroy() {
+    window.removeEventListener('resize', this.onResize)
   },
 }
 </script>
@@ -79,7 +100,12 @@ export default {
     border-color: nth($value, 2) !important;
   }
 }
-
+@media screen and (max-width: 749px) {
+  .main-content{
+    margin-top:9rem;
+    margin-bottom:2rem;
+  }
+}
 .no-scroll{
   overflow: hidden;
   height: 100vh;
@@ -88,6 +114,6 @@ export default {
   position: fixed;
   bottom:0;
   width: 100%;
-  z-index: 1000;
+  z-index: 1002;
 }
 </style>

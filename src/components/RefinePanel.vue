@@ -95,7 +95,7 @@ export default {
     },
 
     expandRefine() {
-      if (window.innerWidth <= 639) { // converted from rems
+      if (window.innerWidth <= 750) { // converted from rems
         this.refineOpen = !this.refineOpen
       }
     },
@@ -112,6 +112,8 @@ $refine-panel-height: 19vh;
   .refine-title{
     height:5vh;
     color: color(dark-ben-franklin);
+    position: relative;
+
     .clear-all{
       margin: 0 0 0 4rem;
     }
@@ -135,23 +137,30 @@ $refine-panel-height: 19vh;
   label {
     font-weight: normal;
   }
-  @media screen and (max-width: 39.9375em) {
+  @media screen and (max-width: 750px) {
     height: 3rem;
     padding: .5rem;
-
+    position: relative;
+    z-index: 10000;
     .refine-title{
       cursor: pointer;
+      height:7vh;
+      padding: .5rem;
 
       &::after{
         content: '+';
-        float: right;
         font-weight: 900;
-        font-size:1.5rem;
+        position: absolute;
+        font-size: 1.2rem;
+        right: 0;
+        top: 0;
       }
     }
   }
   &.refine-open{
-    min-height: 100vh !important;
+    height: calc(100vh - 100px);
+    max-height: 100vh;
+    z-index: 1002;
     .refine-title{
       &::after{
         content: '-';

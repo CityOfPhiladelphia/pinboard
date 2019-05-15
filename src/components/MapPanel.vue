@@ -89,12 +89,7 @@ export default {
     },
 
     handleResize(event) {
-      console.log(this.$store.state.map.map)
-
-      // this.fullHeight = document.documentElement.clientHeight - headerHeight
-      // this.$refs.map.invalidateSize()
       this.$store.state.map.map.invalidateSize();
-      // Map_.$leafletElement.invalidateSize()
     },
   },
   mounted() {
@@ -107,7 +102,7 @@ export default {
 </script>
 
 <style>
-@media screen and (max-width: 39.9375em) {
+@media screen and (max-width: 749px) {
   .map-container{
     min-height: 100vh !important;
   }
