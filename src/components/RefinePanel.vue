@@ -29,7 +29,7 @@
           <div class="mobile-filter-actions show-for-small-only">
             <PhilaButton
               buttonText="Apply filters"
-              @click.native="expandRefine">
+              @click.native="expandRefine(); scrollToTop();">
               <font-awesome-icon icon="filter" />
             </PhilaButton>
             <a href="#"
@@ -93,9 +93,12 @@ export default {
       uniq.sort()
       return uniq
     },
-
+    scrollToTop() {
+      const container = document.querySelector('.refine-panel');
+      container.scrollTo(0, 0);
+    },
     expandRefine() {
-      if (window.innerWidth <= 750) { // converted from rems
+      if (window.innerWidth <= 749) { // converted from rems
         this.refineOpen = !this.refineOpen
       }
     },
@@ -137,7 +140,7 @@ $refine-panel-height: 19vh;
   label {
     font-weight: normal;
   }
-  @media screen and (max-width: 750px) {
+  @media screen and (max-width: 749px) {
     height: 3rem;
     padding: .5rem;
     position: relative;
