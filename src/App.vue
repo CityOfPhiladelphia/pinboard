@@ -55,22 +55,19 @@ export default {
   },
   methods: {
     toggleMap() {
-      console.log(this.isMapVisible)
-      if (window.innerWidth > 750) {
+      if (window.innerWidth > 749) {
         this.$data.isMapVisible = true
       } else {
         this.$data.isMapVisible = !this.$data.isMapVisible
       }
     },
     onResize() {
-      if (window.innerWidth > 750) {
+      if (window.innerWidth > 749) {
         this.$data.isMapVisible = true
         this.$data.isLarge = true
       } else {
         this.$data.isLarge = false
       }
-      console.log(this.$data.isMapVisible)
-      console.log(this.$data.isLarge)
     },
   },
   created() {
