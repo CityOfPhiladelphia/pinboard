@@ -11,66 +11,13 @@ import mergeDeep from './util/merge-deep';
 Vue.use(Vuex);
 
 function createStore(config) {
-  const dummyMarkers = [
-    {
-      latlng: [39.953338, -75.163471],
-      color: 'purple',
-      icon: {
-        prefix: 'fas',
-        icon: 'map-marker-alt',
-        shadow: false,
-        size: 20,
-      },
-    },
-    {
-      latlng: [39.951839, -75.160911],
-      color: 'purple',
-      icon: {
-        prefix: 'fas',
-        icon: 'map-marker-alt',
-        shadow: false,
-        size: 20,
-      },
-    },
-    {
-      latlng: [39.953205, -75.168776],
-      color: 'purple',
-      icon: {
-        prefix: 'fas',
-        icon: 'map-marker-alt',
-        shadow: false,
-        size: 20,
-      },
-    },
-    {
-      latlng: [39.949503, -75.157371],
-      color: 'purple',
-      icon: {
-        prefix: 'fas',
-        icon: 'map-marker-alt',
-        shadow: false,
-        size: 20,
-      },
-    },
-    {
-      latlng: [39.949397, -75.166866],
-      color: 'purple',
-      icon: {
-        prefix: 'fas',
-        icon: 'map-marker-alt',
-        shadow: false,
-        size: 20,
-      },
-    },
-  ]
-
   const sources = pvdStore.createSources(config);
-
   const rfStore = {
     state: {
       sources,
       map: {
-        resourceMarkers: dummyMarkers,
+        center: [-75.163471, 39.953338],
+        zoom: 12,
       },
       selectedServices: [],
     },
