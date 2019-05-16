@@ -62,6 +62,12 @@ export default {
       refineOpen: false,
     }
   },
+  watch: {
+    selected(nextSelected) {
+      // console.log('watch selected is firing');
+      this.$store.commit('setSelectedServices', nextSelected);
+    },
+  },
   computed: {
     ...mapState(['sources']),
   },
@@ -69,6 +75,7 @@ export default {
     clearAll() {
       if (this.selected.length) {
         this.selected = []
+        // this.$store.commit('setSelectedServices', []);
       }
     },
     getRefineSearchList() {

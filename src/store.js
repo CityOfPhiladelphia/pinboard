@@ -1,3 +1,5 @@
+/* eslint-disable no-param-reassign */
+
 import Vue from 'vue';
 import Vuex from 'vuex';
 
@@ -70,9 +72,12 @@ function createStore(config) {
       map: {
         resourceMarkers: dummyMarkers,
       },
+      selectedServices: [],
     },
     mutations: {
-
+      setSelectedServices(state, payload) {
+        state.selectedServices = payload;
+      },
     },
     actions: {
 

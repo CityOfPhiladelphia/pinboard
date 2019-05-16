@@ -9,9 +9,9 @@
     <div class="cell medium-auto medium-cell-block-container main-content">
       <div class="grid-x">
         <LocationsPanel
-          v-if="isMapVisible || isLarge" />
+          v-show="isMapVisible || isLarge" />
           <MapPanel
-          v-if="!isMapVisible || isLarge" />
+          v-show="!isMapVisible || isLarge" />
       </div>
     </div>
 
@@ -52,6 +52,7 @@ export default {
     if (this.$config.dataSources) {
       this.$controller.dataManager.fetchData();
     }
+    this.onResize();
   },
   methods: {
     toggleMap() {

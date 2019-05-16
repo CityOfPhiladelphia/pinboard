@@ -9,7 +9,10 @@
   </div>
 </template>
 <script>
+import TopicComponent from '@philly/vue-comps/src/components/TopicComponent.vue';
+
 export default {
+  mixins: [TopicComponent],
   data() {
     return {
       locationOpen: false,
@@ -19,6 +22,11 @@ export default {
     title: {
       type: String,
       default: 'Title',
+    },
+  },
+  computed: {
+    servicesOffered() {
+      return this.$props.item.services_offered.split(',');
     },
   },
   methods: {
