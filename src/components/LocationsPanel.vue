@@ -7,7 +7,7 @@
 
         <ExpandCollapse :title="item.organization_name"
                         :item="item"
-                        v-if="filterExpand(item.services_offered)"
+                        v-if="filterExpand(item)"
         >
           <div class="grid-x grid-padding-x">
             <div class="cell medium-12">
@@ -83,23 +83,30 @@ export default {
     ExpandCollapse,
   },
   computed: {
-    ...mapState(['sources']),
+    ...mapState(['sources', 'bufferList']),
 
   },
   methods: {
-    filterExpand(servicesOffered) {
-      // console.log('filterExpand is running, servicesOffered:', servicesOffered);
+    filterExpand(item) {
+      // console.log('filterExpand is running, item:', item);
+      // first filter by services
+      const servicesOffered = item.services_offered
       const servicesSplit = servicesOffered.split(',');
       const { selectedServices } = this.$store.state;
       if (selectedServices.length === 0) {
         return true;
       }
       const servicesFiltered = servicesSplit.filter(f => selectedServices.includes(f));
-      const tf = servicesFiltered.length > 0;
-      return tf;
+      const booleanServices = servicesFiltered.length > 0;
+
+      // second filter by bufferList
+      const booleanBuffer = this.$store.state.bufferList.includes(item._featureId);
+
+      return booleanServices && booleanBuffer;
     },
     getLocationsList() {
       const locations = this.sources.immigrant.data.rows
+      // const locations = this.bufferlist
       return locations
     },
     // TODO: handle edge cases

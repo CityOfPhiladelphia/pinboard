@@ -24,6 +24,7 @@
 </template>
 <script>
 /* eslint-disable no-console */
+/* eslint-disable no-restricted-syntax */
 import PhilaButton from './components/PhilaButton.vue'
 import PhilaHeader from './components/PhilaHeader.vue'
 import PhilaFooter from './components/PhilaFooter.vue'
@@ -53,6 +54,52 @@ export default {
       this.$controller.dataManager.fetchData();
     }
     this.onResize();
+  },
+  watch: {
+    currentData(nextCurrentData) {
+      console.log('watch currentData, nextCurrentData:', nextCurrentData);
+      // this.$store.commit('setCurrentData', nextCurrentData);
+    },
+  },
+  computed: {
+    bufferList() {
+      return this.$store.state.bufferList;
+    },
+    selectedServices() {
+      return this.$store.state.selectedServices;
+    },
+    currentData() {
+      console.log('computed currentData is running')
+      const curData = []
+      if (this.$store.state.sources.immigrant.status !== 'success') {
+        return curData;
+      }
+      console.log('else is running')
+      for (const row of this.$store.state.sources.immigrant.data.rows) {
+        let booleanServices;
+        const servicesSplit = row.services_offered.split(',');
+        const { selectedServices } = this.$store.state;
+        if (selectedServices.length === 0) {
+          booleanServices = true;
+        } else {
+          const servicesFiltered = servicesSplit.filter(f => selectedServices.includes(f));
+          booleanServices = servicesFiltered.length > 0;
+        }
+
+        // second filter by bufferList
+        let booleanBuffer = false
+        if (this.bufferList) {
+          booleanBuffer = this.bufferList.includes(row._featureId);
+        }
+        console.log('booleanBuffer:', booleanBuffer, 'booleanServices:', booleanServices)
+
+        if (booleanServices && booleanBuffer) {
+          curData.push(row)
+        }
+      }
+
+      return curData;
+    },
   },
   methods: {
     toggleMap() {

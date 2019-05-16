@@ -8,12 +8,10 @@
           :min-zoom="11"
           :max-zoom="22"
     >
-    <!-- :zoom="this.$store.state.map.zoom" -->
       <esri-tiled-map-layer v-for="(basemap, key) in this.$config.map.basemaps"
                             :key="key"
                             :url="basemap.url"
       />
-      <!-- v-if="activeBasemap === key" -->
 
       <!-- basemap labels and parcels outlines -->
       <esri-tiled-map-layer v-for="(tiledLayer, key) in this.$config.map.tiledLayers"
@@ -21,20 +19,20 @@
                             :url="tiledLayer.url"
                             :zIndex="tiledLayer.zIndex"
       />
-      <!-- v-if="tiledLayers.includes(key)" -->
-      <vector-marker v-for="(marker) in this.$data.rows"
-                     :latlng="marker.latlng"
-                     :key="marker.key"
-                     :markerColor="marker.color"
-                     :icon="marker.icon"
-                     :_featureId="marker._featureId"
-      />
 
       <vector-marker v-for="(marker) in markersForAddress"
                      :latlng="marker.latlng"
                      :key="marker.key"
                      :markerColor="marker.color"
                      :icon="marker.icon"
+      />
+
+      <vector-marker v-for="(marker) in filteredData"
+                    :latlng="marker.latlng"
+                    :key="marker.key"
+                    :markerColor="marker.color"
+                    :icon="marker.icon"
+                    :_featureId="marker._featureId"
       />
 
     </Map_>
@@ -51,7 +49,9 @@ import 'leaflet/dist/leaflet.css';
 // import all fontawesome icons included in phila-vue-mapping
 import * as faMapping from '@philly/vue-mapping/src/fa';
 import Map_ from '@philly/vue-mapping/src/leaflet/Map.vue';
-
+import { point } from '@turf/helpers';
+import buffer from '@turf/buffer';
+import booleanPointInPolygon from '@turf/boolean-point-in-polygon';
 
 export default {
   created() {
@@ -66,10 +66,49 @@ export default {
   data() {
     const data = {
       rows: [],
+      buffer: null,
     }
     return data;
   },
+  watch: {
+    geocodeStatus(nextGeocodeStatus) {
+      // console.log('watch geocodeStatus firing:', nextGeocodeStatus);
+      if (nextGeocodeStatus === 'success') {
+        // console.log('if success passed, this.geocodeGeom:', this.geocodeGeom);
+        const geocodePoint = point(this.geocodeGeom.coordinates);
+        const pointBuffer = buffer(geocodePoint, 1, { units: 'miles' });
+        this.$data.buffer = pointBuffer;
+      } else if (nextGeocodeStatus === null) {
+        // console.log('if null passed');
+        this.$data.buffer = null;
+      }
+    },
+    filteredData(nextFilteredData) {
+      // console.log('nextFilteredData:', nextFilteredData);
+      this.$store.commit('setBufferList', nextFilteredData.map(row => row._featureId));
+      // this.$store.commit('setBufferList', nextFilteredData);
+    },
+  },
   computed: {
+    filteredData() {
+      const filteredRows = []
+      if (this.$data.buffer === null) {
+        // console.log('computed filteredData is running, buffer is null');
+        return this.$data.rows;
+      }
+      // console.log('computed filteredData is running, buffer is not null');
+      for (const row of this.$data.rows) {
+        const rowPoint = point([row.lon, row.lat])
+        if (booleanPointInPolygon(rowPoint, this.$data.buffer)) {
+          filteredRows.push(row)
+        }
+      }
+
+      return filteredRows;
+    },
+    geocodeStatus() {
+      return this.$store.state.geocode.status;
+    },
     geocodeResult() {
       return this.$store.state.geocode.data || {};
     },

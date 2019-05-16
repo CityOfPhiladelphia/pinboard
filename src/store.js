@@ -19,11 +19,19 @@ function createStore(config) {
         center: [-75.163471, 39.953338],
         zoom: 12,
       },
+      bufferList: null,
+      currentData: [],
       selectedServices: [],
     },
     mutations: {
       setSelectedServices(state, payload) {
         state.selectedServices = payload;
+      },
+      setBufferList(state, payload) {
+        state.bufferList = payload;
+      },
+      setCurrentData(state, payload) {
+        state.bufferList = payload;
       },
     },
     actions: {
