@@ -2,12 +2,13 @@
   <div class="cell medium-12 medium-cell-block-y mb-panel mb-panel-map map-height">
 
     <Map_ id="map-tag"
-          :center="[-75.163471, 39.953338]"
-          :zoom="12"
+          :center="this.$store.state.map.center"
+          :zoom="this.$store.state.map.zoom"
           zoom-control-position="bottomright"
           :min-zoom="11"
           :max-zoom="22"
     >
+    <!-- :zoom="this.$store.state.map.zoom" -->
       <esri-tiled-map-layer v-for="(basemap, key) in this.$config.map.basemaps"
                             :key="key"
                             :url="basemap.url"
@@ -28,6 +29,14 @@
                      :icon="marker.icon"
                      :_featureId="marker._featureId"
       />
+
+      <vector-marker v-for="(marker) in markersForAddress"
+                     :latlng="marker.latlng"
+                     :key="marker.key"
+                     :markerColor="marker.color"
+                     :icon="marker.icon"
+      />
+
     </Map_>
 
 
@@ -59,6 +68,39 @@ export default {
       rows: [],
     }
     return data;
+  },
+  computed: {
+    geocodeResult() {
+      return this.$store.state.geocode.data || {};
+    },
+    geocodeGeom() {
+      return this.geocodeResult.geometry;
+    },
+    // returns map markers as simple object with a geometry property, key,
+    // and optional properties for symbology
+    markersForAddress() {
+      // console.log('markers-mixin.js markersForAddress computed is running');
+      const markers = [];
+      // geocoded address marker
+      const { geocodeGeom } = this;
+      if (geocodeGeom) {
+        const latlng = [...geocodeGeom.coordinates].reverse();
+        const key = this.geocodeResult.properties.street_address;
+        const color = '#2176d2';
+        const markerType = 'geocode';
+        const icon = {
+          prefix: 'fas',
+          icon: 'map-marker-alt',
+          shadow: false,
+          size: 30,
+        }
+        const addressMarker = {
+          latlng, key, color, markerType, icon,
+        };
+        markers.push(addressMarker);
+      }
+      return markers;
+    },
   },
   methods: {
     async getMarkerData() {

@@ -77,6 +77,9 @@ export default {
         this.selected = []
         // this.$store.commit('setSelectedServices', []);
       }
+      if (this.$store.state.geocode.status === 'success') {
+        this.$controller.dataManager.resetGeocode();
+      }
     },
     getRefineSearchList() {
       const refineData = this.sources.immigrant.data.rows
