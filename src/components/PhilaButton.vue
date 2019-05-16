@@ -14,7 +14,7 @@ export default {
       default() { },
     },
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>

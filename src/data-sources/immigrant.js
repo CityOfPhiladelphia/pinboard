@@ -9,4 +9,4 @@ export default {
       q: 'select * from phl.oia_services',
     },
   },
-}
+};

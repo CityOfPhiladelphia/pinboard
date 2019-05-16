@@ -25,19 +25,19 @@
 <script>
 /* eslint-disable no-console */
 /* eslint-disable no-restricted-syntax */
-import PhilaButton from './components/PhilaButton.vue'
-import PhilaHeader from './components/PhilaHeader.vue'
-import PhilaFooter from './components/PhilaFooter.vue'
-import RefinePanel from './components/RefinePanel.vue'
-import LocationsPanel from './components/LocationsPanel.vue'
-import MapPanel from './components/MapPanel.vue'
+import PhilaButton from './components/PhilaButton.vue';
+import PhilaHeader from './components/PhilaHeader.vue';
+import PhilaFooter from './components/PhilaFooter.vue';
+import RefinePanel from './components/RefinePanel.vue';
+import LocationsPanel from './components/LocationsPanel.vue';
+import MapPanel from './components/MapPanel.vue';
 
 export default {
   data() {
     return {
       isMapVisible: true,
       isLarge: true,
-    }
+    };
   },
   name: 'App',
   components: {
@@ -69,12 +69,12 @@ export default {
       return this.$store.state.selectedServices;
     },
     currentData() {
-      console.log('computed currentData is running')
-      const curData = []
+      console.log('computed currentData is running');
+      const curData = [];
       if (this.$store.state.sources.immigrant.status !== 'success') {
         return curData;
       }
-      console.log('else is running')
+      console.log('else is running');
       for (const row of this.$store.state.sources.immigrant.data.rows) {
         let booleanServices;
         const servicesSplit = row.services_offered.split(',');
@@ -87,14 +87,14 @@ export default {
         }
 
         // second filter by bufferList
-        let booleanBuffer = false
+        let booleanBuffer = false;
         if (this.bufferList) {
           booleanBuffer = this.bufferList.includes(row._featureId);
         }
-        console.log('booleanBuffer:', booleanBuffer, 'booleanServices:', booleanServices)
+        console.log('booleanBuffer:', booleanBuffer, 'booleanServices:', booleanServices);
 
         if (booleanServices && booleanBuffer) {
-          curData.push(row)
+          curData.push(row);
         }
       }
 
@@ -104,29 +104,29 @@ export default {
   methods: {
     toggleMap() {
       if (window.innerWidth > 749) {
-        this.$data.isMapVisible = true
+        this.$data.isMapVisible = true;
       } else {
-        this.$data.isMapVisible = !this.$data.isMapVisible
+        this.$data.isMapVisible = !this.$data.isMapVisible;
       }
     },
     onResize() {
       if (window.innerWidth > 749) {
-        this.$data.isMapVisible = true
-        this.$data.isLarge = true
+        this.$data.isMapVisible = true;
+        this.$data.isLarge = true;
       } else {
-        this.$data.isLarge = false
+        this.$data.isLarge = false;
       }
     },
   },
   created() {
-    window.addEventListener('resize', this.onResize)
-    console.log('resize, created')
+    window.addEventListener('resize', this.onResize);
+    console.log('resize, created');
   },
 
   beforeDestroy() {
-    window.removeEventListener('resize', this.onResize)
+    window.removeEventListener('resize', this.onResize);
   },
-}
+};
 </script>
 
 <style lang="scss">

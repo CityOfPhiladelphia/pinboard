@@ -37,7 +37,7 @@ function createStore(config) {
     actions: {
 
     },
-  }
+  };
 
   let mergeStore = mergeDeep(pvcStore, pvdStore.store);
   mergeStore = mergeDeep(mergeStore, pvmStore);

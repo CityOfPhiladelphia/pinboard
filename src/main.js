@@ -22,7 +22,7 @@ import baseConfig from './config';
 // any config specific to this project only can go here
 const clientConfig = {
   // map: '',
-}
+};
 
 
 // if there is a baseConfig, it is merged with the clientConfig here

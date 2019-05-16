@@ -75,8 +75,8 @@
   </div>
 </template>
 <script>
-import { mapState } from 'vuex'
-import ExpandCollapse from './ExpandCollapse.vue'
+import { mapState } from 'vuex';
+import ExpandCollapse from './ExpandCollapse.vue';
 
 export default {
   components: {
@@ -90,7 +90,7 @@ export default {
     filterExpand(item) {
       // console.log('filterExpand is running, item:', item);
       // first filter by services
-      const servicesOffered = item.services_offered
+      const servicesOffered = item.services_offered;
       const servicesSplit = servicesOffered.split(',');
       const { selectedServices } = this.$store.state;
       if (selectedServices.length === 0) {
@@ -105,21 +105,21 @@ export default {
       return booleanServices && booleanBuffer;
     },
     getLocationsList() {
-      const locations = this.sources.immigrant.data.rows
+      const locations = this.sources.immigrant.data.rows;
       // const locations = this.bufferlist
-      return locations
+      return locations;
     },
     // TODO: handle edge cases
     parseAddress(address) {
-      const formattedAddress = address.replace(/(Phila.+)/g, city => `<div>${city}</div>`).replace(/^\d+\s[A-z]+\s[A-z]+/g, lineOne => `<div>${lineOne}</div>`).replace(/,/, '')
-      return formattedAddress
+      const formattedAddress = address.replace(/(Phila.+)/g, city => `<div>${city}</div>`).replace(/^\d+\s[A-z]+\s[A-z]+/g, lineOne => `<div>${lineOne}</div>`).replace(/,/, '');
+      return formattedAddress;
     },
     parseServiceList(list) {
-      const formattedService = list.split(',')
-      return formattedService
+      const formattedService = list.split(',');
+      return formattedService;
     },
   },
-}
+};
 </script>
 
 <style lang="scss">

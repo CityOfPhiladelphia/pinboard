@@ -16,7 +16,7 @@ export default {
   data() {
     return {
       locationOpen: false,
-    }
+    };
   },
   props: {
     title: {
@@ -34,7 +34,7 @@ export default {
       this.locationOpen = !this.locationOpen;
     },
   },
-}
+};
 </script>
 <style lang="scss">
 .location-item {
