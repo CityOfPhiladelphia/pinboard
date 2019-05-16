@@ -66,7 +66,7 @@ export default {
   data() {
     const data = {
       rows: [],
-    }
+    };
     return data;
   },
   computed: {
@@ -93,7 +93,7 @@ export default {
           icon: 'map-marker-alt',
           shadow: false,
           size: 30,
-        }
+        };
         const addressMarker = {
           latlng, key, color, markerType, icon,
         };
@@ -107,12 +107,12 @@ export default {
       const response = await (this.$store.state.sources.immigrant === 'success');
 
       const promise = new Promise((resolve, reject) => {
-        setTimeout(() => resolve('done!'), 1000)
+        setTimeout(() => resolve('done!'), 1000);
       });
 
       const result = await promise; // wait till the promise resolves (*)
 
-      const refineData = this.$store.state.sources.immigrant.data.rows
+      const refineData = this.$store.state.sources.immigrant.data.rows;
       const newRows = [];
       for (const rm of refineData) {
         if (rm.lat) {
@@ -123,7 +123,7 @@ export default {
             icon: 'map-marker-alt',
             shadow: false,
             size: 20,
-          }
+          };
           newRows.push(rm);
         }
       }
@@ -136,12 +136,12 @@ export default {
     },
   },
   mounted() {
-    window.addEventListener('resize', this.handleResize)
+    window.addEventListener('resize', this.handleResize);
   },
   beforeDestroy() {
-    window.removeEventListener('resize', this.handleResize)
+    window.removeEventListener('resize', this.handleResize);
   },
-}
+};
 </script>
 
 <style>

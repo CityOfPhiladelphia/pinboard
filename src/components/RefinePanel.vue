@@ -41,8 +41,8 @@
   </div>
 </template>
 <script>
-import { mapState } from 'vuex'
-import PhilaButton from './PhilaButton.vue'
+import { mapState } from 'vuex';
+import PhilaButton from './PhilaButton.vue';
 
 export default {
   components: {
@@ -60,7 +60,7 @@ export default {
       refineList: null,
       selected: [],
       refineOpen: false,
-    }
+    };
   },
   watch: {
     selected(nextSelected) {
@@ -74,7 +74,7 @@ export default {
   methods: {
     clearAll() {
       if (this.selected.length) {
-        this.selected = []
+        this.selected = [];
         // this.$store.commit('setSelectedServices', []);
       }
       if (this.$store.state.geocode.status === 'success') {
@@ -82,26 +82,26 @@ export default {
       }
     },
     getRefineSearchList() {
-      const refineData = this.sources.immigrant.data.rows
+      const refineData = this.sources.immigrant.data.rows;
 
-      let service = ''
+      let service = '';
 
       refineData.forEach((arrayElem) => {
-        service += `${arrayElem.services_offered},`
-      })
+        service += `${arrayElem.services_offered},`;
+      });
 
       // TODO: break this into smaller chunks
-      let serviceArray = service.split(/(,|;)/)
-      serviceArray = serviceArray.map(s => s.trim())
+      let serviceArray = service.split(/(,|;)/);
+      serviceArray = serviceArray.map(s => s.trim());
 
-      const uniqArray = [...new Set(serviceArray)]
+      const uniqArray = [...new Set(serviceArray)];
 
       // clean up any dangling , or ;
-      const uniq = uniqArray.filter(a => a.length > 2)
+      const uniq = uniqArray.filter(a => a.length > 2);
 
-      uniq.filter(Boolean) // remove empties
-      uniq.sort()
-      return uniq
+      uniq.filter(Boolean); // remove empties
+      uniq.sort();
+      return uniq;
     },
     scrollToTop() {
       const container = document.querySelector('.refine-panel');
@@ -109,11 +109,11 @@ export default {
     },
     expandRefine() {
       if (window.innerWidth <= 749) { // converted from rems
-        this.refineOpen = !this.refineOpen
+        this.refineOpen = !this.refineOpen;
       }
     },
   },
-}
+};
 </script>
 <style lang="scss">
 $refine-panel-height: 19vh;

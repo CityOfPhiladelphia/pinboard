@@ -26,7 +26,7 @@ export default {
       default: '/how',
     },
   },
-}
+};
 </script>
 <style lang="scss">
 

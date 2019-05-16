@@ -57,7 +57,7 @@
 /* eslint-disable vue/no-unused-components */
 /* eslint-disable max-len */
 // TODO: move logo, link etc to app config.
-import Logo from '@/assets/city-of-philadelphia-logo.png'
+import Logo from '@/assets/city-of-philadelphia-logo.png';
 
 // import AddressInput from '@philly/vue-comps/src/components/AddressInput.vue'
 // import Paragraph from '@philly/vue-comps/src/components/Paragraph.vue'
@@ -71,7 +71,7 @@ export default {
         keyword: 'Keyword',
       },
       isOpen: false,
-    }
+    };
   },
   props: {
     appLink: {
@@ -104,16 +104,16 @@ export default {
   },
   methods: {
     toggleMenu() {
-      this.isOpen = !this.isOpen
+      this.isOpen = !this.isOpen;
       this.toggleBodyClass('no-scroll');
     },
     // TODO: make generic toggle class
     toggleBodyClass(className) {
       const el = document.body;
-      return this.isOpen ? el.classList.add(className) : el.classList.remove(className)
+      return this.isOpen ? el.classList.add(className) : el.classList.remove(className);
     },
   },
-}
+};
 </script>
 
 <style lang="scss">

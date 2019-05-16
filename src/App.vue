@@ -24,19 +24,19 @@
 </template>
 <script>
 /* eslint-disable no-console */
-import PhilaButton from './components/PhilaButton.vue'
-import PhilaHeader from './components/PhilaHeader.vue'
-import PhilaFooter from './components/PhilaFooter.vue'
-import RefinePanel from './components/RefinePanel.vue'
-import LocationsPanel from './components/LocationsPanel.vue'
-import MapPanel from './components/MapPanel.vue'
+import PhilaButton from './components/PhilaButton.vue';
+import PhilaHeader from './components/PhilaHeader.vue';
+import PhilaFooter from './components/PhilaFooter.vue';
+import RefinePanel from './components/RefinePanel.vue';
+import LocationsPanel from './components/LocationsPanel.vue';
+import MapPanel from './components/MapPanel.vue';
 
 export default {
   data() {
     return {
       isMapVisible: true,
       isLarge: true,
-    }
+    };
   },
   name: 'App',
   components: {
@@ -57,29 +57,29 @@ export default {
   methods: {
     toggleMap() {
       if (window.innerWidth > 749) {
-        this.$data.isMapVisible = true
+        this.$data.isMapVisible = true;
       } else {
-        this.$data.isMapVisible = !this.$data.isMapVisible
+        this.$data.isMapVisible = !this.$data.isMapVisible;
       }
     },
     onResize() {
       if (window.innerWidth > 749) {
-        this.$data.isMapVisible = true
-        this.$data.isLarge = true
+        this.$data.isMapVisible = true;
+        this.$data.isLarge = true;
       } else {
-        this.$data.isLarge = false
+        this.$data.isLarge = false;
       }
     },
   },
   created() {
-    window.addEventListener('resize', this.onResize)
-    console.log('resize, created')
+    window.addEventListener('resize', this.onResize);
+    console.log('resize, created');
   },
 
   beforeDestroy() {
-    window.removeEventListener('resize', this.onResize)
+    window.removeEventListener('resize', this.onResize);
   },
-}
+};
 </script>
 
 <style lang="scss">

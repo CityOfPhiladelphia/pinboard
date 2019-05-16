@@ -75,8 +75,8 @@
   </div>
 </template>
 <script>
-import { mapState } from 'vuex'
-import ExpandCollapse from './ExpandCollapse.vue'
+import { mapState } from 'vuex';
+import ExpandCollapse from './ExpandCollapse.vue';
 
 export default {
   components: {
@@ -99,20 +99,20 @@ export default {
       return tf;
     },
     getLocationsList() {
-      const locations = this.sources.immigrant.data.rows
-      return locations
+      const locations = this.sources.immigrant.data.rows;
+      return locations;
     },
     // TODO: handle edge cases
     parseAddress(address) {
-      const formattedAddress = address.replace(/(Phila.+)/g, city => `<div>${city}</div>`).replace(/^\d+\s[A-z]+\s[A-z]+/g, lineOne => `<div>${lineOne}</div>`).replace(/,/, '')
-      return formattedAddress
+      const formattedAddress = address.replace(/(Phila.+)/g, city => `<div>${city}</div>`).replace(/^\d+\s[A-z]+\s[A-z]+/g, lineOne => `<div>${lineOne}</div>`).replace(/,/, '');
+      return formattedAddress;
     },
     parseServiceList(list) {
-      const formattedService = list.split(',')
-      return formattedService
+      const formattedService = list.split(',');
+      return formattedService;
     },
   },
-}
+};
 </script>
 
 <style lang="scss">
