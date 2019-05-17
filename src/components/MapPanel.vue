@@ -8,12 +8,10 @@
           :min-zoom="11"
           :max-zoom="22"
     >
-    <!-- :zoom="this.$store.state.map.zoom" -->
       <esri-tiled-map-layer v-for="(basemap, key) in this.$config.map.basemaps"
                             :key="key"
                             :url="basemap.url"
       />
-      <!-- v-if="activeBasemap === key" -->
 
       <!-- basemap labels and parcels outlines -->
       <esri-tiled-map-layer v-for="(tiledLayer, key) in this.$config.map.tiledLayers"
@@ -21,20 +19,21 @@
                             :url="tiledLayer.url"
                             :zIndex="tiledLayer.zIndex"
       />
-      <!-- v-if="tiledLayers.includes(key)" -->
-      <vector-marker v-for="(marker) in this.$data.rows"
-                     :latlng="marker.latlng"
-                     :key="marker.key"
-                     :markerColor="marker.color"
-                     :icon="marker.icon"
-                     :_featureId="marker._featureId"
-      />
 
       <vector-marker v-for="(marker) in markersForAddress"
                      :latlng="marker.latlng"
                      :key="marker.key"
                      :markerColor="marker.color"
                      :icon="marker.icon"
+      />
+
+      <!-- <vector-marker v-for="(marker) in this.$data.rows" -->
+      <vector-marker v-for="(marker) in currentData"
+                    :latlng="marker.latlng"
+                    :key="marker.key"
+                    :markerColor="marker.color"
+                    :icon="marker.icon"
+                    :_featureId="marker._featureId"
       />
 
     </Map_>
@@ -52,7 +51,6 @@ import 'leaflet/dist/leaflet.css';
 import * as faMapping from '@philly/vue-mapping/src/fa';
 import Map_ from '@philly/vue-mapping/src/leaflet/Map.vue';
 
-
 export default {
   created() {
     // Fetch Data
@@ -69,7 +67,29 @@ export default {
     };
     return data;
   },
+  watch: {
+  },
   computed: {
+    currentData() {
+      const newRows = [];
+      for (const rm of this.$store.state.currentData) {
+        if (rm.lat) {
+          rm.latlng = [rm.lat, rm.lon];
+          rm.color = 'purple';
+          rm.icon = {
+            prefix: 'fas',
+            icon: 'map-marker-alt',
+            shadow: false,
+            size: 20,
+          };
+          newRows.push(rm);
+        }
+      }
+      return newRows;
+    },
+    geocodeStatus() {
+      return this.$store.state.geocode.status;
+    },
     geocodeResult() {
       return this.$store.state.geocode.data || {};
     },
