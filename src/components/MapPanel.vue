@@ -27,7 +27,8 @@
                      :icon="marker.icon"
       />
 
-      <vector-marker v-for="(marker) in filteredData"
+      <!-- <vector-marker v-for="(marker) in this.$data.rows" -->
+      <vector-marker v-for="(marker) in currentData"
                     :latlng="marker.latlng"
                     :key="marker.key"
                     :markerColor="marker.color"
@@ -49,9 +50,6 @@ import 'leaflet/dist/leaflet.css';
 // import all fontawesome icons included in phila-vue-mapping
 import * as faMapping from '@philly/vue-mapping/src/fa';
 import Map_ from '@philly/vue-mapping/src/leaflet/Map.vue';
-import { point } from '@turf/helpers';
-import buffer from '@turf/buffer';
-import booleanPointInPolygon from '@turf/boolean-point-in-polygon';
 
 export default {
   created() {
@@ -66,45 +64,28 @@ export default {
   data() {
     const data = {
       rows: [],
-      buffer: null,
     };
     return data;
   },
   watch: {
-    geocodeStatus(nextGeocodeStatus) {
-      // console.log('watch geocodeStatus firing:', nextGeocodeStatus);
-      if (nextGeocodeStatus === 'success') {
-        // console.log('if success passed, this.geocodeGeom:', this.geocodeGeom);
-        const geocodePoint = point(this.geocodeGeom.coordinates);
-        const pointBuffer = buffer(geocodePoint, 1, { units: 'miles' });
-        this.$data.buffer = pointBuffer;
-      } else if (nextGeocodeStatus === null) {
-        // console.log('if null passed');
-        this.$data.buffer = null;
-      }
-    },
-    filteredData(nextFilteredData) {
-      // console.log('nextFilteredData:', nextFilteredData);
-      this.$store.commit('setBufferList', nextFilteredData.map(row => row._featureId));
-      // this.$store.commit('setBufferList', nextFilteredData);
-    },
   },
   computed: {
-    filteredData() {
-      const filteredRows = [];
-      if (this.$data.buffer === null) {
-        // console.log('computed filteredData is running, buffer is null');
-        return this.$data.rows;
-      }
-      // console.log('computed filteredData is running, buffer is not null');
-      for (const row of this.$data.rows) {
-        const rowPoint = point([row.lon, row.lat]);
-        if (booleanPointInPolygon(rowPoint, this.$data.buffer)) {
-          filteredRows.push(row);
+    currentData() {
+      const newRows = [];
+      for (const rm of this.$store.state.currentData) {
+        if (rm.lat) {
+          rm.latlng = [rm.lat, rm.lon];
+          rm.color = 'purple';
+          rm.icon = {
+            prefix: 'fas',
+            icon: 'map-marker-alt',
+            shadow: false,
+            size: 20,
+          };
+          newRows.push(rm);
         }
       }
-
-      return filteredRows;
+      return newRows;
     },
     geocodeStatus() {
       return this.$store.state.geocode.status;

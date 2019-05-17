@@ -2,13 +2,14 @@
   <div class="cell medium-12 medium-cell-block-y locations-panel">
     <div class="location-container"
       v-if="sources.immigrant.status === 'success'">
-      <div v-for="item in getLocationsList()"
+      <!-- <div v-for="item in getLocationsList()" -->
+      <div v-for="item in currentData"
         :key="item.cartodb_id">
 
         <ExpandCollapse :title="item.organization_name"
                         :item="item"
-                        v-if="filterExpand(item)"
         >
+        <!-- v-if="filterExpand(item)" -->
           <div class="grid-x grid-padding-x">
             <div class="cell medium-12">
               <div class="detail" v-if="item.street_address">
@@ -83,27 +84,34 @@ export default {
     ExpandCollapse,
   },
   computed: {
-    ...mapState(['sources', 'bufferList']),
+    ...mapState(['sources']),
+    currentData() {
+      return this.$store.state.currentData;
+    },
+    currentDataList() {
+      return this.currentData.map(row => row._featureId);
+    },
 
   },
   methods: {
-    filterExpand(item) {
-      // console.log('filterExpand is running, item:', item);
-      // first filter by services
-      const servicesOffered = item.services_offered;
-      const servicesSplit = servicesOffered.split(',');
-      const { selectedServices } = this.$store.state;
-      if (selectedServices.length === 0) {
-        return true;
-      }
-      const servicesFiltered = servicesSplit.filter(f => selectedServices.includes(f));
-      const booleanServices = servicesFiltered.length > 0;
-
-      // second filter by bufferList
-      const booleanBuffer = this.$store.state.bufferList.includes(item._featureId);
-
-      return booleanServices && booleanBuffer;
-    },
+    // filterExpand(item) {
+    //   // console.log('filterExpand is running, item:', item);
+    //   return this.currentDataList.includes(item._featureId);
+    //   // first filter by services
+    //   // const servicesOffered = item.services_offered;
+    //   // const servicesSplit = servicesOffered.split(',');
+    //   // const { selectedServices } = this.$store.state;
+    //   // if (selectedServices.length === 0) {
+    //   //   return true;
+    //   // }
+    //   // const servicesFiltered = servicesSplit.filter(f => selectedServices.includes(f));
+    //   // const booleanServices = servicesFiltered.length > 0;
+    //
+    //   // second filter by bufferList
+    //   // const booleanBuffer = this.$store.state.bufferList.includes(item._featureId);
+    //   //
+    //   // return booleanServices && booleanBuffer;
+    // },
     getLocationsList() {
       const locations = this.sources.immigrant.data.rows;
       // const locations = this.bufferlist

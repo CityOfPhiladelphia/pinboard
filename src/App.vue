@@ -25,6 +25,12 @@
 <script>
 /* eslint-disable no-console */
 /* eslint-disable no-restricted-syntax */
+/* eslint-disable import/no-extraneous-dependencies */
+
+import { point } from '@turf/helpers';
+import buffer from '@turf/buffer';
+import booleanPointInPolygon from '@turf/boolean-point-in-polygon';
+
 import PhilaButton from './components/PhilaButton.vue';
 import PhilaHeader from './components/PhilaHeader.vue';
 import PhilaFooter from './components/PhilaFooter.vue';
@@ -37,6 +43,7 @@ export default {
     return {
       isMapVisible: true,
       isLarge: true,
+      buffer: null,
     };
   },
   name: 'App',
@@ -56,26 +63,61 @@ export default {
     this.onResize();
   },
   watch: {
-    currentData(nextCurrentData) {
-      console.log('watch currentData, nextCurrentData:', nextCurrentData);
-      // this.$store.commit('setCurrentData', nextCurrentData);
+    geocodeStatus(nextGeocodeStatus) {
+      if (nextGeocodeStatus === 'success') {
+        this.runBuffer();
+      } else if (nextGeocodeStatus === null) {
+        this.$data.buffer = null;
+      }
+    },
+    buffer(nextBuffer) {
+      if (nextBuffer !== null) {
+        this.filterPoints();
+      }
+    },
+    selectedServices() {
+      this.filterPoints();
+    },
+    dataStatus(nextDataStatus) {
+      if (nextDataStatus === 'success') {
+        this.filterPoints();
+      }
     },
   },
   computed: {
+    geocodeStatus() {
+      return this.$store.state.geocode.status;
+    },
+    geocodeResult() {
+      return this.$store.state.geocode.data || {};
+    },
+    geocodeGeom() {
+      return this.geocodeResult.geometry;
+    },
     bufferList() {
       return this.$store.state.bufferList;
     },
     selectedServices() {
       return this.$store.state.selectedServices;
     },
-    currentData() {
-      console.log('computed currentData is running');
-      const curData = [];
-      if (this.$store.state.sources.immigrant.status !== 'success') {
-        return curData;
-      }
-      console.log('else is running');
-      for (const row of this.$store.state.sources.immigrant.data.rows) {
+    dataStatus() {
+      return this.$store.state.sources.immigrant.status;
+    },
+    database() {
+      return this.$store.state.sources.immigrant.data.rows;
+    },
+  },
+  methods: {
+    runBuffer() {
+      const geocodePoint = point(this.geocodeGeom.coordinates);
+      const pointBuffer = buffer(geocodePoint, 1, { units: 'miles' });
+      this.$data.buffer = pointBuffer;
+    },
+    filterPoints() {
+      console.log('App.vue filterPoints is running');
+      const filteredRows = [];
+
+      for (const row of this.database) {
         let booleanServices;
         const servicesSplit = row.services_offered.split(',');
         const { selectedServices } = this.$store.state;
@@ -86,22 +128,22 @@ export default {
           booleanServices = servicesFiltered.length > 0;
         }
 
-        // second filter by bufferList
         let booleanBuffer = false;
-        if (this.bufferList) {
-          booleanBuffer = this.bufferList.includes(row._featureId);
+        if (!this.$data.buffer) {
+          booleanBuffer = true;
+        } else if (typeof row.lon === 'number') {
+          const rowPoint = point([row.lon, row.lat]);
+          if (booleanPointInPolygon(rowPoint, this.$data.buffer)) {
+            booleanBuffer = true;
+          }
         }
-        console.log('booleanBuffer:', booleanBuffer, 'booleanServices:', booleanServices);
 
         if (booleanServices && booleanBuffer) {
-          curData.push(row);
+          filteredRows.push(row);
         }
       }
-
-      return curData;
+      this.$store.commit('setCurrentData', filteredRows);
     },
-  },
-  methods: {
     toggleMap() {
       if (window.innerWidth > 749) {
         this.$data.isMapVisible = true;
@@ -120,7 +162,6 @@ export default {
   },
   created() {
     window.addEventListener('resize', this.onResize);
-    console.log('resize, created');
   },
 
   beforeDestroy() {

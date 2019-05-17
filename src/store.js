@@ -31,7 +31,7 @@ function createStore(config) {
         state.bufferList = payload;
       },
       setCurrentData(state, payload) {
-        state.bufferList = payload;
+        state.currentData = payload;
       },
     },
     actions: {
