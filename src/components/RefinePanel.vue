@@ -9,6 +9,18 @@
           <a href="#"
             @click="clearAll"
             class="clear-all hide-for-small-only">Clear all</a>
+
+          <div class="legend-title h3 margin-add">Address:</div>
+          <div class="margin-add min-width-needed">{{ addressEntered }}</div>
+          <a href="#"
+            @click="clearAddress"
+            class="test">Clear address</a>
+
+          <div class="legend-title h3 margin-add">Keywords:</div>
+          <div class="margin-add min-width-needed">{{ keywordsEntered }}</div>
+          <a href="#"
+            @click="clearKeywords"
+            class="test">Clear Keywords</a>
         </div>
         <div class="grid-x service-list"
           v-if="sources.immigrant.status === 'success'">
@@ -60,6 +72,7 @@ export default {
       refineList: null,
       selected: [],
       refineOpen: false,
+      // addressEntered: null,
     };
   },
   watch: {
@@ -69,16 +82,32 @@ export default {
     },
   },
   computed: {
-    ...mapState(['sources']),
+    ...mapState(['sources', 'geocode']),
+    addressEntered() {
+      let address;
+
+      if (this.geocode.status === 'success') {
+        address = this.geocode.data.properties.street_address;
+      }
+
+      return address;
+    },
+    keywordsEntered() {
+      return this.$store.state.selectedKeywords.toString();
+    },
   },
   methods: {
+    clearAddress() {
+      if (this.$store.state.geocode.status === 'success') {
+        this.$controller.dataManager.resetGeocode();
+      }
+    },
+    clearKeywords() {
+      this.$store.commit('setSelectedKeywords', '');
+    },
     clearAll() {
       if (this.selected.length) {
         this.selected = [];
-        // this.$store.commit('setSelectedServices', []);
-      }
-      if (this.$store.state.geocode.status === 'success') {
-        this.$controller.dataManager.resetGeocode();
       }
     },
     getRefineSearchList() {
@@ -116,6 +145,7 @@ export default {
 };
 </script>
 <style lang="scss">
+
 $refine-panel-height: 19vh;
 .refine-panel{
   max-height: $refine-panel-height;
@@ -130,6 +160,19 @@ $refine-panel-height: 19vh;
     .clear-all{
       margin: 0 0 0 4rem;
     }
+  }
+
+  .margin-add{
+    margin-left: 10px;
+    margin-right: 10px;
+    display: inline-block;
+  }
+
+  .min-width-needed{
+    min-width: 140px;
+    min-height: 30px;
+    border-style: solid;
+    border-width: 1px;
   }
 
   legend.legend-title, .clear-all{

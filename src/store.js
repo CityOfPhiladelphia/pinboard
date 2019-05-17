@@ -22,6 +22,7 @@ function createStore(config) {
       bufferList: null,
       currentData: [],
       selectedServices: [],
+      selectedKeywords: [],
     },
     mutations: {
       setSelectedServices(state, payload) {
@@ -32,6 +33,9 @@ function createStore(config) {
       },
       setCurrentData(state, payload) {
         state.currentData = payload;
+      },
+      setSelectedKeywords(state, payload) {
+        state.selectedKeywords = payload;
       },
     },
     actions: {

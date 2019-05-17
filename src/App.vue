@@ -70,10 +70,8 @@ export default {
         this.$data.buffer = null;
       }
     },
-    buffer(nextBuffer) {
-      if (nextBuffer !== null) {
-        this.filterPoints();
-      }
+    buffer() {
+      this.filterPoints();
     },
     selectedServices() {
       this.filterPoints();
