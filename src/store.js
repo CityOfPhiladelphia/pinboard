@@ -1,4 +1,5 @@
 /* eslint-disable no-param-reassign */
+/* eslint-disable no-console */
 
 import Vue from 'vue';
 import Vuex from 'vuex';
@@ -23,6 +24,7 @@ function createStore(config) {
       currentData: [],
       selectedServices: [],
       selectedKeywords: [],
+      selectedResources: [],
     },
     mutations: {
       setSelectedServices(state, payload) {
@@ -36,6 +38,10 @@ function createStore(config) {
       },
       setSelectedKeywords(state, payload) {
         state.selectedKeywords = payload;
+      },
+      setSelectedResources(state, payload) {
+        console.log('store.js setSelectedResources is running, payload:', payload);
+        state.selectedResources = payload;
       },
     },
     actions: {

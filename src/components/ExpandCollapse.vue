@@ -9,6 +9,8 @@
   </div>
 </template>
 <script>
+/* eslint-disable max-len */
+/* eslint-disable no-unused-expressions */
 import TopicComponent from '@philly/vue-comps/src/components/TopicComponent.vue';
 
 export default {
@@ -28,10 +30,17 @@ export default {
     servicesOffered() {
       return this.$props.item.services_offered.split(',');
     },
+    selectedResources() {
+      return this.$store.state.selectedResources;
+    },
   },
   methods: {
     expandLocation() {
       this.locationOpen = !this.locationOpen;
+      const selectedResource = this.$props.item._featureId;
+      const selectedResources = [...this.selectedResources];
+      this.locationOpen ? selectedResources.push(selectedResource) : selectedResources.splice(selectedResources.indexOf(selectedResource), 1);
+      this.$store.commit('setSelectedResources', selectedResources);
     },
   },
 };
