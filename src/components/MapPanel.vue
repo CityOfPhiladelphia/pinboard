@@ -157,7 +157,7 @@ export default {
         SR.push(featureId);
       }
       // // SR.includes(featureId) ? SR.splice(SR.indexOf(featureId), 1) : SR.push(featureId);
-      // this.$store.commit('setSelectedResources', SR);
+      this.$store.commit('setSelectedResources', SR);
     },
     handleResize(event) {
       this.$store.state.map.map.invalidateSize();
