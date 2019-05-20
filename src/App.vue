@@ -112,7 +112,7 @@ export default {
       this.$data.buffer = pointBuffer;
     },
     filterPoints() {
-      console.log('App.vue filterPoints is running');
+      // console.log('App.vue filterPoints is running');
       const filteredRows = [];
 
       for (const row of this.database) {
@@ -129,7 +129,7 @@ export default {
         let booleanBuffer = false;
         if (!this.$data.buffer) {
           booleanBuffer = true;
-        } else if (typeof row.lon === 'number') {
+        } else if (typeof row.lon === 'number' && row.lon !== null) {
           const rowPoint = point([row.lon, row.lat]);
           if (booleanPointInPolygon(rowPoint, this.$data.buffer)) {
             booleanBuffer = true;

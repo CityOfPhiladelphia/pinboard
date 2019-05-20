@@ -7,6 +7,7 @@
           zoom-control-position="bottomright"
           :min-zoom="11"
           :max-zoom="22"
+          @l-click="handleMapClick"
     >
       <esri-tiled-map-layer v-for="(basemap, key) in this.$config.map.basemaps"
                             :key="key"
@@ -28,12 +29,16 @@
       />
 
       <!-- <vector-marker v-for="(marker) in this.$data.rows" -->
-      <vector-marker v-for="(marker) in currentData"
+      <vector-marker v-for="marker in currentMapData"
                     :latlng="marker.latlng"
                     :key="marker.key"
                     :markerColor="marker.color"
                     :icon="marker.icon"
                     :_featureId="marker._featureId"
+                    @l-click="handleMarkerClick"
+                    :data="{
+                      featureId: marker._featureId
+                    }"
       />
 
     </Map_>
@@ -46,16 +51,13 @@
 /* eslint-disable no-restricted-syntax */
 /* eslint-disable import/no-extraneous-dependencies */
 /* eslint-disable no-unused-vars */
+/* eslint-disable no-console */
 import 'leaflet/dist/leaflet.css';
 // import all fontawesome icons included in phila-vue-mapping
 import * as faMapping from '@philly/vue-mapping/src/fa';
 import Map_ from '@philly/vue-mapping/src/leaflet/Map.vue';
 
 export default {
-  created() {
-    // Fetch Data
-    this.getMarkerData();
-  },
   components: {
     Map_,
     EsriTiledMapLayer: () => import(/* webpackChunkName: "pvm_EsriTiledMapLayer" */'@philly/vue-mapping/src/esri-leaflet/TiledMapLayer.vue'),
@@ -70,19 +72,35 @@ export default {
   watch: {
   },
   computed: {
+    selectedResources() {
+      return this.$store.state.selectedResources;
+    },
     currentData() {
+      return this.$store.state.currentData;
+    },
+    currentMapData() {
+      // console.log('currentMapData computed is recalculating');
       const newRows = [];
-      for (const rm of this.$store.state.currentData) {
-        if (rm.lat) {
-          rm.latlng = [rm.lat, rm.lon];
-          rm.color = 'purple';
-          rm.icon = {
+      for (const row of [...this.currentData]) {
+        let markerColor; let
+          markerSize;
+        if (this.selectedResources.includes(row._featureId)) {
+          markerColor = 'orange';
+          markerSize = 40;
+        } else {
+          markerColor = 'purple';
+          markerSize = 20;
+        }
+        if (row.lat) {
+          row.latlng = [row.lat, row.lon];
+          row.color = markerColor;
+          row.icon = {
             prefix: 'fas',
             icon: 'map-marker-alt',
             shadow: false,
-            size: 20,
+            size: markerSize,
           };
-          newRows.push(rm);
+          newRows.push(row);
         }
       }
       return newRows;
@@ -123,34 +141,24 @@ export default {
     },
   },
   methods: {
-    async getMarkerData() {
-      const response = await (this.$store.state.sources.immigrant === 'success');
-
-      const promise = new Promise((resolve, reject) => {
-        setTimeout(() => resolve('done!'), 1000);
-      });
-
-      const result = await promise; // wait till the promise resolves (*)
-
-      const refineData = this.$store.state.sources.immigrant.data.rows;
-      const newRows = [];
-      for (const rm of refineData) {
-        if (rm.lat) {
-          rm.latlng = [rm.lat, rm.lon];
-          rm.color = 'purple';
-          rm.icon = {
-            prefix: 'fas',
-            icon: 'map-marker-alt',
-            shadow: false,
-            size: 20,
-          };
-          newRows.push(rm);
-        }
-      }
-      this.rows = newRows;
-      return Promise.resolve();
+    handleMapClick() {
+      console.log('mapClick!');
     },
-
+    handleMarkerClick(e) {
+      // console.log('markerClick, e', e);
+      const { target } = e;
+      const { featureId } = target.options.data;
+      console.log('markerClick, featureId', featureId);
+      // let selectedResource = featureId;
+      const SR = [...this.selectedResources];
+      if (SR.includes(featureId)) {
+        SR.splice(SR.indexOf(featureId), 1);
+      } else {
+        SR.push(featureId);
+      }
+      // // SR.includes(featureId) ? SR.splice(SR.indexOf(featureId), 1) : SR.push(featureId);
+      this.$store.commit('setSelectedResources', SR);
+    },
     handleResize(event) {
       this.$store.state.map.map.invalidateSize();
     },
