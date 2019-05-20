@@ -76,6 +76,9 @@ export default {
     selectedServices() {
       this.filterPoints();
     },
+    selectedKeywords() {
+      this.filterPoints();
+    },
     dataStatus(nextDataStatus) {
       if (nextDataStatus === 'success') {
         this.filterPoints();
@@ -94,6 +97,9 @@ export default {
     },
     bufferList() {
       return this.$store.state.bufferList;
+    },
+    selectedKeywords() {
+      return this.$store.state.selectedKeywords;
     },
     selectedServices() {
       return this.$store.state.selectedServices;
@@ -136,7 +142,17 @@ export default {
           }
         }
 
-        if (booleanServices && booleanBuffer) {
+        let booleanKeywords = true;
+        if (this.selectedKeywords.length > 0) {
+          booleanKeywords = false;
+          const description = row.description.split(/,| /);
+          const keywordsFiltered = this.selectedKeywords.filter(f => description.includes(f));
+          if (keywordsFiltered.length > 0) {
+            booleanKeywords = true;
+          }
+        }
+
+        if (booleanServices && booleanBuffer && booleanKeywords) {
           filteredRows.push(row);
         }
       }
