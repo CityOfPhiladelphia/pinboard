@@ -7,8 +7,8 @@
           zoom-control-position="bottomright"
           :min-zoom="11"
           :max-zoom="22"
-          @l-click="handleMapClick"
     >
+    <!-- @l-click="handleMapClick" -->
       <esri-tiled-map-layer v-for="(basemap, key) in this.$config.map.basemaps"
                             :key="key"
                             :url="basemap.url"
@@ -141,23 +141,20 @@ export default {
     },
   },
   methods: {
-    handleMapClick() {
-      console.log('mapClick!');
-    },
+    // handleMapClick() {
+    //   console.log('mapClick!');
+    // },
     handleMarkerClick(e) {
-      // console.log('markerClick, e', e);
       const { target } = e;
       const { featureId } = target.options.data;
-      console.log('markerClick, featureId', featureId);
-      // let selectedResource = featureId;
-      const SR = [...this.selectedResources];
-      if (SR.includes(featureId)) {
-        SR.splice(SR.indexOf(featureId), 1);
+      // console.log('markerClick, featureId', featureId);
+      const selectedResource = [...this.selectedResources];
+      if (selectedResource.includes(featureId)) {
+        selectedResource.splice(selectedResource.indexOf(featureId), 1);
       } else {
-        SR.push(featureId);
+        selectedResource.push(featureId);
       }
-      // // SR.includes(featureId) ? SR.splice(SR.indexOf(featureId), 1) : SR.push(featureId);
-      this.$store.commit('setSelectedResources', SR);
+      this.$store.commit('setSelectedResources', selectedResource);
     },
     handleResize(event) {
       this.$store.state.map.map.invalidateSize();

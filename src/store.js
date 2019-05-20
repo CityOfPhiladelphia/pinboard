@@ -40,7 +40,7 @@ function createStore(config) {
         state.selectedKeywords = payload;
       },
       setSelectedResources(state, payload) {
-        console.log('store.js setSelectedResources is running, payload:', payload);
+        // console.log('store.js setSelectedResources is running, payload:', payload);
         state.selectedResources = payload;
       },
     },
