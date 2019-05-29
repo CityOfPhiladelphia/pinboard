@@ -1,5 +1,31 @@
 <template>
   <div id="app" class="grid-y medium-grid-frame">
+    <PhilaModal
+      v-show="isModalOpen"
+      @close="closeModal">
+      <div slot="body">
+        <div class="step-group">
+          <div class="step-label">1</div>
+          <div class="step">
+            <div class="step-title">Step 1</div>
+            <div class="step-content">
+            </div>
+          </div>
+          <div class="step-label">2</div>
+          <div class="step">
+            <div class="step-title">Step 2</div>
+            <div class="step-content">
+            </div>
+          </div>
+        <div class="step-label">3</div>
+          <div class="step">
+            <div class="step-title">Step 3</div>
+            <div class="step-content">
+            </div>
+          </div>
+        </div>
+      </div>
+    </PhilaModal>
     <PhilaHeader
       :app-title="this.$config.app.title"
       :app-tag-line="this.$config.app.tagLine">
@@ -19,7 +45,8 @@
       class="button toggle-map hide-for-medium"
       @click.native="toggleMap"
       buttonText="Toggle map"/>
-    <PhilaFooter />
+    <PhilaFooter
+      v-on:howToUseLink="toggleModal()" />
   </div>
 </template>
 <script>
@@ -34,6 +61,7 @@ import booleanPointInPolygon from '@turf/boolean-point-in-polygon';
 import PhilaButton from './components/PhilaButton.vue';
 import PhilaHeader from './components/PhilaHeader.vue';
 import PhilaFooter from './components/PhilaFooter.vue';
+import PhilaModal from './components/PhilaModal.vue';
 import RefinePanel from './components/RefinePanel.vue';
 import LocationsPanel from './components/LocationsPanel.vue';
 import MapPanel from './components/MapPanel.vue';
@@ -42,6 +70,7 @@ export default {
   data() {
     return {
       isMapVisible: true,
+      isModalOpen: false,
       isLarge: true,
       buffer: null,
     };
@@ -51,6 +80,7 @@ export default {
     PhilaButton,
     PhilaHeader,
     PhilaFooter,
+    PhilaModal,
     RefinePanel,
     LocationsPanel,
     MapPanel,
@@ -165,6 +195,22 @@ export default {
         this.$data.isMapVisible = !this.$data.isMapVisible;
       }
     },
+    toggleModal() {
+      this.isModalOpen = !this.isModalOpen;
+      this.toggleBodyClass('no-scroll');
+    },
+    showModal() {
+      this.isModalOpen = true;
+      this.toggleBodyClass('no-scroll');
+    },
+    closeModal() {
+      this.isModalOpen = false;
+      this.toggleBodyClass('no-scroll');
+    },
+    toggleBodyClass(className) {
+      const el = document.body;
+      return this.isOpen ? el.classList.add(className) : el.classList.remove(className);
+    },
     onResize() {
       if (window.innerWidth > 749) {
         this.$data.isMapVisible = true;
@@ -215,5 +261,39 @@ export default {
   bottom:0;
   width: 100%;
   z-index: 1002;
+}
+
+.step-group{
+  margin-left:$spacing-medium;
+
+  .step-label {
+    @include secondary-font(400);
+    display: inline-block;
+    margin-left: -$spacing-medium;
+    background: black;
+    border-radius: $spacing-extra-large;
+    color:white;
+    padding: 0 $spacing-small;
+    width:$spacing-large;
+    height:$spacing-large;
+    line-height: $spacing-large;
+    text-align: center;
+  }
+  .step{
+    margin-top: -$spacing-large;
+    padding-left: $spacing-large;
+    padding-bottom: $spacing-large;
+    border-left:1px solid black;
+
+    &:last-of-type {
+      border:none;
+    }
+
+    .step-title{
+      @include secondary-font(400);
+      font-size:1.2rem;
+      margin-bottom: $spacing-small;
+    }
+  }
 }
 </style>
