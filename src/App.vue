@@ -2,7 +2,30 @@
   <div id="app" class="grid-y medium-grid-frame">
     <PhilaModal
       v-show="isModalOpen"
-      @close="closeModal"/>
+      @close="closeModal">
+      <div slot="body">
+        <div class="step-group">
+          <div class="step-label">1</div>
+          <div class="step">
+            <div class="step-title">Step 1</div>
+            <div class="step-content">
+            </div>
+          </div>
+          <div class="step-label">2</div>
+          <div class="step">
+            <div class="step-title">Step 2</div>
+            <div class="step-content">
+            </div>
+          </div>
+        <div class="step-label">3</div>
+          <div class="step">
+            <div class="step-title">Step 3</div>
+            <div class="step-content">
+            </div>
+          </div>
+        </div>
+      </div>
+    </PhilaModal>
     <PhilaHeader
       :app-title="this.$config.app.title"
       :app-tag-line="this.$config.app.tagLine">
@@ -238,5 +261,39 @@ export default {
   bottom:0;
   width: 100%;
   z-index: 1002;
+}
+
+.step-group{
+  margin-left:$spacing-medium;
+
+  .step-label {
+    @include secondary-font(400);
+    display: inline-block;
+    margin-left: -$spacing-medium;
+    background: black;
+    border-radius: $spacing-extra-large;
+    color:white;
+    padding: 0 $spacing-small;
+    width:$spacing-large;
+    height:$spacing-large;
+    line-height: $spacing-large;
+    text-align: center;
+  }
+  .step{
+    margin-top: -$spacing-large;
+    padding-left: $spacing-large;
+    padding-bottom: $spacing-large;
+    border-left:1px solid black;
+
+    &:last-of-type {
+      border:none;
+    }
+
+    .step-title{
+      @include secondary-font(400);
+      font-size:1.2rem;
+      margin-bottom: $spacing-small;
+    }
+  }
 }
 </style>

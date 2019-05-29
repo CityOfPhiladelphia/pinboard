@@ -5,7 +5,7 @@
         <nav>
           <ul class="footer-nav">
             <li><a href="https://www.phila.gov">City of Philadelphia</a></li>
-            <li><a @click="$emit('howToUseLink')">How To Use</a></li>
+            <li><a href="" @click.prevent="$emit('howToUseLink')">How to use</a></li>
             <li><a :href="feedbackLink">Feedback</a></li>
           </ul>
         </nav>
