@@ -1,5 +1,8 @@
 <template>
   <div id="app" class="grid-y medium-grid-frame">
+    <PhilaModal
+      v-show="isModalOpen"
+      @close="closeModal"/>
     <PhilaHeader
       :app-title="this.$config.app.title"
       :app-tag-line="this.$config.app.tagLine">
@@ -19,7 +22,8 @@
       class="button toggle-map hide-for-medium"
       @click.native="toggleMap"
       buttonText="Toggle map"/>
-    <PhilaFooter />
+    <PhilaFooter
+      v-on:howToUseLink="toggleModal()" />
   </div>
 </template>
 <script>
@@ -34,6 +38,7 @@ import booleanPointInPolygon from '@turf/boolean-point-in-polygon';
 import PhilaButton from './components/PhilaButton.vue';
 import PhilaHeader from './components/PhilaHeader.vue';
 import PhilaFooter from './components/PhilaFooter.vue';
+import PhilaModal from './components/PhilaModal.vue';
 import RefinePanel from './components/RefinePanel.vue';
 import LocationsPanel from './components/LocationsPanel.vue';
 import MapPanel from './components/MapPanel.vue';
@@ -42,6 +47,7 @@ export default {
   data() {
     return {
       isMapVisible: true,
+      isModalOpen: false,
       isLarge: true,
       buffer: null,
     };
@@ -51,6 +57,7 @@ export default {
     PhilaButton,
     PhilaHeader,
     PhilaFooter,
+    PhilaModal,
     RefinePanel,
     LocationsPanel,
     MapPanel,
@@ -164,6 +171,22 @@ export default {
       } else {
         this.$data.isMapVisible = !this.$data.isMapVisible;
       }
+    },
+    toggleModal() {
+      this.isModalOpen = !this.isModalOpen;
+      this.toggleBodyClass('no-scroll');
+    },
+    showModal() {
+      this.isModalOpen = true;
+      this.toggleBodyClass('no-scroll');
+    },
+    closeModal() {
+      this.isModalOpen = false;
+      this.toggleBodyClass('no-scroll');
+    },
+    toggleBodyClass(className) {
+      const el = document.body;
+      return this.isOpen ? el.classList.add(className) : el.classList.remove(className);
     },
     onResize() {
       if (window.innerWidth > 749) {
