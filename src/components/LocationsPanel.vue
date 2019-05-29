@@ -2,14 +2,18 @@
   <div class="cell medium-12 medium-cell-block-y locations-panel">
     <div class="location-container"
       v-if="sources.immigrant.status === 'success'">
-      <!-- <div v-for="item in getLocationsList()" -->
+        <div v-if="currentData.length === 0"
+          class="h3">
+          <p>We're sorry, there are no results for that search.
+            Adjust the filters you've selected and try again.</p>
+        </div>
       <div v-for="item in currentData"
         :key="item.cartodb_id">
-
         <ExpandCollapse :title="item.organization_name"
                         :item="item"
         >
-        <!-- v-if="filterExpand(item)" -->
+
+
           <div class="grid-x grid-padding-x">
             <div class="cell medium-12">
               <div class="detail" v-if="item.street_address">
