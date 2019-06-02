@@ -10,9 +10,9 @@
   },
   "dependencies": {
     "@fortawesome/free-brands-svg-icons": "^5.8.2",
-    "@philly/vue-comps": "^1.0.30",
-    "@philly/vue-datafetch": "^0.0.17",
-    "@philly/vue-mapping": "^1.0.30",
+    "@philly/vue-comps": "^1.0.31",
+    "@philly/vue-datafetch": "^0.0.18",
+    "@philly/vue-mapping": "^1.0.31",
     "axios": "^0.18.0",
     "core-js": "^2.6.5",
     "foundation-sites": "^6.5.3",
@@ -46,7 +46,7 @@
     ],
     "rules": {
       "semi": 2,
-      "linebreak-style":0,
+      "linebreak-style": 0,
       "no-underscore-dangle": 0
     },
     "parserOptions": {
