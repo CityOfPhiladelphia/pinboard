@@ -12,8 +12,6 @@
         <ExpandCollapse :title="item.organization_name"
                         :item="item"
         >
-
-
           <div class="grid-x grid-padding-x">
             <div class="cell medium-12">
               <div class="detail" v-if="item.street_address">
@@ -67,7 +65,9 @@ export default {
   computed: {
     ...mapState(['sources']),
     currentData() {
-      return this.$store.state.currentData;
+      const locations = this.$store.state.currentData;
+      locations.sort((a, b) => a.organization_name.localeCompare(b.organization_name));
+      return locations;
     },
     currentDataList() {
       return this.currentData.map(row => row._featureId);
