@@ -25,6 +25,7 @@ function createStore(config) {
       selectedServices: [],
       selectedKeywords: [],
       selectedResources: [],
+      latestSelectedResourceFromExpand: null,
     },
     mutations: {
       setSelectedServices(state, payload) {
@@ -42,6 +43,9 @@ function createStore(config) {
       setSelectedResources(state, payload) {
         // console.log('store.js setSelectedResources is running, payload:', payload);
         state.selectedResources = payload;
+      },
+      setLatestSelectedResourceFromExpand(state, payload) {
+        state.latestSelectedResourceFromExpand = payload;
       },
     },
     actions: {
