@@ -23,7 +23,9 @@
           </div>
           <div class="cell shrink">
             <section class="title-container flex-child-auto">
-              <router-link :to="appLink">
+              <router-link
+                :to="appLink"
+                class="app-title">
                 <h1 class="title">{{ appTitle }}</h1>
                 <h2 class="h6 hide-for-small-only tagline">{{ appTagLine }}</h2>
               </router-link>
@@ -131,6 +133,13 @@ export default {
     width: 170px;
     height: 45px;
   }
+  .logo{
+    opacity: 1;
+    transition: opacity .25s ease-in-out;
+    &:hover {
+      opacity: .6;
+    }
+  }
 
   .title-container{
     display: inline-flex;
@@ -141,6 +150,13 @@ export default {
     }
     a {
       color: white;
+    }
+  }
+  .app-title{
+    opacity: 1;
+    transition: opacity .25s ease-in-out;
+    &:hover {
+      opacity: .6;
     }
   }
   .title{
