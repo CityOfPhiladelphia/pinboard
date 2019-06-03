@@ -67,13 +67,14 @@ export default {
   data() {
     const data = {
       rows: [],
+      appType: Object.keys(this.$store.state.sources),
     };
     return data;
   },
   watch: {
     latestSelectedResourceFromExpand(nextLatestSelectedResource) {
       if (nextLatestSelectedResource) {
-        const { rows } = this.$store.state.sources.immigrant.data;
+        const { rows } = this.$store.state.sources[this.$data.appType].data;
         const dataValue = rows.filter(row => row._featureId === nextLatestSelectedResource);
         let geocodeZoom = 19;
         if (this.$config.map.geocodeZoom) {
