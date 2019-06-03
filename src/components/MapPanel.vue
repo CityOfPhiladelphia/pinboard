@@ -52,6 +52,7 @@
 /* eslint-disable import/no-extraneous-dependencies */
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-console */
+/* eslint-disable prefer-destructuring */
 import 'leaflet/dist/leaflet.css';
 // import all fontawesome icons included in phila-vue-mapping
 import * as faMapping from '@philly/vue-mapping/src/fa';
@@ -70,10 +71,25 @@ export default {
     return data;
   },
   watch: {
+    latestSelectedResourceFromExpand(nextLatestSelectedResource) {
+      if (nextLatestSelectedResource) {
+        const { rows } = this.$store.state.sources.immigrant.data;
+        const dataValue = rows.filter(row => row._featureId === nextLatestSelectedResource);
+        let geocodeZoom = 19;
+        if (this.$config.map.geocodeZoom) {
+          geocodeZoom = this.$config.map.geocodeZoom;
+        }
+        const { map } = this.$store.state.map;
+        map.setView([dataValue[0].lat, dataValue[0].lon], geocodeZoom);
+      }
+    },
   },
   computed: {
     selectedResources() {
       return this.$store.state.selectedResources;
+    },
+    latestSelectedResourceFromExpand() {
+      return this.$store.state.latestSelectedResourceFromExpand;
     },
     currentData() {
       return this.$store.state.currentData;

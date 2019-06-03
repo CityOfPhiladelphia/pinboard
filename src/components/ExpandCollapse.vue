@@ -82,8 +82,16 @@ export default {
       this.locationOpen = !this.locationOpen;
       const selectedResource = this.$props.item._featureId;
       const selectedResources = [...this.selectedResources];
-      this.locationOpen ? selectedResources.push(selectedResource) : selectedResources.splice(selectedResources.indexOf(selectedResource), 1);
+      let latestSelectedResourceFromExpand = null;
+      if (this.locationOpen) {
+        selectedResources.push(selectedResource);
+        latestSelectedResourceFromExpand = selectedResource;
+      } else {
+        selectedResources.splice(selectedResources.indexOf(selectedResource), 1);
+      }
+      // this.locationOpen ? selectedResources.push(selectedResource) : selectedResources.splice(selectedResources.indexOf(selectedResource), 1);
       this.$store.commit('setSelectedResources', selectedResources);
+      this.$store.commit('setLatestSelectedResourceFromExpand', latestSelectedResourceFromExpand);
     },
   },
 };

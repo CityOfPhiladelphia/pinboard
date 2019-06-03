@@ -32,6 +32,7 @@ export default {
   map: {
     center: [-75.163471, 39.953338],
     zoom: 12,
+    geocodeZoom: 15,
     basemaps: {
       pwd: {
         url: '//tiles.arcgis.com/tiles/fLeGjb7u4uXqeF9q/arcgis/rest/services/CityBasemap/MapServer',
