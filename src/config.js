@@ -13,7 +13,7 @@ export default {
     immigrant,
   },
   router: {
-    enabled: false,
+    enabled: true,
   },
   app: {
     title: 'Immigrant resource finder',

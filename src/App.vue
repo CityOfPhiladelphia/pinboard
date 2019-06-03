@@ -95,6 +95,7 @@ export default {
     if (this.$config.dataSources) {
       this.$controller.dataManager.fetchData();
     }
+    this.$controller.appDidLoad();
     this.onResize();
   },
   watch: {
@@ -109,7 +110,9 @@ export default {
       this.filterPoints();
     },
     selectedServices() {
-      this.filterPoints();
+      if (this.$store.state.sources.immigrant.data) {
+        this.filterPoints();
+      }
     },
     selectedKeywords() {
       this.filterPoints();
