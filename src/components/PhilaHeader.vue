@@ -49,6 +49,7 @@
         <a :href="appLogoLink" class="logo flex-child-auto">
           <img :src="appLogo" :alt="appLogoAlt" class="app-logo">
         </a>
+        <slot name="mobile-menu"/>
       </div>
     </div>
     <slot name="after-stripe"></slot>
@@ -60,7 +61,6 @@
 /* eslint-disable max-len */
 // TODO: move logo, link etc to app config.
 import Logo from '@/assets/city-of-philadelphia-logo.png';
-
 // import AddressInput from '@philly/vue-comps/src/components/AddressInput.vue'
 // import Paragraph from '@philly/vue-comps/src/components/Paragraph.vue'
 // import '@philly/vue-comps'
@@ -126,7 +126,7 @@ export default {
   @media screen and (max-width: 749px) {
     position: fixed;
     top:0;
-    z-index: 10000;
+    z-index: 1020;
   }
 
   .app-logo{

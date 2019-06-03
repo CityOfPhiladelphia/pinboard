@@ -10,7 +10,7 @@
             @click="clearAll"
             class="clear-all hide-for-small-only">Clear all</a>
 
-          <div class="legend-title h3 margin-add">Address:</div>
+          <!-- <div class="legend-title h3 margin-add">Address:</div>
           <div class="margin-add min-width-needed">{{ addressEntered }}</div>
           <a href="#"
             @click="clearAddress"
@@ -20,7 +20,7 @@
           <div class="margin-add min-width-needed">{{ keywordsEntered }}</div>
           <a href="#"
             @click="clearKeywords"
-            class="test">Clear Keywords</a>
+            class="test">Clear Keywords</a> -->
         </div>
         <div class="grid-x service-list"
           v-if="sources.immigrant.status === 'success'">

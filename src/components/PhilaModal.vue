@@ -61,16 +61,23 @@ export default {
   display: table;
 }
 
+@media screen and (min-width: 40em) {
+  .modal-wrapper {
+    top: 30vh;
+    left: 50vh;
+    right: 50vh;
+  }
+}
 
 .modal-wrapper {
   display: table-cell;
   vertical-align: middle;
   position: fixed;
   z-index: 9998;
-  top: 30vh;
-  left: 50vh;
-  right: 50vh;
+  top: 20%;
+  left: 20%;
 }
+
 
 .modal-container-inner {
   width: 300px;
