@@ -29,6 +29,10 @@
     <PhilaHeader
       :app-title="this.$config.app.title"
       :app-tag-line="this.$config.app.tagLine">
+      <div slot="mobile-menu">
+        <PhilaFooter
+          v-on:howToUseLink="toggleModal()"/>
+      </div>
       <RefinePanel slot="after-stripe" />
     </PhilaHeader>
 
@@ -46,7 +50,8 @@
       @click.native="toggleMap"
       buttonText="Toggle map"/>
     <PhilaFooter
-      v-on:howToUseLink="toggleModal()" />
+      v-on:howToUseLink="toggleModal()"
+      v-show="isLarge" />
   </div>
 </template>
 <script>
