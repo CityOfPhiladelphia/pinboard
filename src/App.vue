@@ -74,6 +74,7 @@ import MapPanel from './components/MapPanel.vue';
 export default {
   data() {
     return {
+      appType: Object.keys(this.$store.state.sources),
       isMapVisible: true,
       isModalOpen: false,
       isLarge: true,
@@ -91,11 +92,7 @@ export default {
     MapPanel,
   },
   mounted() {
-    console.log('in App.vue mounted, this.$config:', this.$config);
-    if (this.$config.dataSources) {
-      this.$controller.dataManager.fetchData();
-    }
-    this.onResize();
+    this.init();
   },
   watch: {
     geocodeStatus(nextGeocodeStatus) {
@@ -140,13 +137,20 @@ export default {
       return this.$store.state.selectedServices;
     },
     dataStatus() {
-      return this.$store.state.sources.immigrant.status;
+      return this.$store.state.sources[this.$data.appType].status;
     },
     database() {
-      return this.$store.state.sources.immigrant.data.rows;
+      return this.$store.state.sources[this.$data.appType].data.rows;
     },
   },
   methods: {
+    init() {
+      console.log('in App.vue mounted, this.$config:', this.$config);
+      if (this.$config.dataSources) {
+        this.$controller.dataManager.fetchData();
+      }
+      this.onResize();
+    },
     runBuffer() {
       const geocodePoint = point(this.geocodeGeom.coordinates);
       const pointBuffer = buffer(geocodePoint, 1, { units: 'miles' });
