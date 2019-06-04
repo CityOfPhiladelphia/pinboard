@@ -6,9 +6,13 @@
         <div class="refine-title"
           @click="expandRefine">
           <legend class="legend-title h3">{{ legendTitle }}</legend>
-          <a href="#"
+          <button
             @click="clearAll"
-            class="clear-all hide-for-small-only">Clear all</a>
+            class="clear-button">Clear all
+          </button>
+          <!-- <a href="#"
+            @click="clearAll"
+            class="clear-all hide-for-small-only">Clear all</a> -->
 
           <!-- <div class="legend-title h3 margin-add">Address:</div>
           <div class="margin-add min-width-needed">{{ addressEntered }}</div>
@@ -44,9 +48,10 @@
               @click.native="expandRefine(); scrollToTop();">
               <font-awesome-icon icon="filter" />
             </PhilaButton>
-            <a href="#"
+            <button
               @click="clearAll"
-              class="">Clear all</a>
+              class="clear-button">Clear all
+            </button>
           </div>
       </fieldset>
     </div>
@@ -79,7 +84,7 @@ export default {
   },
   watch: {
     selected(nextSelected) {
-      // console.log('RefinePanel watch selected is firing, nextSelected', nextSelected);
+      console.log('RefinePanel watch selected is firing, nextSelected', nextSelected);
       this.$store.commit('setSelectedServices', nextSelected);
       this.$controller.handleRefinePanelClick(nextSelected);
     },
@@ -113,6 +118,7 @@ export default {
       this.$store.commit('setSelectedKeywords', '');
     },
     clearAll() {
+      console.log('RefinePanel clearAll is running');
       if (this.selected.length) {
         this.selected = [];
       }
@@ -166,6 +172,14 @@ $refine-panel-height: 19vh;
 
     .clear-all{
       margin: 0 0 0 4rem;
+    }
+
+    .clear-button{
+      background-color: rgb(0, 204, 255);
+      height: 30px;
+      width: 80px;
+      margin-left: 10px;
+      margin-right: 10px;
     }
   }
 
