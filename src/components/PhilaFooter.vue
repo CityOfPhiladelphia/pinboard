@@ -6,7 +6,7 @@
           <ul class="footer-nav">
             <li><a href="https://www.phila.gov">City of Philadelphia</a></li>
             <li><a href="" @click.prevent="$emit('howToUseLink')">How to use</a></li>
-            <li><a :href="feedbackLink">Feedback</a></li>
+            <li><a :href="feedbackLink" target="_blank">Feedback</a></li>
           </ul>
         </nav>
       </div>
@@ -18,7 +18,7 @@ export default {
   props: {
     feedbackLink: {
       type: String,
-      default: '#',
+      default: 'https://www.phila.gov/feedback/',
     },
   },
 };
