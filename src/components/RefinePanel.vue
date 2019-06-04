@@ -86,12 +86,12 @@ export default {
   },
   watch: {
     selected(nextSelected) {
-      console.log('RefinePanel watch selected is firing, nextSelected', nextSelected);
+      // console.log('RefinePanel watch selected is firing, nextSelected', nextSelected);
       this.$store.commit('setSelectedServices', nextSelected);
       this.$controller.handleRefinePanelClick(nextSelected);
     },
     selectedServices(nextSelectedServices) {
-      console.log('RefinePanel watch selectedServices is firing, nextSelectedServices:', nextSelectedServices);
+      // console.log('watch selectedServices is firing:', nextSelectedServices);
       this.$data.selected = nextSelectedServices;
     },
   },
