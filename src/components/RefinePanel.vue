@@ -176,7 +176,6 @@ $refine-panel-height: 19vh;
   padding: 1rem;
 
   .refine-title{
-    height:5vh;
     color: color(dark-ben-franklin);
     position: relative;
 
