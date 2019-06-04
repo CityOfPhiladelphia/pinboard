@@ -115,7 +115,9 @@ export default {
       }
     },
     selectedKeywords() {
-      this.filterPoints();
+      if (this.$store.state.sources[this.$appType].data) {
+        this.filterPoints();
+      }
     },
     dataStatus(nextDataStatus) {
       if (nextDataStatus === 'success') {
