@@ -117,7 +117,7 @@ export default {
 
 .locations-panel{
   overflow-y: auto;
-  height: 100vh;
+  height: calc(100vh - 300px);
   .detail{
     margin-bottom: 1rem;
     svg {
@@ -126,8 +126,9 @@ export default {
     }
     span {
       display: inline-block;
+      max-width: calc(100% - 1rem);
+      word-break: break-word;
       padding-left: 2rem;
-      max-width: calc(100% - .75em);
     }
   }
   .services{

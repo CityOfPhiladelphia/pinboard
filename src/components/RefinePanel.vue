@@ -6,10 +6,11 @@
         <div class="refine-title"
           @click="expandRefine">
           <legend class="legend-title h3">{{ legendTitle }}</legend>
-          <button
-            @click="clearAll"
-            class="clear-button">Clear all
-          </button>
+          <PhilaButton
+            @click.native="clearAll"
+            buttonText="Clear all"
+            class="hide-for-small-only">
+          </PhilaButton>
           <!-- <a href="#"
             @click="clearAll"
             class="clear-all hide-for-small-only">Clear all</a> -->
@@ -48,10 +49,9 @@
               @click.native="expandRefine(); scrollToTop();">
               <font-awesome-icon icon="filter" />
             </PhilaButton>
-            <button
-              @click="clearAll"
-              class="clear-button">Clear all
-            </button>
+          <PhilaButton
+            @click.native="clearAll"
+            buttonText="Clear all" />
           </div>
       </fieldset>
     </div>
@@ -176,7 +176,6 @@ $refine-panel-height: 19vh;
   padding: 1rem;
 
   .refine-title{
-    height:5vh;
     color: color(dark-ben-franklin);
     position: relative;
 
@@ -223,6 +222,7 @@ $refine-panel-height: 19vh;
   }
   label {
     font-weight: normal;
+    cursor: pointer;
   }
   @media screen and (max-width: 749px) {
     height: 3rem;
