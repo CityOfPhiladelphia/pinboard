@@ -59,11 +59,6 @@ import { mapState } from 'vuex';
 import ExpandCollapse from './ExpandCollapse.vue';
 
 export default {
-  data() {
-    return {
-      appType: Object.keys(this.$store.state.sources),
-    };
-  },
   components: {
     ExpandCollapse,
   },
@@ -78,7 +73,7 @@ export default {
       return this.currentData.map(row => row._featureId);
     },
     dataStatus() {
-      return this.$store.state.sources[this.$data.appType].status;
+      return this.$store.state.sources[this.$appType].status;
     },
   },
   methods: {
@@ -101,7 +96,7 @@ export default {
     //   // return booleanServices && booleanBuffer;
     // },
     getLocationsList() {
-      const locations = this.sources[this.$data.appType].data.rows;
+      const locations = this.sources[this.$appType].data.rows;
       // const locations = this.bufferlist
       return locations;
     },

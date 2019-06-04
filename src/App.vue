@@ -74,7 +74,6 @@ import MapPanel from './components/MapPanel.vue';
 export default {
   data() {
     return {
-      appType: Object.keys(this.$store.state.sources),
       isMapVisible: true,
       isModalOpen: false,
       isLarge: true,
@@ -111,7 +110,7 @@ export default {
       this.filterPoints();
     },
     selectedServices() {
-      if (this.$store.state.sources[this.$data.appType].data) {
+      if (this.$store.state.sources[this.$appType].data) {
         this.filterPoints();
       }
     },
@@ -144,10 +143,10 @@ export default {
       return this.$store.state.selectedServices;
     },
     dataStatus() {
-      return this.$store.state.sources[this.$data.appType].status;
+      return this.$store.state.sources[this.$appType].status;
     },
     database() {
-      return this.$store.state.sources[this.$data.appType].data.rows;
+      return this.$store.state.sources[this.$appType].data.rows;
     },
   },
   methods: {

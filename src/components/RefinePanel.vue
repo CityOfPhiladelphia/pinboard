@@ -66,7 +66,6 @@ export default {
       selected: [],
       refineOpen: false,
       // addressEntered: null,
-      appType: Object.keys(this.$store.state.sources),
     };
   },
   components: {
@@ -111,7 +110,7 @@ export default {
       return this.$store.state.selectedKeywords.toString();
     },
     dataStatus() {
-      return this.$store.state.sources[this.$data.appType].status;
+      return this.$store.state.sources[this.$appType].status;
     },
   },
   methods: {
@@ -129,7 +128,7 @@ export default {
       }
     },
     getRefineSearchList() {
-      const refineData = this.sources[this.$data.appType].data.rows;
+      const refineData = this.sources[this.$appType].data.rows;
 
       let service = '';
 
