@@ -95,7 +95,7 @@ export default {
       return this.$store.state.currentData;
     },
     currentMapData() {
-      // console.log('currentMapData computed is recalculating');
+      console.log('currentMapData computed is recalculating');
       const newRows = [];
       for (const row of [...this.currentData]) {
         let markerColor; let
