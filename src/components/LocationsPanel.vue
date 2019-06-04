@@ -117,7 +117,7 @@ export default {
 
 .locations-panel{
   overflow-y: auto;
-  height: 100vh;
+  height: calc(100vh - 300px);
   .detail{
     margin-bottom: 1rem;
     svg {
