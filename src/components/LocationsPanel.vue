@@ -1,7 +1,7 @@
 <template>
   <div class="cell medium-12 medium-cell-block-y locations-panel">
     <div class="location-container"
-      v-if="sources.immigrant.status === 'success'">
+      v-if="dataStatus === 'success'">
         <div v-if="currentData.length === 0"
           class="h3">
           <p>We're sorry, there are no results for that search.
@@ -77,7 +77,9 @@ export default {
     currentDataList() {
       return this.currentData.map(row => row._featureId);
     },
-
+    dataStatus() {
+      return this.$store.state.sources[this.$data.appType].status;
+    },
   },
   methods: {
     // filterExpand(item) {

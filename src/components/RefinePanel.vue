@@ -23,7 +23,7 @@
             class="test">Clear Keywords</a> -->
         </div>
         <div class="grid-x service-list"
-          v-if="sources.immigrant.status === 'success'">
+          v-if="dataStatus === 'success'">
           <div class="cell medium-6"
             v-for="(item, index) in getRefineSearchList()"
             :key="index">
@@ -59,6 +59,16 @@ import { mapState } from 'vuex';
 import PhilaButton from './PhilaButton.vue';
 
 export default {
+  data() {
+    return {
+      baseUrl: process.env.VUE_APP_BASE_URL,
+      refineList: null,
+      selected: [],
+      refineOpen: false,
+      // addressEntered: null,
+      appType: Object.keys(this.$store.state.sources),
+    };
+  },
   components: {
     PhilaButton,
   },
@@ -67,15 +77,6 @@ export default {
       type: String,
       default: 'Refine',
     },
-  },
-  data() {
-    return {
-      baseUrl: process.env.VUE_APP_BASE_URL,
-      refineList: null,
-      selected: [],
-      refineOpen: false,
-      // addressEntered: null,
-    };
   },
   mounted() {
     console.log('RefinePanel is mounted, this.$store.state.selectedServices:', this.$store.state.selectedServices);
@@ -109,6 +110,9 @@ export default {
     keywordsEntered() {
       return this.$store.state.selectedKeywords.toString();
     },
+    dataStatus() {
+      return this.$store.state.sources[this.$data.appType].status;
+    },
   },
   methods: {
     clearAddress() {
@@ -125,7 +129,7 @@ export default {
       }
     },
     getRefineSearchList() {
-      const refineData = this.sources.immigrant.data.rows;
+      const refineData = this.sources[this.$data.appType].data.rows;
 
       let service = '';
 

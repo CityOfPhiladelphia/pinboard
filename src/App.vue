@@ -111,7 +111,7 @@ export default {
       this.filterPoints();
     },
     selectedServices() {
-      if (this.$store.state.sources.immigrant.data) {
+      if (this.$store.state.sources[this.$data.appType].data) {
         this.filterPoints();
       }
     },
