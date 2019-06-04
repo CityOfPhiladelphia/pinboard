@@ -126,8 +126,9 @@ export default {
     }
     span {
       display: inline-block;
+      max-width: calc(100% - 1rem);
+      word-break: break-word;
       padding-left: 2rem;
-      max-width: calc(100% - .75em);
     }
   }
   .services{
