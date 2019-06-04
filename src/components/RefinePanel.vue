@@ -223,6 +223,7 @@ $refine-panel-height: 19vh;
   }
   label {
     font-weight: normal;
+    cursor: pointer;
   }
   @media screen and (max-width: 749px) {
     height: 3rem;
