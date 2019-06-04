@@ -25,6 +25,7 @@ button,
   color: color(dark-gray);
   text-transform: uppercase;
   padding:.75rem .5rem;
+  margin: 0 1rem;
   letter-spacing: .03rem;
   transition: background-color 0.25s ease-out, color 0.25s ease-out;
   cursor: pointer;

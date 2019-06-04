@@ -6,10 +6,11 @@
         <div class="refine-title"
           @click="expandRefine">
           <legend class="legend-title h3">{{ legendTitle }}</legend>
-          <button
-            @click="clearAll"
-            class="clear-button">Clear all
-          </button>
+          <PhilaButton
+            @click.native="clearAll"
+            buttonText="Clear all"
+            class="hide-for-small-only">
+          </PhilaButton>
           <!-- <a href="#"
             @click="clearAll"
             class="clear-all hide-for-small-only">Clear all</a> -->
@@ -48,10 +49,9 @@
               @click.native="expandRefine(); scrollToTop();">
               <font-awesome-icon icon="filter" />
             </PhilaButton>
-            <button
-              @click="clearAll"
-              class="clear-button">Clear all
-            </button>
+          <PhilaButton
+            @click.native="clearAll"
+            buttonText="Clear all" />
           </div>
       </fieldset>
     </div>
