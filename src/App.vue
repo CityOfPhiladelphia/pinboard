@@ -110,7 +110,7 @@ export default {
       this.filterPoints();
     },
     selectedServices() {
-      if (this.$store.state.sources.immigrant.data) {
+      if (this.$store.state.sources[this.$appType].data) {
         this.filterPoints();
       }
     },
@@ -143,13 +143,20 @@ export default {
       return this.$store.state.selectedServices;
     },
     dataStatus() {
-      return this.$store.state.sources.immigrant.status;
+      return this.$store.state.sources[this.$appType].status;
     },
     database() {
-      return this.$store.state.sources.immigrant.data.rows;
+      return this.$store.state.sources[this.$appType].data.rows;
     },
   },
   methods: {
+    init() {
+      console.log('in App.vue mounted, this.$config:', this.$config);
+      if (this.$config.dataSources) {
+        this.$controller.dataManager.fetchData();
+      }
+      this.onResize();
+    },
     runBuffer() {
       const geocodePoint = point(this.geocodeGeom.coordinates);
       const pointBuffer = buffer(geocodePoint, 1, { units: 'miles' });

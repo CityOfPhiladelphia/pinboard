@@ -19,6 +19,7 @@ import configMixin from './util/config-mixin';
 // and do an axios call to get it
 import baseConfig from './config';
 
+
 // any config specific to this project only can go here
 const clientConfig = {
   // map: '',
@@ -38,6 +39,9 @@ Vue.use(fonts);
 Vue.component('font-awesome-icon', FontAwesomeIcon);
 
 Vue.config.productionTip = false;
+
+/* Change this depending on value in $store.state.sources */
+Vue.prototype.$appType = 'immigrant';
 
 new Vue({
   router,
