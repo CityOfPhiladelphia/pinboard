@@ -1,49 +1,50 @@
 <template>
   <div class="cell medium-12 medium-cell-block-y mb-panel mb-panel-map map-height">
-
-    <Map_ id="map-tag"
-          :center="this.$store.state.map.center"
-          :zoom="this.$store.state.map.zoom"
-          zoom-control-position="bottomright"
-          :min-zoom="11"
-          :max-zoom="22"
+    <Map_
+      id="map-tag"
+      :center="this.$store.state.map.center"
+      :zoom="this.$store.state.map.zoom"
+      zoom-control-position="bottomright"
+      :min-zoom="11"
+      :max-zoom="22"
     >
-    <!-- @l-click="handleMapClick" -->
-      <esri-tiled-map-layer v-for="(basemap, key) in this.$config.map.basemaps"
-                            :key="key"
-                            :url="basemap.url"
+      <!-- @l-click="handleMapClick" -->
+      <esri-tiled-map-layer
+        v-for="(basemap, key) in this.$config.map.basemaps"
+        :key="key"
+        :url="basemap.url"
       />
 
       <!-- basemap labels and parcels outlines -->
-      <esri-tiled-map-layer v-for="(tiledLayer, key) in this.$config.map.tiledLayers"
-                            :key="key"
-                            :url="tiledLayer.url"
-                            :zIndex="tiledLayer.zIndex"
+      <esri-tiled-map-layer
+        v-for="(tiledLayer, key) in this.$config.map.tiledLayers"
+        :key="key"
+        :url="tiledLayer.url"
+        :z-index="tiledLayer.zIndex"
       />
 
-      <vector-marker v-for="(marker) in markersForAddress"
-                     :latlng="marker.latlng"
-                     :key="marker.key"
-                     :markerColor="marker.color"
-                     :icon="marker.icon"
+      <vector-marker
+        v-for="(marker) in markersForAddress"
+        :key="marker.key"
+        :latlng="marker.latlng"
+        :marker-color="marker.color"
+        :icon="marker.icon"
       />
 
       <!-- <vector-marker v-for="(marker) in this.$data.rows" -->
-      <vector-marker v-for="marker in currentMapData"
-                    :latlng="marker.latlng"
-                    :key="marker.key"
-                    :markerColor="marker.color"
-                    :icon="marker.icon"
-                    :_featureId="marker._featureId"
-                    @l-click="handleMarkerClick"
-                    :data="{
-                      featureId: marker._featureId
-                    }"
+      <vector-marker
+        v-for="marker in currentMapData"
+        :key="marker.key"
+        :latlng="marker.latlng"
+        :marker-color="marker.color"
+        :icon="marker.icon"
+        :-feature-id="marker._featureId"
+        :data="{
+          featureId: marker._featureId
+        }"
+        @l-click="handleMarkerClick"
       />
-
     </Map_>
-
-
   </div>
 </template>
 
@@ -70,20 +71,6 @@ export default {
     };
     return data;
   },
-  watch: {
-    latestSelectedResourceFromExpand(nextLatestSelectedResource) {
-      if (nextLatestSelectedResource) {
-        const { rows } = this.$store.state.sources[this.$appType].data;
-        const dataValue = rows.filter(row => row._featureId === nextLatestSelectedResource);
-        let geocodeZoom = 19;
-        if (this.$config.map.geocodeZoom) {
-          geocodeZoom = this.$config.map.geocodeZoom;
-        }
-        const { map } = this.$store.state.map;
-        map.setView([dataValue[0].lat, dataValue[0].lon], geocodeZoom);
-      }
-    },
-  },
   computed: {
     selectedResources() {
       return this.$store.state.selectedResources;
@@ -97,7 +84,7 @@ export default {
     currentMapData() {
       // console.log('currentMapData computed is recalculating');
       const newRows = [];
-      for (const row of [...this.currentData]) {
+      for (const row of [ ...this.currentData ]) {
         let markerColor; let
           markerSize;
         if (this.selectedResources.includes(row._featureId)) {
@@ -108,7 +95,7 @@ export default {
           markerSize = 20;
         }
         if (row.lat) {
-          row.latlng = [row.lat, row.lon];
+          row.latlng = [ row.lat, row.lon ];
           row.color = markerColor;
           row.icon = {
             prefix: 'fas',
@@ -138,7 +125,7 @@ export default {
       // geocoded address marker
       const { geocodeGeom } = this;
       if (geocodeGeom) {
-        const latlng = [...geocodeGeom.coordinates].reverse();
+        const latlng = [ ...geocodeGeom.coordinates ].reverse();
         const key = this.geocodeResult.properties.street_address;
         const color = '#2176d2';
         const markerType = 'geocode';
@@ -156,6 +143,26 @@ export default {
       return markers;
     },
   },
+  watch: {
+    latestSelectedResourceFromExpand(nextLatestSelectedResource) {
+      if (nextLatestSelectedResource) {
+        const { rows } = this.$store.state.sources[this.$appType].data;
+        const dataValue = rows.filter(row => row._featureId === nextLatestSelectedResource);
+        let geocodeZoom = 19;
+        if (this.$config.map.geocodeZoom) {
+          geocodeZoom = this.$config.map.geocodeZoom;
+        }
+        const { map } = this.$store.state.map;
+        map.setView([ dataValue[0].lat, dataValue[0].lon ], geocodeZoom);
+      }
+    },
+  },
+  mounted() {
+    window.addEventListener('resize', this.handleResize);
+  },
+  beforeDestroy() {
+    window.removeEventListener('resize', this.handleResize);
+  },
   methods: {
     // handleMapClick() {
     //   console.log('mapClick!');
@@ -164,7 +171,7 @@ export default {
       const { target } = e;
       const { featureId } = target.options.data;
       // console.log('markerClick, featureId', featureId);
-      const selectedResource = [...this.selectedResources];
+      const selectedResource = [ ...this.selectedResources ];
       if (selectedResource.includes(featureId)) {
         selectedResource.splice(selectedResource.indexOf(featureId), 1);
       } else {
@@ -175,12 +182,6 @@ export default {
     handleResize(event) {
       this.$store.state.map.map.invalidateSize();
     },
-  },
-  mounted() {
-    window.addEventListener('resize', this.handleResize);
-  },
-  beforeDestroy() {
-    window.removeEventListener('resize', this.handleResize);
   },
 };
 </script>

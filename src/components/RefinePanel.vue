@@ -1,16 +1,22 @@
 <template>
-  <div class="cell medium-cell-block-container bg-ghost-gray refine-panel"
-  :class="{ 'refine-open': refineOpen }">
+  <div
+    class="cell medium-cell-block-container bg-ghost-gray refine-panel"
+    :class="{ 'refine-open': refineOpen }"
+  >
     <div class="grid-x">
       <fieldset class="cell">
-        <div class="refine-title"
-          @click="expandRefine">
-          <legend class="legend-title h3">{{ legendTitle }}</legend>
+        <div
+          class="refine-title"
+          @click="expandRefine"
+        >
+          <legend class="legend-title h3">
+            {{ legendTitle }}
+          </legend>
           <PhilaButton
+            button-text="Clear all"
+            class="hide-for-small-only"
             @click.native="clearAll"
-            buttonText="Clear all"
-            class="hide-for-small-only">
-          </PhilaButton>
+          />
           <!-- <a href="#"
             @click="clearAll"
             class="clear-all hide-for-small-only">Clear all</a> -->
@@ -27,32 +33,39 @@
             @click="clearKeywords"
             class="test">Clear Keywords</a> -->
         </div>
-        <div class="grid-x service-list"
-          v-if="dataStatus === 'success'">
-          <div class="cell medium-6"
+        <div
+          v-if="dataStatus === 'success'"
+          class="grid-x service-list"
+        >
+          <div
             v-for="(item, index) in getRefineSearchList()"
-            :key="index">
+            :key="index"
+            class="cell medium-6"
+          >
             <label :for="item">
               <input
                 :id="item"
+                v-model="selected"
                 type="checkbox"
                 :name="item"
                 :value="item"
-                v-model="selected">
-                <span class="service-item">{{ item }}</span>
-              </label>
-            </div>
+              >
+              <span class="service-item">{{ item }}</span>
+            </label>
           </div>
-          <div class="mobile-filter-actions show-for-small-only">
-            <PhilaButton
-              buttonText="Apply filters"
-              @click.native="expandRefine(); scrollToTop();">
-              <font-awesome-icon icon="filter" />
-            </PhilaButton>
+        </div>
+        <div class="mobile-filter-actions show-for-small-only">
           <PhilaButton
+            button-text="Apply filters"
+            @click.native="expandRefine(); scrollToTop();"
+          >
+            <font-awesome-icon icon="filter" />
+          </PhilaButton>
+          <PhilaButton
+            button-text="Clear all"
             @click.native="clearAll"
-            buttonText="Clear all" />
-          </div>
+          />
+        </div>
       </fieldset>
     </div>
   </div>
@@ -64,15 +77,6 @@ import { mapState } from 'vuex';
 import PhilaButton from './PhilaButton.vue';
 
 export default {
-  data() {
-    return {
-      baseUrl: process.env.VUE_APP_BASE_URL,
-      refineList: null,
-      selected: [],
-      refineOpen: false,
-      // addressEntered: null,
-    };
-  },
   components: {
     PhilaButton,
   },
@@ -82,26 +86,17 @@ export default {
       default: 'Refine',
     },
   },
-  mounted() {
-    console.log('RefinePanel is mounted, this.$store.state.selectedServices:', this.$store.state.selectedServices);
-    if (this.$store.state.selectedServices.length > 0) {
-      console.log('there are services');
-    }
-    // this.$data.selected = this.$store.state.selectedServices;
-  },
-  watch: {
-    selected(nextSelected) {
-      console.log('RefinePanel watch selected is firing, nextSelected', nextSelected);
-      this.$store.commit('setSelectedServices', nextSelected);
-      this.$controller.handleRefinePanelClick(nextSelected);
-    },
-    selectedServices(nextSelectedServices) {
-      // console.log('watch selectedServices is firing:', nextSelectedServices);
-      this.$data.selected = nextSelectedServices;
-    },
+  data() {
+    return {
+      baseUrl: process.env.VUE_APP_BASE_URL,
+      refineList: null,
+      selected: [],
+      refineOpen: false,
+      // addressEntered: null,
+    };
   },
   computed: {
-    ...mapState(['sources', 'geocode', 'selectedServices']),
+    ...mapState([ 'sources', 'geocode', 'selectedServices' ]),
     addressEntered() {
       let address;
 
@@ -117,6 +112,24 @@ export default {
     dataStatus() {
       return this.$store.state.sources[this.$appType].status;
     },
+  },
+  watch: {
+    selected(nextSelected) {
+      console.log('RefinePanel watch selected is firing, nextSelected', nextSelected);
+      this.$store.commit('setSelectedServices', nextSelected);
+      this.$controller.handleRefinePanelClick(nextSelected);
+    },
+    selectedServices(nextSelectedServices) {
+      // console.log('watch selectedServices is firing:', nextSelectedServices);
+      this.$data.selected = nextSelectedServices;
+    },
+  },
+  mounted() {
+    console.log('RefinePanel is mounted, this.$store.state.selectedServices:', this.$store.state.selectedServices);
+    if (this.$store.state.selectedServices.length > 0) {
+      console.log('there are services');
+    }
+    // this.$data.selected = this.$store.state.selectedServices;
   },
   methods: {
     clearAddress() {
@@ -146,7 +159,7 @@ export default {
       let serviceArray = service.split(/(,|;)/);
       serviceArray = serviceArray.map(s => s.trim());
 
-      const uniqArray = [...new Set(serviceArray)];
+      const uniqArray = [ ...new Set(serviceArray) ];
 
       // clean up any dangling , or ;
       const uniq = uniqArray.filter(a => a.length > 2);

@@ -2,57 +2,87 @@
   <header class="app-header cell shrink">
     <div class="grid-x grid-padding-x grid-padding-y align-middle">
       <div class="cell mobile-menu show-for-small-only small-2">
-        <font-awesome-icon icon="bars" size="2x"
-        v-show="!isOpen"
-        :style="{ color: 'white' }"
-        @click="toggleMenu" />
-        <font-awesome-icon icon="times" size="2x"
-          v-show="isOpen"
+        <font-awesome-icon
+          v-show="!isOpen"
+          icon="bars"
+          size="2x"
           :style="{ color: 'white' }"
-          @click="toggleMenu" />
+          @click="toggleMenu"
+        />
+        <font-awesome-icon
+          v-show="isOpen"
+          icon="times"
+          size="2x"
+          :style="{ color: 'white' }"
+          @click="toggleMenu"
+        />
       </div>
       <div class="cell medium-auto small-21">
         <div class="grid-x grid-padding-x align-middle">
           <div class="cell shrink hide-for-small-only">
-            <a :href="appLogoLink" class="logo flex-child-auto">
-              <img :src="appLogo" :alt="appLogoAlt" class="app-logo">
+            <a
+              :href="appLogoLink"
+              class="logo flex-child-auto"
+            >
+              <img
+                :src="appLogo"
+                :alt="appLogoAlt"
+                class="app-logo"
+              >
             </a>
           </div>
           <div class="cell shrink hide-for-small-only">
-            <div class="app-divide flex-child-auto"></div>
+            <div class="app-divide flex-child-auto" />
           </div>
           <div class="cell shrink">
             <section class="title-container flex-child-auto">
               <router-link
                 :to="appLink"
-                class="app-title">
-                <h1 class="title">{{ appTitle }}</h1>
-                <h2 class="h6 hide-for-small-only tagline">{{ appTagLine }}</h2>
+                class="app-title"
+              >
+                <h1 class="title">
+                  {{ appTitle }}
+                </h1>
+                <h2 class="h6 hide-for-small-only tagline">
+                  {{ appTagLine }}
+                </h2>
               </router-link>
             </section>
           </div>
           <div class="cell large-auto small-auto small-centered text-center">
             <combo-search
-              :dropdown="this.dropdownData"/>
+              :dropdown="dropdownData"
+            />
             <div class="search">
-              <slot name="search"></slot>
+              <slot name="search" />
             </div>
           </div>
         </div>
       </div>
     </div>
-    <div class="stripe"
-    v-show="!isOpen"></div>
-    <div class="mobile-menu-content-container show-for-small-only"
-      v-show="isOpen">
+    <div
+      v-show="!isOpen"
+      class="stripe"
+    />
+    <div
+      v-show="isOpen"
+      class="mobile-menu-content-container show-for-small-only"
+    >
       <div class="mobile-menu-content">
-        <a :href="appLogoLink" class="logo flex-child-auto">
-          <img :src="appLogo" :alt="appLogoAlt" class="app-logo">
+        <a
+          :href="appLogoLink"
+          class="logo flex-child-auto"
+        >
+          <img
+            :src="appLogo"
+            :alt="appLogoAlt"
+            class="app-logo"
+          >
         </a>
-        <slot name="mobile-menu"/>
+        <slot name="mobile-menu" />
       </div>
     </div>
-    <slot name="after-stripe"></slot>
+    <slot name="after-stripe" />
   </header>
 </template>
 
@@ -66,20 +96,8 @@ import Logo from '@/assets/city-of-philadelphia-logo.png';
 // import '@philly/vue-comps'
 
 export default {
-  data() {
-    return {
-      dropdownData: {
-        address: {
-          text: 'Address',
-          data: null,
-        },
-        keyword: {
-          text: 'Keyword',
-          data: null,
-        },
-      },
-      isOpen: false,
-    };
+  components: {
+    ComboSearch: () => import(/* webpackChunkName: "pvc_ComboSearch" */'@philly/vue-comps/src/components/ComboSearch.vue'),
   },
   props: {
     appLink: {
@@ -107,8 +125,20 @@ export default {
       default: 'App Title',
     },
   },
-  components: {
-    ComboSearch: () => import(/* webpackChunkName: "pvc_ComboSearch" */'@philly/vue-comps/src/components/ComboSearch.vue'),
+  data() {
+    return {
+      dropdownData: {
+        address: {
+          text: 'Address',
+          data: null,
+        },
+        keyword: {
+          text: 'Keyword',
+          data: null,
+        },
+      },
+      isOpen: false,
+    };
   },
   computed: {
     address() {

@@ -7,27 +7,31 @@
             <button
               type="button"
               class="btn-close"
-              @click="close"
               aria-label="Close modal"
-              ><font-awesome-icon icon="times" /></button>
-            <slot name="header"></slot>
+              @click="close"
+            >
+              <font-awesome-icon icon="times" />
+            </button>
+            <slot name="header" />
           </div>
           <div class="modal-body">
-            <slot name="body"></slot>
+            <slot name="body" />
           </div>
           <div class="modal-footer">
-            <slot name="footer"></slot>
+            <slot name="footer" />
           </div>
         </div>
       </div>
-      <div class="modal-bg"
-        @click="close"></div>
+      <div
+        class="modal-bg"
+        @click="close"
+      />
     </div>
   </div>
 </template>
 <script>
 export default {
-  name: 'modal',
+  name: 'Modal',
   methods: {
     close() {
       this.$emit('close');

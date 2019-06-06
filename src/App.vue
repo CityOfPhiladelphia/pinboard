@@ -1,37 +1,52 @@
 <template>
-  <div id="app" class="grid-y medium-grid-frame">
+  <div
+    id="app"
+    class="grid-y medium-grid-frame"
+  >
     <PhilaModal
       v-show="isModalOpen"
-      @close="closeModal">
+      @close="closeModal"
+    >
       <div slot="body">
         <div class="step-group">
-          <div class="step-label">1</div>
-          <div class="step">
-            <div class="step-title">Step 1</div>
-            <div class="step-content">
-            </div>
+          <div class="step-label">
+            1
           </div>
-          <div class="step-label">2</div>
           <div class="step">
-            <div class="step-title">Step 2</div>
-            <div class="step-content">
+            <div class="step-title">
+              Step 1
             </div>
+            <div class="step-content" />
           </div>
-        <div class="step-label">3</div>
+          <div class="step-label">
+            2
+          </div>
           <div class="step">
-            <div class="step-title">Step 3</div>
-            <div class="step-content">
+            <div class="step-title">
+              Step 2
             </div>
+            <div class="step-content" />
+          </div>
+          <div class="step-label">
+            3
+          </div>
+          <div class="step">
+            <div class="step-title">
+              Step 3
+            </div>
+            <div class="step-content" />
           </div>
         </div>
       </div>
     </PhilaModal>
     <PhilaHeader
       :app-title="this.$config.app.title"
-      :app-tag-line="this.$config.app.tagLine">
+      :app-tag-line="this.$config.app.tagLine"
+    >
       <div slot="mobile-menu">
         <PhilaFooter
-          v-on:howToUseLink="toggleModal()"/>
+          @howToUseLink="toggleModal()"
+        />
       </div>
       <RefinePanel slot="after-stripe" />
     </PhilaHeader>
@@ -39,19 +54,23 @@
     <div class="cell medium-auto medium-cell-block-container main-content">
       <div class="grid-x">
         <LocationsPanel
-          v-show="isMapVisible || isLarge" />
-          <MapPanel
-          v-show="!isMapVisible || isLarge" />
+          v-show="isMapVisible || isLarge"
+        />
+        <MapPanel
+          v-show="!isMapVisible || isLarge"
+        />
       </div>
     </div>
 
     <PhilaButton
       class="button toggle-map hide-for-medium"
+      button-text="Toggle map"
       @click.native="toggleMap"
-      buttonText="Toggle map"/>
+    />
     <PhilaFooter
-      v-on:howToUseLink="toggleModal()"
-      v-show="isLarge" />
+      v-show="isLarge"
+      @howToUseLink="toggleModal()"
+    />
   </div>
 </template>
 <script>
@@ -72,14 +91,6 @@ import LocationsPanel from './components/LocationsPanel.vue';
 import MapPanel from './components/MapPanel.vue';
 
 export default {
-  data() {
-    return {
-      isMapVisible: true,
-      isModalOpen: false,
-      isLarge: true,
-      buffer: null,
-    };
-  },
   name: 'App',
   components: {
     PhilaButton,
@@ -90,13 +101,39 @@ export default {
     LocationsPanel,
     MapPanel,
   },
-  mounted() {
-    console.log('in App.vue mounted, this.$config:', this.$config);
-    if (this.$config.dataSources) {
-      this.$controller.dataManager.fetchData();
-    }
-    this.$controller.appDidLoad();
-    this.onResize();
+  data() {
+    return {
+      isMapVisible: true,
+      isModalOpen: false,
+      isLarge: true,
+      buffer: null,
+    };
+  },
+  computed: {
+    geocodeStatus() {
+      return this.$store.state.geocode.status;
+    },
+    geocodeResult() {
+      return this.$store.state.geocode.data || {};
+    },
+    geocodeGeom() {
+      return this.geocodeResult.geometry;
+    },
+    bufferList() {
+      return this.$store.state.bufferList;
+    },
+    selectedKeywords() {
+      return this.$store.state.selectedKeywords;
+    },
+    selectedServices() {
+      return this.$store.state.selectedServices;
+    },
+    dataStatus() {
+      return this.$store.state.sources[this.$appType].status;
+    },
+    database() {
+      return this.$store.state.sources[this.$appType].data.rows;
+    },
   },
   watch: {
     geocodeStatus(nextGeocodeStatus) {
@@ -125,31 +162,20 @@ export default {
       }
     },
   },
-  computed: {
-    geocodeStatus() {
-      return this.$store.state.geocode.status;
-    },
-    geocodeResult() {
-      return this.$store.state.geocode.data || {};
-    },
-    geocodeGeom() {
-      return this.geocodeResult.geometry;
-    },
-    bufferList() {
-      return this.$store.state.bufferList;
-    },
-    selectedKeywords() {
-      return this.$store.state.selectedKeywords;
-    },
-    selectedServices() {
-      return this.$store.state.selectedServices;
-    },
-    dataStatus() {
-      return this.$store.state.sources[this.$appType].status;
-    },
-    database() {
-      return this.$store.state.sources[this.$appType].data.rows;
-    },
+  mounted() {
+    console.log('in App.vue mounted, this.$config:', this.$config);
+    if (this.$config.dataSources) {
+      this.$controller.dataManager.fetchData();
+    }
+    this.$controller.appDidLoad();
+    this.onResize();
+  },
+  created() {
+    window.addEventListener('resize', this.onResize);
+  },
+
+  beforeDestroy() {
+    window.removeEventListener('resize', this.onResize);
   },
   methods: {
     init() {
@@ -183,7 +209,7 @@ export default {
         if (!this.$data.buffer) {
           booleanBuffer = true;
         } else if (typeof row.lon === 'number' && row.lon !== null) {
-          const rowPoint = point([row.lon, row.lat]);
+          const rowPoint = point([ row.lon, row.lat ]);
           if (booleanPointInPolygon(rowPoint, this.$data.buffer)) {
             booleanBuffer = true;
           }
@@ -236,13 +262,6 @@ export default {
         this.$data.isLarge = false;
       }
     },
-  },
-  created() {
-    window.addEventListener('resize', this.onResize);
-  },
-
-  beforeDestroy() {
-    window.removeEventListener('resize', this.onResize);
   },
 };
 </script>
