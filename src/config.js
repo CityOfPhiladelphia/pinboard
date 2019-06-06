@@ -47,7 +47,7 @@ export default {
     },
   },
   map: {
-    center: [-75.163471, 39.953338],
+    center: [ -75.163471, 39.953338 ],
     zoom: 12,
     geocodeZoom: 15,
     basemaps: {

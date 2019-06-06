@@ -1,41 +1,65 @@
 <template>
   <div class="cell medium-12 medium-cell-block-y locations-panel">
-    <div class="location-container"
-      v-if="dataStatus === 'success'">
-        <div v-if="currentData.length === 0"
-          class="h3">
-          <p>We're sorry, there are no results for that search.
-            Adjust the filters you've selected and try again.</p>
-        </div>
-      <div v-for="item in currentData"
-        :key="item.cartodb_id">
-        <ExpandCollapse :title="item.organization_name"
-                        :item="item"
+    <div
+      v-if="dataStatus === 'success'"
+      class="location-container"
+    >
+      <div
+        v-if="currentData.length === 0"
+        class="h3"
+      >
+        <p>
+          We're sorry, there are no results for that search.
+          Adjust the filters you've selected and try again.
+        </p>
+      </div>
+      <div
+        v-for="item in currentData"
+        :key="item.cartodb_id"
+      >
+        <ExpandCollapse
+          :title="item.organization_name"
+          :item="item"
         >
           <div class="grid-x grid-padding-x">
             <div class="cell medium-12">
-              <div class="detail" v-if="item.street_address">
-                <font-awesome-icon icon="map-marker-alt"/>
+              <div
+                v-if="item.street_address"
+                class="detail"
+              >
+                <font-awesome-icon icon="map-marker-alt" />
                 <span v-html="parseAddress(item.street_address)">
-                  {{parseAddress(item.street_address)}}
+                  {{ parseAddress(item.street_address) }}
                 </span>
               </div>
             </div>
             <div class="cell medium-12">
-              <div class="detail" v-if="item.phone_number">
-                <font-awesome-icon icon="phone"/>
+              <div
+                v-if="item.phone_number"
+                class="detail"
+              >
+                <font-awesome-icon icon="phone" />
                 <span>{{ item.phone_number }}</span>
               </div>
-              <div class="detail" v-if="item.email">
-                <font-awesome-icon icon="envelope"/>
+              <div
+                v-if="item.email"
+                class="detail"
+              >
+                <font-awesome-icon icon="envelope" />
                 <span><a :href="`mailto:${item.email}`">{{ item.email }}</a></span>
               </div>
-              <div class="detail" v-if="item.facebook_name">
-                <font-awesome-icon :icon="['fab', 'facebook']"/>
+              <div
+                v-if="item.facebook_name"
+                class="detail"
+              >
+                <font-awesome-icon :icon="['fab', 'facebook']" />
                 <span><a :href="item.facebook_name">Facebook</a></span>
               </div>
-              <div class="detail" v-if="item.twitter">
-                <font-awesome-icon :icon="['fab', 'twitter']"/>
+              <div
+                v-if="item.twitter"
+                class="detail"
+              >
+                <font-awesome-icon :icon="['fab', 'twitter']" />
                 <span><a :href="tem.twitter">Twitter</a></span>
               </div>
             </div>
@@ -43,9 +67,15 @@
           <div v-if="item.services_offered != ''">
             <section class="services grid-x grid-padding-x">
               <div class="cell">
-                <h3 class="h4">Services offered</h3>
-                <div v-for="i in parseServiceList(item.services_offered)"
-                :key="i">{{i}}</div>
+                <h3 class="h4">
+                  Services offered
+                </h3>
+                <div
+                  v-for="i in parseServiceList(item.services_offered)"
+                  :key="i"
+                >
+                  {{ i }}
+                </div>
               </div>
             </section>
           </div>
@@ -63,7 +93,7 @@ export default {
     ExpandCollapse,
   },
   computed: {
-    ...mapState(['sources']),
+    ...mapState([ 'sources' ]),
     currentData() {
       const locations = this.$store.state.currentData;
       locations.sort((a, b) => a.organization_name.localeCompare(b.organization_name));

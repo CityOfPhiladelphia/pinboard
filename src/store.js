@@ -17,7 +17,7 @@ function createStore(config) {
     state: {
       sources,
       map: {
-        center: [-75.163471, 39.953338],
+        center: [ -75.163471, 39.953338 ],
         zoom: 12,
       },
       bufferList: null,

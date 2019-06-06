@@ -1,29 +1,44 @@
 <template>
-  <div class="cell medium-cell-block-container location-item"
-    :class="{ 'open': locationOpen }">
-    <h2 class="h4 location-title"
-      @click="expandLocation">{{ title }}</h2>
-    <div :class="{ 'location-open': locationOpen }" class="location-content">
-      <slot></slot>
+  <div
+    class="cell medium-cell-block-container location-item"
+    :class="{ 'open': locationOpen }"
+  >
+    <h2
+      class="h4 location-title"
+      @click="expandLocation"
+    >
+      {{ title }}
+    </h2>
+    <div
+      :class="{ 'location-open': locationOpen }"
+      class="location-content"
+    >
+      <slot />
     </div>
   </div>
 </template>
 <script>
-/* eslint-disable max-len */
-/* eslint-disable no-unused-expressions */
 import TopicComponent from '@philly/vue-comps/src/components/TopicComponent.vue';
 
 export default {
-  mixins: [TopicComponent],
+  mixins: [ TopicComponent ],
+  props: {
+    title: {
+      type: String,
+      default: 'Title',
+    },
+  },
   data() {
     return {
       locationOpen: false,
     };
   },
-  props: {
-    title: {
-      type: String,
-      default: 'Title',
+  computed: {
+    servicesOffered() {
+      return this.$props.item.services_offered.split(',');
+    },
+    selectedResources() {
+      return this.$store.state.selectedResources;
     },
   },
   watch: {
@@ -37,14 +52,6 @@ export default {
       } else {
         this.locationOpen = false;
       }
-    },
-  },
-  computed: {
-    servicesOffered() {
-      return this.$props.item.services_offered.split(',');
-    },
-    selectedResources() {
-      return this.$store.state.selectedResources;
     },
   },
   methods: {
@@ -81,7 +88,7 @@ export default {
     expandLocation() {
       this.locationOpen = !this.locationOpen;
       const selectedResource = this.$props.item._featureId;
-      const selectedResources = [...this.selectedResources];
+      const selectedResources = [ ...this.selectedResources ];
       let latestSelectedResourceFromExpand = null;
       if (this.locationOpen) {
         selectedResources.push(selectedResource);
