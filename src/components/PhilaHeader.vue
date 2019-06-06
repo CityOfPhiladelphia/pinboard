@@ -69,8 +69,14 @@ export default {
   data() {
     return {
       dropdownData: {
-        address: 'Address',
-        keyword: 'Keyword',
+        address: {
+          text: 'Address',
+          data: null,
+        },
+        keyword: {
+          text: 'Keyword',
+          data: null,
+        },
       },
       isOpen: false,
     };
@@ -103,6 +109,30 @@ export default {
   },
   components: {
     ComboSearch: () => import(/* webpackChunkName: "pvc_ComboSearch" */'@philly/vue-comps/src/components/ComboSearch.vue'),
+  },
+  computed: {
+    address() {
+      let value;
+      if (this.$store.state.geocode.data) {
+        if (this.$store.state.geocode.data.properties) {
+          value = this.$store.state.geocode.data.properties.street_address;
+        }
+      } else {
+        value = '';
+      }
+      return value;
+    },
+    keywords() {
+      return this.$store.state.selectedKeywords;
+    },
+  },
+  watch: {
+    address(nextAddress) {
+      this.dropdownData.address.data = nextAddress;
+    },
+    keywords(nextKeywords) {
+      this.dropdownData.keyword.data = nextKeywords;
+    },
   },
   methods: {
     toggleMenu() {

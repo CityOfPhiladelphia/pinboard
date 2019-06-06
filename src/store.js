@@ -22,26 +22,25 @@ function createStore(config) {
       },
       bufferList: null,
       currentData: [],
-      selectedServices: [],
-      selectedKeywords: [],
+      // selectedServices: [],
+      // selectedKeywords: [],
       selectedResources: [],
       latestSelectedResourceFromExpand: null,
     },
     mutations: {
-      setSelectedServices(state, payload) {
-        state.selectedServices = payload;
-      },
+      // setSelectedServices(state, payload) {
+      //   state.selectedServices = payload;
+      // },
       setBufferList(state, payload) {
         state.bufferList = payload;
       },
       setCurrentData(state, payload) {
         state.currentData = payload;
       },
-      setSelectedKeywords(state, payload) {
-        state.selectedKeywords = payload;
-      },
+      // setSelectedKeywords(state, payload) {
+      //   state.selectedKeywords = payload;
+      // },
       setSelectedResources(state, payload) {
-        // console.log('store.js setSelectedResources is running, payload:', payload);
         state.selectedResources = payload;
       },
       setLatestSelectedResourceFromExpand(state, payload) {

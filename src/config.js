@@ -14,6 +14,23 @@ export default {
   },
   router: {
     enabled: true,
+    firstRouteParameter: [
+      {
+        address(state) {
+          return state.geocode.data;
+        },
+      },
+      {
+        keywords(state) {
+          return state.selectedKeywords;
+        },
+      },
+    ],
+    secondRouteParameter: {
+      selectedResources(state) {
+        return state.selectedResources;
+      },
+    },
   },
   app: {
     title: 'Immigrant resource finder',
