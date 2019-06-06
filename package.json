@@ -11,7 +11,7 @@
   "dependencies": {
     "@fortawesome/free-brands-svg-icons": "^5.8.2",
     "@philly/vue-comps": "https://github.com/CityOfPhiladelphia/phila-vue-comps#d839c0082405e1205bc8fe0ef54bd209a8c2cba6",
-    "@philly/vue-datafetch": "https://github.com/CityOfPhiladelphia/phila-vue-datafetch#423ca36a2af18e39c19bc1789bcd0ac2db61fe4c",
+    "@philly/vue-datafetch": "https://github.com/CityOfPhiladelphia/phila-vue-datafetch#1193ab69c46db4f038d10b4b45112bcd7f64ca68",
     "@philly/vue-mapping": "https://github.com/CityOfPhiladelphia/phila-vue-mapping#ea07103c34e3978643ecdb7733fb0786d989d6fa",
     "axios": "^0.19.0",
     "core-js": "^2.6.5",
