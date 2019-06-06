@@ -74,9 +74,6 @@
   </div>
 </template>
 <script>
-/* eslint-disable no-console */
-/* eslint-disable no-restricted-syntax */
-/* eslint-disable import/no-extraneous-dependencies */
 
 import { point } from '@turf/helpers';
 import buffer from '@turf/buffer';

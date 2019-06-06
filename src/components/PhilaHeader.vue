@@ -87,8 +87,6 @@
 </template>
 
 <script>
-/* eslint-disable vue/no-unused-components */
-/* eslint-disable max-len */
 // TODO: move logo, link etc to app config.
 import Logo from '@/assets/city-of-philadelphia-logo.png';
 // import AddressInput from '@philly/vue-comps/src/components/AddressInput.vue'

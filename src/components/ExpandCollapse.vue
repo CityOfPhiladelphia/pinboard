@@ -18,8 +18,6 @@
   </div>
 </template>
 <script>
-/* eslint-disable max-len */
-/* eslint-disable no-unused-expressions */
 import TopicComponent from '@philly/vue-comps/src/components/TopicComponent.vue';
 
 export default {

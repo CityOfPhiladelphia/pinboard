@@ -49,11 +49,6 @@
 </template>
 
 <script>
-/* eslint-disable no-restricted-syntax */
-/* eslint-disable import/no-extraneous-dependencies */
-/* eslint-disable no-unused-vars */
-/* eslint-disable no-console */
-/* eslint-disable prefer-destructuring */
 import 'leaflet/dist/leaflet.css';
 // import all fontawesome icons included in phila-vue-mapping
 import * as faMapping from '@philly/vue-mapping/src/fa';

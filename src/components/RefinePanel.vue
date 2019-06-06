@@ -71,7 +71,6 @@
   </div>
 </template>
 <script>
-/* eslint-disable no-console */
 
 import { mapState } from 'vuex';
 import PhilaButton from './PhilaButton.vue';
