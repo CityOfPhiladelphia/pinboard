@@ -54,6 +54,11 @@ export default {
       }
     },
   },
+  mounted() {
+    if (this.selectedResources.includes(this.item._featureId)) {
+      this.locationOpen = true;
+    }
+  },
   methods: {
     openLocation() {
       this.locationOpen = true;
