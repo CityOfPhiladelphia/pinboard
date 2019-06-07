@@ -1,21 +1,6 @@
 <template>
-  <button><slot /> {{ buttonText }}</button>
+  <button><slot>Button text</slot></button>
 </template>
-
-<script>
-export default {
-  props: {
-    buttonText: {
-      type: String,
-      default: 'Go do a thing',
-    },
-    buttonAction: {
-      type: Function,
-      default() { },
-    },
-  },
-};
-</script>
 
 <style lang="scss" scoped>
 button,
@@ -103,33 +88,6 @@ button, a.button {
       color: white;
       background: color(dark-gray);
       transition: background-color 300ms ease-in-out;
-    }
-  }
-  &.see-all-right {
-    position: relative;
-    text-transform: none;
-    height: 28px;
-    border:none;
-    padding: 0;
-    .button-label{
-      padding:0 1rem;
-    }
-    &::after{
-      content: "";
-      position: absolute;
-      right:-15px;
-      top:0;
-      width: 0;
-      height: 0;
-      border-top: 13px solid transparent;
-      border-bottom: 15px solid transparent;
-
-      border-left: 15px solid color(electric-blue);
-    }
-    &:hover::after, &:focus::after{
-      border-left: 15px solid color(dark-gray);
-      transition: border-color 300ms ease-in-out;
-
     }
   }
 }

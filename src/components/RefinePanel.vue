@@ -13,10 +13,11 @@
             {{ legendTitle }}
           </legend>
           <PhilaButton
-            button-text="Clear all"
             class="hide-for-small-only"
             @click.native="clearAll"
-          />
+          >
+            Clear all
+          </PhilaButton>
         </div>
         <div
           v-if="dataStatus === 'success'"
@@ -41,15 +42,15 @@
         </div>
         <div class="mobile-filter-actions show-for-small-only">
           <PhilaButton
-            button-text="Apply filters"
             @click.native="expandRefine(); scrollToTop();"
           >
-            <font-awesome-icon icon="filter" />
+            <font-awesome-icon icon="filter" /> Apply filters
           </PhilaButton>
           <PhilaButton
-            button-text="Clear all"
             @click.native="closeRefinePanel"
-          />
+          >
+            Clear all
+          </PhilaButton>
         </div>
       </fieldset>
     </div>
