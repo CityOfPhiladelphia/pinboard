@@ -272,6 +272,9 @@ export default {
 .toggle-map{
   margin:0 !important;
 }
+.main-content{
+  margin-top:.5rem;
+}
 
 //TODO, move to standards
 @each $value in $colors {
