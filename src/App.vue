@@ -64,9 +64,10 @@
 
     <PhilaButton
       class="button toggle-map hide-for-medium"
-      button-text="Toggle map"
       @click.native="toggleMap"
-    />
+    >
+      {{ buttonText }}
+    </PhilaButton>
     <PhilaFooter
       v-show="isLarge"
       @howToUseLink="toggleModal()"
@@ -104,6 +105,7 @@ export default {
       isModalOpen: false,
       isLarge: true,
       buffer: null,
+      buttonText: 'Toggle map',
     };
   },
   computed: {
@@ -234,6 +236,7 @@ export default {
       } else {
         this.$data.isMapVisible = !this.$data.isMapVisible;
       }
+      this.$data.buttonText = this.$data.isMapVisible ? 'Toggle map' : 'Toggle resource list';
     },
     toggleModal() {
       this.isModalOpen = !this.isModalOpen;
@@ -265,6 +268,13 @@ export default {
 
 <style lang="scss">
 @import "@/scss/global.scss";
+
+.toggle-map{
+  margin:0 !important;
+}
+.main-content{
+  margin-top:.5rem;
+}
 
 //TODO, move to standards
 @each $value in $colors {

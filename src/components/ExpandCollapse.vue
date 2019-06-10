@@ -113,6 +113,10 @@ export default {
   position: relative;
   border-bottom: 1px solid black;
   height:100%;
+  
+  &:hover::after {
+    color: white;
+  }
 
   .location-title {
     cursor: pointer;

@@ -13,25 +13,11 @@
             {{ legendTitle }}
           </legend>
           <PhilaButton
-            button-text="Clear all"
             class="hide-for-small-only"
             @click.native="clearAll"
-          />
-          <!-- <a href="#"
-            @click="clearAll"
-            class="clear-all hide-for-small-only">Clear all</a> -->
-
-          <!-- <div class="legend-title h3 margin-add">Address:</div>
-          <div class="margin-add min-width-needed">{{ addressEntered }}</div>
-          <a href="#"
-            @click="clearAddress"
-            class="test">Clear address</a>
-
-          <div class="legend-title h3 margin-add">Keywords:</div>
-          <div class="margin-add min-width-needed">{{ keywordsEntered }}</div>
-          <a href="#"
-            @click="clearKeywords"
-            class="test">Clear Keywords</a> -->
+          >
+            Clear all
+          </PhilaButton>
         </div>
         <div
           v-if="dataStatus === 'success'"
@@ -56,15 +42,15 @@
         </div>
         <div class="mobile-filter-actions show-for-small-only">
           <PhilaButton
-            button-text="Apply filters"
             @click.native="expandRefine(); scrollToTop();"
           >
-            <font-awesome-icon icon="filter" />
+            <font-awesome-icon icon="filter" /> Apply filters
           </PhilaButton>
           <PhilaButton
-            button-text="Clear all"
-            @click.native="clearAll"
-          />
+            @click.native="closeRefinePanel"
+          >
+            Clear all
+          </PhilaButton>
         </div>
       </fieldset>
     </div>
@@ -139,14 +125,6 @@ export default {
     // this.$data.selected = this.$store.state.selectedServices;
   },
   methods: {
-    clearAddress() {
-      if (this.$store.state.geocode.status === 'success') {
-        this.$controller.dataManager.resetGeocode();
-      }
-    },
-    clearKeywords() {
-      this.$store.commit('setSelectedKeywords', '');
-    },
     clearAll() {
       console.log('RefinePanel clearAll is running');
       if (this.selected.length) {
@@ -184,6 +162,11 @@ export default {
         this.refineOpen = !this.refineOpen;
       }
     },
+    closeRefinePanel(){
+      this.scrollToTop();
+      this.expandRefine();
+      this.clearAll();
+    },
   },
 };
 </script>
@@ -192,7 +175,7 @@ export default {
 $refine-panel-height: 19vh;
 .refine-panel{
   max-height: $refine-panel-height;
-  overflow-y: scroll;
+  overflow-y: hidden;
   padding: 1rem;
 
   .refine-title{
@@ -265,6 +248,7 @@ $refine-panel-height: 19vh;
     }
   }
   &.refine-open{
+    overflow-y: scroll;
     height: calc(100vh - 100px);
     max-height: 100vh;
     z-index: 1002;
