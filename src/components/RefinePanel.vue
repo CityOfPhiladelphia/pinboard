@@ -75,6 +75,7 @@
 import { mapState } from 'vuex';
 import PhilaButton from './PhilaButton.vue';
 
+
 export default {
   components: {
     PhilaButton,
@@ -114,17 +115,24 @@ export default {
   },
   watch: {
     selected(nextSelected) {
+      window.theRouter = this.$router;
       console.log('RefinePanel watch selected is firing, nextSelected', nextSelected);
       this.$store.commit('setSelectedServices', nextSelected);
-      this.$controller.handleRefinePanelClick(nextSelected);
+      this.$controller.handleRefinePanelClick(nextSelected) ;
+      this.$router.push({ query: { ...this.$route.query, ...{ filter: nextSelected.join(',') }}});
     },
     selectedServices(nextSelectedServices) {
       // console.log('watch selectedServices is firing:', nextSelectedServices);
       this.$data.selected = nextSelectedServices;
     },
   },
+  beforeMount() {
+    if (this.$route.query.filter) {
+      this.selected = this.$route.query.filter.split(',');
+    }
+  },
   mounted() {
-    console.log('RefinePanel is mounted, this.$store.state.selectedServices:', this.$store.state.selectedServices);
+    console.log('RefinePanel is mounted, this.$store.state.selectedServices:', this.$store.state.selectedServices, 'this.$router:', this.$router);
     if (this.$store.state.selectedServices.length > 0) {
       console.log('there are services');
     }

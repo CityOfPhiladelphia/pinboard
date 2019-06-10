@@ -52,6 +52,10 @@
           <div class="cell large-auto small-auto small-centered text-center">
             <combo-search
               :dropdown="dropdownData"
+              :search-string="searchString"
+              :dropdown-selected="dropdownSelected"
+              @trigger-combo-search="comboSearchTriggered"
+              @trigger-clear-search="clearSearchTriggered"
             />
             <div class="search">
               <slot name="search" />
@@ -135,6 +139,8 @@ export default {
           data: null,
         },
       },
+      searchString: '',
+      dropdownSelected: '',
       isOpen: false,
     };
   },
@@ -153,6 +159,9 @@ export default {
     keywords() {
       return this.$store.state.selectedKeywords;
     },
+    searchType() {
+      return this.$store.state.searchType;
+    },
   },
   watch: {
     address(nextAddress) {
@@ -162,7 +171,31 @@ export default {
       this.dropdownData.keyword.data = nextKeywords;
     },
   },
+  beforeMount() {
+    Object.keys(this.dropdownData).forEach(element => {
+      if (this.$route.query[element]) {
+        this.searchString = this.$route.query[element];
+        this.dropdownData[element].selected = true;
+      }
+    }); 
+  },
   methods: {
+    comboSearchTriggered(query) {
+      console.log('in comboSearchTriggered, query:', query, 'this.searchType:', this.searchType, '{...this.$route.query}:', { ...this.$route.query }, '{...query}:', { ...query });
+      this.$router.push({ query: { ...this.$route.query, ...query }});
+      this.searchString = query[this.searchType];
+    },
+    clearSearchTriggered() {
+      console.log('in clearSearchTriggered, this.$route.query:', this.$route.query);
+      let startQuery = this.$route.query;
+      // startQuery[this.searchType] = undefined;
+      delete startQuery[this.searchType];
+      console.log('in clearSearchTriggered, startQuery:', startQuery);
+      this.$router.push({ ...startQuery });
+      // this.$router.push({query: {startQuery}});
+      // this.$router.push({query: {...this.$route.query, ...startQuery}});
+      this.searchString = '';
+    },
     toggleMenu() {
       this.isOpen = !this.isOpen;
       this.toggleBodyClass('no-scroll');
