@@ -83,7 +83,7 @@ export default {
         let markerColor; let
           markerSize;
         if (this.selectedResources.includes(row._featureId)) {
-          markerColor = 'orange';
+          markerColor = '#2176d2';
           markerSize = 40;
         } else {
           markerColor = 'purple';
