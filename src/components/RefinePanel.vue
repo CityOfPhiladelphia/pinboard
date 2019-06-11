@@ -12,12 +12,13 @@
           <legend class="legend-title h3">
             {{ legendTitle }}
           </legend>
-          <PhilaButton
-            class="hide-for-small-only"
-            @click.native="clearAll"
+          <a
+            href=""
+            class="clear-all hide-for-small-only"
+            @click.prevent="clearAll"
           >
             Clear all
-          </PhilaButton>
+          </a>
         </div>
         <div
           v-if="dataStatus === 'success'"
@@ -178,12 +179,16 @@ $refine-panel-height: 19vh;
   overflow-y: hidden;
   padding: 1rem;
 
+  .legend-title{
+    float:left;
+  }
+
   .refine-title{
     color: color(dark-ben-franklin);
     position: relative;
 
     .clear-all{
-      margin: 0 0 0 4rem;
+      margin: .35rem 0 0 3rem;
     }
 
     .clear-button{
@@ -208,11 +213,9 @@ $refine-panel-height: 19vh;
     border-width: 1px;
   }
 
-  legend.legend-title, .clear-all{
-    float: left;
-  }
 
   .service-list{
+    margin-top: 1rem;
     input{
       margin-right: -2rem;
     }
