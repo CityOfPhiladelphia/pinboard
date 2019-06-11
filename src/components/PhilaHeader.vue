@@ -224,7 +224,6 @@ export default {
   }
 
   .app-logo{
-    width: 170px;
     height: 45px;
   }
   .logo{

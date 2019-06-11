@@ -42,6 +42,8 @@
     <PhilaHeader
       :app-title="this.$config.app.title"
       :app-tag-line="this.$config.app.tagLine"
+      :app-logo="`${publicPath}logo.png`"
+      :app-logo-alt="this.$config.app.logoAlt"
     >
       <div slot="mobile-menu">
         <PhilaFooter
@@ -101,6 +103,7 @@ export default {
   },
   data() {
     return {
+      publicPath: process.env.BASE_URL,
       isMapVisible: true,
       isModalOpen: false,
       isLarge: true,
