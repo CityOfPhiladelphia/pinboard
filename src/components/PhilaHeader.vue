@@ -69,6 +69,9 @@
       class="stripe"
     />
     <div
+      class="white-stripe"
+    />
+    <div
       v-show="isOpen"
       class="mobile-menu-content-container show-for-small-only"
     >
@@ -171,11 +174,11 @@ export default {
       this.dropdownData.keyword.data = nextKeywords;
     },
   },
-  beforeMount() {
-    Object.keys(this.dropdownData).forEach(element => {
-      if (this.$route.query[element]) {
-        this.searchString = this.$route.query[element];
-        this.dropdownData[element].selected = true;
+  created() {
+    Object.keys(this.dropdownData).forEach(item => {
+      if (this.$route.query[item]) {
+        this.searchString = this.$route.query[item];
+        this.dropdownData[item].selected = true;
       }
     }); 
   },
@@ -285,5 +288,9 @@ export default {
 .stripe {
   min-height: 5px;
   background: color(electric-blue);
+}
+.white-stripe{
+  min-height: 5px;
+  background: white;
 }
 </style>
