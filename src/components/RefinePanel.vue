@@ -218,7 +218,7 @@ $refine-panel-height: 19vh;
       margin-right: -2rem;
     }
     .service-item {
-      margin-left: 3rem;
+      margin-left: 1rem;
       display: inline-block;
       line-height: 1.3rem;
       vertical-align: text-top;
