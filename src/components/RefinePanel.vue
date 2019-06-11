@@ -29,16 +29,14 @@
             :key="index"
             class="cell medium-6"
           >
-            <label :for="item">
-              <input
-                :id="item"
-                v-model="selected"
-                type="checkbox"
-                :name="item"
-                :value="item"
-              >
-              <span class="service-item">{{ item }}</span>
-            </label>
+            <input
+              :id="item"
+              v-model="selected"
+              type="checkbox"
+              :name="item"
+              :value="item"
+            >
+            <label :for="item"><span class="service-item">{{ item }}</span></label>
           </div>
         </div>
         <div class="mobile-filter-actions show-for-small-only">
@@ -260,6 +258,32 @@ $refine-panel-height: 19vh;
         content: '-';
       }
     }
+  }
+}
+
+//Custom checkboxes
+input[type=checkbox] {
+  display: none;
+
+  + label[for] {
+    color: color(dark-ben-franklin);
+    font-size: 14px;
+    margin-bottom: .5rem;
+  }
+
+  + label::before {
+    display: inline-block;
+    content: "\f0c8"; /* square */
+    padding-right: 10px;
+    font-family: "Font Awesome 5 Pro";
+    font-weight: 400; /* regular */
+    color: color(dark-ben-franklin);
+
+  }
+
+  &:checked + label::before {
+    content: "\f14a"; /* check-square */
+    font-weight: 900; /* solid */
   }
 }
 
