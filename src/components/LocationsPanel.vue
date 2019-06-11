@@ -70,11 +70,14 @@
                 <h3 class="h4">
                   Services offered
                 </h3>
-                <div
-                  v-for="i in parseServiceList(item.services_offered)"
-                  :key="i"
-                >
-                  {{ i }}
+                <div class="grid-x">
+                  <div
+                    v-for="i in parseServiceList(item.services_offered)"
+                    :key="i"
+                    class="cell medium-12 service-item"
+                  >
+                    {{ i }}
+                  </div>
                 </div>
               </div>
             </section>
@@ -163,6 +166,12 @@ export default {
   }
   .services{
     margin-top: 3rem;
+    h3{
+      margin-bottom: 1rem;
+    }
+  }
+  .service-item{
+    margin-bottom: .5rem;
   }
 }
 .location-container{
