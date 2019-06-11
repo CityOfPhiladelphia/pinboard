@@ -18,6 +18,8 @@ export default {
   app: {
     title: 'Immigrant resource finder',
     tagLine: 'Find resources for immigrants in the City',
+    logo: 'logo.png',
+    logoAlt: 'Immigrant Affairs, City of Philadelphia',
   },
   geocoder: {
     url(input) {
