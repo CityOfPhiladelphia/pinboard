@@ -12,12 +12,13 @@
           <legend class="legend-title h3">
             {{ legendTitle }}
           </legend>
-          <PhilaButton
-            class="hide-for-small-only"
-            @click.native="clearAll"
+          <a
+            href=""
+            class="clear-all hide-for-small-only"
+            @click.prevent="clearAll"
           >
             Clear all
-          </PhilaButton>
+          </a>
         </div>
         <div
           v-if="dataStatus === 'success'"
@@ -28,16 +29,14 @@
             :key="index"
             class="cell medium-6"
           >
-            <label :for="item">
-              <input
-                :id="item"
-                v-model="selected"
-                type="checkbox"
-                :name="item"
-                :value="item"
-              >
-              <span class="service-item">{{ item }}</span>
-            </label>
+            <input
+              :id="item"
+              v-model="selected"
+              type="checkbox"
+              :name="item"
+              :value="item"
+            >
+            <label :for="item"><span class="service-item">{{ item }}</span></label>
           </div>
         </div>
         <div class="mobile-filter-actions show-for-small-only">
@@ -178,12 +177,16 @@ $refine-panel-height: 19vh;
   overflow-y: hidden;
   padding: 1rem;
 
+  .legend-title{
+    float:left;
+  }
+
   .refine-title{
     color: color(dark-ben-franklin);
     position: relative;
 
     .clear-all{
-      margin: 0 0 0 4rem;
+      margin: .35rem 0 0 3rem;
     }
 
     .clear-button{
@@ -208,11 +211,9 @@ $refine-panel-height: 19vh;
     border-width: 1px;
   }
 
-  legend.legend-title, .clear-all{
-    float: left;
-  }
 
   .service-list{
+    margin-top: 1rem;
     input{
       margin-right: -2rem;
     }
@@ -257,6 +258,32 @@ $refine-panel-height: 19vh;
         content: '-';
       }
     }
+  }
+}
+
+//Custom checkboxes
+input[type=checkbox] {
+  display: none;
+
+  + label[for] {
+    color: color(dark-ben-franklin);
+    font-size: 14px;
+    margin-bottom: .5rem;
+  }
+
+  + label::before {
+    display: inline-block;
+    content: "\f0c8"; /* square */
+    padding-right: 10px;
+    font-family: "Font Awesome 5 Pro";
+    font-weight: 400; /* regular */
+    color: color(dark-ben-franklin);
+
+  }
+
+  &:checked + label::before {
+    content: "\f14a"; /* check-square */
+    font-weight: 900; /* solid */
   }
 }
 
