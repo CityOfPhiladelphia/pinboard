@@ -101,10 +101,9 @@ export default {
   watch: {
     selected(nextSelected) {
       window.theRouter = this.$router;
-      console.log('RefinePanel watch selected is firing, nextSelected', nextSelected);
+      // console.log('RefinePanel watch selected is firing, nextSelected', nextSelected);
       this.$store.commit('setSelectedServices', nextSelected);
-      this.$controller.handleRefinePanelClick(nextSelected) ;
-      this.$router.push({ query: { ...this.$route.query, ...{ filter: nextSelected.join(',') }}});
+      this.$router.push({ query: { ...this.$route.query, ...{ services: nextSelected.join(',') }}});
     },
     selectedServices(nextSelectedServices) {
       // console.log('watch selectedServices is firing:', nextSelectedServices);
@@ -112,8 +111,8 @@ export default {
     },
   },
   beforeMount() {
-    if (this.$route.query.filter) {
-      this.selected = this.$route.query.filter.split(',');
+    if (this.$route.query.services) {
+      this.selected = this.$route.query.services.split(',');
     }
   },
   mounted() {

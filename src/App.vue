@@ -169,7 +169,6 @@ export default {
     if (this.$config.dataSources) {
       this.$controller.dataManager.fetchData();
     }
-    this.$controller.appDidLoad();
     this.onResize();
   },
   created() {
@@ -220,7 +219,8 @@ export default {
         let booleanKeywords = true;
         if (this.selectedKeywords.length > 0) {
           booleanKeywords = false;
-          const description = row.description.split(/,| /);
+          // console.log('row:', row);
+          const description = row.tags.split(/,| /);
           const keywordsFiltered = this.selectedKeywords.filter(f => description.includes(f));
           if (keywordsFiltered.length > 0) {
             booleanKeywords = true;
