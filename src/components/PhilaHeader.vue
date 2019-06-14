@@ -46,6 +46,7 @@
                 <h2 class="h6 hide-for-small-only tagline">
                   {{ appTagLine }}
                 </h2>
+                <span id="demo-badge">BETA</span>
               </router-link>
             </section>
           </div>
@@ -253,6 +254,28 @@ export default {
     a {
       color: white;
     }
+
+    .tagline{
+      display: inline-block;
+    }
+
+    #demo-badge{
+      /*text-transform: capitalize;*/
+      font-size: 12px;
+      font-family: Arial, Helvetica, sans-serif;
+      font-weight: 800;
+      vertical-align: middle;
+      /*color: #eee;*/
+      margin-left: 8px;
+      // line-height: 35px;
+      padding: 1px;
+      padding-left: 6px;
+      padding-right: 6px;
+      border-radius: 1px;
+      color: black;
+      background: #FF8D00;
+    }
+
   }
   .app-title{
     opacity: 1;

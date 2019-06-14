@@ -44,16 +44,16 @@
         }"
         @l-click="handleMarkerClick"
       >
-        <pop-up-simple
+        <popup-simple
           v-if="latestSelectedResourceFromMap === marker._featureId"
           :latlng="marker.latlng"
           :feature-id="marker._featureId"
         >
-          <dom-util
+          <popup-content-functional
             :popup-data="marker.organization_name"
-            @testfuncEmit="toggleMap"
+            @didClickPopupContent="toggleMap"
           />
-        </pop-up-simple>
+        </popup-simple>
       </vector-marker>
 
       <!-- <pop-up-simple v-if="this.shouldShowPopup">
@@ -67,16 +67,14 @@ import 'leaflet/dist/leaflet.css';
 // import all fontawesome icons included in phila-vue-mapping
 import * as faMapping from '@philly/vue-mapping/src/fa';
 import Map_ from '@philly/vue-mapping/src/leaflet/Map.vue';
-import PopUpSimple from '@philly/vue-mapping/src/leaflet/PopUpSimple.vue';
-import DomUtil from '@philly/vue-mapping/src/leaflet/DomUtil.vue';
-// import PopUpContent from '@philly/vue-mapping/src/leaflet/PopUpContent.vue';
-
+import PopupSimple from '@philly/vue-mapping/src/leaflet/PopupSimple.vue';
+import PopupContentFunctional from '@philly/vue-mapping/src/leaflet/PopupContentFunctional.vue';
 
 export default {
   components: {
     Map_,
-    PopUpSimple,
-    DomUtil,
+    PopupSimple,
+    PopupContentFunctional,
     // PopUpContent,
     EsriTiledMapLayer: () => import(/* webpackChunkName: "pvm_EsriTiledMapLayer" */'@philly/vue-mapping/src/esri-leaflet/TiledMapLayer.vue'),
     VectorMarker: () => import(/* webpackChunkName: "mbmp_pvm_VectorMarker" */'@philly/vue-mapping/src/components/VectorMarker.vue'),
@@ -197,12 +195,6 @@ export default {
     window.removeEventListener('resize', this.handleResize);
   },
   methods: {
-    // handleMapClick() {
-    //   console.log('mapClick!');
-    // },
-    testfunc() {
-      console.log('testfunc is running');
-    },
     handleMarkerClick(e) {
       const { target } = e;
       const { featureId } = target.options.data;
@@ -226,7 +218,7 @@ export default {
       this.$store.state.map.map.invalidateSize();
     },
     toggleMap() {
-      this.$emit('toggle', 'test');
+      this.$emit('toggleMap');
     },
   },
 };
