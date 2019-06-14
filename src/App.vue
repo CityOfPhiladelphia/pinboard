@@ -199,7 +199,7 @@ export default {
 
       for (const row of this.database) {
         let booleanServices;
-        console.log('row.services_offered:', row.services_offered);
+        // console.log('row.services_offered:', row.services_offered);
         // const servicesSplit = row.services_offered.split(',');
         const servicesSplit = row.services_offered;
         const { selectedServices } = this.$store.state;
