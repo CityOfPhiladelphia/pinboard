@@ -56,10 +56,12 @@
     <div class="cell medium-auto medium-cell-block-container main-content">
       <div class="grid-x">
         <LocationsPanel
-          v-show="isMapVisible || isLarge"
+          v-show="!isMapVisible || isLarge"
+          :is-map-visible="this.$data.isMapVisible"
         />
         <MapPanel
-          v-show="!isMapVisible || isLarge"
+          v-show="isMapVisible || isLarge"
+          @toggle="toggleMap"
         />
       </div>
     </div>

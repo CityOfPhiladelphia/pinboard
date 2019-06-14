@@ -27,6 +27,10 @@ export default {
       type: String,
       default: 'Title',
     },
+    isMapVisible: {
+      type: Boolean,
+      default: true,
+    },
   },
   data() {
     return {
@@ -40,6 +44,9 @@ export default {
     selectedResources() {
       return this.$store.state.selectedResources;
     },
+    latestSelectedResourceFromMap() {
+      return this.$store.state.map.latestSelectedResourceFromMap;
+    },
   },
   watch: {
     selectedResources(nextSelectedResources) {
@@ -51,6 +58,20 @@ export default {
         }
       } else {
         this.locationOpen = false;
+      }
+    },
+    isMapVisible(nextIsMapVisible) {
+      if (!nextIsMapVisible) {
+        if (this.latestSelectedResourceFromMap) {
+          console.log('ExpandCollapse is reporting map is invisible and there is a this.latestSelectedResourceFromMap:', this.latestSelectedResourceFromMap);
+          if (this.latestSelectedResourceFromMap === this.item._featureId) {
+            const el = this.$el;
+            const visible = this.isElementInViewport(el);
+            if (!visible) {
+              el.scrollIntoView();
+            }
+          }
+        }
       }
     },
   },

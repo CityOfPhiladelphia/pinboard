@@ -20,6 +20,7 @@
         <ExpandCollapse
           :title="item.organization_name"
           :item="item"
+          :is-map-visible="isMapVisible"
         >
           <div class="grid-x grid-padding-x">
             <div class="cell medium-12">
@@ -94,6 +95,12 @@ import ExpandCollapse from './ExpandCollapse.vue';
 export default {
   components: {
     ExpandCollapse,
+  },
+  props: {
+    isMapVisible: {
+      type: Boolean,
+      default: true,
+    },
   },
   computed: {
     ...mapState([ 'sources' ]),
