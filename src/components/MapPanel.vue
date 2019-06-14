@@ -216,10 +216,9 @@ export default {
       } else {
         // console.log('markerClick open marker, featureId', featureId);
         selectedResource.push(featureId);
-        // if (window.innerWidth < 750) {
-        // this.$emit('trigger-marker-click', 'test');
-        this.$store.commit('setLatestSelectedResourceFromMap', featureId);
-        // }
+        if (window.innerWidth < 750) {
+          this.$store.commit('setLatestSelectedResourceFromMap', featureId);
+        }
       }
       this.$store.commit('setSelectedResources', selectedResource);
     },
