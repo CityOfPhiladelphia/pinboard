@@ -146,7 +146,7 @@ export default {
       return formattedAddress;
     },
     parseServiceList(list) {
-      const formattedService = list.split(',');
+      const formattedService = list;
       return formattedService;
     },
   },

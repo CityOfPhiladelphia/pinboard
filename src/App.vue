@@ -61,7 +61,7 @@
         />
         <MapPanel
           v-show="isMapVisible || isLarge"
-          @toggle="toggleMap"
+          @toggleMap="toggleMap"
         />
       </div>
     </div>
@@ -194,12 +194,14 @@ export default {
       this.$data.buffer = pointBuffer;
     },
     filterPoints() {
-      // console.log('App.vue filterPoints is running');
+      console.log('App.vue filterPoints is running, this.database:', this.database);
       const filteredRows = [];
 
       for (const row of this.database) {
         let booleanServices;
-        const servicesSplit = row.services_offered.split(',');
+        console.log('row.services_offered:', row.services_offered);
+        // const servicesSplit = row.services_offered.split(',');
+        const servicesSplit = row.services_offered;
         const { selectedServices } = this.$store.state;
         if (selectedServices.length === 0) {
           booleanServices = true;
