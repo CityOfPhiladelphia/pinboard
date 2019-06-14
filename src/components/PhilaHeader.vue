@@ -43,10 +43,12 @@
                 <h1 class="title">
                   {{ appTitle }}
                 </h1>
+                <div id="demo-badge">
+                  BETA
+                </div>
                 <h2 class="h6 hide-for-small-only tagline">
                   {{ appTagLine }}
-                </h2>
-                <span id="demo-badge">BETA</span>
+                </h2>                
               </router-link>
             </section>
           </div>
@@ -255,19 +257,23 @@ export default {
       color: white;
     }
 
-    .tagline{
+    .title {
       display: inline-block;
     }
 
+    // .tagline{
+    //   display: inline-block;
+    // }
+
     #demo-badge{
       /*text-transform: capitalize;*/
+      display: inline-block;
       font-size: 12px;
       font-family: Arial, Helvetica, sans-serif;
       font-weight: 800;
       vertical-align: middle;
-      /*color: #eee;*/
       margin-left: 8px;
-      // line-height: 35px;
+      margin-bottom: 5px;
       padding: 1px;
       padding-left: 6px;
       padding-right: 6px;
