@@ -19,6 +19,9 @@ function createStore(config) {
       map: {
         center: [ -75.163471, 39.953338 ],
         zoom: 12,
+        latestSelectedResourceFromMap: null,
+        popupCoords: null,
+        selectedPopupLayer: null,
       },
       bufferList: null,
       currentData: [],
@@ -45,6 +48,18 @@ function createStore(config) {
       },
       setLatestSelectedResourceFromExpand(state, payload) {
         state.latestSelectedResourceFromExpand = payload;
+      },
+      setLatestSelectedResourceFromMap(state, payload) {
+        state.map.latestSelectedResourceFromMap = payload;
+      },
+      // setIntersectingFeatures(state, payload) {
+      //   state.map.intersectingFeatures = payload;
+      // },
+      setPopupCoords(state, payload) {
+        state.map.popupCoords = payload;
+      },
+      setSelectedPopupLayer(state, payload) {
+        state.map.selectedPopupLayer = payload;
       },
     },
     actions: {

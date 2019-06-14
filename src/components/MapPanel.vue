@@ -38,12 +38,26 @@
         :latlng="marker.latlng"
         :marker-color="marker.color"
         :icon="marker.icon"
-        :-feature-id="marker._featureId"
+        :feature-id="marker._featureId"
         :data="{
           featureId: marker._featureId
         }"
         @l-click="handleMarkerClick"
-      />
+      >
+        <pop-up-simple
+          v-if="latestSelectedResourceFromMap === marker._featureId"
+          :latlng="marker.latlng"
+          :feature-id="marker._featureId"
+        >
+          <dom-util
+            :popup-data="marker.organization_name"
+            @testfuncEmit="toggleMap"
+          />
+        </pop-up-simple>
+      </vector-marker>
+
+      <!-- <pop-up-simple v-if="this.shouldShowPopup">
+      </pop-up-simple> -->
     </Map_>
   </div>
 </template>
@@ -53,10 +67,17 @@ import 'leaflet/dist/leaflet.css';
 // import all fontawesome icons included in phila-vue-mapping
 import * as faMapping from '@philly/vue-mapping/src/fa';
 import Map_ from '@philly/vue-mapping/src/leaflet/Map.vue';
+import PopUpSimple from '@philly/vue-mapping/src/leaflet/PopUpSimple.vue';
+import DomUtil from '@philly/vue-mapping/src/leaflet/DomUtil.vue';
+// import PopUpContent from '@philly/vue-mapping/src/leaflet/PopUpContent.vue';
+
 
 export default {
   components: {
     Map_,
+    PopUpSimple,
+    DomUtil,
+    // PopUpContent,
     EsriTiledMapLayer: () => import(/* webpackChunkName: "pvm_EsriTiledMapLayer" */'@philly/vue-mapping/src/esri-leaflet/TiledMapLayer.vue'),
     VectorMarker: () => import(/* webpackChunkName: "mbmp_pvm_VectorMarker" */'@philly/vue-mapping/src/components/VectorMarker.vue'),
   },
@@ -72,6 +93,9 @@ export default {
     },
     latestSelectedResourceFromExpand() {
       return this.$store.state.latestSelectedResourceFromExpand;
+    },
+    latestSelectedResourceFromMap() {
+      return this.$store.state.map.latestSelectedResourceFromMap;
     },
     currentData() {
       return this.$store.state.currentData;
@@ -137,6 +161,16 @@ export default {
       }
       return markers;
     },
+    intersectingFeatures() {
+      return this.$store.state.map.intersectingFeatures;
+    },
+    shouldShowPopup() {
+      if (this.intersectingFeatures.length > 0) {
+        return true;
+      } 
+      return false;
+      
+    },
   },
   watch: {
     latestSelectedResourceFromExpand(nextLatestSelectedResource) {
@@ -151,6 +185,10 @@ export default {
         map.setView([ dataValue[0].lat, dataValue[0].lon ], geocodeZoom);
       }
     },
+    latestSelectedResourceFromMap(nextLatestSelectedResource) {
+      let test = document.getElementById('customPopup');
+      console.log('in watch latestSelectedResourceFromMap, test:', test);
+    },
   },
   mounted() {
     window.addEventListener('resize', this.handleResize);
@@ -162,20 +200,34 @@ export default {
     // handleMapClick() {
     //   console.log('mapClick!');
     // },
+    testfunc() {
+      console.log('testfunc is running');
+    },
     handleMarkerClick(e) {
       const { target } = e;
       const { featureId } = target.options.data;
-      // console.log('markerClick, featureId', featureId);
+      
+      console.log('markerClick, featureId', featureId);
       const selectedResource = [ ...this.selectedResources ];
       if (selectedResource.includes(featureId)) {
+        // console.log('markerClick close marker, featureId', featureId);
         selectedResource.splice(selectedResource.indexOf(featureId), 1);
+        this.$store.commit('setLatestSelectedResourceFromMap', null);
       } else {
+        // console.log('markerClick open marker, featureId', featureId);
         selectedResource.push(featureId);
+        // if (window.innerWidth < 750) {
+        // this.$emit('trigger-marker-click', 'test');
+        this.$store.commit('setLatestSelectedResourceFromMap', featureId);
+        // }
       }
       this.$store.commit('setSelectedResources', selectedResource);
     },
     handleResize(event) {
       this.$store.state.map.map.invalidateSize();
+    },
+    toggleMap() {
+      this.$emit('toggle', 'test');
     },
   },
 };

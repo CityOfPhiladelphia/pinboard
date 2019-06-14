@@ -31,6 +31,7 @@ export default {
     },
   },
   map: {
+    // clickToIdentifyFeatures: true,
     center: [ -75.163471, 39.953338 ],
     zoom: 12,
     geocodeZoom: 15,
