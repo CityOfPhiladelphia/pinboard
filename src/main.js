@@ -18,7 +18,7 @@ import configMixin from './util/config-mixin';
 // baseConfig is right now coming in from within the project
 // if we definitely need one, we can move it outside the project
 // and do an axios call to get it
-import baseConfig from './config';
+// import baseConfig from './config';
 
 
 // any config specific to this project only can go here
@@ -27,6 +27,7 @@ const clientConfig = {
 };
 
 function initPinboard(clientConfig) {
+  console.log('initPinboard is running, clientConfig:', clientConfig);
   const baseConfigUrl = clientConfig.baseConfig;
 
   if (baseConfigUrl === null) {
@@ -85,10 +86,12 @@ function finishInit(config) {
   // Vue.use(controllerMixin, { config, store, eventBus });
 
   Vue.component('font-awesome-icon', FontAwesomeIcon);
-  // Vue.config.productionTip = false
+
+  Vue.use(fonts);
+  Vue.config.productionTip = false;
+  Vue.prototype.$appType = 'immigrant';
 
   const customComps = config.customComps || [];
-  // console.log('mapboard main.js, customComps:', customComps);
   for (let key of Object.keys(customComps)) {
     Vue.component(key, customComps[key]);
   }
@@ -97,33 +100,9 @@ function finishInit(config) {
   const vm = new Vue({
     el: config.el || '#app',
     render: h => h(App),
+    router,
     store,
   });
 }
 
 export default initPinboard;
-
-
-
-// // if there is a baseConfig, it is merged with the clientConfig here
-// // in the parameters of mergeDeep, whichever one comes second
-// // will have overwrite power over the first
-// const config = mergeDeep(baseConfig, clientConfig);
-
-// const store = createStore(config);
-
-// Vue.use(controllerMixin, { config, store });
-// Vue.use(configMixin, config);
-// Vue.use(fonts);
-// Vue.component('font-awesome-icon', FontAwesomeIcon);
-
-// Vue.config.productionTip = false;
-
-// /* Change this depending on value in $store.state.sources */
-// Vue.prototype.$appType = 'immigrant';
-
-// new Vue({
-//   router,
-//   store,
-//   render: h => h(App),
-// }).$mount('#app');
