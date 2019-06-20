@@ -53,5 +53,18 @@
       "vue-cli-service lint",
       "git add"
     ]
-  }
+  },
+  "description": "A generic app connected to a Carto endpoint, that allows users to search for a type of resource by location or keyword, and filter by resource type.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CityOfPhiladelphia/pinboard.git"
+  },
+  "keywords": [
+    "vue",
+    "map"
+  ],  
+  "bugs": {
+    "url": "https://github.com/CityOfPhiladelphia/pinboard/issues"
+  },
+  "homepage": "https://github.com/CityOfPhiladelphia/pinboard#readme"
 }
