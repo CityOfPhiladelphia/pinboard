@@ -62,7 +62,14 @@
         <MapPanel
           v-show="isMapVisible || isLarge"
           @toggleMap="toggleMap"
-        />
+        >
+          <cyclomedia-widget
+            v-if="this.shouldLoadCyclomediaWidget"
+            v-show="cyclomediaActive"
+            slot="cycloWidget"
+            screen-percent="2"
+          />
+        </MapPanel>
       </div>
     </div>
 
@@ -102,6 +109,7 @@ export default {
     RefinePanel,
     LocationsPanel,
     MapPanel,
+    CyclomediaWidget: () => import(/* webpackChunkName: "mbmb_pvm_CyclomediaWidget" */'@philly/vue-mapping/src/cyclomedia/Widget.vue'),
   },
   data() {
     return {
@@ -138,6 +146,30 @@ export default {
     database() {
       return this.$store.state.sources[this.$appType].data.rows;
     },
+    shouldLoadCyclomediaWidget() {
+      return this.$config.cyclomedia.enabled && !this.isMobileOrTablet;
+    },
+    cyclomediaActive() {
+      return this.$store.state.cyclomedia.active;
+    },
+    cycloLatlng() {
+      if (this.$store.state.cyclomedia.orientation.xyz !== null) {
+        const xyz = this.$store.state.cyclomedia.orientation.xyz;
+        return [ xyz[1], xyz[0] ];
+      }
+      const center = this.$config.map.center;
+      return center;
+
+    },
+    cycloRotationAngle() {
+      return this.$store.state.cyclomedia.orientation.yaw * (180/3.14159265359);
+    },
+    cycloHFov() {
+      return this.$store.state.cyclomedia.orientation.hFov;
+    },
+    selectedResources() {
+      return this.$store.state.selectedResources;
+    },
   },
   watch: {
     geocodeStatus(nextGeocodeStatus) {
@@ -171,6 +203,7 @@ export default {
     if (this.$config.dataSources) {
       this.$controller.dataManager.fetchData();
     }
+    this.$controller.appDidLoad();
     this.onResize();
   },
   created() {
