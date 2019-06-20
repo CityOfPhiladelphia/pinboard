@@ -46,7 +46,7 @@
 
       <!-- <vector-marker v-for="(marker) in this.$data.rows" -->
       <vector-marker
-        v-for="marker in currentMapData"
+        v-for="(marker) in currentMapData"
         :key="marker.key"
         :latlng="marker.latlng"
         :marker-color="marker.color"
@@ -68,22 +68,6 @@
           />
         </popup-simple>
       </vector-marker>
-
-      <!-- <pop-up-simple v-if="this.shouldShowPopup">
-      </pop-up-simple> -->
-      <!-- <vector-marker v-for="(marker) in this.$data.rows" -->
-      <vector-marker
-        v-for="marker in currentMapData"
-        :key="marker.key"
-        :latlng="marker.latlng"
-        :marker-color="marker.color"
-        :icon="marker.icon"
-        :feature-id="marker._featureId"
-        :data="{
-          featureId: marker._featureId
-        }"
-        @l-click="handleMarkerClick"
-      />
 
       <!-- marker using a png and ablility to rotate it -->
       <png-marker
@@ -170,6 +154,7 @@ import BasemapToggleControl from '@philly/vue-mapping/src/components/BasemapTogg
 import BasemapSelectControl from '@philly/vue-mapping/src/components/BasemapSelectControl.vue';
 
 export default {
+  name: "MapPanel",
   components: {
     Map_,
     PopupSimple,
@@ -212,9 +197,10 @@ export default {
       return this.$store.state.currentData;
     },
     currentMapData() {
-      // console.log('currentMapData computed is recalculating');
+      // console.log('currentMapData computed is recalculating, this.currentData:', this.currentData);
       const newRows = [];
       for (const row of [ ...this.currentData ]) {
+        // console.log('in loop, row:', row);
         let markerColor; let
           markerSize;
         if (this.selectedResources.includes(row._featureId)) {
@@ -314,9 +300,9 @@ export default {
     basemapSelectControlPosition() {
       if (this.isMobileOrTablet) {
         return 'topright';
-      } 
+      }
       return 'topalmostright';
-      
+
     },
     basemaps() {
       return Object.values(this.$config.map.basemaps);
@@ -330,9 +316,9 @@ export default {
     shouldShowBasemapToggleControl() {
       if (this.$config.map.imagery) {
         return this.hasImageryBasemaps && this.$config.map.imagery.enabled;
-      } 
+      }
       return this.hasImageryBasemaps;
-      
+
     },
     sitePath() {
       if (process.env.VUE_APP_PUBLICPATH) {
