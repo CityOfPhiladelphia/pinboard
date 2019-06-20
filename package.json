@@ -1,6 +1,6 @@
 {
   "name": "@philly/pinboard",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "private": false,
   "scripts": {
     "serve": "vue-cli-service serve",
@@ -62,7 +62,7 @@
   "keywords": [
     "vue",
     "map"
-  ],  
+  ],
   "bugs": {
     "url": "https://github.com/CityOfPhiladelphia/pinboard/issues"
   },
