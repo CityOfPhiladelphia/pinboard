@@ -10,10 +10,12 @@
       :max-zoom="22"
       @l-moveend="handleMapMove"
     >
-
-      <div v-show="isLoadingPins" class="mb-map-loading-mask">
+      <div
+        v-show="isLoadingPins"
+        class="mb-map-loading-mask"
+      >
         <div class="mb-map-loading-mask-inner">
-          <i class="fa fa-spinner fa-4x spin"></i>
+          <i class="fa fa-spinner fa-4x spin" />
           <h1>Finding map data...</h1>
         </div>
       </div>
@@ -100,20 +102,21 @@
       />
 
       <!-- basemap control -->
-      <control-corner :vSide="'top'"
-                      :hSide="'almostright'"
-      >
-      </control-corner>
+      <control-corner
+        :v-side="'top'"
+        :h-side="'almostright'"
+      />
 
-      <control-corner :vSide="'top'"
-                      :hSide="'almostleft'"
-      >
-      </control-corner>
+      <control-corner
+        :v-side="'top'"
+        :h-side="'almostleft'"
+      />
 
       <div v-once>
-        <basemap-toggle-control v-if="shouldShowBasemapToggleControl"
-                                v-once
-                                :position="'topright'"
+        <basemap-toggle-control
+          v-if="shouldShowBasemapToggleControl"
+          v-once
+          :position="'topright'"
         />
       </div>
 
@@ -305,15 +308,15 @@ export default {
     },
     tiledLayers() {
       const activeBasemap = this.activeBasemap;
-      const activeBasemapConfig = this.configForBasemap(activeBasemap)
+      const activeBasemapConfig = this.configForBasemap(activeBasemap);
       return activeBasemapConfig.tiledLayers || [];
     },
     basemapSelectControlPosition() {
       if (this.isMobileOrTablet) {
-        return 'topright'
-      } else {
-        return 'topalmostright'
-      }
+        return 'topright';
+      } 
+      return 'topalmostright';
+      
     },
     basemaps() {
       return Object.values(this.$config.map.basemaps);
@@ -327,9 +330,9 @@ export default {
     shouldShowBasemapToggleControl() {
       if (this.$config.map.imagery) {
         return this.hasImageryBasemaps && this.$config.map.imagery.enabled;
-      } else {
-        return this.hasImageryBasemaps;
-      }
+      } 
+      return this.hasImageryBasemaps;
+      
     },
     sitePath() {
       if (process.env.VUE_APP_PUBLICPATH) {
@@ -368,8 +371,8 @@ export default {
     cyclomediaActive(value) {
       this.$nextTick(() => {
         this.$store.state.map.map.invalidateSize();
-      })
-    }
+      });
+    },
   },
   mounted() {
     window.addEventListener('resize', this.handleResize);
