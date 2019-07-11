@@ -1,6 +1,8 @@
 {
   "name": "@philly/pinboard",
+  "description": "A generic app connected to a Carto endpoint, that allows users to search for a type of resource by location or keyword, and filter by resource type.",
   "version": "0.1.4",
+  "author": "City of Philadelphia <maps@phila.gov>",
   "private": false,
   "scripts": {
     "serve": "vue-cli-service serve",
@@ -10,9 +12,9 @@
   },
   "dependencies": {
     "@fortawesome/free-brands-svg-icons": "^5.8.2",
-    "@philly/vue-comps": "1.0.32",
-    "@philly/vue-datafetch": "0.0.19",
-    "@philly/vue-mapping": "1.0.32",
+    "@philly/vue-comps": "1.0.33",
+    "@philly/vue-datafetch": "0.0.20",
+    "@philly/vue-mapping": "1.0.33",
     "axios": "^0.19.0",
     "core-js": "^2.6.5",
     "foundation-sites": "^6.5.3",
@@ -54,7 +56,6 @@
       "git add"
     ]
   },
-  "description": "A generic app connected to a Carto endpoint, that allows users to search for a type of resource by location or keyword, and filter by resource type.",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/CityOfPhiladelphia/pinboard.git"
