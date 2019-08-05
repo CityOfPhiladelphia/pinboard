@@ -9,7 +9,9 @@ import { faGlobe } from '@fortawesome/free-solid-svg-icons/faGlobe';
 import { faPhone } from '@fortawesome/free-solid-svg-icons/faPhone';
 import { faTimes } from '@fortawesome/free-solid-svg-icons/faTimes';
 import { faTwitter } from '@fortawesome/free-brands-svg-icons/faTwitter';
+import { faCheckSquare } from '@fortawesome/free-solid-svg-icons/faCheckSquare';
+import { faSquare } from '@fortawesome/free-regular-svg-icons/faSquare';
 
-library.add(faSpinner, faBars, faEnvelope, faFacebook, faFilter, faGlobe, faPhone, faTimes, faTwitter);
+library.add(faSpinner, faBars, faEnvelope, faFacebook, faFilter, faGlobe, faPhone, faTimes, faTwitter, faCheckSquare, faSquare);
 
 export default library;

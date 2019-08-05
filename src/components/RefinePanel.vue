@@ -36,7 +36,10 @@
               :name="item"
               :value="item"
             >
-            <label :for="item"><span class="service-item">{{ item }}</span></label>
+              <font-awesome-icon :for="item" :icon="['far', 'square']" v-show="!selected.includes(item)" class="fa-checkbox" />
+              <font-awesome-icon :for="item" icon="check-square" v-show="selected.includes(item)" class="fa-checkbox" />
+              <label class="input-label" :for="item"><span class="service-item">{{ item }}</span></label>
+            <!-- </input> -->
           </div>
         </div>
         <div class="mobile-filter-actions show-for-small-only">
@@ -271,19 +274,36 @@ input[type=checkbox] {
   }
 
   + label::before {
-    display: inline-block;
-    content: "\f0c8"; /* square */
-    padding-right: 10px;
-    font-family: "Font Awesome 5 Pro";
-    font-weight: 400; /* regular */
-    color: color(dark-ben-franklin);
+    // display: inline-block;
+    // // content: "square"; /* square */
+    // content: "\f0c8"; /* square */
+    // padding-right: 20px;
+    // font-family: "Font Awesome 5 Free";
+    // font-weight: 400; /* regular */
+    // color: color(dark-ben-franklin);
 
   }
 
-  &:checked + label::before {
-    content: "\f14a"; /* check-square */
-    font-weight: 900; /* solid */
-  }
+  // &:checked + label::before {
+  //   content: "\f14a"; /* check-square */
+  //   font-weight: 900; /* solid */
+  // }
+}
+
+.input-label {
+  display: inline-block;
+  color: color(dark-ben-franklin);
+  font-size: 14px;
+  margin-bottom: .5rem;
+  padding-left: 10px;
+}
+
+.fa-checkbox {
+  pointer-events: none;
+  color: color(dark-ben-franklin);
+  position: relative;
+  right: -15px;
+  bottom: 1px;
 }
 
 </style>
