@@ -48,7 +48,7 @@
                 </div>
                 <h2 class="h6 hide-for-small-only tagline">
                   {{ appTagLine }}
-                </h2>                
+                </h2>
               </router-link>
             </section>
           </div>
@@ -186,7 +186,7 @@ export default {
         this.searchString = this.$route.query[item];
         this.dropdownData[item].selected = true;
       }
-    }); 
+    });
   },
   methods: {
     searchTypeChanged(nextSearchType) {
