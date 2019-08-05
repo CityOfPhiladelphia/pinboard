@@ -1,6 +1,8 @@
 # Pinboard
 A generic app connected to a Carto endpoint, that allows users to search for a type of resource by location or keyword, and filter by resource type.
 
+![Example](https://mapboard-images.s3.amazonaws.com/Pinboard.JPG)
+
 ## Setup
 `yarn install`
 
