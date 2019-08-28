@@ -197,10 +197,10 @@ export default {
       return this.$store.state.currentData;
     },
     currentMapData() {
-      // console.log('currentMapData computed is recalculating, this.currentData:', this.currentData);
+      console.log('currentMapData computed is recalculating, this.currentData:', this.currentData);
       const newRows = [];
       for (const row of [ ...this.currentData ]) {
-        // console.log('in loop, row:', row);
+        console.log('in loop, row:', row);
         let markerColor; let
           markerSize;
         if (this.selectedResources.includes(row._featureId)) {
@@ -212,6 +212,17 @@ export default {
         }
         if (row.lat) {
           row.latlng = [ row.lat, row.lon ];
+          row.color = markerColor;
+          row.icon = {
+            prefix: 'fas',
+            icon: 'map-marker-alt',
+            shadow: false,
+            size: markerSize,
+          };
+          newRows.push(row);
+        } else if (row.geometry) {
+          console.log('has geometry:', row.geometry.x)
+          row.latlng = [ row.geometry.y, row.geometry.x ];
           row.color = markerColor;
           row.icon = {
             prefix: 'fas',
