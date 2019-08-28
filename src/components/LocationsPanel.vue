@@ -17,8 +17,9 @@
         v-for="item in currentData"
         :key="item.cartodb_id"
       >
+      <!-- :title="item.organization_name" -->
+      <!-- :titlethings="['attributes', 'agencyname']" -->
         <ExpandCollapse
-          :title="item.organization_name"
           :item="item"
           :is-map-visible="isMapVisible"
         >
@@ -103,6 +104,9 @@ export default {
     },
   },
   computed: {
+    orgTitle() {
+      return 'agencyname';
+    },
     ...mapState([ 'sources' ]),
     currentData() {
       const locations = this.$store.state.currentData;

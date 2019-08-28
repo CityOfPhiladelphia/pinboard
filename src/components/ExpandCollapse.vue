@@ -23,14 +23,17 @@ import TopicComponent from '@philly/vue-comps/src/components/TopicComponent.vue'
 export default {
   mixins: [ TopicComponent ],
   props: {
-    title: {
-      type: String,
-      default: 'Title',
-    },
+    // titlethings: {
+    //   type: Array,
+    //   default: ['Title'],
+    // },
     isMapVisible: {
       type: Boolean,
       default: true,
     },
+    item: {
+      type: Object,
+    }
   },
   data() {
     return {
@@ -38,6 +41,14 @@ export default {
     };
   },
   computed: {
+    title() {
+      let answer = this.$props.item;
+      for (let titleComponent of this.$config.itemParameters.title) {
+        // console.log('in ExpandCollapse computed tite, titlething:', titleComponent)
+        answer = answer[titleComponent]
+      }
+      return answer;
+    },
     servicesOffered() {
       return this.$props.item.services_offered.split(',');
     },
@@ -134,7 +145,7 @@ export default {
   position: relative;
   border-bottom: 1px solid black;
   height:100%;
-  
+
   &:hover::after {
     color: white;
   }
