@@ -197,7 +197,7 @@ export default {
       return this.$store.state.currentData;
     },
     currentMapData() {
-      console.log('currentMapData computed is recalculating, this.currentData:', this.currentData);
+      // console.log('currentMapData computed is recalculating, this.currentData:', this.currentData);
       const newRows = [];
       for (const row of [ ...this.currentData ]) {
         // console.log('in loop, row:', row);

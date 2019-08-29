@@ -101,13 +101,13 @@ export default {
       return this.$store.state.sources[this.$appType].status;
     },
     database() {
-      if (this.$store.state.sources[this.$appType].data.rows) {
+      // if (this.$store.state.sources[this.$appType].data.rows) {
         return this.$store.state.sources[this.$appType].data.rows;
-      } else if (this.$store.state.sources[this.$appType].data.features) {
-        return this.$store.state.sources[this.$appType].data.features;
-      } else {
-        return this.$store.state.sources[this.$appType].data;
-      }
+      // } else if (this.$store.state.sources[this.$appType].data.features) {
+      //   return this.$store.state.sources[this.$appType].data.features;
+      // } else {
+      //   return this.$store.state.sources[this.$appType].data;
+      // }
     },
   },
   watch: {

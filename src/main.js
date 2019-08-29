@@ -89,8 +89,8 @@ function finishInit(config) {
 
   Vue.use(fonts);
   Vue.config.productionTip = false;
-  // Vue.prototype.$appType = 'charterSchools';
-  Vue.prototype.$appType = 'immigrant';
+  // Vue.prototype.$appType = 'immigrant';
+  Vue.prototype.$appType = config.app.type;
 
   const customComps = config.customComps || [];
   for (let key of Object.keys(customComps)) {

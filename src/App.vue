@@ -144,13 +144,13 @@ export default {
       return this.$store.state.sources[this.$appType].status;
     },
     database() {
-      if (this.$store.state.sources[this.$appType].data.rows) {
+      // if (this.$store.state.sources[this.$appType].data.rows) {
         return this.$store.state.sources[this.$appType].data.rows;
-      } else if (this.$store.state.sources[this.$appType].data.features) {
-        return this.$store.state.sources[this.$appType].data.features;
-      } else {
-        return this.$store.state.sources[this.$appType].data;
-      }
+      // } else if (this.$store.state.sources[this.$appType].data.features) {
+      //   return this.$store.state.sources[this.$appType].data.features;
+      // } else {
+      //   return this.$store.state.sources[this.$appType].data;
+      // }
     },
     shouldLoadCyclomediaWidget() {
       return this.$config.cyclomedia.enabled && !this.isMobileOrTablet;
@@ -237,6 +237,7 @@ export default {
       const filteredRows = [];
 
       for (const row of this.database) {
+        // console.log('row:', row);
         let booleanServices;
         // console.log('row.services_offered:', row.services_offered);
         // const servicesSplit = row.services_offered.split(',');
@@ -252,10 +253,14 @@ export default {
         let booleanBuffer = false;
         if (!this.$data.buffer) {
           booleanBuffer = true;
-        } else if (typeof row.lon === 'number' && row.lon !== null) {
-          const rowPoint = point([ row.lon, row.lat ]);
-          if (booleanPointInPolygon(rowPoint, this.$data.buffer)) {
-            booleanBuffer = true;
+        // } else if (typeof row.lon === 'number' && row.lon !== null) {
+        } else if (row.latlng) {
+          if (typeof row.latlng[0] === 'number' && row.latlng[0] !== null) {
+            // const rowPoint = point([ row.lon, row.lat ]);
+            const rowPoint = point([ row.latlng[1], row.latlng[0] ]);
+            if (booleanPointInPolygon(rowPoint, this.$data.buffer)) {
+              booleanBuffer = true;
+            }
           }
         }
 
