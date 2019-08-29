@@ -7,7 +7,7 @@
       class="h4 location-title"
       @click="expandLocation"
     >
-      {{ title }}
+      {{ evaluateSlot(slots.title) }}
     </h2>
     <div
       :class="{ 'location-open': locationOpen }"
@@ -23,10 +23,6 @@ import TopicComponent from '@philly/vue-comps/src/components/TopicComponent.vue'
 export default {
   mixins: [ TopicComponent ],
   props: {
-    // titlethings: {
-    //   type: Array,
-    //   default: ['Title'],
-    // },
     isMapVisible: {
       type: Boolean,
       default: true,
@@ -41,14 +37,6 @@ export default {
     };
   },
   computed: {
-    title() {
-      let answer = this.$props.item;
-      for (let titleComponent of this.$config.itemParameters.title) {
-        // console.log('in ExpandCollapse computed tite, titlething:', titleComponent)
-        answer = answer[titleComponent]
-      }
-      return answer;
-    },
     servicesOffered() {
       return this.$props.item.services_offered.split(',');
     },

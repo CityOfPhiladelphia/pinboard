@@ -17,11 +17,10 @@
         v-for="item in currentData"
         :key="item.cartodb_id"
       >
-      <!-- :title="item.organization_name" -->
-      <!-- :titlethings="['attributes', 'agencyname']" -->
         <ExpandCollapse
           :item="item"
           :is-map-visible="isMapVisible"
+          :slots="locationSlots"
         >
           <div class="grid-x grid-padding-x">
             <div class="cell medium-12">
@@ -119,6 +118,9 @@ export default {
     dataStatus() {
       return this.$store.state.sources[this.$appType].status;
     },
+    locationSlots() {
+      return this.$config.locationSlots;
+    }
   },
   methods: {
     // filterExpand(item) {
