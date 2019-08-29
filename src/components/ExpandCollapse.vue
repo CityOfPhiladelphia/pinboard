@@ -7,7 +7,7 @@
       class="h4 location-title"
       @click="expandLocation"
     >
-      {{ title }}
+      {{ evaluateSlot(slots.title) }}
     </h2>
     <div
       :class="{ 'location-open': locationOpen }"
@@ -23,14 +23,13 @@ import TopicComponent from '@philly/vue-comps/src/components/TopicComponent.vue'
 export default {
   mixins: [ TopicComponent ],
   props: {
-    title: {
-      type: String,
-      default: 'Title',
-    },
     isMapVisible: {
       type: Boolean,
       default: true,
     },
+    item: {
+      type: Object,
+    }
   },
   data() {
     return {
@@ -134,7 +133,7 @@ export default {
   position: relative;
   border-bottom: 1px solid black;
   height:100%;
-  
+
   &:hover::after {
     color: white;
   }

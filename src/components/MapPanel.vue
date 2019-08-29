@@ -197,7 +197,7 @@ export default {
       return this.$store.state.currentData;
     },
     currentMapData() {
-      // console.log('currentMapData computed is recalculating, this.currentData:', this.currentData);
+      console.log('currentMapData computed is recalculating, this.currentData:', this.currentData);
       const newRows = [];
       for (const row of [ ...this.currentData ]) {
         // console.log('in loop, row:', row);
@@ -212,6 +212,16 @@ export default {
         }
         if (row.lat) {
           row.latlng = [ row.lat, row.lon ];
+          row.color = markerColor;
+          row.icon = {
+            prefix: 'fas',
+            icon: 'map-marker-alt',
+            shadow: false,
+            size: markerSize,
+          };
+          newRows.push(row);
+        } else if (row.geometry) {
+          row.latlng = [ row.geometry.y, row.geometry.x ];
           row.color = markerColor;
           row.icon = {
             prefix: 'fas',

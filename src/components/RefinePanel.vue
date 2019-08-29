@@ -100,6 +100,15 @@ export default {
     dataStatus() {
       return this.$store.state.sources[this.$appType].status;
     },
+    database() {
+      if (this.$store.state.sources[this.$appType].data.rows) {
+        return this.$store.state.sources[this.$appType].data.rows;
+      } else if (this.$store.state.sources[this.$appType].data.features) {
+        return this.$store.state.sources[this.$appType].data.features;
+      } else {
+        return this.$store.state.sources[this.$appType].data;
+      }
+    },
   },
   watch: {
     selected(nextSelected) {
@@ -133,7 +142,8 @@ export default {
       }
     },
     getRefineSearchList() {
-      const refineData = this.sources[this.$appType].data.rows;
+      const refineData = this.database;
+      // const refineData = this.sources[this.$appType].data.rows;
 
       let service = '';
 

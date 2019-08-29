@@ -18,9 +18,9 @@
         :key="item.cartodb_id"
       >
         <ExpandCollapse
-          :title="item.organization_name"
           :item="item"
           :is-map-visible="isMapVisible"
+          :slots="locationSlots"
         >
           <div class="grid-x grid-padding-x">
             <div class="cell medium-12">
@@ -103,10 +103,13 @@ export default {
     },
   },
   computed: {
+    orgTitle() {
+      return 'agencyname';
+    },
     ...mapState([ 'sources' ]),
     currentData() {
       const locations = this.$store.state.currentData;
-      locations.sort((a, b) => a.organization_name.localeCompare(b.organization_name));
+      // locations.sort((a, b) => a.organization_name.localeCompare(b.organization_name));
       return locations;
     },
     currentDataList() {
@@ -115,6 +118,9 @@ export default {
     dataStatus() {
       return this.$store.state.sources[this.$appType].status;
     },
+    locationSlots() {
+      return this.$config.locationSlots;
+    }
   },
   methods: {
     // filterExpand(item) {

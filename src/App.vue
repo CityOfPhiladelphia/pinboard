@@ -144,7 +144,13 @@ export default {
       return this.$store.state.sources[this.$appType].status;
     },
     database() {
-      return this.$store.state.sources[this.$appType].data.rows;
+      if (this.$store.state.sources[this.$appType].data.rows) {
+        return this.$store.state.sources[this.$appType].data.rows;
+      } else if (this.$store.state.sources[this.$appType].data.features) {
+        return this.$store.state.sources[this.$appType].data.features;
+      } else {
+        return this.$store.state.sources[this.$appType].data;
+      }
     },
     shouldLoadCyclomediaWidget() {
       return this.$config.cyclomedia.enabled && !this.isMobileOrTablet;
