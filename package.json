@@ -12,8 +12,8 @@
   },
   "dependencies": {
     "@fortawesome/free-brands-svg-icons": "^5.8.2",
+    "@philly/pvd": "https://github.com/ajrothwell/pvd#cfb8723e4e1261443ab19777145d3bf8f583c75b",
     "@philly/vue-comps": "1.0.36",
-    "@philly/vue-datafetch": "0.0.23",
     "@philly/vue-mapping": "1.0.35",
     "axios": "^0.19.0",
     "core-js": "^2.6.5",
