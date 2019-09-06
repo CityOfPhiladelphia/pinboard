@@ -826,10 +826,10 @@
   resolved "https://registry.yarnpkg.com/@nodelib/fs.stat/-/fs.stat-1.1.3.tgz#2b5a3ab3f918cca48a8c754c08168e3f03eba61b"
   integrity sha512-shAmDyaQC4H92APFoIaVDHCx5bStIocgvbwQyxPRrbUY20V1EYTbSDchWbuwlMG3V17cprZhA6+78JfB+3DTPw==
 
-"@philly/vue-comps@1.0.36":
-  version "1.0.36"
-  resolved "https://registry.yarnpkg.com/@philly/vue-comps/-/vue-comps-1.0.36.tgz#56952f7185e077014f7ecd0fa1b4dc52be95f2dd"
-  integrity sha512-VTlCxCYFUrss2dUHmOUnEDXM8fN4TCueemrVdwPVg/l/Ejknt/gVTbGaM958DNrXCVHNRbjcY9N9m+8b6YLLzA==
+"@philly/vue-comps@1.0.37":
+  version "1.0.37"
+  resolved "https://registry.yarnpkg.com/@philly/vue-comps/-/vue-comps-1.0.37.tgz#5b427a4f33ac3244a1556ae10c87429ee7f085c6"
+  integrity sha512-PdZV3m2hHXblvCa5dEinf0fd6WObPfe8Rm8TirDj/bzkrd5QjFrk4bhB407drXjdZtAB0tboTOHXpOp2axN6QA==
   dependencies:
     "@fortawesome/fontawesome-svg-core" "^1.2.15"
     "@fortawesome/free-regular-svg-icons" "^5.7.2"
@@ -845,10 +845,10 @@
     vue "^2.6.9"
     vuex "^3.0.1"
 
-"@philly/vue-datafetch@0.0.23":
-  version "0.0.23"
-  resolved "https://registry.yarnpkg.com/@philly/vue-datafetch/-/vue-datafetch-0.0.23.tgz#d2482be8f2752e7dd2f69c23f4a97a69fac7877c"
-  integrity sha512-nlinyamR9pSiRwqsVMHFWWORaYMeHA68gQKtQh8uzyMcRqhOuTVzottP3ChO9syJCtcHkJ0ZdWr49yGC2oPCEg==
+"@philly/vue-datafetch@0.0.24":
+  version "0.0.24"
+  resolved "https://registry.yarnpkg.com/@philly/vue-datafetch/-/vue-datafetch-0.0.24.tgz#d323be05f10d7ad183bf62e4e9acff4fe074c22d"
+  integrity sha512-DKNJcyVL7guECkjnrJQnWQ3zxsLCHE6pysTLEFEDq9q4FBL9um6w3qnYJ/yin6kzH8u3bWVsskvRSbkYK9tcuA==
   dependencies:
     "@turf/turf" "^5.1.6"
     axios "^0.19.0"
@@ -859,10 +859,10 @@
     vue "^2.6.9"
     vuex "^3.0.1"
 
-"@philly/vue-mapping@1.0.35":
-  version "1.0.35"
-  resolved "https://registry.yarnpkg.com/@philly/vue-mapping/-/vue-mapping-1.0.35.tgz#b67f8d206af15859391e8ed94042dc529a7fed63"
-  integrity sha512-SpaCjN051h5axYvHJf0j0qoR5A4f+5I+Xt5f8yI9vAuaY4Iv+0Mh8azcs1LpcB/2+KokaffioceDaxmG8VM6HA==
+"@philly/vue-mapping@1.0.36":
+  version "1.0.36"
+  resolved "https://registry.yarnpkg.com/@philly/vue-mapping/-/vue-mapping-1.0.36.tgz#cd9c889d23f875b9d228c0060dc21f5c95c7e7d1"
+  integrity sha512-s85zHFlznZb5Eg4dmHj+qwerWbT7vrHwwsi/WM8FUZ034fhW+70pVVIeKal3WUDaly9Dhz1jPE1u2xmzSkJMig==
   dependencies:
     "@fortawesome/fontawesome-svg-core" "^1.2.15"
     "@fortawesome/free-regular-svg-icons" "^5.7.2"
