@@ -344,20 +344,28 @@ export default {
         return true;
       }
       return false;
-
+    },
+    geocodeZoom() {
+      if (this.$config.map.geocodeZoom) {
+        return this.$config.map.geocodeZoom;
+      } else {
+        return 19;
+      }
     },
   },
   watch: {
+    geocodeResult(nextGeocodeResult) {
+      if (nextGeocodeResult._featureId) {
+        this.$store.commit('setMapCenter', nextGeocodeResult.geometry.coordinates);
+        this.$store.commit('setMapZoom', this.geocodeZoom);
+      }
+    },
     latestSelectedResourceFromExpand(nextLatestSelectedResource) {
       if (nextLatestSelectedResource) {
         const { rows } = this.$store.state.sources[this.$appType].data;
         const dataValue = rows.filter(row => row._featureId === nextLatestSelectedResource);
-        let geocodeZoom = 19;
-        if (this.$config.map.geocodeZoom) {
-          geocodeZoom = this.$config.map.geocodeZoom;
-        }
         const { map } = this.$store.state.map;
-        map.setView([ dataValue[0].lat, dataValue[0].lon ], geocodeZoom);
+        map.setView([ dataValue[0].lat, dataValue[0].lon ], this.geocodeZoom);
       }
     },
     latestSelectedResourceFromMap(nextLatestSelectedResource) {
