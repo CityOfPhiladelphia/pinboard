@@ -203,6 +203,7 @@ export default {
       // console.log('in comboSearchTriggered, query:', query, 'this.searchType:', this.searchType, '{...this.$route.query}:', { ...this.$route.query }, '{...query}:', { ...query });
       this.$router.push({ query: { ...this.$route.query, ...query }});
       this.searchString = query[this.searchType];
+      this.$controller.handleSearchFormSubmit(value, searchCategory);
     },
     clearSearchTriggered() {
       // console.log('in clearSearchTriggered, this.$route.query:', this.$route.query);
