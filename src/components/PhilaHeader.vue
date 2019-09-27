@@ -198,6 +198,7 @@ export default {
       }
       this.$router.push({ query: startQuery });
       this.searchString = '';
+      this.$controller.resetGeocode();
     },
     comboSearchTriggered(query) {
       // console.log('in comboSearchTriggered, query:', query, 'this.searchType:', this.searchType, '{...this.$route.query}:', { ...this.$route.query }, '{...query}:', { ...query });
@@ -211,6 +212,7 @@ export default {
       delete startQuery[this.searchType];
       this.$router.push({ query: startQuery });
       this.searchString = '';
+      this.$controller.resetGeocode();
     },
     toggleMenu() {
       this.isOpen = !this.isOpen;
