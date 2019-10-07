@@ -12,15 +12,15 @@
   },
   "dependencies": {
     "@fortawesome/free-brands-svg-icons": "^5.8.2",
-    "@philly/vue-comps": "https://github.com/CityOfPhiladelphia/phila-vue-comps#7aa3875e3c812d75eca6dbb84cc464b08a4d764c",
-    "@philly/vue-datafetch": "https://github.com/CityOfPhiladelphia/phila-vue-datafetch#9d7f95c2a54e0dc64119d7568680dd2aaeda6494",
-    "@philly/vue-mapping": "https://github.com/CityOfPhiladelphia/phila-vue-mapping#9b07220a22c2b7adfdf5c9ee67941ddb218703d3",
+    "@philly/vue-comps": "^1.0.40",
+    "@philly/vue-datafetch": "^0.0.26",
+    "@philly/vue-mapping": "^1.0.41",
     "axios": "^0.19.0",
     "core-js": "^2.6.5",
     "foundation-sites": "^6.5.3",
     "vue": "^2.6.10",
     "vue-router": "^3.0.6",
-    "vuex": "^3.0.1"
+    "vuex": "^3.1.1"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.6.0",
