@@ -205,11 +205,10 @@ export default {
     },
   },
   mounted() {
-    console.log('in App.vue mounted, this.$config:', this.$config);
+    // console.log('in App.vue mounted, this.$config:', this.$config);
     if (this.$config.dataSources) {
       this.$controller.dataManager.fetchData();
     }
-    this.$controller.appDidLoad();
     this.onResize();
   },
   created() {
@@ -220,13 +219,6 @@ export default {
     window.removeEventListener('resize', this.onResize);
   },
   methods: {
-    init() {
-      console.log('in App.vue mounted, this.$config:', this.$config);
-      if (this.$config.dataSources) {
-        this.$controller.dataManager.fetchData();
-      }
-      this.onResize();
-    },
     runBuffer() {
       const geocodePoint = point(this.geocodeGeom.coordinates);
       const pointBuffer = buffer(geocodePoint, 1, { units: 'miles' });
@@ -268,7 +260,8 @@ export default {
         if (this.selectedKeywords.length > 0) {
           booleanKeywords = false;
           // console.log('row:', row);
-          const description = row.tags.split(/,| /);
+          const description = row.tags;
+          // const description = row.tags.split(/,| /);
           const keywordsFiltered = this.selectedKeywords.filter(f => description.includes(f));
           if (keywordsFiltered.length > 0) {
             booleanKeywords = true;

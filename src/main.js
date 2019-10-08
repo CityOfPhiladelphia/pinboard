@@ -27,7 +27,7 @@ const clientConfig = {
 };
 
 function initPinboard(clientConfig) {
-  console.log('initPinboard is running, clientConfig:', clientConfig);
+  // console.log('initPinboard is running, clientConfig:', clientConfig);
   const baseConfigUrl = clientConfig.baseConfig;
 
   if (baseConfigUrl === null) {

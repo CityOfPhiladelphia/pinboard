@@ -59,6 +59,7 @@
               :dropdown-selected="dropdownSelected"
               @trigger-combo-search="comboSearchTriggered"
               @trigger-clear-search="clearSearchTriggered"
+              @trigger-search-category-change="comboSearchCategoryChange"
             />
             <div class="search">
               <slot name="search" />
@@ -176,30 +177,18 @@ export default {
     keywords(nextKeywords) {
       this.dropdownData.keyword.data = nextKeywords;
     },
-    searchType(nextSearchType) {
-      this.searchTypeChanged(nextSearchType);
-    },
   },
   created() {
     Object.keys(this.dropdownData).forEach(item => {
       if (this.$route.query[item]) {
+        // console.log('philaHeader created item:', item)
         this.searchString = this.$route.query[item];
         this.dropdownData[item].selected = true;
+        this.$store.commit('setSearchType', item);
       }
     });
   },
   methods: {
-    searchTypeChanged(nextSearchType) {
-      console.log('searchTypeChanged, nextSearchType:', nextSearchType);
-      let startQuery = { ...this.$route.query };
-      for (let dropdown of Object.keys(this.dropdownData)) {
-        console.log('in loop, dropdown:', dropdown);
-        delete startQuery[dropdown];
-      }
-      this.$router.push({ query: startQuery });
-      this.searchString = '';
-      this.$controller.resetGeocode();
-    },
     comboSearchTriggered(query) {
       // console.log('in comboSearchTriggered, query:', query, 'this.searchType:', this.searchType, '{...this.$route.query}:', { ...this.$route.query }, '{...query}:', { ...query });
       this.$router.push({ query: { ...this.$route.query, ...query }});
@@ -214,7 +203,34 @@ export default {
       delete startQuery[this.searchType];
       this.$router.push({ query: startQuery });
       this.searchString = '';
+      this.$store.commit('setSelectedKeywords', []);
       this.$controller.resetGeocode();
+    },
+    comboSearchCategoryChange(value) {
+      // console.log('comboSearchCategoryChange is running, value:', value);
+      this.$store.commit('setSelectedKeywords', []);
+      this.$store.commit('setSearchType', value);
+      let startQuery = { ...this.$route.query };
+      let overlap = this.compareArrays(Object.keys(startQuery), Object.keys(this.dropdownData));
+      if (overlap.length) {
+        for (let item of overlap) {
+          delete startQuery[item];
+        }
+        this.$router.push({ query: startQuery });
+      }
+      this.searchString = '';
+      this.$controller.resetGeocode();
+    },
+    compareArrays(arr1, arr2) {
+      const finalArray = [];
+      arr1.forEach((e1) => arr2.forEach((e2) =>
+        {
+          if (e1 === e2) {
+            finalArray.push(e1);
+          }
+        }
+      ));
+      return finalArray;
     },
     toggleMenu() {
       this.isOpen = !this.isOpen;
