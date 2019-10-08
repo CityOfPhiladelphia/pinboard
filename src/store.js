@@ -4,7 +4,7 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 
-import pvdStore from '@philly/vue-datafetch/src/controller/store';
+import pvdStore from '@philly/vue-datafetch/src/store';
 import pvmStore from '@philly/vue-mapping/src/store';
 import pvcStore from '@philly/vue-comps/src/store';
 import mergeDeep from './util/merge-deep';

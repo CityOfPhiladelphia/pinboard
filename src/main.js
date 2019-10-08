@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import axios from 'axios';
-import controllerMixin from '@philly/vue-datafetch/src/controller/index';
+import controllerMixin from '@philly/vue-datafetch/src/controller.js';
 /* eslint-disable import/no-extraneous-dependencies */
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import fonts from './fa';
@@ -27,7 +27,7 @@ const clientConfig = {
 };
 
 function initPinboard(clientConfig) {
-  console.log('initPinboard is running, clientConfig:', clientConfig);
+  // console.log('initPinboard is running, clientConfig:', clientConfig);
   const baseConfigUrl = clientConfig.baseConfig;
 
   if (baseConfigUrl === null) {
