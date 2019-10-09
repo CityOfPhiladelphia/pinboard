@@ -15,6 +15,14 @@ Create pull request for changes and merge into `master` branch for travis-ci bui
 
 ## Release Notes
 
+### 0.1.12 - 10/9/2019
+
+* Uses new releases of @philly libraries which ran upgrades
+  * Uses @philly/vue-comps 1.0.41
+  * Uses @philly/vue-mapping 1.0.41
+  * Uses new restructured pvd (which also ran upgrades)
+    * Uses @philly/vue-datafetch 0.0.27
+
 ### 0.1.11 - 9/6/2019
 
 * Uses new releases of @philly libraries which ran upgrades
