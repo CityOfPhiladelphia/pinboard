@@ -1,7 +1,7 @@
 {
   "name": "@philly/pinboard",
   "description": "A generic app connected to a Carto endpoint, that allows users to search for a type of resource by location or keyword, and filter by resource type.",
-  "version": "0.1.11",
+  "version": "0.1.12",
   "author": "City of Philadelphia <maps@phila.gov>",
   "private": false,
   "scripts": {
