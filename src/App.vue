@@ -225,7 +225,7 @@ export default {
       this.$data.buffer = pointBuffer;
     },
     filterPoints() {
-      console.log('App.vue filterPoints is running, this.database:', this.database);
+      // console.log('App.vue filterPoints is running, this.database:', this.database);
       const filteredRows = [];
 
       for (const row of this.database) {
@@ -244,6 +244,7 @@ export default {
 
         let booleanBuffer = false;
         if (!this.$data.buffer) {
+          // console.log('!this.$data.buffer');
           booleanBuffer = true;
         // } else if (typeof row.lon === 'number' && row.lon !== null) {
         } else if (row.latlng) {

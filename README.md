@@ -15,6 +15,11 @@ Create pull request for changes and merge into `master` branch for travis-ci bui
 
 ## Release Notes
 
+### 0.1.13 - 10/17/2019
+
+* Uses pvm 1.0.43 which fixes VectorMarker updating - allows more points to be used on the pinboard
+* Uses pvc 1.0.42
+
 ### 0.1.12 - 10/9/2019
 
 * Uses new releases of @philly libraries which ran upgrades

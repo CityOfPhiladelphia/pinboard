@@ -392,7 +392,7 @@ export default {
       const { target } = e;
       const { featureId } = target.options.data;
 
-      console.log('markerClick, featureId', featureId);
+      // console.log('markerClick, featureId', featureId);
       const selectedResource = [ ...this.selectedResources ];
       if (selectedResource.includes(featureId)) {
         // console.log('markerClick close marker, featureId', featureId);
