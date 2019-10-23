@@ -826,20 +826,20 @@
   resolved "https://registry.yarnpkg.com/@nodelib/fs.stat/-/fs.stat-1.1.3.tgz#2b5a3ab3f918cca48a8c754c08168e3f03eba61b"
   integrity sha512-shAmDyaQC4H92APFoIaVDHCx5bStIocgvbwQyxPRrbUY20V1EYTbSDchWbuwlMG3V17cprZhA6+78JfB+3DTPw==
 
-"@philly/vue-comps@1.0.42":
-  version "1.0.42"
-  resolved "https://registry.yarnpkg.com/@philly/vue-comps/-/vue-comps-1.0.42.tgz#64afcaf675cf2cccc805a190862100f06ebff971"
-  integrity sha512-SUtD2VN+5wjXbnSp0TwY71VGHD9BSvs7PNHnQzrQoCIpTRsTz/Ke7yeQ4tYhxKRvbwuJIV903hMV/NTn5mNxsw==
+"@philly/vue-comps@1.0.45":
+  version "1.0.45"
+  resolved "https://registry.yarnpkg.com/@philly/vue-comps/-/vue-comps-1.0.45.tgz#9a2d76e0f10d4efdbd024b551dd28b5f8f6a510a"
+  integrity sha512-umoljgYybesrwT786hXoBvcCJDVSuC+4kjj900E+iPQADCSeqvgjW4tF0qLHN6NiE5NTVEicVNFt3JMa/0eflA==
   dependencies:
     "@fortawesome/fontawesome-svg-core" "^1.2.15"
     "@fortawesome/free-regular-svg-icons" "^5.7.2"
     "@fortawesome/free-solid-svg-icons" "^5.7.2"
     "@fortawesome/vue-fontawesome" "^0.1.5"
     axios "^0.19.0"
-    date-fns "^1.30.1"
+    date-fns "^2.6.0"
     escape-html "^1.0.3"
     jspdf "^1.4.1"
-    jspdf-autotable "^2.3.5"
+    jspdf-autotable "^3.2.8"
     lodash-es "^4.17.14"
     phila-standards "^1.0.2"
     vue "^2.6.10"
@@ -4264,6 +4264,11 @@ date-fns@^1.27.2, date-fns@^1.30.1:
   resolved "https://registry.yarnpkg.com/date-fns/-/date-fns-1.30.1.tgz#2e71bf0b119153dbb4cc4e88d9ea5acfb50dc05c"
   integrity sha512-hBSVCvSmWC+QypYObzwGOd9wqdDpOt+0wl0KbU+R+uuZBS1jN8VsD1ss3irQDknRj5NvxiTF6oj/nDRnN/UQNw==
 
+date-fns@^2.6.0:
+  version "2.6.0"
+  resolved "https://registry.yarnpkg.com/date-fns/-/date-fns-2.6.0.tgz#a5bc82e6a4c3995ae124b0ba1a71aec7b8cbd666"
+  integrity sha512-F55YxqRdEfP/eYQmQjLN798v0AwLjmZ8nMBjdQvNwEE3N/zWVrlkkqT+9seBlPlsbkybG4JmWg3Ee3dIV9BcGQ==
+
 date-now@^0.1.4:
   version "0.1.4"
   resolved "https://registry.yarnpkg.com/date-now/-/date-now-0.1.4.tgz#eaf439fd4d4848ad74e5cc7dbef200672b9e345b"
@@ -6987,10 +6992,10 @@ jsonfile@^4.0.0:
   optionalDependencies:
     graceful-fs "^4.1.6"
 
-jspdf-autotable@^2.3.5:
-  version "2.3.5"
-  resolved "https://registry.yarnpkg.com/jspdf-autotable/-/jspdf-autotable-2.3.5.tgz#6af23c191c00af86555bc0f91a21c7f6148288dc"
-  integrity sha512-QQzqTKBAC20VfuMjrOyqHArFAxKJx1oikWL8qeH+c6aF32F1H2jI8LNPVUWFcYGB0/XBlBKTT2NSQZBS9TNu2A==
+jspdf-autotable@^3.2.8:
+  version "3.2.8"
+  resolved "https://registry.yarnpkg.com/jspdf-autotable/-/jspdf-autotable-3.2.8.tgz#985285e531d2d548eba2b012725f67586f283150"
+  integrity sha512-+5Osow1E4u6zpjE/gywdYizflMTdi6mlIShIPN3T/w7uW77g0VcWCYOFKonfk9gjO2VUchsMt/McTFrgZ4MfvQ==
 
 jspdf@^1.4.1:
   version "1.5.3"
