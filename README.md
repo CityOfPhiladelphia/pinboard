@@ -15,6 +15,10 @@ Create pull request for changes and merge into `master` branch for travis-ci bui
 
 ## Release Notes
 
+### 0.1.14 - 10/24/2019
+
+* adds all upgrades that depedabot put into separate pull requests
+
 ### 0.1.13 - 10/17/2019
 
 * Uses pvm 1.0.43 which fixes VectorMarker updating - allows more points to be used on the pinboard
