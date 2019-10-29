@@ -21,7 +21,7 @@
           :item="item"
           :is-map-visible="isMapVisible"
           :slots="locationSlots"
-        >
+          >
           <div class="grid-x grid-padding-x">
             <div class="cell medium-12">
               <div

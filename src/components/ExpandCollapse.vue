@@ -4,15 +4,20 @@
     :class="{ 'open': locationOpen }"
   >
     <h2
+      :id="makeID(item.organization_name)"
       class="h4 location-title"
       @click="expandLocation"
+      tabindex="0"
+      @keyup.enter="expandLocation"
+      :aria-expanded="locationOpen"
     >
       {{ evaluateSlot(slots.title) }}
     </h2>
     <div
       :class="{ 'location-open': locationOpen }"
       class="location-content"
-    >
+      :aria-labelledby="makeID(item.organization_name)"
+      >
       <slot />
     </div>
   </div>
@@ -124,6 +129,9 @@ export default {
       // this.locationOpen ? selectedResources.push(selectedResource) : selectedResources.splice(selectedResources.indexOf(selectedResource), 1);
       this.$store.commit('setSelectedResources', selectedResources);
       this.$store.commit('setLatestSelectedResourceFromExpand', latestSelectedResourceFromExpand);
+    },
+    makeID( itemTitle ){
+      return itemTitle.replace(/\s+/g, '-').toLowerCase();
     },
   },
 };
