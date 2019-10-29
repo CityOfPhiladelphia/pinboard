@@ -29,18 +29,19 @@
             :key="index"
             class="cell medium-6"
           >
-            <input
-              :id="item"
-              v-model="selected"
-              type="checkbox"
-              :name="item"
-              :value="item"
-            >
-              <font-awesome-icon :for="item" :icon="['far', 'square']" v-show="!selected.includes(item)" class="fa-checkbox" />
-              <font-awesome-icon :for="item" icon="check-square" v-show="selected.includes(item)" class="fa-checkbox" />
-              <label class="input-label" :for="item"><span class="service-item">{{ item }}</span></label>
-            <!-- </input> -->
+          <input
+            :id="item"
+            v-model="selected"
+            type="checkbox"
+            :name="item"
+            :value="item"
+          >
+            <font-awesome-icon :for="item" :icon="['far', 'square']" v-show="!selected.includes(item)" class="fa-checkbox" />
+            <font-awesome-icon :for="item" icon="check-square" v-show="selected.includes(item)" class="fa-checkbox" />
+            <label 
+            class="input-label" :for="item"><span class="service-item">{{ item }}</span></label>
           </div>
+          <!-- </input> -->
         </div>
         <div class="mobile-filter-actions show-for-small-only">
           <PhilaButton
@@ -273,31 +274,43 @@ $refine-panel-height: 19vh;
   }
 }
 
-//Custom checkboxes
+//add outline to checkboxes 
+input[type=checkbox]:focus + svg, 
+input[type=checkbox]:focus + svg + svg{
+  outline: rgb(59, 153, 252) auto 5px;
+}
+
 input[type=checkbox] {
-  display: none;
+  display: block;
+  opacity: 0;
+  height: 0;
+  margin: 0;
+}   
 
-  + label[for] {
-    color: color(dark-ben-franklin);
-    font-size: 14px;
-    margin-bottom: .5rem;
+
+.checkbox-wrap {
+  label {
+    line-height: 1.2;
+    margin-bottom: 10px;
+    width: 100%;
+    div {
+      display: inline-block;
+      vertical-align: top;
+      padding: 0 0 0 1rem;
+      max-width: calc(100% - 23px);
+    }
   }
-
-  + label::before {
-    // display: inline-block;
-    // // content: "square"; /* square */
-    // content: "\f0c8"; /* square */
-    // padding-right: 20px;
-    // font-family: "Font Awesome 5 Free";
-    // font-weight: 400; /* regular */
-    // color: color(dark-ben-franklin);
-
+  @media screen and (max-width: 39.9375em) {
+    margin: 10px 0 0 10px;
+    label {
+      font-size: 18px;
+      width: 100%;
+      margin-right: 0;
+      div {
+        max-width: 280px;
+      }
+    }
   }
-
-  // &:checked + label::before {
-  //   content: "\f14a"; /* check-square */
-  //   font-weight: 900; /* solid */
-  // }
 }
 
 .input-label {

@@ -190,5 +190,4 @@ export default {
 .location-container{
   padding: 1rem;
 }
-
 </style>
