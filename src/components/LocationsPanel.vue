@@ -50,6 +50,13 @@
                 <span><a :href="`mailto:${item.email}`">{{ item.email }}</a></span>
               </div>
               <div
+                v-if="item.website"
+                class="detail"
+              >
+                <font-awesome-icon icon="globe" />
+                <span><a :href="makeValidUrl(item.website)">{{ item.website }}</a></span>
+              </div>
+              <div
                 v-if="item.facebook_name"
                 class="detail"
               >
@@ -61,7 +68,7 @@
                 class="detail"
               >
                 <font-awesome-icon :icon="['fab', 'twitter']" />
-                <span><a :href="tem.twitter">Twitter</a></span>
+                <span><a :href="item.twitter">Twitter</a></span>
               </div>
             </div>
           </div>
@@ -134,7 +141,7 @@ export default {
     },
     locationSlots() {
       return this.$config.locationSlots;
-    }
+    },
   },
   methods: {
     // filterExpand(item) {
@@ -172,6 +179,19 @@ export default {
     parseTagsList(list) {
       const formattedService = list.sort().join(", ");
       return formattedService;
+    },
+    makeValidUrl(url) {
+      let newUrl = window.decodeURIComponent(url);
+      newUrl = newUrl
+        .trim()
+        .replace(/\s/g, '');
+      if (/^(:\/\/)/.test(newUrl)) {
+        return `http${newUrl}`;
+      }
+      if (!/^(f|ht)tps?:\/\//i.test(newUrl)) {
+        return `http://${newUrl}`;
+      }
+      return newUrl;
     },
   },
 };
