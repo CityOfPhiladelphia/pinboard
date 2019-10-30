@@ -50,6 +50,13 @@
                 <span><a :href="`mailto:${item.email}`">{{ item.email }}</a></span>
               </div>
               <div
+                v-if="item.website"
+                class="detail"
+              >
+                <font-awesome-icon icon="globe" />
+                <span><a :href="makeValidUrl(item.website)">{{ item.website }}</a></span>
+              </div>
+              <div
                 v-if="item.facebook_name"
                 class="detail"
               >
@@ -61,11 +68,11 @@
                 class="detail"
               >
                 <font-awesome-icon :icon="['fab', 'twitter']" />
-                <span><a :href="tem.twitter">Twitter</a></span>
+                <span><a :href="item.twitter">Twitter</a></span>
               </div>
             </div>
           </div>
-          <div v-if="item.services_offered != ''">
+          <div v-if="item.services_offered">
             <section class="services grid-x grid-padding-x">
               <div class="cell">
                 <h3 class="h4">
@@ -78,6 +85,20 @@
                     class="cell medium-12 service-item"
                   >
                     {{ i }}
+                  </div>
+                </div>
+              </div>
+            </section>
+          </div>
+          <div v-if="item.tags">
+            <section class="tags grid-x grid-padding-x mtm">
+              <div class="cell">
+                <h3 class="h4">
+                  Tags
+                </h3>
+                <div class="grid-x">
+                  <div>
+                    {{ parseTagsList(item.tags) }}
                   </div>
                 </div>
               </div>
@@ -120,7 +141,7 @@ export default {
     },
     locationSlots() {
       return this.$config.locationSlots;
-    }
+    },
   },
   methods: {
     // filterExpand(item) {
@@ -155,6 +176,23 @@ export default {
       const formattedService = list;
       return formattedService;
     },
+    parseTagsList(list) {
+      const formattedTags = list.slice().sort().join(", ");
+      return formattedTags;
+    },
+    makeValidUrl(url) {
+      let newUrl = window.decodeURIComponent(url);
+      newUrl = newUrl
+        .trim()
+        .replace(/\s/g, '');
+      if (/^(:\/\/)/.test(newUrl)) {
+        return `http${newUrl}`;
+      }
+      if (!/^(f|ht)tps?:\/\//i.test(newUrl)) {
+        return `http://${newUrl}`;
+      }
+      return newUrl;
+    },
   },
 };
 </script>
@@ -179,12 +217,12 @@ export default {
   }
   .services{
     margin-top: 3rem;
-    h3{
-      margin-bottom: 1rem;
-    }
   }
   .service-item{
     margin-bottom: .5rem;
+  }
+  .tags {
+    margin-top: 2rem;
   }
 }
 .location-container{
