@@ -177,8 +177,8 @@ export default {
       return formattedService;
     },
     parseTagsList(list) {
-      const formattedService = list.sort().join(", ");
-      return formattedService;
+      const formattedTags = list.slice().sort().join(", ");
+      return formattedTags;
     },
     makeValidUrl(url) {
       let newUrl = window.decodeURIComponent(url);
