@@ -15,6 +15,9 @@ Create pull request for changes and merge into `master` branch for travis-ci bui
 
 ## Release Notes
 
+### 0.1.15 - 10/30/2019
+* Adds new fields + accessibility features
+
 ### 0.1.14 - 10/24/2019
 
 * adds all upgrades that depedabot put into separate pull requests
