@@ -144,8 +144,21 @@ export default {
       return this.$store.state.sources[this.$appType].status;
     },
     database() {
+      let database = this.$store.state.sources[this.$appType].data.rows;
+
+      for (let [key, value] of Object.entries(database)) {
+        for (let [rowKey, rowValue] of Object.entries(value)) {
+          if ( rowKey == 'hide_on_finder' && rowValue == true ){
+            //console.log('deleted entry', database[key])
+            delete database[key]
+          }
+        }
+      }
+      //filter empty values from deleted database
+      let finalDB = database.filter(_ => true);
+
       // if (this.$store.state.sources[this.$appType].data.rows) {
-        return this.$store.state.sources[this.$appType].data.rows;
+      return finalDB;
       // } else if (this.$store.state.sources[this.$appType].data.features) {
       //   return this.$store.state.sources[this.$appType].data.features;
       // } else {
