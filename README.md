@@ -15,6 +15,9 @@ Create pull request for changes and merge into `master` branch for travis-ci bui
 
 ## Release Notes
 
+### 0.1.17 - 12/16/2019 
+* Adds how to use content.
+
 ### 0.1.16 - 11/04/2019
 
 * Uses pvc 1.0.47
