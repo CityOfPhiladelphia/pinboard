@@ -8,35 +8,15 @@
       @close="closeModal"
     >
       <div slot="body">
-        <div class="step-group">
-          <div class="step-label">
-            1
-          </div>
-          <div class="step">
-            <div class="step-title">
-              Step 1
-            </div>
-            <div class="step-content" />
-          </div>
-          <div class="step-label">
-            2
-          </div>
-          <div class="step">
-            <div class="step-title">
-              Step 2
-            </div>
-            <div class="step-content" />
-          </div>
-          <div class="step-label">
-            3
-          </div>
-          <div class="step">
-            <div class="step-title">
-              Step 3
-            </div>
-            <div class="step-content" />
-          </div>
-        </div>
+        <p>The resource finder helps you locate services related to a particular topic. You can browse the list of providers, search by keyword or address, and narrow your results by category.</p>
+
+        <p>The providers are listed alphabetically. To learn about what they offer and where they are, select their name. This will expand their listing and locate them on the map. You can also:
+          <ul>
+        <li><b>Search by location or keyword.</b> To find service providers near you, select “Address” in the dropdown and enter a street address. To search for a specific term, select “Keyword” in the dropdown and enter your term.</li>
+        <li><b>Choose a category.</b> If you’re looking for a specific type of resource, select the appropriate topic under “Filter list by category.” You can pick multiple categories.</li>
+          </ul></p>
+        <p>If you’re interested in a particular service or resource, contact the provider to learn more and confirm that it’s still available.</p>
+
       </div>
     </PhilaModal>
     <PhilaHeader
