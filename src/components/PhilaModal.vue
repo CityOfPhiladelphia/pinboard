@@ -68,23 +68,24 @@ export default {
 @media screen and (min-width: 40em) {
   .modal-wrapper {
     top: 30vh;
-    left: 50vh;
-    right: 50vh;
+    max-width: 500px;
   }
 }
 
 .modal-wrapper {
-  display: table-cell;
-  vertical-align: middle;
-  position: fixed;
+  display: block;
+  position: relative;
   z-index: 9998;
-  top: 20%;
-  left: 20%;
+  margin-top: 5%;
+  width: 500px;
+  margin: 0;
+  margin: 0 auto;
 }
 
 
 .modal-container-inner {
-  width: 300px;
+  display: table-cell;
+  vertical-align: middle;
   margin: 0px auto;
   padding: 20px 30px;
   background-color: #fff;
