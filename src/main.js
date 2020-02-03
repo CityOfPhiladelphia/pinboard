@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import axios from 'axios';
-import controllerMixin from '@philly/vue-datafetch/src/controller.js';
+import controllerMixin from '@phila/vue-datafetch/src/controller.js';
 /* eslint-disable import/no-extraneous-dependencies */
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import fonts from './fa';

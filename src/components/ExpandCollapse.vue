@@ -23,7 +23,7 @@
   </div>
 </template>
 <script>
-import TopicComponent from '@philly/vue-comps/src/components/TopicComponent.vue';
+import TopicComponent from '@phila/vue-comps/src/components/TopicComponent.vue';
 
 export default {
   mixins: [ TopicComponent ],
