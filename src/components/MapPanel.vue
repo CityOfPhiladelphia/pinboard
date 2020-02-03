@@ -141,17 +141,17 @@
 <script>
 import 'leaflet/dist/leaflet.css';
 // import all fontawesome icons included in phila-vue-mapping
-import * as faMapping from '@philly/vue-mapping/src/fa';
-import Map_ from '@philly/vue-mapping/src/leaflet/Map.vue';
-import PopupSimple from '@philly/vue-mapping/src/leaflet/PopupSimple.vue';
-import PopupContentFunctional from '@philly/vue-mapping/src/leaflet/PopupContentFunctional.vue';
+import * as faMapping from '@phila/vue-mapping/src/fa';
+import Map_ from '@phila/vue-mapping/src/leaflet/Map.vue';
+import PopupSimple from '@phila/vue-mapping/src/leaflet/PopupSimple.vue';
+import PopupContentFunctional from '@phila/vue-mapping/src/leaflet/PopupContentFunctional.vue';
 
-import cyclomediaMixin from '@philly/vue-mapping/src/cyclomedia/map-panel-mixin.js';
-import CyclomediaButton from '@philly/vue-mapping/src/cyclomedia/Button.vue';
-import CyclomediaRecordingsClient from '@philly/vue-mapping/src/cyclomedia/recordings-client.js';
-import ControlCorner from '@philly/vue-mapping/src/leaflet/ControlCorner.vue';
-import BasemapToggleControl from '@philly/vue-mapping/src/components/BasemapToggleControl.vue';
-import BasemapSelectControl from '@philly/vue-mapping/src/components/BasemapSelectControl.vue';
+import cyclomediaMixin from '@phila/vue-mapping/src/cyclomedia/map-panel-mixin.js';
+import CyclomediaButton from '@phila/vue-mapping/src/cyclomedia/Button.vue';
+import CyclomediaRecordingsClient from '@phila/vue-mapping/src/cyclomedia/recordings-client.js';
+import ControlCorner from '@phila/vue-mapping/src/leaflet/ControlCorner.vue';
+import BasemapToggleControl from '@phila/vue-mapping/src/components/BasemapToggleControl.vue';
+import BasemapSelectControl from '@phila/vue-mapping/src/components/BasemapSelectControl.vue';
 
 export default {
   name: "MapPanel",
@@ -160,11 +160,11 @@ export default {
     PopupSimple,
     PopupContentFunctional,
     // PopUpContent,
-    EsriTiledMapLayer: () => import(/* webpackChunkName: "pvm_EsriTiledMapLayer" */'@philly/vue-mapping/src/esri-leaflet/TiledMapLayer.vue'),
-    VectorMarker: () => import(/* webpackChunkName: "mbmp_pvm_VectorMarker" */'@philly/vue-mapping/src/components/VectorMarker.vue'),
-    PngMarker: () => import(/* webpackChunkName: "mbmp_pvm_PngMarker" */'@philly/vue-mapping/src/components/PngMarker.vue'),
-    CyclomediaRecordingCircle: () => import(/* webpackChunkName: "mbmp_pvm_CyclomediaRecordingCircle" */'@philly/vue-mapping/src/cyclomedia/RecordingCircle.vue'),
-    SvgViewConeMarker: () => import(/* webpackChunkName: "mbmp_pvm_CyclomediaSvgViewConeMarker" */'@philly/vue-mapping/src/cyclomedia/SvgViewConeMarker.vue'),
+    EsriTiledMapLayer: () => import(/* webpackChunkName: "pvm_EsriTiledMapLayer" */'@phila/vue-mapping/src/esri-leaflet/TiledMapLayer.vue'),
+    VectorMarker: () => import(/* webpackChunkName: "mbmp_pvm_VectorMarker" */'@phila/vue-mapping/src/components/VectorMarker.vue'),
+    PngMarker: () => import(/* webpackChunkName: "mbmp_pvm_PngMarker" */'@phila/vue-mapping/src/components/PngMarker.vue'),
+    CyclomediaRecordingCircle: () => import(/* webpackChunkName: "mbmp_pvm_CyclomediaRecordingCircle" */'@phila/vue-mapping/src/cyclomedia/RecordingCircle.vue'),
+    SvgViewConeMarker: () => import(/* webpackChunkName: "mbmp_pvm_CyclomediaSvgViewConeMarker" */'@phila/vue-mapping/src/cyclomedia/SvgViewConeMarker.vue'),
     CyclomediaButton,
     CyclomediaRecordingsClient,
     ControlCorner,
