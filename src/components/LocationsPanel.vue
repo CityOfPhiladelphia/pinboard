@@ -1,7 +1,21 @@
 <template>
   <div class="cell medium-12 medium-cell-block-y locations-panel">
+
+    <!-- before search -->
     <div
-      v-if="dataStatus === 'success'"
+      v-if="shouldShowGreeting"
+      class="topics-container cell medium-cell-block-y"
+      :style="topicsContainerStyle"
+    >
+      <greeting
+        v-show="shouldShowGreeting"
+        :message="greetingText"
+        :options="greetingOptions"
+      />
+    </div>
+
+    <div
+      v-if="!shouldShowGreeting && dataStatus === 'success'"
       class="location-container"
     >
       <div
@@ -110,12 +124,14 @@
   </div>
 </template>
 <script>
+
 import { mapState } from 'vuex';
 import ExpandCollapse from './ExpandCollapse.vue';
 
 export default {
   components: {
     ExpandCollapse,
+    Greeting: () => import(/* webpackChunkName: "mbmp_pvc_Greeting" */'@phila/vue-comps/src/components/Greeting.vue'),
   },
   props: {
     isMapVisible: {
@@ -124,6 +140,9 @@ export default {
     },
   },
   computed: {
+    shouldShowGreeting() {
+      return false;
+    },
     orgTitle() {
       return 'agencyname';
     },
