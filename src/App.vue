@@ -30,7 +30,10 @@
           @howToUseLink="toggleModal()"
         />
       </div>
-      <RefinePanel slot="after-stripe" />
+      <RefinePanel
+        slot="after-stripe"
+        :infoCircles="this.$config.infoCircles"
+      />
     </PhilaHeader>
 
     <div class="cell medium-auto medium-cell-block-container main-content">

@@ -38,8 +38,16 @@
           >
             <font-awesome-icon :for="item" :icon="['far', 'square']" v-show="!selected.includes(item)" class="fa-checkbox" />
             <font-awesome-icon :for="item" icon="check-square" v-show="selected.includes(item)" class="fa-checkbox" />
-            <label 
-            class="input-label" :for="item"><span class="service-item">{{ item }}</span></label>
+            <label
+              class="input-label" :for="item"><span class="service-item">{{ item }}</span>
+            </label>
+            <icon-tool-tip
+              v-if="Object.keys(infoCircles).includes(item)"
+              :item="item"
+              :circleData="infoCircles[item]"
+            >
+            </icon-tool-tip>
+
           </div>
           <!-- </input> -->
         </div>
@@ -64,16 +72,19 @@
 import { mapState } from 'vuex';
 import PhilaButton from './PhilaButton.vue';
 
-
 export default {
   components: {
     PhilaButton,
+    IconToolTip: () => import(/* webpackChunkName: "mbmp_pvc_IconToolTip" */'@phila/vue-comps/src/components/IconToolTip.vue'),
   },
   props: {
     legendTitle: {
       type: String,
       default: 'Refine',
     },
+    infoCircles: {
+
+    }
   },
   data() {
     return {
@@ -235,6 +246,7 @@ $refine-panel-height: 19vh;
       display: inline-block;
       line-height: 1.3rem;
       vertical-align: text-top;
+      padding-right: 3px;
     }
   }
   label {
@@ -274,8 +286,8 @@ $refine-panel-height: 19vh;
   }
 }
 
-//add outline to checkboxes 
-input[type=checkbox]:focus + svg, 
+//add outline to checkboxes
+input[type=checkbox]:focus + svg,
 input[type=checkbox]:focus + svg + svg{
   outline: rgb(59, 153, 252) auto 5px;
 }
@@ -285,7 +297,7 @@ input[type=checkbox] {
   opacity: 0;
   height: 0;
   margin: 0;
-}   
+}
 
 
 .checkbox-wrap {
@@ -327,6 +339,11 @@ input[type=checkbox] {
   position: relative;
   right: -15px;
   bottom: 1px;
+}
+
+.fa-infoCircle {
+  color: color(dark-ben-franklin);
+  cursor: pointer;
 }
 
 </style>
