@@ -5,8 +5,8 @@
     <div
       v-if="shouldShowGreeting"
       class="topics-container cell medium-cell-block-y"
-      :style="topicsContainerStyle"
     >
+    <!-- :style="topicsContainerStyle" -->
       <greeting
         v-show="shouldShowGreeting"
         :message="greetingText"
@@ -139,9 +139,36 @@ export default {
       default: true,
     },
   },
+  data() {
+    const data = {
+      'shouldShowGreeting': true,
+    }
+    return data;
+  },
   computed: {
-    shouldShowGreeting() {
-      return false;
+    // shouldShowGreeting() {
+    //   return true;
+    // },
+    greetingText() {
+      return this.$config.greeting.message;
+    },
+    greetingOptions() {
+      return this.$config.greeting.options;
+    },
+    geocode() {
+      return this.$store.state.geocode.data;
+    },
+    geocodeStatus() {
+      return this.$store.state.geocode.status;
+    },
+    selectedKeywords() {
+      return this.$store.state.selectedKeywords;
+    },
+    selectedServices() {
+      return this.$store.state.selectedServices;
+    },
+    selectedResources() {
+      return this.$store.state.selectedResources;
     },
     orgTitle() {
       return 'agencyname';
@@ -160,6 +187,24 @@ export default {
     },
     locationSlots() {
       return this.$config.locationSlots;
+    },
+  },
+  watch: {
+    geocode(nextGeocode) {
+      // console.log('watch, nextGeocode:', nextGeocode);
+      this.shouldShowGreeting = false;
+    },
+    selectedKeywords(nextSelectedKeywords) {
+      // console.log('watch, nextSelectedKeywords:', nextSelectedKeywords);
+      this.shouldShowGreeting = false;
+    },
+    selectedServices(nextSelectedServices) {
+      // console.log('watch, nextSelectedServices:', nextSelectedServices);
+      this.shouldShowGreeting = false;
+    },
+    selectedResources(nextSelectedResources) {
+      // console.log('watch, nextSelectedResources:', nextSelectedResources);
+      this.shouldShowGreeting = false;
     },
   },
   methods: {
