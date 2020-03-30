@@ -5,6 +5,7 @@
         <nav>
           <ul class="footer-nav">
             <li><a href="https://www.phila.gov">City of Philadelphia</a></li>
+            <li><a href=".">About This Finder</a></li>
             <li>
               <a
                 href=""
