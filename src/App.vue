@@ -25,6 +25,12 @@
       :app-logo="`${publicPath}logo.png`"
       :app-logo-alt="this.$config.app.logoAlt"
     >
+      <AlertBanner
+        slot="alert-banner"
+        v-if="this.$config.alerts && this.$config.alerts.header != null"
+      >
+      </AlertBanner>
+
       <div slot="mobile-menu">
         <PhilaFooter
           @howToUseLink="toggleModal()"
@@ -34,6 +40,13 @@
         slot="after-stripe"
         :infoCircles="this.$config.infoCircles"
       />
+
+
+      <!-- <component
+        :is="this.$config.alerts.header"
+      /> -->
+      <!-- v-if="this.$config.alerts && this.$config.alerts.header != null" -->
+
     </PhilaHeader>
 
     <div class="cell medium-auto medium-cell-block-container main-content">
@@ -76,6 +89,7 @@ import booleanPointInPolygon from '@turf/boolean-point-in-polygon';
 
 import PhilaButton from './components/PhilaButton.vue';
 import PhilaHeader from './components/PhilaHeader.vue';
+import AlertBanner from './components/AlertBanner.vue';
 import PhilaFooter from './components/PhilaFooter.vue';
 import PhilaModal from './components/PhilaModal.vue';
 import RefinePanel from './components/RefinePanel.vue';
@@ -87,6 +101,7 @@ export default {
   components: {
     PhilaButton,
     PhilaHeader,
+    AlertBanner,
     PhilaFooter,
     PhilaModal,
     RefinePanel,

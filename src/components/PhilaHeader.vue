@@ -68,6 +68,7 @@
         </div>
       </div>
     </div>
+    <slot name="alert-banner" />
     <div
       v-show="!isOpen"
       class="stripe"
@@ -136,7 +137,7 @@ export default {
   },
   data() {
     return {
-      dropdownData: {
+      dropdownOptions: {
         address: {
           text: 'Address',
           data: null,
@@ -152,6 +153,17 @@ export default {
     };
   },
   computed: {
+    dropdownData() {
+      let dropdownData = {};
+      if (!this.$config.dropdown) {
+        dropdownData = this.$data.dropdownOptions;
+      } else {
+        for (let dropdownItem of this.$config.dropdown) {
+          dropdownData[dropdownItem] = this.$data.dropdownOptions[dropdownItem];
+        }
+      }
+      return dropdownData;
+    },
     address() {
       let value;
       if (this.$store.state.geocode.data) {
