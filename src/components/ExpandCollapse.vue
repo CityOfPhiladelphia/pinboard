@@ -116,6 +116,7 @@ export default {
       return Object.values(visibility).every(val => val);
     },
     expandLocation() {
+      // console.log('ExpandCollapse expandLocation is starting');
       this.locationOpen = !this.locationOpen;
       const selectedResource = this.$props.item._featureId;
       const selectedResources = [ ...this.selectedResources ];
@@ -127,6 +128,7 @@ export default {
         selectedResources.splice(selectedResources.indexOf(selectedResource), 1);
       }
       // this.locationOpen ? selectedResources.push(selectedResource) : selectedResources.splice(selectedResources.indexOf(selectedResource), 1);
+      // console.log('ExpandCollapse expandLocation after selectedResources is defined');
       this.$store.commit('setSelectedResources', selectedResources);
       this.$store.commit('setLatestSelectedResourceFromExpand', latestSelectedResourceFromExpand);
     },

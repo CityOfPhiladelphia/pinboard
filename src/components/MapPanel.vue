@@ -44,18 +44,42 @@
         :icon="marker.icon"
       />
 
-      <!-- <vector-marker v-for="(marker) in this.$data.rows" -->
-      <vector-marker
+      <circle-marker
+        v-if="markerType === 'circle-marker'"
         v-for="(marker) in currentMapData"
-        :key="marker.key"
         :latlng="marker.latlng"
-        :marker-color="marker.color"
-        :icon="marker.icon"
-        :feature-id="marker._featureId"
+        :radius="marker.radius"
+        :fill-color="marker.color"
+        :color="'black'"
+        :weight="1"
+        :opacity="1"
+        :fill-opacity="1"
         :data="{
           featureId: marker._featureId
         }"
         @l-click="handleMarkerClick"
+      >
+        <popup-simple>
+      </circle-marker>
+      <!-- :feature-id="marker._featureId" -->
+
+      <!-- :rotation-angle="cycloRotationAngle" -->
+      <!-- :icon="sitePath + 'images/camera.png'" -->
+      <!-- :latlng="cycloLatlng" -->
+
+      <!-- <vector-marker v-for="(marker) in this.$data.rows" -->
+      <vector-marker
+        v-if="markerType === 'pin-marker'"
+        v-for="(marker) in currentMapData"
+        :key="marker.key"
+        :latlng="marker.latlng"
+        :marker-color="marker.color"
+        :feature-id="marker._featureId"
+        @l-click="handleMarkerClick"
+        :icon="marker.icon"
+        :data="{
+          featureId: marker._featureId
+        }"
       >
         <popup-simple
           v-if="latestSelectedResourceFromMap === marker._featureId"
@@ -162,6 +186,7 @@ export default {
     // PopUpContent,
     EsriTiledMapLayer: () => import(/* webpackChunkName: "pvm_EsriTiledMapLayer" */'@phila/vue-mapping/src/esri-leaflet/TiledMapLayer.vue'),
     VectorMarker: () => import(/* webpackChunkName: "mbmp_pvm_VectorMarker" */'@phila/vue-mapping/src/components/VectorMarker.vue'),
+    CircleMarker: () => import(/* webpackChunkName: "mbmp_pvm_CircleMarker" */'@phila/vue-mapping/src/leaflet/CircleMarker.vue'),
     PngMarker: () => import(/* webpackChunkName: "mbmp_pvm_PngMarker" */'@phila/vue-mapping/src/components/PngMarker.vue'),
     CyclomediaRecordingCircle: () => import(/* webpackChunkName: "mbmp_pvm_CyclomediaRecordingCircle" */'@phila/vue-mapping/src/cyclomedia/RecordingCircle.vue'),
     SvgViewConeMarker: () => import(/* webpackChunkName: "mbmp_pvm_CyclomediaSvgViewConeMarker" */'@phila/vue-mapping/src/cyclomedia/SvgViewConeMarker.vue'),
@@ -184,6 +209,15 @@ export default {
     isLoadingPins() {
       return this.$store.state.sources[this.$appType].status === 'waiting';
     },
+    markerType() {
+      let value;
+      if (!this.$config.markerType || this.$config.markerType === 'pin-marker') {
+        value = 'pin-marker';
+      } else {
+        value = this.$config.markerType;
+      }
+      return value;
+    },
     selectedResources() {
       return this.$store.state.selectedResources;
     },
@@ -194,25 +228,30 @@ export default {
       return this.$store.state.map.latestSelectedResourceFromMap;
     },
     currentData() {
+      // console.log('MapPanel.vue currentData is recalculating');
       return this.$store.state.currentData;
     },
     currentMapData() {
-      // console.log('currentMapData computed is recalculating, this.currentData:', this.currentData);
+      // console.log('MapPanel.vue currentMapData computed is recalculating');//, this.currentData:', this.currentData);
       const newRows = [];
       for (const row of [ ...this.currentData ]) {
         // console.log('in loop, row:', row);
-        let markerColor; let
-          markerSize;
+        let markerColor;
+        let markerSize;
+        let radius;
         if (this.selectedResources.includes(row._featureId)) {
           markerColor = '#2176d2';
           markerSize = 40;
+          radius = 12;
         } else {
           markerColor = 'purple';
           markerSize = 20;
+          radius = 6;
         }
         if (row.lat) {
           row.latlng = [ row.lat, row.lon ];
           row.color = markerColor;
+          row.radius = radius;
           row.icon = {
             prefix: 'fas',
             icon: 'map-marker-alt',
@@ -223,6 +262,7 @@ export default {
         } else if (row.geometry) {
           row.latlng = [ row.geometry.y, row.geometry.x ];
           row.color = markerColor;
+          row.radius = radius;
           row.icon = {
             prefix: 'fas',
             icon: 'map-marker-alt',
@@ -232,6 +272,7 @@ export default {
           newRows.push(row);
         }
       }
+      // console.log('MapPanel.vue currentMapData computed is finishing');
       return newRows;
     },
     geocodeStatus() {
@@ -390,9 +431,8 @@ export default {
     },
     handleMarkerClick(e) {
       const { target } = e;
+      // console.log('MapPanel.vue handleMarkerClick is running, target:', target);
       const { featureId } = target.options.data;
-
-      // console.log('markerClick, featureId', featureId);
       const selectedResource = [ ...this.selectedResources ];
       if (selectedResource.includes(featureId)) {
         // console.log('markerClick close marker, featureId', featureId);
