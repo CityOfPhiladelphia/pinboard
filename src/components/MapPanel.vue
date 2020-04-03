@@ -59,7 +59,16 @@
         }"
         @l-click="handleMarkerClick"
       >
-        <popup-simple>
+        <popup-simple
+          v-if="latestSelectedResourceFromMap === marker._featureId"
+          :latlng="marker.latlng"
+          :feature-id="marker._featureId"
+        >
+          <popup-content-functional
+            :popup-data="marker.organization_name"
+            @didClickPopupContent="toggleMap"
+          />
+        </popup-simple>
       </circle-marker>
       <!-- :feature-id="marker._featureId" -->
 
