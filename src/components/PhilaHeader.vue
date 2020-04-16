@@ -41,7 +41,7 @@
                 class="app-title"
               >
                 <h1 class="title">
-                  {{ appTitle }}
+                  {{ $t('title') }}
                 </h1>
                 <div id="demo-badge">
                   BETA
@@ -68,6 +68,7 @@
         </div>
       </div>
     </div>
+    <slot name="i18n-banner" />
     <slot name="alert-banner" />
     <div
       v-show="!isOpen"

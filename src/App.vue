@@ -31,6 +31,12 @@
       >
       </AlertBanner>
 
+      <i18nBanner
+        slot="i18n-banner"
+        v-if="this.$config.i18n && this.$config.i18n.header != null"
+      >
+    </i18nBanner>
+
       <div slot="mobile-menu">
         <PhilaFooter
           @howToUseLink="toggleModal()"
@@ -90,6 +96,7 @@ import booleanPointInPolygon from '@turf/boolean-point-in-polygon';
 import PhilaButton from './components/PhilaButton.vue';
 import PhilaHeader from './components/PhilaHeader.vue';
 import AlertBanner from './components/AlertBanner.vue';
+import i18nBanner from './components/i18nBanner.vue';
 import PhilaFooter from './components/PhilaFooter.vue';
 import PhilaModal from './components/PhilaModal.vue';
 import RefinePanel from './components/RefinePanel.vue';
@@ -102,6 +109,7 @@ export default {
     PhilaButton,
     PhilaHeader,
     AlertBanner,
+    i18nBanner,
     PhilaFooter,
     PhilaModal,
     RefinePanel,
@@ -246,6 +254,8 @@ export default {
     if (this.$config.dataSources) {
       this.$controller.dataManager.fetchData();
     }
+
+    // this.$i18n.locale = 'es';
     // let compiledDataSource = [];
     // if (Object.keys(this.$config.dataSources).length > 1) {
     //   console.log('this.$store.state.sources:', this.$store.state.sources);

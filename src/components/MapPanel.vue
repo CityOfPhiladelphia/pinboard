@@ -254,7 +254,7 @@ export default {
       // console.log('MapPanel.vue currentMapData computed is recalculating');//, this.currentData:', this.currentData);
       const newRows = [];
       for (const row of [ ...this.currentData ]) {
-        console.log('in loop, row:', row);
+        // console.log('in loop, row:', row);
         let markerColor;
         let markerSize;
         let radius;
