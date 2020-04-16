@@ -114,7 +114,7 @@ export default {
     },
     database() {
       // if (this.$store.state.sources[this.$appType].data.rows) {
-        return this.$store.state.sources[this.$appType].data.rows;
+        return this.$store.state.sources[this.$appType].data.rows || this.$store.state.sources[this.$appType].data;
       // } else if (this.$store.state.sources[this.$appType].data.features) {
       //   return this.$store.state.sources[this.$appType].data.features;
       // } else {
@@ -159,6 +159,7 @@ export default {
 
       let service = '';
 
+      console.log('in getRefineSearchList, refineData:', refineData);
       refineData.forEach((arrayElem) => {
         service += `${arrayElem.services_offered},`;
       });

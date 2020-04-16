@@ -172,6 +172,7 @@
 </template>
 
 <script>
+import proj4 from 'proj4';
 import 'leaflet/dist/leaflet.css';
 // import all fontawesome icons included in phila-vue-mapping
 import * as faMapping from '@phila/vue-mapping/src/fa';
@@ -240,11 +241,20 @@ export default {
       // console.log('MapPanel.vue currentData is recalculating');
       return this.$store.state.currentData;
     },
+    projection4326() {
+      return "+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs";
+    },
+    projection2272() {
+      return "+proj=lcc +lat_1=40.96666666666667 +lat_2=39.93333333333333 +lat_0=39.33333333333334 +lon_0=-77.75 +x_0=600000 +y_0=0 +ellps=GRS80 +datum=NAD83 +to_meter=0.3048006096012192 +no_defs";
+    },
+    projection3857() {
+      return "+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +wktext  +no_defs";
+    },
     currentMapData() {
       // console.log('MapPanel.vue currentMapData computed is recalculating');//, this.currentData:', this.currentData);
       const newRows = [];
       for (const row of [ ...this.currentData ]) {
-        // console.log('in loop, row:', row);
+        console.log('in loop, row:', row);
         let markerColor;
         let markerSize;
         let radius;
@@ -258,7 +268,11 @@ export default {
           radius = 6;
         }
         if (row.lat) {
-          row.latlng = [ row.lat, row.lon ];
+          if (this.$config.projection === '3857') {
+            row.latlng = proj4(this.projection3857, this.projection4326, [ row.lat, row.lon ]);
+          } else {
+            row.latlng = [ row.lat, row.lon ];
+          }
           row.color = markerColor;
           row.radius = radius;
           row.icon = {
@@ -269,7 +283,12 @@ export default {
           };
           newRows.push(row);
         } else if (row.geometry) {
-          row.latlng = [ row.geometry.y, row.geometry.x ];
+          if (this.$config.projection === '3857') {
+            let lnglat = proj4(this.projection3857, this.projection4326, [ row.geometry.x, row.geometry.y ]);
+            row.latlng = [ lnglat[1], lnglat[0] ];
+          } else {
+            row.latlng = [ row.geometry.y, row.geometry.x ];
+          }
           row.color = markerColor;
           row.radius = radius;
           row.icon = {

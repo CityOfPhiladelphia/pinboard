@@ -142,8 +142,13 @@ export default {
     dataStatus() {
       return this.$store.state.sources[this.$appType].status;
     },
+    dataTest() {
+      console.log('computed dataTest is running');
+      return this.$store.state.sources[this.$appType].data.rows;
+    },
     database() {
-      let database = this.$store.state.sources[this.$appType].data.rows;
+      let database = this.$store.state.sources[this.$appType].data.rows || this.$store.state.sources[this.$appType].data;
+      console.log('computed database is running, database:', database);
 
       for (let [key, value] of Object.entries(database)) {
         for (let [rowKey, rowValue] of Object.entries(value)) {
@@ -188,8 +193,28 @@ export default {
     selectedResources() {
       return this.$store.state.selectedResources;
     },
+    sourcesWatched() {
+      let sources = Object.keys(this.$store.state.sources);
+      const index = sources.indexOf('compiled');
+      if (index > -1) {
+        sources.splice(index, 1);
+      }
+
+      let sourcesWatched = [];
+
+      for (let source of sources) {
+        sourcesWatched.push(this.$store.state.sources[source].data);
+      }
+      return sourcesWatched;
+    },
   },
   watch: {
+    sourcesWatched(nextSourcesWatched) {
+      console.log('watch sourcesWatched, nextSourcesWatched:', nextSourcesWatched);
+      if (!nextSourcesWatched.includes(null)) {
+        this.setUpData(nextSourcesWatched);
+      }
+    },
     geocodeStatus(nextGeocodeStatus) {
       if (nextGeocodeStatus === 'success') {
         this.runBuffer();
@@ -217,10 +242,22 @@ export default {
     },
   },
   mounted() {
-    // console.log('in App.vue mounted, this.$config:', this.$config);
+    console.log('in App.vue mounted, this.$config:', this.$config);
     if (this.$config.dataSources) {
       this.$controller.dataManager.fetchData();
     }
+    // let compiledDataSource = [];
+    // if (Object.keys(this.$config.dataSources).length > 1) {
+    //   console.log('this.$store.state.sources:', this.$store.state.sources);
+    //   for (let source of Object.keys(this.$store.state.sources)) {
+    //     console.log('this.$store.state.sources[source].data:', this.$store.state.sources[source].data);
+    //     compiledDataSource.push(this.$store.state.sources[source].data.features);
+    //   }
+    // }
+    // console.log('compiledDataSource:', compiledDataSource);
+
+    // this.setUpData();
+
     this.onResize();
   },
   created() {
@@ -231,13 +268,34 @@ export default {
     window.removeEventListener('resize', this.onResize);
   },
   methods: {
+    setUpData(theSources) {
+      console.log('Pinboard App.vue setUpData is running, theSources:', theSources);
+      let compiled = {
+        key: 'compiled',
+        data: [],
+        status: 'success',
+      }
+      if (theSources.length > 1) {
+        console.log('this.$store.state.sources:', this.$store.state.sources);
+        for (let source of theSources) {
+          // console.log('source:', source, 'this.$store.state.sources[source].data:', this.$store.state.sources[source].data);
+          // for (let point of this.$store.state.sources[source].data.features) {
+          for (let point of source.features) {
+            compiled.data.push(point);
+          }
+        }
+      }
+      console.log('compiled:', compiled);
+      this.$store.commit('setSourceData', compiled);
+      this.$store.commit('setSourceStatus', compiled);
+    },
     runBuffer() {
       const geocodePoint = point(this.geocodeGeom.coordinates);
       const pointBuffer = buffer(geocodePoint, 1, { units: 'miles' });
       this.$data.buffer = pointBuffer;
     },
     filterPoints() {
-      // console.log('App.vue filterPoints is running, this.database:', this.database);
+      console.log('App.vue filterPoints is running, this.database:', this.database);
       const filteredRows = [];
 
       for (const row of this.database) {
