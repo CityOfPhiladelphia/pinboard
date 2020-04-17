@@ -9,9 +9,9 @@
     <!-- :style="topicsContainerStyle" -->
       <greeting
         v-show="shouldShowGreeting"
-        :message="greetingText"
-        :options="greetingOptions"
       />
+      <!-- :message="greetingText"
+      :options="greetingOptions" -->
     </div>
 
     <div

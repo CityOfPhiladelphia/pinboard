@@ -263,7 +263,13 @@ export default {
           markerSize = 40;
           radius = 12;
         } else {
-          markerColor = 'purple';
+          if (this.$config.circleColors) {
+            let indexVal = row._featureId.indexOf('-', row._featureId.indexOf('-') + 1);
+            console.log('row:', row, 'indexVal:', indexVal);
+            markerColor = this.$config.circleColors[row._featureId.slice(0, indexVal)]
+          } else {
+            markerColor = 'purple';
+          }
           markerSize = 20;
           radius = 6;
         }
