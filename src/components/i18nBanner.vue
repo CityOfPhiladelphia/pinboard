@@ -4,27 +4,17 @@
     <table class="side-padding no-margin">
       <!-- <th>{{ $t('language') }}</th> -->
       <th
-        @click="$i18n.locale = 'en-US'"
+        v-for="(lang, key) in this.i18nMessages"
+        @click="$i18n.locale = key"
       >
-        English
+      <!-- v-html="lang.language" -->
+        {{ lang.language }}
       </th>
-      <th
+      <!-- <th
         @click="$i18n.locale = 'es'"
       >
         Espanol
-      </th>
-      <th
-      >
-        Value 3
-      </th>
-      <th
-      >
-        Value 4
-      </th>
-      <th
-      >
-        Value 5
-      </th>
+      </th> -->
     </table>
   </div>
 </template>
@@ -33,6 +23,17 @@
 
 export default {
   name: 'i18nBanner',
+  computed: {
+    i18nLocale() {
+      return this.$i18n.locale;
+    },
+    i18nMessages() {
+      return this.$i18n.messages;
+    },
+    i18nLanguages() {
+      return Object.keys(this.$i18n.messages);
+    },
+  }
 };
 
 </script>

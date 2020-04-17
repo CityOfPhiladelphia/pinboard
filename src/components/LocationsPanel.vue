@@ -127,11 +127,12 @@
 
 import { mapState } from 'vuex';
 import ExpandCollapse from './ExpandCollapse.vue';
+import Greeting from './Greeting.vue';
 
 export default {
   components: {
     ExpandCollapse,
-    Greeting: () => import(/* webpackChunkName: "mbmp_pvc_Greeting" */'@phila/vue-comps/src/components/Greeting.vue'),
+    Greeting,
   },
   props: {
     isMapVisible: {
@@ -149,12 +150,12 @@ export default {
     // shouldShowGreeting() {
     //   return true;
     // },
-    greetingText() {
-      return this.$config.greeting.message;
-    },
-    greetingOptions() {
-      return this.$config.greeting.options;
-    },
+    // greetingText() {
+    //   return this.$config.greeting.message;
+    // },
+    // greetingOptions() {
+    //   return this.$config.greeting.options;
+    // },
     geocode() {
       return this.$store.state.geocode.data;
     },

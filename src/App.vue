@@ -35,7 +35,7 @@
         slot="i18n-banner"
         v-if="this.$config.i18n && this.$config.i18n.header != null"
       >
-    </i18nBanner>
+      </i18nBanner>
 
       <div slot="mobile-menu">
         <PhilaFooter
