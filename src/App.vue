@@ -156,7 +156,7 @@ export default {
     },
     database() {
       let database = this.$store.state.sources[this.$appType].data.rows || this.$store.state.sources[this.$appType].data;
-      console.log('computed database is running, database:', database);
+      // console.log('computed database is running, database:', database);
 
       for (let [key, value] of Object.entries(database)) {
         for (let [rowKey, rowValue] of Object.entries(value)) {
@@ -206,14 +206,16 @@ export default {
       const index = sources.indexOf('compiled');
       if (index > -1) {
         sources.splice(index, 1);
-      }
 
-      let sourcesWatched = [];
+        let sourcesWatched = [];
 
-      for (let source of sources) {
-        sourcesWatched.push(this.$store.state.sources[source].data);
+        for (let source of sources) {
+          sourcesWatched.push(this.$store.state.sources[source].data);
+        }
+        return sourcesWatched;
+      } else {
+        return null
       }
-      return sourcesWatched;
     },
   },
   watch: {
@@ -291,13 +293,16 @@ export default {
           // console.log('source:', source, 'this.$store.state.sources[source].data:', this.$store.state.sources[source].data);
           // for (let point of this.$store.state.sources[source].data.features) {
           for (let point of source.features) {
+            // console.log('point:', point);
+            Object.assign(point, point.attributes);
+            point.attributes = undefined;
             compiled.data.push(point);
           }
         }
+        console.log('compiled:', compiled);
+        this.$store.commit('setSourceData', compiled);
+        this.$store.commit('setSourceStatus', compiled);
       }
-      console.log('compiled:', compiled);
-      this.$store.commit('setSourceData', compiled);
-      this.$store.commit('setSourceStatus', compiled);
     },
     runBuffer() {
       const geocodePoint = point(this.geocodeGeom.coordinates);
@@ -305,7 +310,7 @@ export default {
       this.$data.buffer = pointBuffer;
     },
     filterPoints() {
-      console.log('App.vue filterPoints is running, this.database:', this.database);
+      // console.log('App.vue filterPoints is running, this.database:', this.database);
       const filteredRows = [];
 
       for (const row of this.database) {

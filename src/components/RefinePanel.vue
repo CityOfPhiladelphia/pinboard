@@ -159,7 +159,7 @@ export default {
 
       let service = '';
 
-      console.log('in getRefineSearchList, refineData:', refineData);
+      // console.log('in getRefineSearchList, refineData:', refineData);
       refineData.forEach((arrayElem) => {
         service += `${arrayElem.services_offered},`;
       });

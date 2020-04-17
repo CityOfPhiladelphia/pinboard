@@ -459,8 +459,8 @@ export default {
     },
     handleMarkerClick(e) {
       const { target } = e;
-      // console.log('MapPanel.vue handleMarkerClick is running, target:', target);
       const { featureId } = target.options.data;
+      console.log('MapPanel.vue handleMarkerClick is running, target:', target, 'featureId:', featureId);
       const selectedResource = [ ...this.selectedResources ];
       if (selectedResource.includes(featureId)) {
         // console.log('markerClick close marker, featureId', featureId);

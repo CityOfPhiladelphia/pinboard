@@ -90,7 +90,13 @@ function finishInit(config) {
   Vue.component('font-awesome-icon', FontAwesomeIcon);
 
   Vue.use(VueI18n)
-  const i18n = new VueI18n(config.i18n.data);
+  let i18nData;
+  if (config.i18n && config.i18n.data) {
+    i18nData = config.i18n.data;
+  } else {
+    i18nData = {};
+  }
+  const i18n = new VueI18n(i18nData);
 
   Vue.use(fonts);
   Vue.config.productionTip = false;

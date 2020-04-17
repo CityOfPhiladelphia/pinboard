@@ -3,8 +3,10 @@
     class="cell medium-cell-block-container location-item"
     :class="{ 'open': locationOpen }"
   >
+  <!-- :id="makeID(item.organization_name)" -->
+  <!-- :id="makeID(item.site_name)" -->
     <h2
-      :id="makeID(item.organization_name)"
+      :id="makeID(evaluateSlot(slots.title))"
       class="h4 location-title"
       @click="expandLocation"
       tabindex="0"
@@ -16,8 +18,10 @@
     <div
       :class="{ 'location-open': locationOpen }"
       class="location-content"
-      :aria-labelledby="makeID(item.organization_name)"
+      :aria-labelledby="makeID(evaluateSlot(slots.title))"
       >
+      <!-- :aria-labelledby="makeID(item.site_name)" -->
+      <!-- :aria-labelledby="makeID(item.organization_name)" -->
       <slot />
     </div>
   </div>
@@ -133,7 +137,12 @@ export default {
       this.$store.commit('setLatestSelectedResourceFromExpand', latestSelectedResourceFromExpand);
     },
     makeID( itemTitle ){
-      return itemTitle.replace(/\s+/g, '-').toLowerCase();
+      // console.log('itemTitle:', itemTitle);
+      if (itemTitle) {
+        return itemTitle.replace(/\s+/g, '-').toLowerCase();
+      } else {
+        return '';
+      }
     },
   },
 };

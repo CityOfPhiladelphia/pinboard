@@ -176,7 +176,11 @@ export default {
     ...mapState([ 'sources' ]),
     currentData() {
       const locations = this.$store.state.currentData;
-      locations.sort((a, b) => a.organization_name.localeCompare(b.organization_name));
+      let value = this.locationSlots.title;
+      // locations.sort((a, b) => a.organization_name.localeCompare(b.organization_name));
+      // locations.sort((a, b) => a.site_name);//.localeCompare(b.site_name));
+      locations.sort((a, b) => a[value]);//.localeCompare(b.site_name));
+
       return locations;
     },
     currentDataList() {
