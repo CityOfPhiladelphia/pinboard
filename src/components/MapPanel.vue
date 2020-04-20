@@ -138,6 +138,16 @@
       </div>
 
       <div v-once>
+        <legend-control
+          v-for="legendControl in Object.keys(legendControls)"
+          :key="legendControl"
+          :position="'bottomleft'"
+          :options="legendControls[legendControl].options"
+          :items="legendControls[legendControl].data"
+        />
+      </div>
+
+      <div v-once>
         <basemap-select-control :position="this.basemapSelectControlPosition" />
       </div>
 
@@ -186,6 +196,7 @@ import CyclomediaRecordingsClient from '@phila/vue-mapping/src/cyclomedia/record
 import ControlCorner from '@phila/vue-mapping/src/leaflet/ControlCorner.vue';
 import BasemapToggleControl from '@phila/vue-mapping/src/components/BasemapToggleControl.vue';
 import BasemapSelectControl from '@phila/vue-mapping/src/components/BasemapSelectControl.vue';
+import LegendControl from '@phila/vue-mapping/src/components/LegendControlNoTopic.vue';
 
 export default {
   name: "MapPanel",
@@ -205,6 +216,7 @@ export default {
     ControlCorner,
     BasemapToggleControl,
     BasemapSelectControl,
+    LegendControl,
   },
   mixins: [
     cyclomediaMixin,
@@ -216,6 +228,9 @@ export default {
     return data;
   },
   computed: {
+    legendControls() {
+      return this.$config.legendControls || {};
+    },
     isLoadingPins() {
       return this.$store.state.sources[this.$appType].status === 'waiting';
     },
@@ -265,7 +280,7 @@ export default {
         } else {
           if (this.$config.circleColors) {
             let indexVal = row._featureId.indexOf('-', row._featureId.indexOf('-') + 1);
-            console.log('row:', row, 'indexVal:', indexVal);
+            // console.log('row:', row, 'indexVal:', indexVal);
             markerColor = this.$config.circleColors[row._featureId.slice(0, indexVal)]
           } else {
             markerColor = 'purple';
