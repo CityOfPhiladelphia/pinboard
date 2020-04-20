@@ -171,9 +171,14 @@ export default {
       const uniqArray = [ ...new Set(serviceArray) ];
 
       // clean up any dangling , or ;
-      const uniq = uniqArray.filter(a => a.length > 2);
+      let uniq = uniqArray.filter(a => a.length > 2);
 
       uniq.filter(Boolean); // remove empties
+
+      if (this.$config.refineCategories) {
+        uniq = this.$config.refineCategories;
+      }
+
       uniq.sort();
       return uniq;
     },
