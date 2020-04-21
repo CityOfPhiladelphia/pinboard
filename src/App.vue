@@ -155,7 +155,7 @@ export default {
       return this.$store.state.sources[this.$appType].data.rows;
     },
     database() {
-      let database = this.$store.state.sources[this.$appType].data.rows || this.$store.state.sources[this.$appType].data;
+      let database = this.$store.state.sources[this.$appType].data.rows || this.$store.state.sources[this.$appType].data.features || this.$store.state.sources[this.$appType].data;
       // console.log('computed database is running, database:', database);
 
       for (let [key, value] of Object.entries(database)) {
@@ -318,7 +318,13 @@ export default {
         let booleanServices;
         // console.log('row.services_offered:', row.services_offered);
         // const servicesSplit = row.services_offered.split(',');
-        const servicesSplit = row.services_offered;
+        let servicesSplit;
+        if (row.services_offered) {
+          servicesSplit = row.services_offered;
+        } else if (row.attributes.CATEGORY) {
+          servicesSplit = [row.attributes.CATEGORY];
+        }
+        console.log('servicesSplit:', servicesSplit);
         const { selectedServices } = this.$store.state;
         if (selectedServices.length === 0) {
           booleanServices = true;

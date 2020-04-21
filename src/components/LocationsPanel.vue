@@ -36,88 +36,100 @@
           :is-map-visible="isMapVisible"
           :slots="locationSlots"
           >
-          <div class="grid-x grid-padding-x">
-            <div class="cell medium-12">
-              <div
-                v-if="item.street_address"
-                class="detail"
-              >
-                <font-awesome-icon icon="map-marker-alt" />
-                <span v-html="parseAddress(item.street_address)">
-                  {{ parseAddress(item.street_address) }}
-                </span>
-              </div>
-            </div>
-            <div class="cell medium-12">
-              <div
-                v-if="item.phone_number"
-                class="detail"
-              >
-                <font-awesome-icon icon="phone" />
-                <span>{{ item.phone_number }}</span>
-              </div>
-              <div
-                v-if="item.email"
-                class="detail"
-              >
-                <font-awesome-icon icon="envelope" />
-                <span><a :href="`mailto:${item.email}`">{{ item.email }}</a></span>
-              </div>
-              <div
-                v-if="item.website"
-                class="detail"
-              >
-                <font-awesome-icon icon="globe" />
-                <span><a :href="makeValidUrl(item.website)">{{ item.website }}</a></span>
-              </div>
-              <div
-                v-if="item.facebook_name"
-                class="detail"
-              >
-                <font-awesome-icon :icon="['fab', 'facebook']" />
-                <span><a :href="item.facebook_name">Facebook</a></span>
-              </div>
-              <div
-                v-if="item.twitter"
-                class="detail"
-              >
-                <font-awesome-icon :icon="['fab', 'twitter']" />
-                <span><a :href="item.twitter">Twitter</a></span>
-              </div>
-            </div>
-          </div>
-          <div v-if="item.services_offered">
-            <section class="services grid-x grid-padding-x">
-              <div class="cell">
-                <h3 class="h4">
-                  Services offered
-                </h3>
-                <div class="grid-x">
-                  <div
-                    v-for="i in parseServiceList(item.services_offered)"
-                    :key="i"
-                    class="cell medium-12 service-item"
-                  >
-                    {{ i }}
-                  </div>
+
+          <component
+            is="expandCollapseContent"
+            v-if="$config.customComps && Object.keys($config.customComps).includes('expandCollapseContent')"
+            :item="item"
+            :is-map-visible="isMapVisible"
+            :slots="locationSlots"
+          />
+
+          <div v-if="$config.useDefaultLayout">
+            <div class="grid-x grid-padding-x">
+              <div class="cell medium-12">
+                <div
+                  v-if="item.street_address"
+                  class="detail"
+                >
+                  <font-awesome-icon icon="map-marker-alt" />
+                  <span v-html="parseAddress(item.street_address)">
+                    {{ parseAddress(item.street_address) }}
+                  </span>
                 </div>
               </div>
-            </section>
-          </div>
-          <div v-if="item.tags">
-            <section class="tags grid-x grid-padding-x mtm">
-              <div class="cell">
-                <h3 class="h4">
-                  Tags
-                </h3>
-                <div class="grid-x">
-                  <div>
-                    {{ parseTagsList(item.tags) }}
-                  </div>
+              <div class="cell medium-12">
+                <div
+                  v-if="item.phone_number"
+                  class="detail"
+                >
+                  <font-awesome-icon icon="phone" />
+                  <span>{{ item.phone_number }}</span>
+                </div>
+                <div
+                  v-if="item.email"
+                  class="detail"
+                >
+                  <font-awesome-icon icon="envelope" />
+                  <span><a :href="`mailto:${item.email}`">{{ item.email }}</a></span>
+                </div>
+                <div
+                  v-if="item.website"
+                  class="detail"
+                >
+                  <font-awesome-icon icon="globe" />
+                  <span><a :href="makeValidUrl(item.website)">{{ item.website }}</a></span>
+                </div>
+                <div
+                  v-if="item.facebook_name"
+                  class="detail"
+                >
+                  <font-awesome-icon :icon="['fab', 'facebook']" />
+                  <span><a :href="item.facebook_name">Facebook</a></span>
+                </div>
+                <div
+                  v-if="item.twitter"
+                  class="detail"
+                >
+                  <font-awesome-icon :icon="['fab', 'twitter']" />
+                  <span><a :href="item.twitter">Twitter</a></span>
                 </div>
               </div>
-            </section>
+            </div>
+            <div v-if="item.services_offered">
+              <section class="services grid-x grid-padding-x">
+                <div class="cell">
+                  <h3 class="h4">
+                    Services offered
+                  </h3>
+                  <div class="grid-x">
+                    <div
+                      v-for="i in parseServiceList(item.services_offered)"
+                      :key="i"
+                      class="cell medium-12 service-item"
+                    >
+                      {{ i }}
+                    </div>
+                  </div>
+                </div>
+              </section>
+            </div>
+            <div v-if="item.tags">
+              <section class="tags grid-x grid-padding-x mtm">
+                <div class="cell">
+                  <h3 class="h4">
+                    Tags
+                  </h3>
+                  <div class="grid-x">
+                    <div>
+                      {{ parseTagsList(item.tags) }}
+                    </div>
+                  </div>
+                </div>
+              </section>
+            </div>
           </div>
+
         </ExpandCollapse>
       </div>
     </div>

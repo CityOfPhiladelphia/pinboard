@@ -279,9 +279,10 @@ export default {
           radius = 12;
         } else {
           if (this.$config.circleColors) {
-            let indexVal = row._featureId.indexOf('-', row._featureId.indexOf('-') + 1);
+            // let indexVal = row._featureId.indexOf('-', row._featureId.indexOf('-') + 1);
             // console.log('row:', row, 'indexVal:', indexVal);
-            markerColor = this.$config.circleColors[row._featureId.slice(0, indexVal)]
+            // markerColor = this.$config.circleColors[row._featureId.slice(0, indexVal)]
+            markerColor = this.$config.circleColors[row.attributes.CATEGORY]
           } else {
             markerColor = 'purple';
           }

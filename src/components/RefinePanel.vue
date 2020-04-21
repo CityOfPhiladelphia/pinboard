@@ -114,7 +114,7 @@ export default {
     },
     database() {
       // if (this.$store.state.sources[this.$appType].data.rows) {
-        return this.$store.state.sources[this.$appType].data.rows || this.$store.state.sources[this.$appType].data;
+        return this.$store.state.sources[this.$appType].data.rows || this.$store.state.sources[this.$appType].data.features || this.$store.state.sources[this.$appType].data;
       // } else if (this.$store.state.sources[this.$appType].data.features) {
       //   return this.$store.state.sources[this.$appType].data.features;
       // } else {
@@ -161,7 +161,12 @@ export default {
 
       // console.log('in getRefineSearchList, refineData:', refineData);
       refineData.forEach((arrayElem) => {
-        service += `${arrayElem.services_offered},`;
+        // console.log('arrayElem:', arrayElem);
+        if (arrayElem.services_offered) {
+          service += `${arrayElem.services_offered},`;
+        } else if (arrayElem.attributes.CATEGORY) {
+          service += `${arrayElem.attributes.CATEGORY},`;
+        }
       });
 
       // TODO: break this into smaller chunks
