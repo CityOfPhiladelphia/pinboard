@@ -53,14 +53,23 @@
             </section>
           </div>
           <div class="cell large-auto small-auto small-centered text-center">
+            <!-- v-if="!this.$config.addressInput || this.$config.addressInput && this.$config.addressInput.type === 'combo'" -->
             <combo-search
-              :dropdown="dropdownData"
+              :dropdown="comboSearchDropdownData"
+              :position="comboSearchPosition"
+              :placeholderText="comboSearchPlaceholderText"
               :search-string="searchString"
               :dropdown-selected="dropdownSelected"
               @trigger-combo-search="comboSearchTriggered"
               @trigger-clear-search="clearSearchTriggered"
               @trigger-search-category-change="comboSearchCategoryChange"
             />
+            <!-- <address-input
+              v-if="this.$config.addressInput && this.$config.addressInput.type === 'address'"
+              :width-from-config="addressInputWidth"
+              :placeholder="addressInputPlaceholder"
+              @handle-search-form-submit="handleSearchFormSubmit"
+            /> -->
             <div class="search">
               <slot name="search" />
             </div>
@@ -70,13 +79,13 @@
     </div>
     <slot name="i18n-banner" />
     <slot name="alert-banner" />
-    <div
+    <!-- <div
       v-show="!isOpen"
       class="stripe"
     />
     <div
       class="white-stripe"
-    />
+    /> -->
     <div
       v-show="isOpen"
       class="mobile-menu-content-container show-for-small-only"
@@ -109,6 +118,7 @@ import Logo from '@/assets/city-of-philadelphia-logo.png';
 export default {
   components: {
     ComboSearch: () => import(/* webpackChunkName: "pvc_ComboSearch" */'@phila/vue-comps/src/components/ComboSearch.vue'),
+    AddressInput: () => import(/* webpackChunkName: "pvc_AddressInput" */'@phila/vue-comps/src/components/AddressInput.vue'),
   },
   props: {
     appLink: {
@@ -154,16 +164,33 @@ export default {
     };
   },
   computed: {
-    dropdownData() {
+    comboSearchDropdownData() {
       let dropdownData = {};
-      if (!this.$config.dropdown) {
+      if (!this.$config.comboSearch) {
+        dropdownData = this.$data.dropdownOptions;
+      } else if (!this.$config.comboSearch.dropdown) {
         dropdownData = this.$data.dropdownOptions;
       } else {
-        for (let dropdownItem of this.$config.dropdown) {
+        for (let dropdownItem of this.$config.comboSearch.dropdown) {
           dropdownData[dropdownItem] = this.$data.dropdownOptions[dropdownItem];
         }
       }
+      console.log('dropdownData:', dropdownData);
       return dropdownData;
+    },
+    comboSearchPosition() {
+      if (this.$config.comboSearch && this.$config.comboSearch.position) {
+        return this.$config.comboSearch.position;
+      } else {
+        return 'left';
+      }
+    },
+    comboSearchPlaceholderText() {
+      if (this.$config.comboSearch && this.$config.comboSearch.placeholderText) {
+        return this.$config.comboSearch.placeholderText;
+      } else {
+        return 'Search';
+      }
     },
     address() {
       let value;
@@ -185,25 +212,28 @@ export default {
   },
   watch: {
     address(nextAddress) {
-      this.dropdownData.address.data = nextAddress;
+      this.comboSearchDropdownData.address.data = nextAddress;
     },
     keywords(nextKeywords) {
-      this.dropdownData.keyword.data = nextKeywords;
+      this.comboSearchDropdownData.keyword.data = nextKeywords;
     },
   },
   created() {
-    Object.keys(this.dropdownData).forEach(item => {
+    Object.keys(this.comboSearchDropdownData).forEach(item => {
       if (this.$route.query[item]) {
         // console.log('philaHeader created item:', item)
         this.searchString = this.$route.query[item];
-        this.dropdownData[item].selected = true;
+        this.comboSearchDropdownData[item].selected = true;
         this.$store.commit('setSearchType', item);
       }
     });
   },
   methods: {
+    // handleSearchFormSubmit(value) {
+    //   this.$controller.handleSearchFormSubmit(value);
+    // },
     comboSearchTriggered(query) {
-      // console.log('in comboSearchTriggered, query:', query, 'this.searchType:', this.searchType, '{...this.$route.query}:', { ...this.$route.query }, '{...query}:', { ...query });
+      console.log('in comboSearchTriggered, query:', query, 'this.searchType:', this.searchType, '{...this.$route.query}:', { ...this.$route.query }, '{...query}:', { ...query });
       this.$router.push({ query: { ...this.$route.query, ...query }});
       this.searchString = query[this.searchType];
       const searchCategory = Object.keys(query)[0];
@@ -224,7 +254,7 @@ export default {
       this.$store.commit('setSelectedKeywords', []);
       this.$store.commit('setSearchType', value);
       let startQuery = { ...this.$route.query };
-      let overlap = this.compareArrays(Object.keys(startQuery), Object.keys(this.dropdownData));
+      let overlap = this.compareArrays(Object.keys(startQuery), Object.keys(this.comboSearchDropdownData));
       if (overlap.length) {
         for (let item of overlap) {
           delete startQuery[item];

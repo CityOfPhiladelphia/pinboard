@@ -55,7 +55,8 @@
 
     </PhilaHeader>
 
-    <div class="cell medium-auto medium-cell-block-container main-content">
+    <!-- <div class="cell medium-auto medium-cell-block-container main-content"> -->
+    <div class="cell medium-auto medium-cell-block-container">
       <div class="grid-x">
         <LocationsPanel
           v-show="!isMapVisible || isLarge"
@@ -321,10 +322,10 @@ export default {
         let servicesSplit;
         if (row.services_offered) {
           servicesSplit = row.services_offered;
-        } else if (row.attributes.CATEGORY) {
-          servicesSplit = [row.attributes.CATEGORY];
+        } else if (row.attributes.category_type) {
+          servicesSplit = [row.attributes.category_type];
         }
-        console.log('servicesSplit:', servicesSplit);
+        // console.log('servicesSplit:', servicesSplit);
         const { selectedServices } = this.$store.state;
         if (selectedServices.length === 0) {
           booleanServices = true;

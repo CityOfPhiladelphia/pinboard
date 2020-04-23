@@ -164,8 +164,8 @@ export default {
         // console.log('arrayElem:', arrayElem);
         if (arrayElem.services_offered) {
           service += `${arrayElem.services_offered},`;
-        } else if (arrayElem.attributes.CATEGORY) {
-          service += `${arrayElem.attributes.CATEGORY},`;
+        } else if (arrayElem.attributes.category_type) {
+          service += `${arrayElem.attributes.category_type},`;
         }
       });
 
@@ -185,6 +185,8 @@ export default {
       }
 
       uniq.sort();
+
+      console.log('uniq:', uniq);
       return uniq;
     },
     scrollToTop() {

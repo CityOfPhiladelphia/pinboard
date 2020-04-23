@@ -1,20 +1,19 @@
 <template>
   <div class="banner">
-  <!-- <div> -->
-    <table class="side-padding no-margin">
-      <!-- <th>{{ $t('language') }}</th> -->
+    <!-- <table class="fixed centered no-margin-bottom"> -->
+    <table class="fixed centered bottom-padding bottom-margin">
       <th
         v-for="(lang, key) in this.i18nMessages"
-        @click="$i18n.locale = key"
+        @click="handleTableHeaderClick(key)"
+        :class="{ selected: isSelected === key, 'bottom-padding': true }"
       >
-      <!-- v-html="lang.language" -->
-        {{ lang.language }}
+        <a
+          :class="{ selected: isSelected === key, 'underlined': true }"
+          target="_blank"
+        >
+          {{ lang.language }}
+        </a>
       </th>
-      <!-- <th
-        @click="$i18n.locale = 'es'"
-      >
-        Espanol
-      </th> -->
     </table>
   </div>
 </template>
@@ -23,6 +22,11 @@
 
 export default {
   name: 'i18nBanner',
+  data() {
+    return {
+      isSelected: 'en-US',
+    };
+  },
   computed: {
     i18nLocale() {
       return this.$i18n.locale;
@@ -33,6 +37,12 @@ export default {
     i18nLanguages() {
       return Object.keys(this.$i18n.messages);
     },
+  },
+  methods: {
+    handleTableHeaderClick(key) {
+      this.$i18n.locale = key;
+      this.$data.isSelected = key;
+    }
   }
 };
 
@@ -41,18 +51,40 @@ export default {
 <style>
 
 .banner {
-  /* background: #cc3000; */
+  background-color: #ffffff;
+  color: #0f4d90 !important;
   font-size: 16px;
-  color: white;
 }
 
-.no-margin {
+.selected {
+  background-color: #0f4d90;
+  color: #ffffff !important;
+}
+
+.no-margin-bottom {
   margin-bottom: 0px;
 }
 
-.side-padding {
-  padding-left: 10px;
-  padding-right: 10px;
+.bottom-padding {
+  padding-bottom: 4px !important;
+  /* cursor: pointer; */
+}
+
+/* .bottom-margin {
+  margin-bottom: 2px !important;
+} */
+
+.fixed {
+  table-layout: fixed;
+}
+
+.centered {
+  width: 85%;
+  margin: 0 auto;
+}
+
+.underlined {
+  text-decoration: underline;
 }
 
 </style>

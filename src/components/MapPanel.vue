@@ -51,7 +51,7 @@
         :radius="marker.radius"
         :fill-color="marker.color"
         :color="'black'"
-        :weight="1"
+        :weight="marker.weight"
         :opacity="1"
         :fill-opacity="1"
         :data="{
@@ -273,21 +273,35 @@ export default {
         let markerColor;
         let markerSize;
         let radius;
+        let weight;
         if (this.selectedResources.includes(row._featureId)) {
           markerColor = '#2176d2';
           markerSize = 40;
           radius = 12;
+          weight = 0;
         } else {
-          if (this.$config.circleColors) {
+          if (this.$config.circleMarkers.circleColors) {
             // let indexVal = row._featureId.indexOf('-', row._featureId.indexOf('-') + 1);
             // console.log('row:', row, 'indexVal:', indexVal);
             // markerColor = this.$config.circleColors[row._featureId.slice(0, indexVal)]
-            markerColor = this.$config.circleColors[row.attributes.CATEGORY]
+            markerColor = this.$config.circleMarkers.circleColors[row.attributes.category_type]
           } else {
             markerColor = 'purple';
           }
           markerSize = 20;
-          radius = 6;
+          // weight = 1;
+          // radius = 6;
+          if (this.$config.circleMarkers.radius) {
+            radius = this.$config.circleMarkers.radius;
+          } else {
+            radius = 6;
+          }
+          if (this.$config.circleMarkers.weight || this.$config.circleMarkers.weight === 0) {
+            weight = this.$config.circleMarkers.weight;
+          } else {
+            weight = 1;
+          }
+          console.log('weight:', weight, 'this.$config.circleMarkers.weight:', this.$config.circleMarkers.weight);
         }
         if (row.lat) {
           if (this.$config.projection === '3857') {
@@ -297,6 +311,7 @@ export default {
           }
           row.color = markerColor;
           row.radius = radius;
+          row.weight = weight;
           row.icon = {
             prefix: 'fas',
             icon: 'map-marker-alt',
@@ -313,6 +328,17 @@ export default {
           }
           row.color = markerColor;
           row.radius = radius;
+          row.weight = weight;
+          // if (this.$config.circleMarkers.radius) {
+          //   radius = this.$config.circleMarkers.radius;
+          // } else {
+          //   radius = 6;
+          // }
+          // if (this.$config.circleMarkers.weight) {
+          //   weight = this.$config.circleMarkers.weight;
+          // } else {
+          //   weight = 1;
+          // }
           row.icon = {
             prefix: 'fas',
             icon: 'map-marker-alt',
