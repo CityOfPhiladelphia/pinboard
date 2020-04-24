@@ -9,9 +9,9 @@
     <!-- :style="topicsContainerStyle" -->
       <greeting
         v-show="shouldShowGreeting"
+        :message="greetingText"
+        :options="greetingOptions"
       />
-      <!-- :message="greetingText"
-      :options="greetingOptions" -->
     </div>
 
     <div
@@ -162,12 +162,20 @@ export default {
     // shouldShowGreeting() {
     //   return true;
     // },
-    // greetingText() {
-    //   return this.$config.greeting.message;
-    // },
-    // greetingOptions() {
-    //   return this.$config.greeting.options;
-    // },
+    greetingText() {
+      if (this.$config.greeting) {
+        return this.$config.greeting.message;
+      } else {
+        return null;
+      }
+    },
+    greetingOptions() {
+      if (this.$config.greeting) {
+        return this.$config.greeting.options;
+      } else {
+        return {};
+      }
+    },
     geocode() {
       return this.$store.state.geocode.data;
     },

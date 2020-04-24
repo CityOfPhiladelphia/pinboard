@@ -280,7 +280,7 @@ export default {
           radius = 12;
           weight = 0;
         } else {
-          if (this.$config.circleMarkers.circleColors) {
+          if (this.$config.circleMarkers && this.$config.circleMarkers.circleColors) {
             // let indexVal = row._featureId.indexOf('-', row._featureId.indexOf('-') + 1);
             // console.log('row:', row, 'indexVal:', indexVal);
             // markerColor = this.$config.circleColors[row._featureId.slice(0, indexVal)]
@@ -291,17 +291,17 @@ export default {
           markerSize = 20;
           // weight = 1;
           // radius = 6;
-          if (this.$config.circleMarkers.radius) {
+          if (this.$config.circleMarkers && this.$config.circleMarkers.radius) {
             radius = this.$config.circleMarkers.radius;
           } else {
             radius = 6;
           }
-          if (this.$config.circleMarkers.weight || this.$config.circleMarkers.weight === 0) {
+          if (this.$config.circleMarkers && this.$config.circleMarkers.weight || this.$config.circleMarkers && this.$config.circleMarkers.weight === 0) {
             weight = this.$config.circleMarkers.weight;
           } else {
             weight = 1;
           }
-          console.log('weight:', weight, 'this.$config.circleMarkers.weight:', this.$config.circleMarkers.weight);
+          // console.log('weight:', weight, 'this.$config.circleMarkers.weight:', this.$config.circleMarkers.weight);
         }
         if (row.lat) {
           if (this.$config.projection === '3857') {

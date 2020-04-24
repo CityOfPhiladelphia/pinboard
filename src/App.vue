@@ -32,6 +32,7 @@
       </AlertBanner>
 
       <i18nBanner
+        class="hide-for-small-only"
         slot="i18n-banner"
         v-if="this.$config.i18n && this.$config.i18n.header != null"
       >

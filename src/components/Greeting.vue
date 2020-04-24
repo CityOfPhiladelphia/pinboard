@@ -7,25 +7,16 @@
     <address-candidate-list v-if="addressAutocompleteEnabled && shouldShowAddressInput" />
 
     <div
-      v-if="!components && !hasError"
+      v-if="!components && !hasError && i18nEnabled"
       class="greeting"
       v-html="$t('greeting')"
-    >
-      <!-- <h2>{{ $t('main_line') }}</h2> -->
-      <!-- {{ $t('main_line') }} -->
-      <!-- <div class="callout">
-        <ul>
-          <li>Sites are open Mondays and Thursdays from 10 a.m. – 12 p.m.</li>
-          <li>Residents can pick up one box per household</li>
-          <li>Boxes contain non-perishable items on Mondays and fresh produce on Thursdays</li>
-          <li>Residents do not need to present an ID or proof of income for eligibility</li>
-          <li>Food sites are supported by the City, Share Food Program, and Philabundance</li>
-          <li>These food sites are supplementary to the existing food pantry network. To find a food pantry closest to you, call 311</li>
-        </ul>
-      </div>
-      <p>To get started, click anywhere on the map, or type an address, intersection, property assessment account number, or Department of Records Map Registry number into the search box.</p> -->
-      <!-- {{ this.$props.message }} -->
-    </div>
+    />
+
+    <div
+      v-if="!components && !hasError && !i18nEnabled"
+      class="greeting"
+      v-html="message"
+    />
 
     <div
       v-if="!components && hasError"
@@ -56,9 +47,9 @@ import TopicComponent from '@phila/vue-comps/src/components/TopicComponent.vue';
 export default {
   components: {
     Image_: () => import(/* webpackChunkName: "inGreeting_pvc_Image" */'@phila/vue-comps/src/components/Image.vue'),
-    AddressInput: () => import(/* webpackChunkName: "inGreeting_pvc_AddressInput" */'@phila/vue-comps/src/components//AddressInput.vue'),
-    AddressCandidateList: () => import(/* webpackChunkName: "inGreeting_pvc_AddressCandidateList" */'@phila/vue-comps/src/components//AddressCandidateList.vue'),
-    TopicComponentGroup: () => import(/* webpackChunkName: "inGreeting_pvc_TopicComponentGroup" */'@phila/vue-comps/src/components//TopicComponentGroup.vue'),
+    AddressInput: () => import(/* webpackChunkName: "inGreeting_pvc_AddressInput" */'@phila/vue-comps/src/components/AddressInput.vue'),
+    AddressCandidateList: () => import(/* webpackChunkName: "inGreeting_pvc_AddressCandidateList" */'@phila/vue-comps/src/components/AddressCandidateList.vue'),
+    TopicComponentGroup: () => import(/* webpackChunkName: "inGreeting_pvc_TopicComponentGroup" */'@phila/vue-comps/src/components/TopicComponentGroup.vue'),
   },
   mixins: [ TopicComponent ],
   props: {
@@ -70,12 +61,26 @@ export default {
     },
   },
   data() {
-    let data = {
-      greetingStyle: this.$props.options.style || {},
-    };
+    let data = {};
+    if (this.$props.options) {
+      data = {
+        greetingStyle: this.$props.options.style || {},
+      };
+    } else {
+      data = {
+        greetingStyle: {},
+      };
+    }
     return data;
   },
   computed: {
+    i18nEnabled() {
+      if (this.$config.i18n) {
+        return true;
+      } else {
+        return false;
+      }
+    },
     shouldShowAddressInput() {
       if (this.$config.addressInputLocation == 'topics') {
         return true;
@@ -96,8 +101,14 @@ export default {
 
     },
     components() {
+      console.log('computing components');
       const greetingConfig = this.$config.greeting || {};
-      return greetingConfig.components;
+      let components;
+      if (greetingConfig) {
+        console.log('inside if, greetingConfig:', greetingConfig);
+        components = greetingConfig.components;
+      }
+      return components;
     },
     hasError() {
       return this.$store.state.geocode.status === 'error';

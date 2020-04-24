@@ -1,82 +1,124 @@
 <template>
-  <header class="app-header cell shrink">
+  <header class="app-header shrink">
     <div class="grid-x grid-padding-x grid-padding-y align-middle">
-      <div class="cell mobile-menu show-for-small-only small-2">
-        <font-awesome-icon
-          v-show="!isOpen"
-          icon="bars"
-          size="2x"
-          :style="{ color: 'white' }"
-          @click="toggleMenu"
-        />
-        <font-awesome-icon
-          v-show="isOpen"
-          icon="times"
-          size="2x"
-          :style="{ color: 'white' }"
-          @click="toggleMenu"
-        />
-      </div>
-      <div class="cell medium-auto small-21">
-        <div class="grid-x grid-padding-x align-middle">
-          <div class="cell shrink hide-for-small-only">
-            <a
-              :href="appLogoLink"
-              class="logo flex-child-auto"
-            >
-              <img
-                :src="appLogo"
-                :alt="appLogoAlt"
-                class="app-logo"
+
+      <!-- <div class="grid-x align-left"> -->
+
+        <div class="cell mobile-menu show-for-small-only small-2">
+          <font-awesome-icon
+            v-show="!isOpen"
+            icon="bars"
+            size="2x"
+            :style="{ color: 'white' }"
+            @click="toggleMenu"
+          />
+          <font-awesome-icon
+            v-show="isOpen"
+            icon="times"
+            size="2x"
+            :style="{ color: 'white' }"
+            @click="toggleMenu"
+          />
+        </div>
+
+        <div class="cell medium-auto small-20">
+          <div class="grid-x grid-padding-x align-middle">
+            <div class="cell shrink hide-for-small-only">
+              <a
+                :href="appLogoLink"
+                class="logo flex-child-auto"
               >
-            </a>
-          </div>
-          <div class="cell shrink hide-for-small-only">
-            <div class="app-divide flex-child-auto" />
-          </div>
-          <div class="cell shrink">
-            <section class="title-container flex-child-auto">
-              <router-link
-                :to="appLink"
-                class="app-title"
-              >
-                <h1 class="title">
-                  {{ $t('title') }}
-                </h1>
-                <div id="demo-badge">
-                  BETA
-                </div>
-                <h2 class="h6 hide-for-small-only tagline">
-                  {{ appTagLine }}
-                </h2>
-              </router-link>
-            </section>
-          </div>
-          <div class="cell large-auto small-auto small-centered text-center">
-            <!-- v-if="!this.$config.addressInput || this.$config.addressInput && this.$config.addressInput.type === 'combo'" -->
-            <combo-search
-              :dropdown="comboSearchDropdownData"
-              :position="comboSearchPosition"
-              :placeholderText="comboSearchPlaceholderText"
-              :search-string="searchString"
-              :dropdown-selected="dropdownSelected"
-              @trigger-combo-search="comboSearchTriggered"
-              @trigger-clear-search="clearSearchTriggered"
-              @trigger-search-category-change="comboSearchCategoryChange"
-            />
-            <!-- <address-input
-              v-if="this.$config.addressInput && this.$config.addressInput.type === 'address'"
-              :width-from-config="addressInputWidth"
-              :placeholder="addressInputPlaceholder"
-              @handle-search-form-submit="handleSearchFormSubmit"
-            /> -->
-            <div class="search">
-              <slot name="search" />
+                <img
+                  :src="appLogo"
+                  :alt="appLogoAlt"
+                  class="app-logo"
+                >
+              </a>
+            </div>
+            <div class="cell shrink hide-for-small-only">
+              <div class="app-divide flex-child-auto" />
+            </div>
+            <div class="cell shrink">
+              <section class="title-container flex-child-auto">
+                <router-link
+                  :to="appLink"
+                  class="app-title"
+                >
+                  <h1
+                    v-if="i18nEnabled"
+                    class="title"
+                  >
+                    {{ $t('title') }}
+                  </h1>
+                  <h1
+                    v-if="!i18nEnabled"
+                    class="title"
+                  >
+                    {{ $config.app.title }}
+                  </h1>
+                  <div id="demo-badge">
+                    BETA
+                  </div>
+                  <h2 class="h6 hide-for-small-only tagline">
+                    {{ appTagLine }}
+                  </h2>
+                </router-link>
+              </section>
+            </div>
+            <div class="cell large-auto small-auto small-centered text-center">
+            <!-- <div> -->
+              <!-- v-if="!this.$config.addressInput || this.$config.addressInput && this.$config.addressInput.type === 'combo'" -->
+              <combo-search
+                :dropdown="comboSearchDropdownData"
+                :position="comboSearchPosition"
+                :placeholderText="comboSearchPlaceholderText"
+                :search-string="searchString"
+                :dropdown-selected="dropdownSelected"
+                @trigger-combo-search="comboSearchTriggered"
+                @trigger-clear-search="clearSearchTriggered"
+                @trigger-search-category-change="comboSearchCategoryChange"
+              />
+              <!-- <address-input
+                v-if="this.$config.addressInput && this.$config.addressInput.type === 'address'"
+                :width-from-config="addressInputWidth"
+                :placeholder="addressInputPlaceholder"
+                @handle-search-form-submit="handleSearchFormSubmit"
+              /> -->
+              <div class="search">
+                <slot name="search" />
+              </div>
             </div>
           </div>
+
+
+
+
+
         </div>
-      </div>
-    </div>
+
+        <div
+          v-if="i18nEnabled"
+          class="cell mobile-menu show-for-small-only small-2"
+        >
+          <font-awesome-icon
+            v-show="!isOpen"
+            icon="globe"
+            size="2x"
+            :style="{ color: 'white' }"
+            @click="toggleMenu"
+          />
+          <font-awesome-icon
+            v-show="isOpen"
+            icon="times"
+            size="2x"
+            :style="{ color: 'white' }"
+            @click="toggleMenu"
+          />
+        </div>
+
+
+    </div> <!-- end of main grid-x -->
+
     <slot name="i18n-banner" />
     <slot name="alert-banner" />
     <!-- <div
@@ -164,6 +206,13 @@ export default {
     };
   },
   computed: {
+    i18nEnabled() {
+      if (this.$config.i18n) {
+        return true;
+      } else {
+        return false;
+      }
+    },
     comboSearchDropdownData() {
       let dropdownData = {};
       if (!this.$config.comboSearch) {
@@ -290,6 +339,7 @@ export default {
 
 <style lang="scss">
 .app-header{
+  width: 100%;
   vertical-align: middle;
   background: color(dark-ben-franklin);
 
@@ -297,6 +347,10 @@ export default {
     position: fixed;
     top:0;
     z-index: 1020;
+  }
+
+  @media screen and (min-width: 1050px) {
+
   }
 
   .app-logo{
