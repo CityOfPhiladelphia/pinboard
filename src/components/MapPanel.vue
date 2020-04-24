@@ -562,7 +562,7 @@ export default {
 <style>
 @media screen and (max-width: 749px) {
   .map-container{
-    min-height: calc(100vh - 166px);
+    min-height: calc(100vh - 192px);
     /* height: 100vh; */
     /* height: 400px; */
     /* min-height: 100%; */

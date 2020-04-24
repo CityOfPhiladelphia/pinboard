@@ -38,6 +38,13 @@
       >
       </i18nBanner>
 
+      <!-- class="hide-for-small-only" -->
+      <i18nBanner
+        slot="i18n-banner-2"
+        v-if="this.$config.i18n && this.$config.i18n.header != null"
+      >
+      </i18nBanner>
+
       <div slot="mobile-menu">
         <PhilaFooter
           @howToUseLink="toggleModal()"

@@ -1,7 +1,7 @@
 <template>
   <div class="banner">
     <!-- <table class="fixed centered no-margin-bottom"> -->
-    <table class="fixed centered bottom-padding bottom-margin">
+    <table class="fixed centered bottom-padding bottom-margin stack">
       <th
         v-for="(lang, key) in this.i18nMessages"
         @click="handleTableHeaderClick(key)"
@@ -67,12 +67,7 @@ export default {
 
 .bottom-padding {
   padding-bottom: 4px !important;
-  /* cursor: pointer; */
 }
-
-/* .bottom-margin {
-  margin-bottom: 2px !important;
-} */
 
 .fixed {
   table-layout: fixed;
@@ -85,6 +80,18 @@ export default {
 
 .underlined {
   text-decoration: underline;
+}
+
+@media screen and (max-width: 749px) {
+  .centered {
+    width: 100%;
+    margin: 0 auto;
+  }
+
+  .banner {
+    padding-top: 20px;
+    padding-bottom: 20px;
+  }
 }
 
 </style>

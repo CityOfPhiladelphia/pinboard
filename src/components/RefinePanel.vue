@@ -292,7 +292,7 @@ $refine-panel-height: 19vh;
   }
   &.refine-open{
     overflow-y: scroll;
-    height: calc(100vh - 100px);
+    height: calc(100vh - 90px);
     max-height: 100vh;
     z-index: 1002;
     .refine-title{

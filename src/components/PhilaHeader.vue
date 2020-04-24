@@ -2,125 +2,152 @@
   <header class="app-header shrink">
     <div class="grid-x grid-padding-x grid-padding-y align-middle">
 
-      <!-- <div class="grid-x align-left"> -->
+      <div class="cell mobile-menu show-for-small-only small-2">
+        <font-awesome-icon
+          v-show="!footerListIsOpen"
+          icon="bars"
+          size="2x"
+          :style="{ color: 'white' }"
+          @click="toggleFooterMenu"
+        />
+        <font-awesome-icon
+          v-show="footerListIsOpen"
+          icon="times"
+          size="2x"
+          :style="{ color: 'white' }"
+          @click="toggleFooterMenu"
+        />
+      </div>
 
-        <div class="cell mobile-menu show-for-small-only small-2">
-          <font-awesome-icon
-            v-show="!isOpen"
-            icon="bars"
-            size="2x"
-            :style="{ color: 'white' }"
-            @click="toggleMenu"
-          />
-          <font-awesome-icon
-            v-show="isOpen"
-            icon="times"
-            size="2x"
-            :style="{ color: 'white' }"
-            @click="toggleMenu"
-          />
-        </div>
-
-        <div class="cell medium-auto small-20">
-          <div class="grid-x grid-padding-x align-middle">
-            <div class="cell shrink hide-for-small-only">
-              <a
-                :href="appLogoLink"
-                class="logo flex-child-auto"
+      <div class="cell medium-auto small-20">
+        <div class="grid-x grid-padding-x align-middle">
+          <div class="cell shrink hide-for-small-only">
+            <a
+              :href="appLogoLink"
+              class="logo flex-child-auto"
+            >
+              <img
+                :src="appLogo"
+                :alt="appLogoAlt"
+                class="app-logo"
               >
-                <img
-                  :src="appLogo"
-                  :alt="appLogoAlt"
-                  class="app-logo"
+            </a>
+          </div>
+          <div class="cell shrink hide-for-small-only">
+            <div class="app-divide flex-child-auto" />
+          </div>
+          <div class="cell shrink text-centered">
+            <section class="title-container flex-child-auto">
+              <router-link
+                :to="appLink"
+                class="app-title"
+              >
+                <h1
+                  v-if="i18nEnabled"
+                  class="title no-margins"
                 >
-              </a>
-            </div>
-            <div class="cell shrink hide-for-small-only">
-              <div class="app-divide flex-child-auto" />
-            </div>
-            <div class="cell shrink">
-              <section class="title-container flex-child-auto">
-                <router-link
-                  :to="appLink"
-                  class="app-title"
+                  {{ $t('title') }}
+                </h1>
+                <h1
+                  v-if="!i18nEnabled"
+                  class="title no-margins"
                 >
-                  <h1
-                    v-if="i18nEnabled"
-                    class="title"
-                  >
-                    {{ $t('title') }}
-                  </h1>
-                  <h1
-                    v-if="!i18nEnabled"
-                    class="title"
-                  >
-                    {{ $config.app.title }}
-                  </h1>
-                  <div id="demo-badge">
-                    BETA
-                  </div>
-                  <h2 class="h6 hide-for-small-only tagline">
-                    {{ appTagLine }}
-                  </h2>
-                </router-link>
-              </section>
-            </div>
-            <div class="cell large-auto small-auto small-centered text-center">
-            <!-- <div> -->
-              <!-- v-if="!this.$config.addressInput || this.$config.addressInput && this.$config.addressInput.type === 'combo'" -->
-              <combo-search
-                :dropdown="comboSearchDropdownData"
-                :position="comboSearchPosition"
-                :placeholderText="comboSearchPlaceholderText"
-                :search-string="searchString"
-                :dropdown-selected="dropdownSelected"
-                @trigger-combo-search="comboSearchTriggered"
-                @trigger-clear-search="clearSearchTriggered"
-                @trigger-search-category-change="comboSearchCategoryChange"
-              />
-              <!-- <address-input
-                v-if="this.$config.addressInput && this.$config.addressInput.type === 'address'"
-                :width-from-config="addressInputWidth"
-                :placeholder="addressInputPlaceholder"
-                @handle-search-form-submit="handleSearchFormSubmit"
-              /> -->
-              <div class="search">
-                <slot name="search" />
-              </div>
+                  {{ $config.app.title }}
+                </h1>
+
+                <div id="demo-badge">
+                  BETA
+                </div>
+
+                <h2
+                  v-if="i18nEnabled"
+                  class="h6 show-for-small-only tagline no-margins"
+                >
+                  CITY OF PHILADELPHIA
+                </h2>
+                <h2
+                  v-if="i18nEnabled"
+                  class="h6 hide-for-small-only tagline"
+                >
+                  {{ $t('subtitle') }}
+                </h2>
+                <h2
+                  v-if="!i18nEnabled"
+                  class="h6 hide-for-small-only tagline"
+                >
+                  {{ appTagLine }}
+                </h2>
+
+              </router-link>
+            </section>
+          </div>
+
+          <!-- <div class="cell large-auto small-auto small-centered text-center"> -->
+          <div class="cell large-auto hide-for-small-only text-center">
+            <!-- v-if="!this.$config.addressInput || this.$config.addressInput && this.$config.addressInput.type === 'combo'" -->
+            <combo-search
+              :dropdown="comboSearchDropdownData"
+              :position="comboSearchPosition"
+              :placeholderText="comboSearchPlaceholderText"
+              :search-string="searchString"
+              :dropdown-selected="dropdownSelected"
+              @trigger-combo-search="comboSearchTriggered"
+              @trigger-clear-search="clearSearchTriggered"
+              @trigger-search-category-change="comboSearchCategoryChange"
+            />
+
+            <div class="search">
+              <slot name="search" />
             </div>
           </div>
 
-
-
-
-
         </div>
 
-        <div
-          v-if="i18nEnabled"
-          class="cell mobile-menu show-for-small-only small-2"
-        >
-          <font-awesome-icon
-            v-show="!isOpen"
-            icon="globe"
-            size="2x"
-            :style="{ color: 'white' }"
-            @click="toggleMenu"
-          />
-          <font-awesome-icon
-            v-show="isOpen"
-            icon="times"
-            size="2x"
-            :style="{ color: 'white' }"
-            @click="toggleMenu"
-          />
-        </div>
+      </div>
 
+      <div
+        v-if="i18nEnabled"
+        class="cell mobile-menu show-for-small-only small-2"
+      >
+        <font-awesome-icon
+          v-show="!i18nListIsOpen"
+          icon="globe"
+          size="2x"
+          :style="{ color: 'white' }"
+          @click="togglei18nMenu"
+        />
+        <font-awesome-icon
+          v-show="i18nListIsOpen"
+          icon="times"
+          size="2x"
+          :style="{ color: 'white' }"
+          @click="togglei18nMenu"
+        />
+      </div>
+
+      <div class="cell show-for-small-only text-center">
+        <!-- v-if="!this.$config.addressInput || this.$config.addressInput && this.$config.addressInput.type === 'combo'" -->
+        <combo-search
+          :dropdown="comboSearchDropdownData"
+          :position="comboSearchPosition"
+          :placeholderText="comboSearchPlaceholderText"
+          :search-string="searchString"
+          :dropdown-selected="dropdownSelected"
+          @trigger-combo-search="comboSearchTriggered"
+          @trigger-clear-search="clearSearchTriggered"
+          @trigger-search-category-change="comboSearchCategoryChange"
+        />
+
+        <div class="search">
+          <slot name="search" />
+        </div>
+      </div>
 
     </div> <!-- end of main grid-x -->
 
     <slot name="i18n-banner" />
     <slot name="alert-banner" />
+
     <!-- <div
       v-show="!isOpen"
       class="stripe"
@@ -128,8 +155,9 @@
     <div
       class="white-stripe"
     /> -->
+
     <div
-      v-show="isOpen"
+      v-show="footerListIsOpen"
       class="mobile-menu-content-container show-for-small-only"
     >
       <div class="mobile-menu-content">
@@ -146,6 +174,15 @@
         <slot name="mobile-menu" />
       </div>
     </div>
+
+    <div
+      v-show="i18nListIsOpen"
+      class="mobile-menu-content-container show-for-small-only"
+    >
+      <slot name="i18n-banner-2" />
+    </div>
+
+
     <slot name="after-stripe" />
   </header>
 </template>
@@ -202,7 +239,8 @@ export default {
       },
       searchString: '',
       dropdownSelected: '',
-      isOpen: false,
+      footerListIsOpen: false,
+      i18nListIsOpen: false,
     };
   },
   computed: {
@@ -324,14 +362,18 @@ export default {
       ));
       return finalArray;
     },
-    toggleMenu() {
-      this.isOpen = !this.isOpen;
+    toggleFooterMenu() {
+      this.footerListIsOpen = !this.footerListIsOpen;
+      this.toggleBodyClass('no-scroll');
+    },
+    togglei18nMenu() {
+      this.i18nListIsOpen = !this.i18nListIsOpen;
       this.toggleBodyClass('no-scroll');
     },
     // TODO: make generic toggle class
     toggleBodyClass(className) {
       const el = document.body;
-      return this.isOpen ? el.classList.add(className) : el.classList.remove(className);
+      return this.footerListIsOpen || this.i18nListIsOpen ? el.classList.add(className) : el.classList.remove(className);
     },
   },
 };
@@ -347,11 +389,16 @@ export default {
     // position: fixed;
     top:0;
     z-index: 1020;
+
+    .text-centered {
+      margin: 0 auto;
+    }
+
+    .no-margins {
+      margin: 0px;
+    }
   }
 
-  @media screen and (min-width: 1050px) {
-
-  }
 
   .app-logo{
     height: 45px;
