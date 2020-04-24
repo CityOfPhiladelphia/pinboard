@@ -1,5 +1,6 @@
 <template>
-  <div class="cell medium-12 medium-cell-block-y mb-panel mb-panel-map map-height">
+  <!-- <div class="cell medium-12 medium-cell-block-y mb-panel mb-panel-map map-height"> -->
+  <div class="cell medium-12 medium-cell-block-y">
     <Map_
       id="map-tag"
       :class="{ 'mb-map-with-widget': this.$store.state.cyclomedia.active || this.$store.state.pictometry.active }"
@@ -561,7 +562,10 @@ export default {
 <style>
 @media screen and (max-width: 749px) {
   .map-container{
-    min-height: 100vh !important;
+    min-height: calc(100vh - 166px);
+    /* height: 100vh; */
+    /* height: 400px; */
+    /* min-height: 100%; */
   }
 }
 

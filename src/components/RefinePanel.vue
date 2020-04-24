@@ -91,12 +91,15 @@ export default {
       baseUrl: process.env.VUE_APP_BASE_URL,
       refineList: null,
       selected: [],
-      refineOpen: false,
+      // refineOpen: false,
       // addressEntered: null,
     };
   },
   computed: {
     ...mapState([ 'sources', 'geocode', 'selectedServices' ]),
+    refineOpen() {
+      return this.$store.state.refineOpen;
+    },
     addressEntered() {
       let address;
 
@@ -195,7 +198,8 @@ export default {
     },
     expandRefine() {
       if (window.innerWidth <= 749) { // converted from rems
-        this.refineOpen = !this.refineOpen;
+        this.$store.commit('setRefineOpen', !this.refineOpen);
+        // this.refineOpen = !this.refineOpen;
       }
     },
     closeRefinePanel(){

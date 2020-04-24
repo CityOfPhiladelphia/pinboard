@@ -1,7 +1,7 @@
 <template>
   <div
     id="app"
-    class="grid-y medium-grid-frame"
+    class="grid-y small-grid-frame medium-grid-frame"
   >
     <PhilaModal
       v-show="isModalOpen"
@@ -58,7 +58,10 @@
 
     <!-- <div class="cell medium-auto medium-cell-block-container main-content"> -->
     <div class="cell medium-auto medium-cell-block-container">
-      <div class="grid-x">
+      <div
+        v-show="!refineOpen"
+        class="grid-x middle-panel"
+      >
         <LocationsPanel
           v-show="!isMapVisible || isLarge"
           :is-map-visible="this.$data.isMapVisible"
@@ -131,6 +134,9 @@ export default {
     };
   },
   computed: {
+    refineOpen() {
+      return this.$store.state.refineOpen;
+    },
     geocodeStatus() {
       return this.$store.state.geocode.status;
     },
@@ -412,6 +418,10 @@ export default {
 }
 .main-content{
   margin-top:.5rem;
+}
+
+.middle-panel {
+  height: 100%;
 }
 
 //TODO, move to standards

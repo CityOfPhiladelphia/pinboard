@@ -29,11 +29,15 @@ function createStore(config) {
       // selectedKeywords: [],
       selectedResources: [],
       latestSelectedResourceFromExpand: null,
+      refineOpen: false,
     },
     mutations: {
       // setSelectedServices(state, payload) {
       //   state.selectedServices = payload;
       // },
+      setRefineOpen(state, payload) {
+        state.refineOpen = payload;
+      },
       setBufferList(state, payload) {
         state.bufferList = payload;
       },
