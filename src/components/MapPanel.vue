@@ -65,8 +65,9 @@
           :latlng="marker.latlng"
           :feature-id="marker._featureId"
         >
+        <!-- :popup-data="marker.organization_name" -->
           <popup-content-functional
-            :popup-data="marker.organization_name"
+            :popup-data="marker.organization_name || marker.attributes.site_name"
             @didClickPopupContent="toggleMap"
           />
         </popup-simple>
