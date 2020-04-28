@@ -30,11 +30,16 @@ function createStore(config) {
       selectedResources: [],
       latestSelectedResourceFromExpand: null,
       refineOpen: false,
+      fullScreen: {},
+      subsections: {},
     },
     mutations: {
       // setSelectedServices(state, payload) {
       //   state.selectedServices = payload;
       // },
+      setSubsections(state, payload) {
+        state.subsections = payload;
+      },
       setRefineOpen(state, payload) {
         state.refineOpen = payload;
       },

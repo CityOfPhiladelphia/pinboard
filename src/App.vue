@@ -137,7 +137,6 @@ export default {
       isLarge: true,
       buffer: null,
       buttonText: 'Toggle map',
-      // shouldShowGreeting: true,
     };
   },
   computed: {

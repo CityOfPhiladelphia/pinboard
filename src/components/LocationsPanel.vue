@@ -8,10 +8,15 @@
     >
     <!-- :style="topicsContainerStyle" -->
       <greeting
-        v-show="shouldShowGreeting"
+        v-show="shouldShowGreeting && !hasCustomGreeting"
         :message="greetingText"
         :options="greetingOptions"
       />
+
+      <custom-greeting
+        v-show="shouldShowGreeting && hasCustomGreeting"
+      />
+
     </div>
 
     <div
@@ -145,6 +150,7 @@ export default {
   components: {
     ExpandCollapse,
     Greeting,
+    // Greeting: () => import(/* webpackChunkName: "pb_Greeting" */'./Greeting.vue'),
   },
   props: {
     isMapVisible: {
@@ -159,6 +165,9 @@ export default {
     return data;
   },
   computed: {
+    hasCustomGreeting() {
+      return Object.keys(this.$config.customComps).includes('customGreeting');
+    },
     // shouldShowGreeting() {
     //   return true;
     // },
