@@ -919,9 +919,9 @@
     "@nodelib/fs.scandir" "2.1.3"
     fastq "^1.6.0"
 
-"@phila/vue-comps@https://github.com/CityOfPhiladelphia/phila-vue-comps#5c5ed36fccda1a4e60f025b44bbeade1fc61b021":
+"@phila/vue-comps@https://github.com/CityOfPhiladelphia/phila-vue-comps#a68e8cb1fb9c562dd04d337a3043d5843aa5ee8f":
   version "2.0.11"
-  resolved "https://github.com/CityOfPhiladelphia/phila-vue-comps#5c5ed36fccda1a4e60f025b44bbeade1fc61b021"
+  resolved "https://github.com/CityOfPhiladelphia/phila-vue-comps#a68e8cb1fb9c562dd04d337a3043d5843aa5ee8f"
   dependencies:
     "@fortawesome/fontawesome-svg-core" "^1.2.15"
     "@fortawesome/free-regular-svg-icons" "^5.7.2"
