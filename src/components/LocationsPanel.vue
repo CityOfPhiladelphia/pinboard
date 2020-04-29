@@ -40,7 +40,7 @@
           :item="item"
           :is-map-visible="isMapVisible"
           :slots="locationSlots"
-          >
+        >
 
           <component
             is="expandCollapseContent"
@@ -166,7 +166,11 @@ export default {
   },
   computed: {
     hasCustomGreeting() {
-      return Object.keys(this.$config.customComps).includes('customGreeting');
+      let value = false;
+      if (this.$config.customComps) {
+        value = Object.keys(this.$config.customComps).includes('customGreeting');
+      }
+      return value;
     },
     // shouldShowGreeting() {
     //   return true;

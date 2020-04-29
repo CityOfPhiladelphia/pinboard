@@ -7,13 +7,20 @@
   <!-- :id="makeID(item.site_name)" -->
     <h2
       :id="makeID(evaluateSlot(slots.title))"
-      class="h4 location-title"
+      class="h5 location-title"
       @click="expandLocation"
       tabindex="0"
       @keyup.enter="expandLocation"
       :aria-expanded="locationOpen"
     >
       {{ evaluateSlot(slots.title) }}
+      <div
+        v-if="section"
+        class="section-name"
+        :style="{ 'background-color': sectionColor }"
+        >
+        {{ sectionTitle }}
+      </div>
     </h2>
     <div
       :class="{ 'location-open': locationOpen }"
@@ -46,6 +53,37 @@ export default {
     };
   },
   computed: {
+    subsections() {
+      return this.$config.subsections || {};
+    },
+    section() {
+      let section;
+      if (Object.keys(this.subsections).length) {
+        section = this.subsections[this.$props.item.attributes['CATEGORY']];
+      }
+      return section;
+    },
+    sectionItem() {
+      let sectionItem = {};
+      if (Object.keys(this.subsections).length) {
+        sectionItem = this.$config.sections[this.section];
+      }
+      return sectionItem;
+    },
+    sectionTitle() {
+      let sectionTitle;
+      if (Object.keys(this.subsections).length) {
+        sectionTitle = this.$config.sections[this.section].titleSingular;
+      }
+      return sectionTitle;
+    },
+    sectionColor() {
+      let sectionColor;
+      if (Object.keys(this.subsections).length) {
+        sectionColor = this.$config.sections[this.section].color;
+      }
+      return sectionColor;
+    },
     servicesOffered() {
       return this.$props.item.services_offered.split(',');
     },
@@ -163,6 +201,7 @@ export default {
 };
 </script>
 <style lang="scss">
+
 .location-item {
   position: relative;
   border-bottom: 1px solid black;
@@ -180,6 +219,18 @@ export default {
       background: #2176d2;
       color: white;
     }
+  }
+
+  .section-name {
+    position: relative;
+    top: -3px;
+    padding-left: 14px;
+    padding-right: 14px;
+    font-size: 12px;
+    border-style: solid;
+    border-width: 1px;
+    display: inline-block;
+    color: white;
   }
 
   &::after{
