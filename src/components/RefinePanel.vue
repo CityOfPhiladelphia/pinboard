@@ -338,7 +338,8 @@ input[type=checkbox] {
   color: color(dark-ben-franklin);
   position: relative;
   right: -15px;
-  bottom: 1px;
+  bottom: -3px;
+  font-size: 18px;
 }
 
 .fa-infoCircle {
