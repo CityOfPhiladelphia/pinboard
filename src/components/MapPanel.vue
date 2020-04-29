@@ -480,16 +480,24 @@ export default {
       }
     },
     latestSelectedResourceFromExpand(nextLatestSelectedResource) {
+      // console.log('watch latestSelectedResourceFromExpand:', nextLatestSelectedResource, 'this.$appType:', this.$appType);
       if (nextLatestSelectedResource) {
-        const { rows } = this.$store.state.sources[this.$appType].data;
-        const dataValue = rows.filter(row => row._featureId === nextLatestSelectedResource);
+        let rows;
         const { map } = this.$store.state.map;
-        map.setView([ dataValue[0].lat, dataValue[0].lon ], this.geocodeZoom);
+        if (this.$store.state.sources[this.$appType].data.rows) {
+          rows = this.$store.state.sources[this.$appType].data.rows;
+          const dataValue = rows.filter(row => row._featureId === nextLatestSelectedResource);
+          map.setView([ dataValue[0].lat, dataValue[0].lon ], this.geocodeZoom);
+        } else if (this.$store.state.sources[this.$appType].data.features) {
+          rows = this.$store.state.sources[this.$appType].data.features;
+          const dataValue = rows.filter(row => row._featureId === nextLatestSelectedResource);
+          map.setView([ dataValue[0].latlng[0], dataValue[0].latlng[1] ], this.geocodeZoom);
+        }
       }
     },
     latestSelectedResourceFromMap(nextLatestSelectedResource) {
       let test = document.getElementById('customPopup');
-      console.log('in watch latestSelectedResourceFromMap, test:', test);
+      // console.log('in watch latestSelectedResourceFromMap, test:', test);
     },
     cyclomediaActive(value) {
       this.$nextTick(() => {
@@ -510,7 +518,7 @@ export default {
     handleMarkerClick(e) {
       const { target } = e;
       const { featureId } = target.options.data;
-      console.log('MapPanel.vue handleMarkerClick is running, target:', target, 'featureId:', featureId);
+      // console.log('MapPanel.vue handleMarkerClick is running, target:', target, 'featureId:', featureId);
       const selectedResource = [ ...this.selectedResources ];
       if (selectedResource.includes(featureId)) {
         // console.log('markerClick close marker, featureId', featureId);

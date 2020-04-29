@@ -58,7 +58,7 @@ export default {
   },
   watch: {
     selectedResources(nextSelectedResources) {
-      console.log('watch selectedResources is running');
+      // console.log('watch selectedResources is running');
       if (this.locationOpen || nextSelectedResources.includes(this.$props.item._featureId)) {
         if (this.locationOpen === false) {
           this.openLocation();
@@ -72,7 +72,7 @@ export default {
     isMapVisible(nextIsMapVisible) {
       if (!nextIsMapVisible) {
         if (this.latestSelectedResourceFromMap) {
-          console.log('ExpandCollapse is reporting map is invisible and there is a this.latestSelectedResourceFromMap:', this.latestSelectedResourceFromMap);
+          // console.log('ExpandCollapse is reporting map is invisible and there is a this.latestSelectedResourceFromMap:', this.latestSelectedResourceFromMap);
           if (this.latestSelectedResourceFromMap === this.item._featureId) {
             const el = this.$el;
             const visible = this.isElementInViewport(el);
@@ -86,7 +86,7 @@ export default {
   },
   mounted() {
     if (this.selectedResources.includes(this.item._featureId)) {
-      console.log('ExpandCollapse mounted is running and item should be open');
+      // console.log('ExpandCollapse mounted is running and item should be open');
       // this.locationOpen = true;
       this.openLocation();
     }
@@ -95,9 +95,9 @@ export default {
     openLocation() {
       this.locationOpen = true;
       const el = this.$el;
-      console.log('ExpandCollapse openLocation is running, el:', el);
+      // console.log('ExpandCollapse openLocation is running, el:', el);
       let visible = this.isElementInViewport(el);
-      console.log('visible 1:', visible)
+      // console.log('visible 1:', visible)
       if (!visible) {
         el.scrollIntoView();
       }
