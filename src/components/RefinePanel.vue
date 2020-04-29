@@ -189,7 +189,7 @@ export default {
 
       uniq.sort();
 
-      console.log('uniq:', uniq);
+      // console.log('uniq:', uniq);
       return uniq;
     },
     scrollToTop() {
