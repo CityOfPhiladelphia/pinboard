@@ -58,6 +58,7 @@ export default {
   },
   watch: {
     selectedResources(nextSelectedResources) {
+      console.log('watch selectedResources is running');
       if (this.locationOpen || nextSelectedResources.includes(this.$props.item._featureId)) {
         if (this.locationOpen === false) {
           this.openLocation();
@@ -85,17 +86,31 @@ export default {
   },
   mounted() {
     if (this.selectedResources.includes(this.item._featureId)) {
-      this.locationOpen = true;
+      console.log('ExpandCollapse mounted is running and item should be open');
+      // this.locationOpen = true;
+      this.openLocation();
     }
   },
   methods: {
     openLocation() {
       this.locationOpen = true;
       const el = this.$el;
-      const visible = this.isElementInViewport(el);
+      console.log('ExpandCollapse openLocation is running, el:', el);
+      let visible = this.isElementInViewport(el);
+      console.log('visible 1:', visible)
       if (!visible) {
         el.scrollIntoView();
       }
+
+      // visible = this.isElementInViewport(el);
+      // console.log('visible 2:', visible)
+      // if (!visible) {
+      //   setTimeout(function () {
+      //     console.log('still not visible');
+      //     console.log('attempting to scroll into view again');
+      //     el.scrollIntoView();
+      //   }, 1000);
+      // }
     },
     isElementInViewport(el) {
       const rect = el.getBoundingClientRect();

@@ -132,11 +132,11 @@ export default {
   data() {
     return {
       publicPath: process.env.BASE_URL,
-      isMapVisible: true,
+      isMapVisible: false,
       isModalOpen: false,
       isLarge: true,
       buffer: null,
-      buttonText: 'Toggle map',
+      buttonText: 'Toggle to map',
     };
   },
   computed: {
@@ -386,7 +386,7 @@ export default {
       } else {
         this.$data.isMapVisible = !this.$data.isMapVisible;
       }
-      this.$data.buttonText = this.$data.isMapVisible ? 'Toggle map' : 'Toggle resource list';
+      this.$data.buttonText = this.$data.isMapVisible ? 'Toggle to resource list' : 'Toggle to map';
     },
     toggleModal() {
       this.isModalOpen = !this.isModalOpen;
