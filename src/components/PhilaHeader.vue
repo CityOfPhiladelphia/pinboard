@@ -149,7 +149,12 @@
 
     </div> <!-- end of main grid-x -->
 
-    <slot name="i18n-banner" />
+    <i18nBanner
+      class="hide-for-small-only"
+      slot="i18n-banner"
+      v-if="this.$config.i18n && this.$config.i18n.header != null"
+    />
+
     <slot name="alert-banner" />
 
     <!-- <div
@@ -183,7 +188,10 @@
       v-show="i18nListIsOpen"
       class="mobile-menu-content-container show-for-small-only"
     >
-      <slot name="i18n-banner-2" />
+      <i18nBanner
+        v-if="this.$config.i18n && this.$config.i18n.header != null"
+        @language-selected="togglei18nMenu"
+      />
     </div>
 
 
@@ -197,9 +205,11 @@ import Logo from '@/assets/city-of-philadelphia-logo.png';
 // import AddressInput from '@phila/vue-comps/src/components/AddressInput.vue'
 // import Paragraph from '@phila/vue-comps/src/components/Paragraph.vue'
 // import '@phila/vue-comps'
+import i18nBanner from './i18nBanner.vue';
 
 export default {
   components: {
+    i18nBanner,
     ComboSearch: () => import(/* webpackChunkName: "pvc_ComboSearch" */'@phila/vue-comps/src/components/ComboSearch.vue'),
     AddressInput: () => import(/* webpackChunkName: "pvc_AddressInput" */'@phila/vue-comps/src/components/AddressInput.vue'),
   },
@@ -371,6 +381,7 @@ export default {
       this.toggleBodyClass('no-scroll');
     },
     togglei18nMenu() {
+      console.log('togglei18nMenu is running');
       this.i18nListIsOpen = !this.i18nListIsOpen;
       this.toggleBodyClass('no-scroll');
     },

@@ -25,36 +25,23 @@
       :app-logo="`${publicPath}logo.png`"
       :app-logo-alt="this.$config.app.logoAlt"
     >
+
       <AlertBanner
         slot="alert-banner"
         v-if="this.$config.alerts && this.$config.alerts.header != null"
       >
       </AlertBanner>
 
-      <i18nBanner
-        class="hide-for-small-only"
-        slot="i18n-banner"
-        v-if="this.$config.i18n && this.$config.i18n.header != null"
-      >
-      </i18nBanner>
-
-      <!-- class="hide-for-small-only" -->
-      <i18nBanner
-        slot="i18n-banner-2"
-        v-if="this.$config.i18n && this.$config.i18n.header != null"
-      >
-      </i18nBanner>
-
       <div slot="mobile-menu">
         <PhilaFooter
           @howToUseLink="toggleModal()"
         />
       </div>
+
       <RefinePanel
         slot="after-stripe"
         :infoCircles="this.$config.infoCircles"
       />
-
 
       <!-- <component
         :is="this.$config.alerts.header"
@@ -294,6 +281,9 @@ export default {
     window.removeEventListener('resize', this.onResize);
   },
   methods: {
+    togglei18nMenu() {
+      console.log('App.vue togglei18nMenu is running');
+    },
     setUpData(theSources) {
       console.log('Pinboard App.vue setUpData is running, theSources:', theSources);
       let compiled = {

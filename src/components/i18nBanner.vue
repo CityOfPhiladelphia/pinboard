@@ -40,8 +40,10 @@ export default {
   },
   methods: {
     handleTableHeaderClick(key) {
+      console.log('handleTableHeaderClick is running');
       this.$i18n.locale = key;
       this.$data.isSelected = key;
+      this.$emit('language-selected', key);
     }
   }
 };
