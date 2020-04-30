@@ -39,7 +39,22 @@
             <font-awesome-icon :for="item" :icon="['far', 'square']" v-show="!selected.includes(item)" class="fa-checkbox" />
             <font-awesome-icon :for="item" icon="check-square" v-show="selected.includes(item)" class="fa-checkbox" />
             <label
-              class="input-label" :for="item"><span class="service-item">{{ item }}</span>
+              class="input-label"
+              :for="item"
+              >
+                <span
+                  v-if="!i18nEnabled"
+                  class="service-item"
+                >
+                  {{ item }}
+                </span>
+
+                <span
+                  v-if="i18nEnabled"
+                  class="service-item"
+                  v-html="$t('randomWords[\'' + item + '\']')"
+                />
+
             </label>
             <icon-tool-tip
               v-if="Object.keys(infoCircles).includes(item)"
@@ -99,6 +114,13 @@ export default {
     ...mapState([ 'sources', 'geocode', 'selectedServices' ]),
     refineOpen() {
       return this.$store.state.refineOpen;
+    },
+    i18nEnabled() {
+      if (this.$config.i18n && this.$config.i18n.refinePanel) {
+        return true;
+      } else {
+        return false;
+      }
     },
     addressEntered() {
       let address;
@@ -189,7 +211,7 @@ export default {
 
       uniq.sort();
 
-      // console.log('uniq:', uniq);
+      console.log('uniq:', uniq);
       return uniq;
     },
     scrollToTop() {
