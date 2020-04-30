@@ -9,16 +9,33 @@
           class="refine-title"
           @click="expandRefine"
         >
-          <legend class="legend-title h3">
+          <legend
+            v-if="!i18nEnabled"
+            class="legend-title h3"
+          >
             {{ legendTitle }}
           </legend>
+          <legend
+            v-if="i18nEnabled"
+            class="legend-title h3"
+            v-html="$t('refine')"
+          />
           <a
+            v-if="!i18nEnabled"
             href=""
             class="clear-all hide-for-small-only"
             @click.prevent="clearAll"
           >
             Clear all
           </a>
+          <a
+            v-if="i18nEnabled"
+            href=""
+            class="clear-all hide-for-small-only"
+            @click.prevent="clearAll"
+            v-html="$t('clearAll')"
+          />
+
         </div>
         <div
           v-if="dataStatus === 'success'"
@@ -67,17 +84,39 @@
           <!-- </input> -->
         </div>
         <div class="mobile-filter-actions show-for-small-only">
+
           <PhilaButton
+            v-if="!i18nEnabled"
             @click.native="expandRefine(); scrollToTop();"
           >
-            <font-awesome-icon icon="filter" /> Apply filters
+            <font-awesome-icon icon="filter" />
+            Apply filters
           </PhilaButton>
           <PhilaButton
+            v-if="i18nEnabled"
+            @click.native="expandRefine(); scrollToTop();"
+          >
+            <font-awesome-icon icon="filter" />
+            <div
+              v-html="$t('applyFilters')"
+              class="apply-filters-text"
+            />
+          </PhilaButton>
+
+          <PhilaButton
+            v-if="!i18nEnabled"
             @click.native="closeRefinePanel"
           >
             Clear all
           </PhilaButton>
+          <PhilaButton
+            v-if="i18nEnabled"
+            @click.native="closeRefinePanel"
+            v-html="$t('clearAll')"
+          />
+          
         </div>
+
       </fieldset>
     </div>
   </div>
@@ -383,6 +422,10 @@ input[type=checkbox] {
 .fa-infoCircle {
   color: color(dark-ben-franklin);
   cursor: pointer;
+}
+
+.apply-filters-text {
+  display: inline-block;
 }
 
 </style>

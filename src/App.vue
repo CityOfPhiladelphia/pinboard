@@ -75,11 +75,20 @@
     </div>
 
     <PhilaButton
+      v-if="!i18nEnabled"
       class="button toggle-map hide-for-medium"
       @click.native="toggleMap"
     >
       {{ buttonText }}
     </PhilaButton>
+
+    <PhilaButton
+      v-if="i18nEnabled"
+      class="button toggle-map hide-for-medium"
+      @click.native="toggleMap"
+      v-html="$t(buttonText)"
+    />
+
     <PhilaFooter
       v-show="isLarge"
       @howToUseLink="toggleModal()"
@@ -127,6 +136,13 @@ export default {
     };
   },
   computed: {
+    i18nEnabled() {
+      if (this.$config.i18n && this.$config.i18n.app) {
+        return true;
+      } else {
+        return false;
+      }
+    },
     refineOpen() {
       return this.$store.state.refineOpen;
     },
@@ -258,6 +274,13 @@ export default {
       this.$controller.dataManager.fetchData();
     }
 
+    if (!this.i18nEnabled) {
+      this.$data.buttonText = this.$data.isMapVisible ? 'Toggle to resource list' : 'Toggle to map';
+    } else {
+      // this.$data.buttonText = this.$data.isMapVisible ? 'viewMap' : 'viewList';
+      this.$data.buttonText = this.$data.isMapVisible ? 'viewList' : 'viewMap';
+    }
+
     // this.$i18n.locale = 'es';
     // let compiledDataSource = [];
     // if (Object.keys(this.$config.dataSources).length > 1) {
@@ -376,7 +399,11 @@ export default {
       } else {
         this.$data.isMapVisible = !this.$data.isMapVisible;
       }
-      this.$data.buttonText = this.$data.isMapVisible ? 'Toggle to resource list' : 'Toggle to map';
+      if (!this.i18nEnabled) {
+        this.$data.buttonText = this.$data.isMapVisible ? 'Toggle to resource list' : 'Toggle to map';
+      } else {
+        this.$data.buttonText = this.$data.isMapVisible ? 'viewList' : 'viewMap';
+      }
     },
     toggleModal() {
       this.isModalOpen = !this.isModalOpen;
@@ -397,6 +424,12 @@ export default {
     onResize() {
       if (window.innerWidth > 749) {
         this.$data.isMapVisible = true;
+
+        if (!this.i18nEnabled) {
+          this.$data.buttonText = this.$data.isMapVisible ? 'Toggle to resource list' : 'Toggle to map';
+        } else {
+          this.$data.buttonText = this.$data.isMapVisible ? 'viewList': 'viewMap';
+        }
         this.$data.isLarge = true;
       } else {
         this.$data.isLarge = false;

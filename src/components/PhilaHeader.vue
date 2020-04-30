@@ -55,9 +55,17 @@
                   {{ $config.app.title }}
                 </h1>
 
-                <div id="demo-badge">
+                <div
+                  v-if="!i18nEnabled"
+                  id="demo-badge"
+                >
                   BETA
                 </div>
+                <div
+                  v-if="i18nEnabled"
+                  id="demo-badge"
+                  v-html="$t('randomWords.betaTag')"
+                />
 
                 <h2
                   v-if="i18nEnabled"
