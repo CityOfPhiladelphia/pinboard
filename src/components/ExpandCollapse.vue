@@ -15,12 +15,18 @@
     >
       {{ evaluateSlot(slots.title) }}
       <div
-        v-if="section"
+        v-if="section && !i18nEnabled"
         class="section-name"
         :style="{ 'background-color': sectionColor }"
         >
         {{ sectionTitle }}
       </div>
+      <div
+        v-if="section && i18nEnabled"
+        class="section-name"
+        :style="{ 'background-color': sectionColor }"
+        v-html="$t('randomWords[\'' + sectionTitle + '\']')"
+      />
     </h2>
     <div
       :class="{ 'location-open': locationOpen }"
@@ -53,6 +59,13 @@ export default {
     };
   },
   computed: {
+    i18nEnabled() {
+      if (this.$config.i18n && this.$config.i18n.expandCollapseTitle) {
+        return true;
+      } else {
+        return false;
+      }
+    },
     subsections() {
       return this.$config.subsections || {};
     },
@@ -222,6 +235,7 @@ export default {
   }
 
   .section-name {
+    text-transform: uppercase;
     position: relative;
     top: -3px;
     padding-left: 14px;
