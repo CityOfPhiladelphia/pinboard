@@ -4,8 +4,10 @@ Pinboard is a framework for creating apps that allow users to search for a type 
 
 It is used to create multiple apps for the City of Philadelphia, including:
 
-[Food distribution sites](https://www.phila.gov/food/#/) - see [repo here](https://github.com/CityOfPhiladelphia/free-meals-resource-finder)
-[Resources for immigrants](http://phila-resource-finder.s3-website-us-east-1.amazonaws.com/immigrant/prod/#/) - see [repo here](https://github.com/CityOfPhiladelphia/immigrant-resource-finder)
+|Site|GitHub|
+|---|---|
+|[Food distribution sites](https://www.phila.gov/food/#/)|[repo](https://github.com/CityOfPhiladelphia/free-meals-resource-finder)|
+|[Resources for immigrants](http://phila-resource-finder.s3-website-us-east-1.amazonaws.com/immigrant/prod/#/)|[repo](https://github.com/CityOfPhiladelphia/immigrant-resource-finder)|
 
 
 ![Example](https://mapboard-images.s3.amazonaws.com/Pinboard.JPG)
