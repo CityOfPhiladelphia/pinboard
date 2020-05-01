@@ -1,6 +1,6 @@
 # Pinboard
 
-Pinboard is a framework for creating apps that allow users to search for a type of resource by location or keyword, and filter by resource type.
+Pinboard is a framework for creating apps for investigating a single data layer in great detail. It has a refine panel along the top, which you can use to filter some of the pins and data off of the app. It also shows a map panel on the right, and a list of pins on the left, which can opened and closed to show more data about the pin.
 
 It is used to create multiple apps for the City of Philadelphia, including:
 
