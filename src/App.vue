@@ -24,6 +24,7 @@
       :app-tag-line="this.$config.app.tagLine"
       :app-logo="`${publicPath}logo.png`"
       :app-logo-alt="this.$config.app.logoAlt"
+      :app-link="this.appLink"
     >
 
       <AlertBanner
@@ -133,6 +134,7 @@ export default {
       isLarge: true,
       buffer: null,
       buttonText: 'Toggle to map',
+      appLink: '/',
     };
   },
   computed: {
@@ -269,7 +271,12 @@ export default {
     },
   },
   mounted() {
-    console.log('in App.vue mounted, this.$config:', this.$config);
+    console.log('in App.vue mounted, this.$config:', this.$config, 'window.location.href:', window.location.href);
+    if (this.$config.appLink) {
+      this.appLink = this.$config.appLink;
+    } else {
+      this.appLink = '.';
+    }
     if (this.$config.dataSources) {
       this.$controller.dataManager.fetchData();
     }

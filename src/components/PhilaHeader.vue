@@ -38,9 +38,13 @@
           </div>
           <div class="cell shrink text-centered">
             <section class="title-container flex-child-auto">
-              <router-link
+              <!-- <router-link
                 :to="appLink"
                 class="app-title"
+              > -->
+              <a
+                class="app-title"
+                :href="appLink"
               >
                 <h1
                   v-if="i18nEnabled"
@@ -86,7 +90,8 @@
                   {{ appTagLine }}
                 </h2>
 
-              </router-link>
+              </a>
+              <!-- </router-link> -->
             </section>
           </div>
 
