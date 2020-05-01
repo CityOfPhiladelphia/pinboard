@@ -230,6 +230,9 @@ export default {
     return data;
   },
   computed: {
+    isMobileOrTablet() {
+      return this.$store.state.isMobileOrTablet;
+    },
     legendControls() {
       return this.$config.legendControls || {};
     },
@@ -294,7 +297,11 @@ export default {
           // weight = 1;
           // radius = 6;
           if (this.$config.circleMarkers && this.$config.circleMarkers.radius) {
-            radius = this.$config.circleMarkers.radius;
+            if (this.isMobileOrTablet && this.$config.circleMarkers.mobileRadius) {
+              radius = this.$config.circleMarkers.mobileRadius;
+            } else {
+              radius = this.$config.circleMarkers.radius;
+            }
           } else {
             radius = 6;
           }

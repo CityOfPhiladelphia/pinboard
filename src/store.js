@@ -4,6 +4,7 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 
+import isMobileDevice from './util/is-mobile-device';
 import pvdStore from '@phila/vue-datafetch/src/store';
 import pvmStore from '@phila/vue-mapping/src/store';
 import pvcStore from '@phila/vue-comps/src/store';
@@ -15,6 +16,7 @@ function createStore(config) {
   const sources = pvdStore.createSources(config);
   const rfStore = {
     state: {
+      isMobileOrTablet: isMobileDevice(),
       sources,
       map: {
         center: [ -75.163471, 39.953338 ],
@@ -37,6 +39,9 @@ function createStore(config) {
       // setSelectedServices(state, payload) {
       //   state.selectedServices = payload;
       // },
+      setIsMobileOrTablet(state, payload) {
+        state.isMobileOrTablet = payload;
+      },
       setSubsections(state, payload) {
         state.subsections = payload;
       },
