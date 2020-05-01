@@ -1,5 +1,10 @@
 # Pinboard
-A generic app connected to a Carto endpoint, that allows users to search for a type of resource by location or keyword, and filter by resource type.
+
+Pinboard is a framework for creating apps that allow users to search for a type of resource by location or keyword, and filter by resource type.
+
+It is used to create multiple apps for the City of Philadelphia, including:
+
+[Resources for immigrants](http://phila-resource-finder.s3-website-us-east-1.amazonaws.com/immigrant/prod/#/) - [repo here](https://github.com/CityOfPhiladelphia/immigrant-resource-finder)
 
 ![Example](https://mapboard-images.s3.amazonaws.com/Pinboard.JPG)
 
