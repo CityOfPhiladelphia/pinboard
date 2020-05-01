@@ -277,12 +277,23 @@ export default {
         // console.log('in loop, row:', row);
         let markerColor;
         let markerSize;
-        let radius;
+        let radius, nonSelectedRadius;
         let weight;
+
+        if (this.$config.circleMarkers && this.$config.circleMarkers.radius) {
+          if (this.isMobileOrTablet && this.$config.circleMarkers.mobileRadius) {
+            radius = this.$config.circleMarkers.mobileRadius;
+          } else {
+            radius = this.$config.circleMarkers.radius;
+          }
+        } else {
+          radius = 6;
+        }
+
         if (this.selectedResources.includes(row._featureId)) {
           markerColor = '#2176d2';
           markerSize = 40;
-          radius = 12;
+          radius = radius + 6;
           weight = 0;
         } else {
           if (this.$config.circleMarkers && this.$config.circleMarkers.circleColors) {
@@ -294,17 +305,6 @@ export default {
             markerColor = 'purple';
           }
           markerSize = 20;
-          // weight = 1;
-          // radius = 6;
-          if (this.$config.circleMarkers && this.$config.circleMarkers.radius) {
-            if (this.isMobileOrTablet && this.$config.circleMarkers.mobileRadius) {
-              radius = this.$config.circleMarkers.mobileRadius;
-            } else {
-              radius = this.$config.circleMarkers.radius;
-            }
-          } else {
-            radius = 6;
-          }
           if (this.$config.circleMarkers && this.$config.circleMarkers.weight || this.$config.circleMarkers && this.$config.circleMarkers.weight === 0) {
             weight = this.$config.circleMarkers.weight;
           } else {
