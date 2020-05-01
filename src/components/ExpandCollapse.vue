@@ -25,7 +25,7 @@
         v-if="section && i18nEnabled"
         class="section-name"
         :style="{ 'background-color': sectionColor }"
-        v-html="$t('randomWords[\'' + sectionTitle + '\']')"
+        v-html="'<b>'+$t('randomWords[\'' + sectionTitle + '\']')+'</b>'"
       />
     </h2>
     <div
