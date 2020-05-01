@@ -2,6 +2,8 @@
 
 Pinboard is a framework for creating apps for investigating a single data layer in great detail. It has a refine panel along the top, which you can use to filter some of the pins and data off of the app. It also shows a map panel on the right, and a list of pins on the left, which can opened and closed to show more data about the pin.
 
+The package is in npm as [@phila/pinboard](https://www.npmjs.com/package/@phila/pinboard).
+
 It is used to create multiple apps for the City of Philadelphia, including:
 
 |Site|GitHub|
@@ -23,7 +25,7 @@ You can use vue ui to serve a local version, or run `yarn serve` for hot reloadi
 Linters will run on save, and lint fixes will be run on commits.
 
 ## Deploying
-Create pull request for changes and merge into `master` branch for travis-ci build to kick-off. The `/dist/` folder will be deployed to Amazon S3.
+Create pull request for changes and merge into `master` branch for travis-ci build to kick-off.
 
 ## Release Notes
 
