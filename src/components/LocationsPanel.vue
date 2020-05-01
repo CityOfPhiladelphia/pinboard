@@ -15,6 +15,7 @@
 
       <custom-greeting
         v-show="shouldShowGreeting && hasCustomGreeting"
+        @view-list="shouldShowGreeting = false"
       />
 
     </div>
