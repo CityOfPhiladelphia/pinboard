@@ -17,9 +17,9 @@
   },
   "dependencies": {
     "@fortawesome/free-brands-svg-icons": "^5.11.2",
-    "@phila/vue-comps": "https://github.com/CityOfPhiladelphia/phila-vue-comps#deb50baeaaeee7581a351fc37599f80b48639b73",
-    "@phila/vue-datafetch": "https://github.com/CityOfPhiladelphia/phila-vue-datafetch#8636fea9c2d2ff6b93c79d5cb0cbab5de593d4cb",
-    "@phila/vue-mapping": "https://github.com/CityOfPhiladelphia/phila-vue-mapping#d46d89425342c6a2865c46d07d294267a8746a51",
+    "@phila/vue-comps": "2.1.1",
+    "@phila/vue-datafetch": "1.2.0",
+    "@phila/vue-mapping": "2.1.1",
     "axios": "^0.19.0",
     "core-js": "^3.3.3",
     "foundation-sites": "^6.5.3",
