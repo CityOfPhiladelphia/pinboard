@@ -9,16 +9,33 @@
           class="refine-title"
           @click="expandRefine"
         >
-          <legend class="legend-title h3">
+          <legend
+            v-if="!i18nEnabled"
+            class="legend-title h3"
+          >
             {{ legendTitle }}
           </legend>
+          <legend
+            v-if="i18nEnabled"
+            class="legend-title h3"
+            v-html="$t('refine')"
+          />
           <a
+            v-if="!i18nEnabled"
             href=""
             class="clear-all hide-for-small-only"
             @click.prevent="clearAll"
           >
             Clear all
           </a>
+          <a
+            v-if="i18nEnabled"
+            href=""
+            class="clear-all hide-for-small-only"
+            @click.prevent="clearAll"
+            v-html="$t('clearAll')"
+          />
+
         </div>
         <div
           v-if="dataStatus === 'success'"
@@ -39,7 +56,22 @@
             <font-awesome-icon :for="item" :icon="['far', 'square']" v-show="!selected.includes(item)" class="fa-checkbox" />
             <font-awesome-icon :for="item" icon="check-square" v-show="selected.includes(item)" class="fa-checkbox" />
             <label
-              class="input-label" :for="item"><span class="service-item">{{ item }}</span>
+              class="input-label"
+              :for="item"
+              >
+                <span
+                  v-if="!i18nEnabled"
+                  class="service-item"
+                >
+                  {{ item }}
+                </span>
+
+                <span
+                  v-if="i18nEnabled"
+                  class="service-item"
+                  v-html="$t('randomWords[\'' + item + '\']')"
+                />
+
             </label>
             <icon-tool-tip
               v-if="Object.keys(infoCircles).includes(item)"
@@ -52,17 +84,39 @@
           <!-- </input> -->
         </div>
         <div class="mobile-filter-actions show-for-small-only">
+
           <PhilaButton
+            v-if="!i18nEnabled"
             @click.native="expandRefine(); scrollToTop();"
           >
-            <font-awesome-icon icon="filter" /> Apply filters
+            <font-awesome-icon icon="filter" />
+            Apply filters
           </PhilaButton>
           <PhilaButton
+            v-if="i18nEnabled"
+            @click.native="expandRefine(); scrollToTop();"
+          >
+            <font-awesome-icon icon="filter" />
+            <div
+              v-html="$t('applyFilters')"
+              class="apply-filters-text"
+            />
+          </PhilaButton>
+
+          <PhilaButton
+            v-if="!i18nEnabled"
             @click.native="closeRefinePanel"
           >
             Clear all
           </PhilaButton>
+          <PhilaButton
+            v-if="i18nEnabled"
+            @click.native="closeRefinePanel"
+            v-html="$t('clearAll')"
+          />
+          
         </div>
+
       </fieldset>
     </div>
   </div>
@@ -91,12 +145,22 @@ export default {
       baseUrl: process.env.VUE_APP_BASE_URL,
       refineList: null,
       selected: [],
-      refineOpen: false,
+      // refineOpen: false,
       // addressEntered: null,
     };
   },
   computed: {
     ...mapState([ 'sources', 'geocode', 'selectedServices' ]),
+    refineOpen() {
+      return this.$store.state.refineOpen;
+    },
+    i18nEnabled() {
+      if (this.$config.i18n && this.$config.i18n.refinePanel) {
+        return true;
+      } else {
+        return false;
+      }
+    },
     addressEntered() {
       let address;
 
@@ -114,7 +178,7 @@ export default {
     },
     database() {
       // if (this.$store.state.sources[this.$appType].data.rows) {
-        return this.$store.state.sources[this.$appType].data.rows;
+        return this.$store.state.sources[this.$appType].data.rows || this.$store.state.sources[this.$appType].data.features || this.$store.state.sources[this.$appType].data;
       // } else if (this.$store.state.sources[this.$appType].data.features) {
       //   return this.$store.state.sources[this.$appType].data.features;
       // } else {
@@ -159,8 +223,14 @@ export default {
 
       let service = '';
 
+      // console.log('in getRefineSearchList, refineData:', refineData);
       refineData.forEach((arrayElem) => {
-        service += `${arrayElem.services_offered},`;
+        // console.log('arrayElem:', arrayElem);
+        if (arrayElem.services_offered) {
+          service += `${arrayElem.services_offered},`;
+        } else if (arrayElem.attributes.category_type) {
+          service += `${arrayElem.attributes.category_type},`;
+        }
       });
 
       // TODO: break this into smaller chunks
@@ -170,10 +240,17 @@ export default {
       const uniqArray = [ ...new Set(serviceArray) ];
 
       // clean up any dangling , or ;
-      const uniq = uniqArray.filter(a => a.length > 2);
+      let uniq = uniqArray.filter(a => a.length > 2);
 
       uniq.filter(Boolean); // remove empties
+
+      if (this.$config.refineCategories) {
+        uniq = this.$config.refineCategories;
+      }
+
       uniq.sort();
+
+      console.log('uniq:', uniq);
       return uniq;
     },
     scrollToTop() {
@@ -182,7 +259,8 @@ export default {
     },
     expandRefine() {
       if (window.innerWidth <= 749) { // converted from rems
-        this.refineOpen = !this.refineOpen;
+        this.$store.commit('setRefineOpen', !this.refineOpen);
+        // this.refineOpen = !this.refineOpen;
       }
     },
     closeRefinePanel(){
@@ -275,7 +353,7 @@ $refine-panel-height: 19vh;
   }
   &.refine-open{
     overflow-y: scroll;
-    height: calc(100vh - 100px);
+    height: calc(100vh - 90px);
     max-height: 100vh;
     z-index: 1002;
     .refine-title{
@@ -344,6 +422,10 @@ input[type=checkbox] {
 .fa-infoCircle {
   color: color(dark-ben-franklin);
   cursor: pointer;
+}
+
+.apply-filters-text {
+  display: inline-block;
 }
 
 </style>

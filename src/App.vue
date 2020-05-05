@@ -1,7 +1,7 @@
 <template>
   <div
     id="app"
-    class="grid-y medium-grid-frame"
+    class="grid-y small-grid-frame medium-grid-frame"
   >
     <PhilaModal
       v-show="isModalOpen"
@@ -24,7 +24,9 @@
       :app-tag-line="this.$config.app.tagLine"
       :app-logo="`${publicPath}logo.png`"
       :app-logo-alt="this.$config.app.logoAlt"
+      :app-link="this.appLink"
     >
+
       <AlertBanner
         slot="alert-banner"
         v-if="this.$config.alerts && this.$config.alerts.header != null"
@@ -36,11 +38,11 @@
           @howToUseLink="toggleModal()"
         />
       </div>
+
       <RefinePanel
         slot="after-stripe"
         :infoCircles="this.$config.infoCircles"
       />
-
 
       <!-- <component
         :is="this.$config.alerts.header"
@@ -49,8 +51,12 @@
 
     </PhilaHeader>
 
-    <div class="cell medium-auto medium-cell-block-container main-content">
-      <div class="grid-x">
+    <!-- <div class="cell medium-auto medium-cell-block-container main-content"> -->
+    <div class="cell medium-auto medium-cell-block-container">
+      <div
+        v-show="!refineOpen"
+        class="grid-x middle-panel"
+      >
         <LocationsPanel
           v-show="!isMapVisible || isLarge"
           :is-map-visible="this.$data.isMapVisible"
@@ -70,11 +76,20 @@
     </div>
 
     <PhilaButton
+      v-if="!i18nEnabled"
       class="button toggle-map hide-for-medium"
       @click.native="toggleMap"
     >
       {{ buttonText }}
     </PhilaButton>
+
+    <PhilaButton
+      v-if="i18nEnabled"
+      class="button toggle-map hide-for-medium"
+      @click.native="toggleMap"
+      v-html="$t(buttonText)"
+    />
+
     <PhilaFooter
       v-show="isLarge"
       @howToUseLink="toggleModal()"
@@ -90,6 +105,7 @@ import booleanPointInPolygon from '@turf/boolean-point-in-polygon';
 import PhilaButton from './components/PhilaButton.vue';
 import PhilaHeader from './components/PhilaHeader.vue';
 import AlertBanner from './components/AlertBanner.vue';
+import i18nBanner from './components/i18nBanner.vue';
 import PhilaFooter from './components/PhilaFooter.vue';
 import PhilaModal from './components/PhilaModal.vue';
 import RefinePanel from './components/RefinePanel.vue';
@@ -102,6 +118,7 @@ export default {
     PhilaButton,
     PhilaHeader,
     AlertBanner,
+    i18nBanner,
     PhilaFooter,
     PhilaModal,
     RefinePanel,
@@ -112,15 +129,25 @@ export default {
   data() {
     return {
       publicPath: process.env.BASE_URL,
-      isMapVisible: true,
+      isMapVisible: false,
       isModalOpen: false,
       isLarge: true,
       buffer: null,
-      buttonText: 'Toggle map',
-      // shouldShowGreeting: true,
+      buttonText: 'Toggle to map',
+      appLink: '/',
     };
   },
   computed: {
+    i18nEnabled() {
+      if (this.$config.i18n && this.$config.i18n.app) {
+        return true;
+      } else {
+        return false;
+      }
+    },
+    refineOpen() {
+      return this.$store.state.refineOpen;
+    },
     geocodeStatus() {
       return this.$store.state.geocode.status;
     },
@@ -142,8 +169,13 @@ export default {
     dataStatus() {
       return this.$store.state.sources[this.$appType].status;
     },
+    dataTest() {
+      console.log('computed dataTest is running');
+      return this.$store.state.sources[this.$appType].data.rows;
+    },
     database() {
-      let database = this.$store.state.sources[this.$appType].data.rows;
+      let database = this.$store.state.sources[this.$appType].data.rows || this.$store.state.sources[this.$appType].data.features || this.$store.state.sources[this.$appType].data;
+      // console.log('computed database is running, database:', database);
 
       for (let [key, value] of Object.entries(database)) {
         for (let [rowKey, rowValue] of Object.entries(value)) {
@@ -188,8 +220,30 @@ export default {
     selectedResources() {
       return this.$store.state.selectedResources;
     },
+    sourcesWatched() {
+      let sources = Object.keys(this.$store.state.sources);
+      const index = sources.indexOf('compiled');
+      if (index > -1) {
+        sources.splice(index, 1);
+
+        let sourcesWatched = [];
+
+        for (let source of sources) {
+          sourcesWatched.push(this.$store.state.sources[source].data);
+        }
+        return sourcesWatched;
+      } else {
+        return null
+      }
+    },
   },
   watch: {
+    sourcesWatched(nextSourcesWatched) {
+      console.log('watch sourcesWatched, nextSourcesWatched:', nextSourcesWatched);
+      if (!nextSourcesWatched.includes(null)) {
+        this.setUpData(nextSourcesWatched);
+      }
+    },
     geocodeStatus(nextGeocodeStatus) {
       if (nextGeocodeStatus === 'success') {
         this.runBuffer();
@@ -217,10 +271,36 @@ export default {
     },
   },
   mounted() {
-    // console.log('in App.vue mounted, this.$config:', this.$config);
+    console.log('in App.vue mounted, this.$config:', this.$config, 'window.location.href:', window.location.href);
+    if (this.$config.appLink) {
+      this.appLink = this.$config.appLink;
+    } else {
+      this.appLink = '.';
+    }
     if (this.$config.dataSources) {
       this.$controller.dataManager.fetchData();
     }
+
+    if (!this.i18nEnabled) {
+      this.$data.buttonText = this.$data.isMapVisible ? 'Toggle to resource list' : 'Toggle to map';
+    } else {
+      // this.$data.buttonText = this.$data.isMapVisible ? 'viewMap' : 'viewList';
+      this.$data.buttonText = this.$data.isMapVisible ? 'viewList' : 'viewMap';
+    }
+
+    // this.$i18n.locale = 'es';
+    // let compiledDataSource = [];
+    // if (Object.keys(this.$config.dataSources).length > 1) {
+    //   console.log('this.$store.state.sources:', this.$store.state.sources);
+    //   for (let source of Object.keys(this.$store.state.sources)) {
+    //     console.log('this.$store.state.sources[source].data:', this.$store.state.sources[source].data);
+    //     compiledDataSource.push(this.$store.state.sources[source].data.features);
+    //   }
+    // }
+    // console.log('compiledDataSource:', compiledDataSource);
+
+    // this.setUpData();
+
     this.onResize();
   },
   created() {
@@ -231,6 +311,33 @@ export default {
     window.removeEventListener('resize', this.onResize);
   },
   methods: {
+    togglei18nMenu() {
+      console.log('App.vue togglei18nMenu is running');
+    },
+    setUpData(theSources) {
+      console.log('Pinboard App.vue setUpData is running, theSources:', theSources);
+      let compiled = {
+        key: 'compiled',
+        data: [],
+        status: 'success',
+      }
+      if (theSources.length > 1) {
+        console.log('this.$store.state.sources:', this.$store.state.sources);
+        for (let source of theSources) {
+          // console.log('source:', source, 'this.$store.state.sources[source].data:', this.$store.state.sources[source].data);
+          // for (let point of this.$store.state.sources[source].data.features) {
+          for (let point of source.features) {
+            // console.log('point:', point);
+            Object.assign(point, point.attributes);
+            point.attributes = undefined;
+            compiled.data.push(point);
+          }
+        }
+        console.log('compiled:', compiled);
+        this.$store.commit('setSourceData', compiled);
+        this.$store.commit('setSourceStatus', compiled);
+      }
+    },
     runBuffer() {
       const geocodePoint = point(this.geocodeGeom.coordinates);
       const pointBuffer = buffer(geocodePoint, 1, { units: 'miles' });
@@ -245,7 +352,13 @@ export default {
         let booleanServices;
         // console.log('row.services_offered:', row.services_offered);
         // const servicesSplit = row.services_offered.split(',');
-        const servicesSplit = row.services_offered;
+        let servicesSplit;
+        if (row.services_offered) {
+          servicesSplit = row.services_offered;
+        } else if (row.attributes.category_type) {
+          servicesSplit = [row.attributes.category_type];
+        }
+        // console.log('servicesSplit:', servicesSplit);
         const { selectedServices } = this.$store.state;
         if (selectedServices.length === 0) {
           booleanServices = true;
@@ -293,7 +406,11 @@ export default {
       } else {
         this.$data.isMapVisible = !this.$data.isMapVisible;
       }
-      this.$data.buttonText = this.$data.isMapVisible ? 'Toggle map' : 'Toggle resource list';
+      if (!this.i18nEnabled) {
+        this.$data.buttonText = this.$data.isMapVisible ? 'Toggle to resource list' : 'Toggle to map';
+      } else {
+        this.$data.buttonText = this.$data.isMapVisible ? 'viewList' : 'viewMap';
+      }
     },
     toggleModal() {
       this.isModalOpen = !this.isModalOpen;
@@ -314,6 +431,12 @@ export default {
     onResize() {
       if (window.innerWidth > 749) {
         this.$data.isMapVisible = true;
+
+        if (!this.i18nEnabled) {
+          this.$data.buttonText = this.$data.isMapVisible ? 'Toggle to resource list' : 'Toggle to map';
+        } else {
+          this.$data.buttonText = this.$data.isMapVisible ? 'viewList': 'viewMap';
+        }
         this.$data.isLarge = true;
       } else {
         this.$data.isLarge = false;
@@ -331,6 +454,10 @@ export default {
 }
 .main-content{
   margin-top:.5rem;
+}
+
+.middle-panel {
+  height: 100%;
 }
 
 //TODO, move to standards

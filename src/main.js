@@ -1,4 +1,6 @@
 import Vue from 'vue';
+import VueI18n from 'vue-i18n'
+
 import axios from 'axios';
 import controllerMixin from '@phila/vue-datafetch/src/controller.js';
 /* eslint-disable import/no-extraneous-dependencies */
@@ -73,7 +75,7 @@ function initPinboard(clientConfig) {
 }
 
 function finishInit(config) {
-  // console.log('finishInit is running, config:', config);
+  console.log('finishInit is running, config:', config);
 
   // make config accessible from each component via this.$config
   Vue.use(configMixin, config);
@@ -86,6 +88,15 @@ function finishInit(config) {
   // Vue.use(controllerMixin, { config, store, eventBus });
 
   Vue.component('font-awesome-icon', FontAwesomeIcon);
+
+  Vue.use(VueI18n)
+  let i18nData;
+  if (config.i18n && config.i18n.data) {
+    i18nData = config.i18n.data;
+  } else {
+    i18nData = {};
+  }
+  const i18n = new VueI18n(i18nData);
 
   Vue.use(fonts);
   Vue.config.productionTip = false;
@@ -102,6 +113,7 @@ function finishInit(config) {
     el: config.el || '#app',
     render: h => h(App),
     router,
+    i18n,
     store,
   });
 }

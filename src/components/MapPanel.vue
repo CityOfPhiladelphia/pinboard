@@ -1,5 +1,6 @@
 <template>
-  <div class="cell medium-12 medium-cell-block-y mb-panel mb-panel-map map-height">
+  <!-- <div class="cell medium-12 medium-cell-block-y mb-panel mb-panel-map map-height"> -->
+  <div class="cell medium-12 medium-cell-block-y">
     <Map_
       id="map-tag"
       :class="{ 'mb-map-with-widget': this.$store.state.cyclomedia.active || this.$store.state.pictometry.active }"
@@ -51,7 +52,7 @@
         :radius="marker.radius"
         :fill-color="marker.color"
         :color="'black'"
-        :weight="1"
+        :weight="marker.weight"
         :opacity="1"
         :fill-opacity="1"
         :data="{
@@ -64,8 +65,9 @@
           :latlng="marker.latlng"
           :feature-id="marker._featureId"
         >
+        <!-- :popup-data="marker.organization_name" -->
           <popup-content-functional
-            :popup-data="marker.organization_name"
+            :popup-data="marker.organization_name || marker.attributes.site_name"
             @didClickPopupContent="toggleMap"
           />
         </popup-simple>
@@ -138,6 +140,16 @@
       </div>
 
       <div v-once>
+        <legend-control
+          v-for="legendControl in Object.keys(legendControls)"
+          :key="legendControl"
+          :position="'bottomleft'"
+          :options="legendControls[legendControl].options"
+          :items="legendControls[legendControl].data"
+        />
+      </div>
+
+      <div v-once>
         <basemap-select-control :position="this.basemapSelectControlPosition" />
       </div>
 
@@ -172,6 +184,7 @@
 </template>
 
 <script>
+import proj4 from 'proj4';
 import 'leaflet/dist/leaflet.css';
 // import all fontawesome icons included in phila-vue-mapping
 import * as faMapping from '@phila/vue-mapping/src/fa';
@@ -185,6 +198,7 @@ import CyclomediaRecordingsClient from '@phila/vue-mapping/src/cyclomedia/record
 import ControlCorner from '@phila/vue-mapping/src/leaflet/ControlCorner.vue';
 import BasemapToggleControl from '@phila/vue-mapping/src/components/BasemapToggleControl.vue';
 import BasemapSelectControl from '@phila/vue-mapping/src/components/BasemapSelectControl.vue';
+import LegendControl from '@phila/vue-mapping/src/components/LegendControlNoTopic.vue';
 
 export default {
   name: "MapPanel",
@@ -204,6 +218,7 @@ export default {
     ControlCorner,
     BasemapToggleControl,
     BasemapSelectControl,
+    LegendControl,
   },
   mixins: [
     cyclomediaMixin,
@@ -215,6 +230,12 @@ export default {
     return data;
   },
   computed: {
+    isMobileOrTablet() {
+      return this.$store.state.isMobileOrTablet;
+    },
+    legendControls() {
+      return this.$config.legendControls || {};
+    },
     isLoadingPins() {
       return this.$store.state.sources[this.$appType].status === 'waiting';
     },
@@ -240,6 +261,15 @@ export default {
       // console.log('MapPanel.vue currentData is recalculating');
       return this.$store.state.currentData;
     },
+    projection4326() {
+      return "+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs";
+    },
+    projection2272() {
+      return "+proj=lcc +lat_1=40.96666666666667 +lat_2=39.93333333333333 +lat_0=39.33333333333334 +lon_0=-77.75 +x_0=600000 +y_0=0 +ellps=GRS80 +datum=NAD83 +to_meter=0.3048006096012192 +no_defs";
+    },
+    projection3857() {
+      return "+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +wktext  +no_defs";
+    },
     currentMapData() {
       // console.log('MapPanel.vue currentMapData computed is recalculating');//, this.currentData:', this.currentData);
       const newRows = [];
@@ -247,20 +277,50 @@ export default {
         // console.log('in loop, row:', row);
         let markerColor;
         let markerSize;
-        let radius;
+        let radius, nonSelectedRadius;
+        let weight;
+
+        if (this.$config.circleMarkers && this.$config.circleMarkers.radius) {
+          if (this.isMobileOrTablet && this.$config.circleMarkers.mobileRadius) {
+            radius = this.$config.circleMarkers.mobileRadius;
+          } else {
+            radius = this.$config.circleMarkers.radius;
+          }
+        } else {
+          radius = 6;
+        }
+
         if (this.selectedResources.includes(row._featureId)) {
           markerColor = '#2176d2';
           markerSize = 40;
-          radius = 12;
+          radius = radius + 6;
+          weight = 0;
         } else {
-          markerColor = 'purple';
+          if (this.$config.circleMarkers && this.$config.circleMarkers.circleColors) {
+            // let indexVal = row._featureId.indexOf('-', row._featureId.indexOf('-') + 1);
+            // console.log('row:', row, 'indexVal:', indexVal);
+            // markerColor = this.$config.circleColors[row._featureId.slice(0, indexVal)]
+            markerColor = this.$config.circleMarkers.circleColors[row.attributes.category_type]
+          } else {
+            markerColor = 'purple';
+          }
           markerSize = 20;
-          radius = 6;
+          if (this.$config.circleMarkers && this.$config.circleMarkers.weight || this.$config.circleMarkers && this.$config.circleMarkers.weight === 0) {
+            weight = this.$config.circleMarkers.weight;
+          } else {
+            weight = 1;
+          }
+          // console.log('weight:', weight, 'this.$config.circleMarkers.weight:', this.$config.circleMarkers.weight);
         }
         if (row.lat) {
-          row.latlng = [ row.lat, row.lon ];
+          if (this.$config.projection === '3857') {
+            row.latlng = proj4(this.projection3857, this.projection4326, [ row.lat, row.lon ]);
+          } else {
+            row.latlng = [ row.lat, row.lon ];
+          }
           row.color = markerColor;
           row.radius = radius;
+          row.weight = weight;
           row.icon = {
             prefix: 'fas',
             icon: 'map-marker-alt',
@@ -269,9 +329,25 @@ export default {
           };
           newRows.push(row);
         } else if (row.geometry) {
-          row.latlng = [ row.geometry.y, row.geometry.x ];
+          if (this.$config.projection === '3857') {
+            let lnglat = proj4(this.projection3857, this.projection4326, [ row.geometry.x, row.geometry.y ]);
+            row.latlng = [ lnglat[1], lnglat[0] ];
+          } else {
+            row.latlng = [ row.geometry.y, row.geometry.x ];
+          }
           row.color = markerColor;
           row.radius = radius;
+          row.weight = weight;
+          // if (this.$config.circleMarkers.radius) {
+          //   radius = this.$config.circleMarkers.radius;
+          // } else {
+          //   radius = 6;
+          // }
+          // if (this.$config.circleMarkers.weight) {
+          //   weight = this.$config.circleMarkers.weight;
+          // } else {
+          //   weight = 1;
+          // }
           row.icon = {
             prefix: 'fas',
             icon: 'map-marker-alt',
@@ -411,16 +487,24 @@ export default {
       }
     },
     latestSelectedResourceFromExpand(nextLatestSelectedResource) {
+      // console.log('watch latestSelectedResourceFromExpand:', nextLatestSelectedResource, 'this.$appType:', this.$appType);
       if (nextLatestSelectedResource) {
-        const { rows } = this.$store.state.sources[this.$appType].data;
-        const dataValue = rows.filter(row => row._featureId === nextLatestSelectedResource);
+        let rows;
         const { map } = this.$store.state.map;
-        map.setView([ dataValue[0].lat, dataValue[0].lon ], this.geocodeZoom);
+        if (this.$store.state.sources[this.$appType].data.rows) {
+          rows = this.$store.state.sources[this.$appType].data.rows;
+          const dataValue = rows.filter(row => row._featureId === nextLatestSelectedResource);
+          map.setView([ dataValue[0].lat, dataValue[0].lon ], this.geocodeZoom);
+        } else if (this.$store.state.sources[this.$appType].data.features) {
+          rows = this.$store.state.sources[this.$appType].data.features;
+          const dataValue = rows.filter(row => row._featureId === nextLatestSelectedResource);
+          map.setView([ dataValue[0].latlng[0], dataValue[0].latlng[1] ], this.geocodeZoom);
+        }
       }
     },
     latestSelectedResourceFromMap(nextLatestSelectedResource) {
       let test = document.getElementById('customPopup');
-      console.log('in watch latestSelectedResourceFromMap, test:', test);
+      // console.log('in watch latestSelectedResourceFromMap, test:', test);
     },
     cyclomediaActive(value) {
       this.$nextTick(() => {
@@ -440,8 +524,8 @@ export default {
     },
     handleMarkerClick(e) {
       const { target } = e;
-      // console.log('MapPanel.vue handleMarkerClick is running, target:', target);
       const { featureId } = target.options.data;
+      // console.log('MapPanel.vue handleMarkerClick is running, target:', target, 'featureId:', featureId);
       const selectedResource = [ ...this.selectedResources ];
       if (selectedResource.includes(featureId)) {
         // console.log('markerClick close marker, featureId', featureId);
@@ -494,7 +578,10 @@ export default {
 <style>
 @media screen and (max-width: 749px) {
   .map-container{
-    min-height: 100vh !important;
+    min-height: calc(100vh - 192px);
+    /* height: 100vh; */
+    /* height: 400px; */
+    /* min-height: 100%; */
   }
 }
 

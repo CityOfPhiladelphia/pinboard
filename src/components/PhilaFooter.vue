@@ -4,20 +4,51 @@
       <div class="cell">
         <nav>
           <ul class="footer-nav">
-            <li><a href="https://www.phila.gov">City of Philadelphia</a></li>
-            <li><a href=".">About This Finder</a></li>
             <li>
+              <a href="https://www.phila.gov">
+                City of Philadelphia
+              </a>
+            </li>
+
+            <li>
+              <a
+                v-if="!i18nEnabled"
+                href="."
+              >
+                About This Finder
+              </a>
+              <a
+                v-if="i18nEnabled"
+                href="."
+                v-html="$t('about')"
+              />
+            </li>
+
+            <li v-if="howToUseEnabled">
               <a
                 href=""
                 @click.prevent="$emit('howToUseLink')"
-              >How to use</a>
+              >
+                How to use
+              </a>
             </li>
+
             <li>
               <a
+                v-if="!i18nEnabled"
                 :href="feedbackLink"
                 target="_blank"
-              >Feedback</a>
+              >
+                Feedback
+              </a>
+              <a
+                v-if="i18nEnabled"
+                :href="feedbackLink"
+                target="_blank"
+                v-html="$t('feedback')"
+              />
             </li>
+
           </ul>
         </nav>
       </div>
@@ -32,6 +63,22 @@ export default {
       default: 'https://www.phila.gov/feedback/',
     },
   },
+  computed: {
+    i18nEnabled(){
+      if (this.$config.i18n && this.$config.i18n.footer) {
+        return true;
+      } else {
+        return false;
+      }
+    },
+    howToUseEnabled() {
+      if (this.$config.footer && this.$config.footer.HowToUse === false) {
+        return false;
+      } else {
+        return true;
+      }
+    }
+  }
 };
 </script>
 <style lang="scss">

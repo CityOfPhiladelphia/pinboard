@@ -8,10 +8,16 @@
     >
     <!-- :style="topicsContainerStyle" -->
       <greeting
-        v-show="shouldShowGreeting"
+        v-show="shouldShowGreeting && !hasCustomGreeting"
         :message="greetingText"
         :options="greetingOptions"
       />
+
+      <custom-greeting
+        v-show="shouldShowGreeting && hasCustomGreeting"
+        @view-list="shouldShowGreeting = false"
+      />
+
     </div>
 
     <div
@@ -35,89 +41,101 @@
           :item="item"
           :is-map-visible="isMapVisible"
           :slots="locationSlots"
-          >
-          <div class="grid-x grid-padding-x">
-            <div class="cell medium-12">
-              <div
-                v-if="item.street_address"
-                class="detail"
-              >
-                <font-awesome-icon icon="map-marker-alt" />
-                <span v-html="parseAddress(item.street_address)">
-                  {{ parseAddress(item.street_address) }}
-                </span>
-              </div>
-            </div>
-            <div class="cell medium-12">
-              <div
-                v-if="item.phone_number"
-                class="detail"
-              >
-                <font-awesome-icon icon="phone" />
-                <span>{{ item.phone_number }}</span>
-              </div>
-              <div
-                v-if="item.email"
-                class="detail"
-              >
-                <font-awesome-icon icon="envelope" />
-                <span><a :href="`mailto:${item.email}`">{{ item.email }}</a></span>
-              </div>
-              <div
-                v-if="item.website"
-                class="detail"
-              >
-                <font-awesome-icon icon="globe" />
-                <span><a :href="makeValidUrl(item.website)">{{ item.website }}</a></span>
-              </div>
-              <div
-                v-if="item.facebook_name"
-                class="detail"
-              >
-                <font-awesome-icon :icon="['fab', 'facebook']" />
-                <span><a :href="item.facebook_name">Facebook</a></span>
-              </div>
-              <div
-                v-if="item.twitter"
-                class="detail"
-              >
-                <font-awesome-icon :icon="['fab', 'twitter']" />
-                <span><a :href="item.twitter">Twitter</a></span>
-              </div>
-            </div>
-          </div>
-          <div v-if="item.services_offered">
-            <section class="services grid-x grid-padding-x">
-              <div class="cell">
-                <h3 class="h4">
-                  Services offered
-                </h3>
-                <div class="grid-x">
-                  <div
-                    v-for="i in parseServiceList(item.services_offered)"
-                    :key="i"
-                    class="cell medium-12 service-item"
-                  >
-                    {{ i }}
-                  </div>
+        >
+
+          <component
+            is="expandCollapseContent"
+            v-if="$config.customComps && Object.keys($config.customComps).includes('expandCollapseContent')"
+            :item="item"
+            :is-map-visible="isMapVisible"
+            :slots="locationSlots"
+          />
+
+          <div v-if="$config.useDefaultLayout">
+            <div class="grid-x grid-padding-x">
+              <div class="cell medium-12">
+                <div
+                  v-if="item.street_address"
+                  class="detail"
+                >
+                  <font-awesome-icon icon="map-marker-alt" />
+                  <span v-html="parseAddress(item.street_address)">
+                    {{ parseAddress(item.street_address) }}
+                  </span>
                 </div>
               </div>
-            </section>
-          </div>
-          <div v-if="item.tags">
-            <section class="tags grid-x grid-padding-x mtm">
-              <div class="cell">
-                <h3 class="h4">
-                  Tags
-                </h3>
-                <div class="grid-x">
-                  <div>
-                    {{ parseTagsList(item.tags) }}
-                  </div>
+              <div class="cell medium-12">
+                <div
+                  v-if="item.phone_number"
+                  class="detail"
+                >
+                  <font-awesome-icon icon="phone" />
+                  <span>{{ item.phone_number }}</span>
+                </div>
+                <div
+                  v-if="item.email"
+                  class="detail"
+                >
+                  <font-awesome-icon icon="envelope" />
+                  <span><a :href="`mailto:${item.email}`">{{ item.email }}</a></span>
+                </div>
+                <div
+                  v-if="item.website"
+                  class="detail"
+                >
+                  <font-awesome-icon icon="globe" />
+                  <span><a :href="makeValidUrl(item.website)">{{ item.website }}</a></span>
+                </div>
+                <div
+                  v-if="item.facebook_name"
+                  class="detail"
+                >
+                  <font-awesome-icon :icon="['fab', 'facebook']" />
+                  <span><a :href="item.facebook_name">Facebook</a></span>
+                </div>
+                <div
+                  v-if="item.twitter"
+                  class="detail"
+                >
+                  <font-awesome-icon :icon="['fab', 'twitter']" />
+                  <span><a :href="item.twitter">Twitter</a></span>
                 </div>
               </div>
-            </section>
+            </div>
+            <div v-if="item.services_offered">
+              <section class="services grid-x grid-padding-x">
+                <div class="cell">
+                  <h3 class="h4">
+                    Services offered
+                  </h3>
+                  <div class="grid-x">
+                    <div
+                      v-for="i in parseServiceList(item.services_offered)"
+                      :key="i"
+                      class="cell medium-12 service-item"
+                    >
+                      {{ i }}
+                    </div>
+                  </div>
+                </div>
+              </section>
+            </div>
+            <div v-if="item.tags">
+              <section class="tags grid-x grid-padding-x mtm">
+                <div class="cell">
+                  <h3 class="h4">
+                    Tags
+                  </h3>
+                  <div class="grid-x">
+                    <div>
+                      {{ parseTagsList(item.tags) }}
+                    </div>
+                  </div>
+                </div>
+              </section>
+            </div>
           </div>
+
         </ExpandCollapse>
       </div>
     </div>
@@ -127,11 +145,13 @@
 
 import { mapState } from 'vuex';
 import ExpandCollapse from './ExpandCollapse.vue';
+import Greeting from './Greeting.vue';
 
 export default {
   components: {
     ExpandCollapse,
-    Greeting: () => import(/* webpackChunkName: "mbmp_pvc_Greeting" */'@phila/vue-comps/src/components/Greeting.vue'),
+    Greeting,
+    // Greeting: () => import(/* webpackChunkName: "pb_Greeting" */'./Greeting.vue'),
   },
   props: {
     isMapVisible: {
@@ -146,14 +166,29 @@ export default {
     return data;
   },
   computed: {
+    hasCustomGreeting() {
+      let value = false;
+      if (this.$config.customComps) {
+        value = Object.keys(this.$config.customComps).includes('customGreeting');
+      }
+      return value;
+    },
     // shouldShowGreeting() {
     //   return true;
     // },
     greetingText() {
-      return this.$config.greeting.message;
+      if (this.$config.greeting) {
+        return this.$config.greeting.message;
+      } else {
+        return null;
+      }
     },
     greetingOptions() {
-      return this.$config.greeting.options;
+      if (this.$config.greeting) {
+        return this.$config.greeting.options;
+      } else {
+        return {};
+      }
     },
     geocode() {
       return this.$store.state.geocode.data;
@@ -176,7 +211,11 @@ export default {
     ...mapState([ 'sources' ]),
     currentData() {
       const locations = this.$store.state.currentData;
-      locations.sort((a, b) => a.organization_name.localeCompare(b.organization_name));
+      let value = this.locationSlots.title;
+      // locations.sort((a, b) => a.organization_name.localeCompare(b.organization_name));
+      // locations.sort((a, b) => a.site_name);//.localeCompare(b.site_name));
+      locations.sort((a, b) => a[value]);//.localeCompare(b.site_name));
+
       return locations;
     },
     currentDataList() {
@@ -265,7 +304,7 @@ export default {
 
 .locations-panel{
   overflow-y: auto;
-  height: calc(100vh - 300px);
+  height: calc(100vh - 192px);
   .detail{
     margin-bottom: 1rem;
     svg {
@@ -280,7 +319,7 @@ export default {
     }
   }
   .services{
-    margin-top: 3rem;
+    margin-top: 1rem;
   }
   .service-item{
     margin-bottom: .5rem;

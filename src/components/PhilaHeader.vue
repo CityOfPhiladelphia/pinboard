@@ -1,23 +1,25 @@
 <template>
-  <header class="app-header cell shrink">
+  <header class="app-header shrink">
     <div class="grid-x grid-padding-x grid-padding-y align-middle">
+
       <div class="cell mobile-menu show-for-small-only small-2">
         <font-awesome-icon
-          v-show="!isOpen"
+          v-show="!footerListIsOpen"
           icon="bars"
           size="2x"
           :style="{ color: 'white' }"
-          @click="toggleMenu"
+          @click="toggleFooterMenu"
         />
         <font-awesome-icon
-          v-show="isOpen"
+          v-show="footerListIsOpen"
           icon="times"
           size="2x"
           :style="{ color: 'white' }"
-          @click="toggleMenu"
+          @click="toggleFooterMenu"
         />
       </div>
-      <div class="cell medium-auto small-21">
+
+      <div class="cell medium-auto small-20">
         <div class="grid-x grid-padding-x align-middle">
           <div class="cell shrink hide-for-small-only">
             <a
@@ -34,50 +36,150 @@
           <div class="cell shrink hide-for-small-only">
             <div class="app-divide flex-child-auto" />
           </div>
-          <div class="cell shrink">
+          <div class="cell shrink text-centered">
             <section class="title-container flex-child-auto">
-              <router-link
+              <!-- <router-link
                 :to="appLink"
                 class="app-title"
+              > -->
+              <a
+                class="app-title"
+                :href="appLink"
               >
-                <h1 class="title">
-                  {{ appTitle }}
+                <h1
+                  v-if="i18nEnabled"
+                  class="title no-margins"
+                >
+                  {{ $t('title') }}
                 </h1>
-                <div id="demo-badge">
+                <h1
+                  v-if="!i18nEnabled"
+                  class="title no-margins"
+                >
+                  {{ $config.app.title }}
+                </h1>
+
+                <div
+                  v-if="!i18nEnabled"
+                  id="demo-badge"
+                >
                   BETA
                 </div>
-                <h2 class="h6 hide-for-small-only tagline">
+                <div
+                  v-if="i18nEnabled"
+                  id="demo-badge"
+                  v-html="$t('randomWords.betaTag')"
+                />
+
+                <h2
+                  v-if="i18nEnabled"
+                  class="h6 show-for-small-only tagline no-margins"
+                >
+                  CITY OF PHILADELPHIA
+                </h2>
+                <h2
+                  v-if="i18nEnabled"
+                  class="h6 hide-for-small-only tagline"
+                >
+                  {{ $t('subtitle') }}
+                </h2>
+                <h2
+                  v-if="!i18nEnabled"
+                  class="h6 hide-for-small-only tagline"
+                >
                   {{ appTagLine }}
                 </h2>
-              </router-link>
+
+              </a>
+              <!-- </router-link> -->
             </section>
           </div>
-          <div class="cell large-auto small-auto small-centered text-center">
+
+          <!-- <div class="cell large-auto small-auto small-centered text-center"> -->
+          <div class="cell large-auto hide-for-small-only text-center">
+            <!-- v-if="!this.$config.addressInput || this.$config.addressInput && this.$config.addressInput.type === 'combo'" -->
             <combo-search
-              :dropdown="dropdownData"
+              :dropdown="comboSearchDropdownData"
+              :position="comboSearchPosition"
+              :placeholderText="comboSearchPlaceholderText"
               :search-string="searchString"
               :dropdown-selected="dropdownSelected"
+              :input-id="'input1'"
+              :select-id="'select1'"
               @trigger-combo-search="comboSearchTriggered"
               @trigger-clear-search="clearSearchTriggered"
               @trigger-search-category-change="comboSearchCategoryChange"
             />
+
             <div class="search">
               <slot name="search" />
             </div>
           </div>
+
+        </div>
+
+      </div>
+
+      <div
+        v-if="i18nEnabled"
+        class="cell mobile-menu show-for-small-only small-2"
+      >
+        <font-awesome-icon
+          v-show="!i18nListIsOpen"
+          icon="globe"
+          size="2x"
+          :style="{ color: 'white' }"
+          @click="togglei18nMenu"
+        />
+        <font-awesome-icon
+          v-show="i18nListIsOpen"
+          icon="times"
+          size="2x"
+          :style="{ color: 'white' }"
+          @click="togglei18nMenu"
+        />
+      </div>
+
+      <div class="cell show-for-small-only text-center">
+        <!-- v-if="!this.$config.addressInput || this.$config.addressInput && this.$config.addressInput.type === 'combo'" -->
+        <combo-search
+          :dropdown="comboSearchDropdownData"
+          :position="comboSearchPosition"
+          :placeholderText="comboSearchPlaceholderText"
+          :search-string="searchString"
+          :dropdown-selected="dropdownSelected"
+          :input-id="'input2'"
+          :select-id="'select2'"
+          @trigger-combo-search="comboSearchTriggered"
+          @trigger-clear-search="clearSearchTriggered"
+          @trigger-search-category-change="comboSearchCategoryChange"
+        />
+
+        <div class="search">
+          <slot name="search" />
         </div>
       </div>
-    </div>
+
+    </div> <!-- end of main grid-x -->
+
+    <i18nBanner
+      class="hide-for-small-only"
+      slot="i18n-banner"
+      v-if="this.$config.i18n && this.$config.i18n.header != null"
+    />
+
     <slot name="alert-banner" />
-    <div
+
+    <!-- <div
       v-show="!isOpen"
       class="stripe"
     />
     <div
       class="white-stripe"
-    />
+    /> -->
+
     <div
-      v-show="isOpen"
+      v-show="footerListIsOpen"
       class="mobile-menu-content-container show-for-small-only"
     >
       <div class="mobile-menu-content">
@@ -94,6 +196,18 @@
         <slot name="mobile-menu" />
       </div>
     </div>
+
+    <div
+      v-show="i18nListIsOpen"
+      class="mobile-menu-content-container show-for-small-only"
+    >
+      <i18nBanner
+        v-if="this.$config.i18n && this.$config.i18n.header != null"
+        @language-selected="togglei18nMenu"
+      />
+    </div>
+
+
     <slot name="after-stripe" />
   </header>
 </template>
@@ -104,10 +218,13 @@ import Logo from '@/assets/city-of-philadelphia-logo.png';
 // import AddressInput from '@phila/vue-comps/src/components/AddressInput.vue'
 // import Paragraph from '@phila/vue-comps/src/components/Paragraph.vue'
 // import '@phila/vue-comps'
+import i18nBanner from './i18nBanner.vue';
 
 export default {
   components: {
+    i18nBanner,
     ComboSearch: () => import(/* webpackChunkName: "pvc_ComboSearch" */'@phila/vue-comps/src/components/ComboSearch.vue'),
+    AddressInput: () => import(/* webpackChunkName: "pvc_AddressInput" */'@phila/vue-comps/src/components/AddressInput.vue'),
   },
   props: {
     appLink: {
@@ -149,20 +266,45 @@ export default {
       },
       searchString: '',
       dropdownSelected: '',
-      isOpen: false,
+      footerListIsOpen: false,
+      i18nListIsOpen: false,
     };
   },
   computed: {
-    dropdownData() {
+    i18nEnabled() {
+      if (this.$config.i18n) {
+        return true;
+      } else {
+        return false;
+      }
+    },
+    comboSearchDropdownData() {
       let dropdownData = {};
-      if (!this.$config.dropdown) {
+      if (!this.$config.comboSearch) {
+        dropdownData = this.$data.dropdownOptions;
+      } else if (!this.$config.comboSearch.dropdown) {
         dropdownData = this.$data.dropdownOptions;
       } else {
-        for (let dropdownItem of this.$config.dropdown) {
+        for (let dropdownItem of this.$config.comboSearch.dropdown) {
           dropdownData[dropdownItem] = this.$data.dropdownOptions[dropdownItem];
         }
       }
+      console.log('dropdownData:', dropdownData);
       return dropdownData;
+    },
+    comboSearchPosition() {
+      if (this.$config.comboSearch && this.$config.comboSearch.position) {
+        return this.$config.comboSearch.position;
+      } else {
+        return 'left';
+      }
+    },
+    comboSearchPlaceholderText() {
+      if (this.$config.comboSearch && this.$config.comboSearch.placeholderText) {
+        return this.$config.comboSearch.placeholderText;
+      } else {
+        return 'Search';
+      }
     },
     address() {
       let value;
@@ -184,29 +326,32 @@ export default {
   },
   watch: {
     address(nextAddress) {
-      this.dropdownData.address.data = nextAddress;
+      this.comboSearchDropdownData.address.data = nextAddress;
     },
     keywords(nextKeywords) {
-      this.dropdownData.keyword.data = nextKeywords;
+      this.comboSearchDropdownData.keyword.data = nextKeywords;
     },
   },
   created() {
-    Object.keys(this.dropdownData).forEach(item => {
+    Object.keys(this.comboSearchDropdownData).forEach(item => {
       if (this.$route.query[item]) {
         // console.log('philaHeader created item:', item)
         this.searchString = this.$route.query[item];
-        this.dropdownData[item].selected = true;
+        this.comboSearchDropdownData[item].selected = true;
         this.$store.commit('setSearchType', item);
       }
     });
   },
   methods: {
+    // handleSearchFormSubmit(value) {
+    //   this.$controller.handleSearchFormSubmit(value);
+    // },
     comboSearchTriggered(query) {
-      // console.log('in comboSearchTriggered, query:', query, 'this.searchType:', this.searchType, '{...this.$route.query}:', { ...this.$route.query }, '{...query}:', { ...query });
       this.$router.push({ query: { ...this.$route.query, ...query }});
       this.searchString = query[this.searchType];
       const searchCategory = Object.keys(query)[0];
       const value = query[searchCategory];
+      // console.log('in comboSearchTriggered, value:', value, 'query:', query, 'this.searchType:', this.searchType, '{...this.$route.query}:', { ...this.$route.query }, '{...query}:', { ...query });
       this.$controller.handleSearchFormSubmit(value, searchCategory);
     },
     clearSearchTriggered() {
@@ -223,7 +368,7 @@ export default {
       this.$store.commit('setSelectedKeywords', []);
       this.$store.commit('setSearchType', value);
       let startQuery = { ...this.$route.query };
-      let overlap = this.compareArrays(Object.keys(startQuery), Object.keys(this.dropdownData));
+      let overlap = this.compareArrays(Object.keys(startQuery), Object.keys(this.comboSearchDropdownData));
       if (overlap.length) {
         for (let item of overlap) {
           delete startQuery[item];
@@ -244,14 +389,19 @@ export default {
       ));
       return finalArray;
     },
-    toggleMenu() {
-      this.isOpen = !this.isOpen;
+    toggleFooterMenu() {
+      this.footerListIsOpen = !this.footerListIsOpen;
+      this.toggleBodyClass('no-scroll');
+    },
+    togglei18nMenu() {
+      console.log('togglei18nMenu is running');
+      this.i18nListIsOpen = !this.i18nListIsOpen;
       this.toggleBodyClass('no-scroll');
     },
     // TODO: make generic toggle class
     toggleBodyClass(className) {
       const el = document.body;
-      return this.isOpen ? el.classList.add(className) : el.classList.remove(className);
+      return this.footerListIsOpen || this.i18nListIsOpen ? el.classList.add(className) : el.classList.remove(className);
     },
   },
 };
@@ -259,14 +409,24 @@ export default {
 
 <style lang="scss">
 .app-header{
+  width: 100%;
   vertical-align: middle;
   background: color(dark-ben-franklin);
 
   @media screen and (max-width: 749px) {
-    position: fixed;
+    // position: fixed;
     top:0;
     z-index: 1020;
+
+    .text-centered {
+      margin: 0 auto;
+    }
+
+    .no-margins {
+      margin: 0px;
+    }
   }
+
 
   .app-logo{
     height: 45px;
