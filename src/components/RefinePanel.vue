@@ -114,7 +114,7 @@
             @click.native="closeRefinePanel"
             v-html="$t('clearAll')"
           />
-          
+
         </div>
 
       </fieldset>
@@ -223,15 +223,24 @@ export default {
 
       let service = '';
 
-      // console.log('in getRefineSearchList, refineData:', refineData);
+      console.log('in getRefineSearchList, refineData:', refineData);
       refineData.forEach((arrayElem) => {
         // console.log('arrayElem:', arrayElem);
-        if (arrayElem.services_offered) {
+        if (this.$config.refine.categoryField) {
+          let value = arrayElem;
+          for (let level of this.$config.refine.categoryField) {
+            // console.log('level:', level, 'value:', value);
+            value = value[level];
+          }
+          service += `${value},`;
+        } else if (arrayElem.services_offered) {
           service += `${arrayElem.services_offered},`;
         } else if (arrayElem.attributes.category_type) {
           service += `${arrayElem.attributes.category_type},`;
         }
       });
+
+      // console.log('service:', service);
 
       // TODO: break this into smaller chunks
       let serviceArray = service.split(/(,|;)/);
@@ -246,6 +255,10 @@ export default {
 
       if (this.$config.refineCategories) {
         uniq = this.$config.refineCategories;
+      }
+
+      if (this.$config.refine.multipleFields) {
+        uniq = Object.keys(this.$config.refine.multipleFields);
       }
 
       uniq.sort();

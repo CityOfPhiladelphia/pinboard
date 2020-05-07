@@ -344,7 +344,7 @@ export default {
       this.$data.buffer = pointBuffer;
     },
     filterPoints() {
-      // console.log('App.vue filterPoints is running, this.database:', this.database);
+      console.log('App.vue filterPoints is running, this.database:', this.database);
       const filteredRows = [];
 
       for (const row of this.database) {

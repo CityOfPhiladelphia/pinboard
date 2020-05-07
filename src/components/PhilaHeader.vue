@@ -329,7 +329,9 @@ export default {
       this.comboSearchDropdownData.address.data = nextAddress;
     },
     keywords(nextKeywords) {
-      this.comboSearchDropdownData.keyword.data = nextKeywords;
+      if (this.comboSearchDropdownData.keyword) {
+        this.comboSearchDropdownData.keyword.data = nextKeywords;
+      }
     },
   },
   created() {
