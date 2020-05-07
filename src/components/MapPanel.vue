@@ -301,6 +301,8 @@ export default {
             // console.log('row:', row, 'indexVal:', indexVal);
             // markerColor = this.$config.circleColors[row._featureId.slice(0, indexVal)]
             markerColor = this.$config.circleMarkers.circleColors[row.attributes.category_type]
+          } else if (this.$config.circleMarkers && this.$config.circleMarkers.color) {
+            markerColor = this.$config.circleMarkers.color;
           } else {
             markerColor = 'purple';
           }

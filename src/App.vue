@@ -347,57 +347,124 @@ export default {
       console.log('App.vue filterPoints is running, this.database:', this.database);
       const filteredRows = [];
 
-      for (const row of this.database) {
-        // console.log('row:', row);
-        let booleanServices;
-        // console.log('row.services_offered:', row.services_offered);
-        // const servicesSplit = row.services_offered.split(',');
-        let servicesSplit;
-        if (row.services_offered) {
-          servicesSplit = row.services_offered;
-        } else if (row.attributes.category_type) {
-          servicesSplit = [row.attributes.category_type];
-        }
-        // console.log('servicesSplit:', servicesSplit);
-        const { selectedServices } = this.$store.state;
-        if (selectedServices.length === 0) {
-          booleanServices = true;
-        } else {
-          const servicesFiltered = servicesSplit.filter(f => selectedServices.includes(f));
-          booleanServices = servicesFiltered.length > 0;
-        }
+      // if (this.$config.refine && this.$config.refine.type && this.$config.refine.type === 'multipleFields') {
+      //   for (const row of this.database) {
+      //     let conditions = [];
+      //
+      //     for (let field in this.$config.refine.multipleFields) {
+      //       let value = row;
+      //       for (let level of this.$config.refine.multipleFields[field]) {
+      //         // console.log('level:', level, 'value:', value);
+      //         value = value[level];
+      //       }
+      //       // console.log('row:', row, 'field:', field, 'this.$config.refine.multipleFields[field]', this.$config.refine.multipleFields[field], 'value:', value);
+      //       if (value !== null) {
+      //         conditions.push(true);
+      //         // continue;
+      //       } else {
+      //         conditions.push(false);
+      //       }
+      //     }
+      //     if (conditions.includes(true)) {
+      //       console.log('conditions includes true:', conditions);
+      //       filteredRows.push(row);
+      //     }
+      //   }
 
-        let booleanBuffer = false;
-        if (!this.$data.buffer) {
-          // console.log('!this.$data.buffer');
-          booleanBuffer = true;
-        // } else if (typeof row.lon === 'number' && row.lon !== null) {
-        } else if (row.latlng) {
-          if (typeof row.latlng[0] === 'number' && row.latlng[0] !== null) {
-            // const rowPoint = point([ row.lon, row.lat ]);
-            const rowPoint = point([ row.latlng[1], row.latlng[0] ]);
-            if (booleanPointInPolygon(rowPoint, this.$data.buffer)) {
-              booleanBuffer = true;
+      // } else {
+        for (const row of this.database) {
+          // console.log('row:', row);
+          let booleanServices;
+          const { selectedServices } = this.$store.state;
+          // console.log('row.services_offered:', row.services_offered);
+          // const servicesSplit = row.services_offered.split(',');
+
+          if (this.$config.refine && this.$config.refine.type && this.$config.refine.type === 'multipleFields') {
+
+            let conditions = [];
+
+            if (selectedServices.length === 0) {
+              conditions.push(true);
+            } else {
+
+              for (let field in this.$config.refine.multipleFields) {
+                if (selectedServices.includes(field)) {
+                  // console.log('field:', field);
+                  let value = row;
+                  for (let level of this.$config.refine.multipleFields[field]) {
+                    // console.log('level:', level, 'value:', value);
+                    value = value[level];
+                  }
+                  // console.log('row:', row, 'field:', field, 'this.$config.refine.multipleFields[field]', this.$config.refine.multipleFields[field], 'value:', value);
+                  if (value !== null) {
+                    conditions.push(true);
+                  } else {
+                    conditions.push(false);
+                  }
+                }
+              }
+            }
+            if (conditions.includes(true)) {
+              // console.log('conditions includes true:', conditions);
+              booleanServices = true
+            }
+          } else {
+
+            let servicesSplit;
+            if (row.services_offered) {
+              servicesSplit = row.services_offered;
+            } else if (row.attributes.category_type) {
+              servicesSplit = [row.attributes.category_type];
+            }
+            // console.log('servicesSplit:', servicesSplit);
+            // const { selectedServices } = this.$store.state;
+            if (selectedServices.length === 0) {
+              booleanServices = true;
+            } else {
+              const servicesFiltered = servicesSplit.filter(f => selectedServices.includes(f));
+              booleanServices = servicesFiltered.length > 0;
             }
           }
-        }
 
-        let booleanKeywords = true;
-        if (this.selectedKeywords.length > 0) {
-          booleanKeywords = false;
-          // console.log('row:', row);
-          const description = row.tags;
-          // const description = row.tags.split(/,| /);
-          const keywordsFiltered = this.selectedKeywords.filter(f => description.includes(f));
-          if (keywordsFiltered.length > 0) {
-            booleanKeywords = true;
+
+
+
+
+          let booleanBuffer = false;
+          if (!this.$data.buffer) {
+            // console.log('!this.$data.buffer');
+            booleanBuffer = true;
+            // } else if (typeof row.lon === 'number' && row.lon !== null) {
+          } else if (row.latlng) {
+            if (typeof row.latlng[0] === 'number' && row.latlng[0] !== null) {
+              // const rowPoint = point([ row.lon, row.lat ]);
+              const rowPoint = point([ row.latlng[1], row.latlng[0] ]);
+              if (booleanPointInPolygon(rowPoint, this.$data.buffer)) {
+                booleanBuffer = true;
+              }
+            }
+          }
+
+          let booleanKeywords = true;
+          if (this.selectedKeywords.length > 0) {
+            booleanKeywords = false;
+            // console.log('row:', row);
+            const description = row.tags;
+            // const description = row.tags.split(/,| /);
+            const keywordsFiltered = this.selectedKeywords.filter(f => description.includes(f));
+            if (keywordsFiltered.length > 0) {
+              booleanKeywords = true;
+            }
+          }
+
+          if (booleanServices && booleanBuffer && booleanKeywords) {
+            filteredRows.push(row);
           }
         }
 
-        if (booleanServices && booleanBuffer && booleanKeywords) {
-          filteredRows.push(row);
-        }
-      }
+      // }
+
+
       this.$store.commit('setCurrentData', filteredRows);
     },
     toggleMap() {
