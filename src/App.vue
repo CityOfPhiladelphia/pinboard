@@ -406,8 +406,16 @@ export default {
           }
 
         // if refine.type = categoryField
-        } else {
+        } else if (this.$config.refine && this.$config.refine.type && this.$config.refine.type === 'categoryField') {
+          if (selectedServices.length === 0) {
+            booleanServices = true;
+          } else {
+            let value = this.$config.refine.categoryField(row);
+            console.log('value:', value);
+            booleanServices = selectedServices.includes(value);
+          }
 
+        } else {
           let servicesSplit;
           if (row.services_offered) {
             servicesSplit = row.services_offered;

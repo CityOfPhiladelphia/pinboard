@@ -227,11 +227,8 @@ export default {
       refineData.forEach((arrayElem) => {
         // console.log('arrayElem:', arrayElem);
         if (this.$config.refine.categoryField) {
-          let value = arrayElem;
-          for (let level of this.$config.refine.categoryField) {
-            // console.log('level:', level, 'value:', value);
-            value = value[level];
-          }
+          let value = this.$config.refine.categoryField(arrayElem);
+
           service += `${value},`;
         } else if (arrayElem.services_offered) {
           service += `${arrayElem.services_offered},`;
