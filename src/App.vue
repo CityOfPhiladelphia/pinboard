@@ -112,6 +112,8 @@ import RefinePanel from './components/RefinePanel.vue';
 import LocationsPanel from './components/LocationsPanel.vue';
 import MapPanel from './components/MapPanel.vue';
 
+// import TopicComponent from '@phila/vue-comps/src/components/TopicComponent.vue';
+
 export default {
   name: 'App',
   components: {
@@ -126,6 +128,7 @@ export default {
     MapPanel,
     CyclomediaWidget: () => import(/* webpackChunkName: "mbmb_pvm_CyclomediaWidget" */'@phila/vue-mapping/src/cyclomedia/Widget.vue'),
   },
+  // mixins: [ TopicComponent ],
   data() {
     return {
       publicPath: process.env.BASE_URL,
@@ -347,123 +350,112 @@ export default {
       console.log('App.vue filterPoints is running, this.database:', this.database);
       const filteredRows = [];
 
-      // if (this.$config.refine && this.$config.refine.type && this.$config.refine.type === 'multipleFields') {
-      //   for (const row of this.database) {
-      //     let conditions = [];
-      //
-      //     for (let field in this.$config.refine.multipleFields) {
-      //       let value = row;
-      //       for (let level of this.$config.refine.multipleFields[field]) {
-      //         // console.log('level:', level, 'value:', value);
-      //         value = value[level];
-      //       }
-      //       // console.log('row:', row, 'field:', field, 'this.$config.refine.multipleFields[field]', this.$config.refine.multipleFields[field], 'value:', value);
-      //       if (value !== null) {
-      //         conditions.push(true);
-      //         // continue;
-      //       } else {
-      //         conditions.push(false);
-      //       }
-      //     }
-      //     if (conditions.includes(true)) {
-      //       console.log('conditions includes true:', conditions);
-      //       filteredRows.push(row);
-      //     }
-      //   }
+      for (const row of this.database) {
+        // console.log('row:', row);
+        let booleanServices;
+        const { selectedServices } = this.$store.state;
+        // console.log('row.services_offered:', row.services_offered);
+        // const servicesSplit = row.services_offered.split(',');
 
-      // } else {
-        for (const row of this.database) {
-          // console.log('row:', row);
-          let booleanServices;
-          const { selectedServices } = this.$store.state;
-          // console.log('row.services_offered:', row.services_offered);
-          // const servicesSplit = row.services_offered.split(',');
+        // if refine.type = multipleFields
+        if (this.$config.refine && this.$config.refine.type && this.$config.refine.type === 'multipleFields') {
 
-          if (this.$config.refine && this.$config.refine.type && this.$config.refine.type === 'multipleFields') {
+          let conditions = [];
 
-            let conditions = [];
-
-            if (selectedServices.length === 0) {
-              conditions.push(true);
-            } else {
-
-              for (let field in this.$config.refine.multipleFields) {
-                if (selectedServices.includes(field)) {
-                  // console.log('field:', field);
-                  let value = row;
-                  for (let level of this.$config.refine.multipleFields[field]) {
-                    // console.log('level:', level, 'value:', value);
-                    value = value[level];
-                  }
-                  // console.log('row:', row, 'field:', field, 'this.$config.refine.multipleFields[field]', this.$config.refine.multipleFields[field], 'value:', value);
-                  if (value !== null) {
-                    conditions.push(true);
-                  } else {
-                    conditions.push(false);
-                  }
-                }
-              }
-            }
-            if (conditions.includes(true)) {
-              // console.log('conditions includes true:', conditions);
-              booleanServices = true
-            }
+          if (selectedServices.length === 0) {
+            conditions.push(true);
           } else {
 
-            let servicesSplit;
-            if (row.services_offered) {
-              servicesSplit = row.services_offered;
-            } else if (row.attributes.category_type) {
-              servicesSplit = [row.attributes.category_type];
-            }
-            // console.log('servicesSplit:', servicesSplit);
-            // const { selectedServices } = this.$store.state;
-            if (selectedServices.length === 0) {
-              booleanServices = true;
-            } else {
-              const servicesFiltered = servicesSplit.filter(f => selectedServices.includes(f));
-              booleanServices = servicesFiltered.length > 0;
-            }
-          }
+            for (let field in this.$config.refine.multipleFields) {
+              if (selectedServices.includes(field)) {
 
+                let valOrGetter = this.$config.refine.multipleFields[field];
+                const valOrGetterType = typeof valOrGetter;
+                let val;
 
+                // fn
+                if (valOrGetterType === 'function') {
+                  const state = this.$store.state;
+                  const controller = this.$controller;
+                  const getter = valOrGetter;
 
+                  const item = row;
 
+                  // if this comp is associated with an "item" (generally some object
+                  // from a list of things, e.g. dor parcels), pass the item itself
+                  // as well when evaluating
+                  if (item) {
+                    val = getter(state, item, controller);
+                  } else {
+                    // console.log('evaluateSlot, about to get value');
+                    val = getter(state);
+                    // console.log('state:', state, 'val:', val);
+                  }
+                } else {
+                  val = valOrGetter;
+                }
 
-          let booleanBuffer = false;
-          if (!this.$data.buffer) {
-            // console.log('!this.$data.buffer');
-            booleanBuffer = true;
-            // } else if (typeof row.lon === 'number' && row.lon !== null) {
-          } else if (row.latlng) {
-            if (typeof row.latlng[0] === 'number' && row.latlng[0] !== null) {
-              // const rowPoint = point([ row.lon, row.lat ]);
-              const rowPoint = point([ row.latlng[1], row.latlng[0] ]);
-              if (booleanPointInPolygon(rowPoint, this.$data.buffer)) {
-                booleanBuffer = true;
+                // console.log('row:', row, 'field:', field, 'this.$config.refine.multipleFields[field]', this.$config.refine.multipleFields[field], 'val:', val);
+                conditions.push(val);
               }
             }
           }
-
-          let booleanKeywords = true;
-          if (this.selectedKeywords.length > 0) {
-            booleanKeywords = false;
-            // console.log('row:', row);
-            const description = row.tags;
-            // const description = row.tags.split(/,| /);
-            const keywordsFiltered = this.selectedKeywords.filter(f => description.includes(f));
-            if (keywordsFiltered.length > 0) {
-              booleanKeywords = true;
-            }
+          if (conditions.includes(true)) {
+            // console.log('conditions includes true:', conditions);
+            booleanServices = true
           }
 
-          if (booleanServices && booleanBuffer && booleanKeywords) {
-            filteredRows.push(row);
+        // if refine.type = categoryField
+        } else {
+
+          let servicesSplit;
+          if (row.services_offered) {
+            servicesSplit = row.services_offered;
+          } else if (row.attributes.category_type) {
+            servicesSplit = [row.attributes.category_type];
+          }
+          // console.log('servicesSplit:', servicesSplit);
+          // const { selectedServices } = this.$store.state;
+          if (selectedServices.length === 0) {
+            booleanServices = true;
+          } else {
+            const servicesFiltered = servicesSplit.filter(f => selectedServices.includes(f));
+            booleanServices = servicesFiltered.length > 0;
           }
         }
 
-      // }
 
+        let booleanBuffer = false;
+        if (!this.$data.buffer) {
+          // console.log('!this.$data.buffer');
+          booleanBuffer = true;
+          // } else if (typeof row.lon === 'number' && row.lon !== null) {
+        } else if (row.latlng) {
+          if (typeof row.latlng[0] === 'number' && row.latlng[0] !== null) {
+            // const rowPoint = point([ row.lon, row.lat ]);
+            const rowPoint = point([ row.latlng[1], row.latlng[0] ]);
+            if (booleanPointInPolygon(rowPoint, this.$data.buffer)) {
+              booleanBuffer = true;
+            }
+          }
+        }
+
+        let booleanKeywords = true;
+        if (this.selectedKeywords.length > 0) {
+          booleanKeywords = false;
+          // console.log('row:', row);
+          const description = row.tags;
+          // const description = row.tags.split(/,| /);
+          const keywordsFiltered = this.selectedKeywords.filter(f => description.includes(f));
+          if (keywordsFiltered.length > 0) {
+            booleanKeywords = true;
+          }
+        }
+
+        if (booleanServices && booleanBuffer && booleanKeywords) {
+          filteredRows.push(row);
+        }
+      }
 
       this.$store.commit('setCurrentData', filteredRows);
     },
