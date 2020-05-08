@@ -37,8 +37,9 @@
           />
 
         </div>
+
         <div
-          v-if="dataStatus === 'success'"
+          v-if="dataStatus === 'success' && refineType !== 'multipleFieldGroups'"
           class="grid-x service-list"
         >
           <div
@@ -83,6 +84,72 @@
           </div>
           <!-- </input> -->
         </div>
+
+
+        <div
+          v-if="dataStatus === 'success' && refineType === 'multipleFieldGroups'"
+          class="grid-x group-service-list service-list"
+        >
+          <!-- v-for="(group, ind) in getRefineSearchList()" -->
+          <div
+            v-for="(group, ind) in refineList"
+            :key="ind"
+            class="service-group-holder"
+          >
+            {{ ind }}
+
+            <div class="grid-x service-group">
+
+              <div
+                v-for="(item, index) in refineList[ind]"
+                :key="index"
+              >
+              <!-- class="cell" -->
+                <!-- {{ index }} -->
+
+                <input
+                  :id="item"
+                  v-model="selected"
+                  type="checkbox"
+                  :name="item"
+                  :value="item"
+                >
+                  <font-awesome-icon :for="item" :icon="['far', 'square']" v-show="!selected.includes(item)" class="fa-checkbox" />
+                  <font-awesome-icon :for="item" icon="check-square" v-show="selected.includes(item)" class="fa-checkbox" />
+                  <label
+                    class="input-label"
+                    :for="item"
+                    >
+                      <span
+                        v-if="!i18nEnabled"
+                        class="service-item"
+                      >
+                        {{ item }}
+                      </span>
+
+                      <span
+                        v-if="i18nEnabled"
+                        class="service-item"
+                        v-html="$t('randomWords[\'' + item + '\']')"
+                      />
+
+                  </label>
+                  <icon-tool-tip
+                    v-if="Object.keys(infoCircles).includes(item)"
+                    :item="item"
+                    :circleData="infoCircles[item]"
+                  >
+                  </icon-tool-tip>
+
+              </div>
+
+            </div>
+
+          </div>
+          <!-- </input> -->
+        </div>
+
+
         <div class="mobile-filter-actions show-for-small-only">
 
           <PhilaButton
@@ -150,6 +217,9 @@ export default {
     };
   },
   computed: {
+    refineType() {
+      return this.$config.refine.type;
+    },
     ...mapState([ 'sources', 'geocode', 'selectedServices' ]),
     refineOpen() {
       return this.$store.state.refineOpen;
@@ -177,8 +247,9 @@ export default {
       return this.$store.state.sources[this.$appType].status;
     },
     database() {
-      // if (this.$store.state.sources[this.$appType].data.rows) {
+      if (this.$store.state.sources[this.$appType].data) {
         return this.$store.state.sources[this.$appType].data.rows || this.$store.state.sources[this.$appType].data.features || this.$store.state.sources[this.$appType].data;
+      }
       // } else if (this.$store.state.sources[this.$appType].data.features) {
       //   return this.$store.state.sources[this.$appType].data.features;
       // } else {
@@ -187,6 +258,10 @@ export default {
     },
   },
   watch: {
+    database(nextDatabase) {
+      console.log('watch database is running, nextDatabase:', nextDatabase);
+      this.getRefineSearchList();
+    },
     selected(nextSelected) {
       window.theRouter = this.$router;
       // console.log('RefinePanel watch selected is firing, nextSelected', nextSelected);
@@ -209,6 +284,8 @@ export default {
       console.log('there are services');
     }
     // this.$data.selected = this.$store.state.selectedServices;
+
+    // this.getRefineSearchList();
   },
   methods: {
     clearAll() {
@@ -254,13 +331,25 @@ export default {
         uniq = this.$config.refineCategories;
       }
 
-      if (this.$config.refine.multipleFields) {
+      if (this.$config.refine.type === 'multipleFields') {
         uniq = Object.keys(this.$config.refine.multipleFields);
       }
-
       uniq.sort();
+      if (this.$config.refine.type === 'multipleFieldGroups') {
+        uniq = {}
+        for (let group of Object.keys(this.$config.refine.multipleFieldGroups)){
+          console.log('group:', group);
+          uniq[group] = []
+          for (let field of Object.keys(this.$config.refine.multipleFieldGroups[group])){
+            console.log('field:', field);
+            uniq[group].push(field);
+          }
+        }
+      }
+
 
       console.log('uniq:', uniq);
+      this.$data.refineList = uniq;
       return uniq;
     },
     scrollToTop() {
@@ -323,6 +412,15 @@ $refine-panel-height: 19vh;
     border-width: 1px;
   }
 
+
+  .service-group-holder{
+    border-style: solid;
+    border-width: 1px;
+  }
+
+  .group-service-list {
+    width: 100%;
+  }
 
   .service-list{
     margin-top: 1rem;
