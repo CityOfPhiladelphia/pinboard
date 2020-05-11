@@ -18,7 +18,7 @@
           <legend
             v-if="i18nEnabled"
             class="legend-title h3"
-            v-html="$t('refine')"
+            v-html="$t('refinePanel.refine')"
           />
           <a
             v-if="!i18nEnabled"
@@ -33,7 +33,7 @@
             href=""
             class="clear-all hide-for-small-only"
             @click.prevent="clearAll"
-            v-html="$t('clearAll')"
+            v-html="$t('refinePanel.clearAll')"
           />
 
         </div>
@@ -162,7 +162,7 @@
           >
             <font-awesome-icon icon="filter" />
             <div
-              v-html="$t('applyFilters')"
+              v-html="$t('refinePanel.applyFilters')"
               class="apply-filters-text"
             />
           </PhilaButton>
@@ -176,7 +176,7 @@
           <PhilaButton
             v-if="i18nEnabled"
             @click.native="closeRefinePanel"
-            v-html="$t('clearAll')"
+            v-html="$t('refinePanel.clearAll')"
           />
 
         </div>
