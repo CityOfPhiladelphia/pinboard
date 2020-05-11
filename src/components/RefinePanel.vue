@@ -105,17 +105,17 @@
               >
 
                 <input
-                  :id="item"
+                  :id="item.name"
                   v-model="selected"
                   type="checkbox"
-                  :name="item"
-                  :value="item"
+                  :name="item.name"
+                  :value="item.name"
                 >
-                  <font-awesome-icon :for="item" :icon="['far', 'square']" v-show="!selected.includes(item)" class="fa-checkbox" />
-                  <font-awesome-icon :for="item" icon="check-square" v-show="selected.includes(item)" class="fa-checkbox" />
+                  <font-awesome-icon :for="item" :icon="['far', 'square']" v-show="!selected.includes(item.name)" class="fa-checkbox" />
+                  <font-awesome-icon :for="item" icon="check-square" v-show="selected.includes(item.name)" class="fa-checkbox" />
                   <label
                     class="input-label"
-                    :for="item"
+                    :for="item.name"
                     >
                       <span
                         v-if="!i18nEnabled"
@@ -127,7 +127,7 @@
                       <span
                         v-if="i18nEnabled"
                         class="service-item"
-                        v-html="$t(item)"
+                        v-html="$t(item.short_name)"
                       />
 
                   </label>
@@ -261,7 +261,7 @@ export default {
     },
     selected(nextSelected) {
       window.theRouter = this.$router;
-      // console.log('RefinePanel watch selected is firing, nextSelected', nextSelected);
+      console.log('RefinePanel watch selected is firing, nextSelected', nextSelected);
       this.$store.commit('setSelectedServices', nextSelected);
       this.$router.push({ query: { ...this.$route.query, ...{ services: nextSelected.join(',') }}});
     },
@@ -333,13 +333,16 @@ export default {
       }
       uniq.sort();
       if (this.$config.refine.type === 'multipleFieldGroups') {
-        uniq = {}
+        uniq = {};
         for (let group of Object.keys(this.$config.refine.multipleFieldGroups)){
           console.log('group:', group);
-          uniq[group] = []
+          uniq[group] = {};
           for (let field of Object.keys(this.$config.refine.multipleFieldGroups[group])){
-            console.log('field:', field);
-            uniq[group].push(field);
+            uniq[group][field] = {};
+            console.log('field:', field, 'this.$config.refine.multipleFieldGroups[group][field].name:', this.$config.refine.multipleFieldGroups[group][field].name);
+            // let value = this.$config.refine.multipleFieldGroups[group][field].name;
+            uniq[group][field].short_name = field;
+            uniq[group][field].name = this.$config.refine.multipleFieldGroups[group][field].name;
           }
         }
       }

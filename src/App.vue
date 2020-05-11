@@ -409,40 +409,46 @@ export default {
                 console.log('group:', group);
 
                 for (let field in this.$config.refine.multipleFieldGroups[group]) {
-                  console.log('field:', field);
+                  console.log('field:', field, "this.$config.refine.multipleFieldGroups[group][field]['name']:", this.$config.refine.multipleFieldGroups[group][field]['name']);
+                  // for (let name in this.$config.refine.multipleFieldGroups[group][field]) {
+                  //   console.log('name:', name, 'this.$config.refine.multipleFieldGroups[group][field][name]:', this.$config.refine.multipleFieldGroups[group][field][name]);
+                  let name = this.$config.refine.multipleFieldGroups[group][field]['name']
 
-                  if (selectedServices.includes(field)) {
+                    // if (selectedServices.includes(field)) {
+                    if (selectedServices.includes(name)) {
+                      console.log('inside if, name:', name);
 
-                    let valOrGetter = this.$config.refine.multipleFieldGroups[group][field];
-                    const valOrGetterType = typeof valOrGetter;
-                    let val;
+                      let valOrGetter = this.$config.refine.multipleFieldGroups[group][field]['value'];
+                      const valOrGetterType = typeof valOrGetter;
+                      let val;
 
-                    // fn
-                    if (valOrGetterType === 'function') {
-                      const state = this.$store.state;
-                      const controller = this.$controller;
-                      const getter = valOrGetter;
+                      // fn
+                      if (valOrGetterType === 'function') {
+                        const state = this.$store.state;
+                        const controller = this.$controller;
+                        const getter = valOrGetter;
 
-                      const item = row;
+                        const item = row;
 
-                      // if this comp is associated with an "item" (generally some object
-                      // from a list of things, e.g. dor parcels), pass the item itself
-                      // as well when evaluating
-                      if (item) {
-                        val = getter(state, item, controller);
+                        // if this comp is associated with an "item" (generally some object
+                        // from a list of things, e.g. dor parcels), pass the item itself
+                        // as well when evaluating
+                        if (item) {
+                          val = getter(state, item, controller);
+                        } else {
+                          // console.log('evaluateSlot, about to get value');
+                          val = getter(state);
+                          // console.log('state:', state, 'val:', val);
+                        }
                       } else {
-                        // console.log('evaluateSlot, about to get value');
-                        val = getter(state);
-                        // console.log('state:', state, 'val:', val);
+                        val = valOrGetter;
                       }
-                    } else {
-                      val = valOrGetter;
+
+                      // console.log('row:', row, 'field:', field, 'this.$config.refine.multipleFields[field]', this.$config.refine.multipleFields[field], 'val:', val);
+                      conditions.push(val);
                     }
 
-                    // console.log('row:', row, 'field:', field, 'this.$config.refine.multipleFields[field]', this.$config.refine.multipleFields[field], 'val:', val);
-                    conditions.push(val);
-                  }
-
+                  // } // end of for
                 } // end of for
               } // end of for
 
