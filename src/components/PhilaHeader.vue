@@ -68,7 +68,7 @@
                 <div
                   v-if="i18nEnabled"
                   id="demo-badge"
-                  v-html="$t('randomWords.betaTag')"
+                  v-html="$t('betaTag')"
                 />
 
                 <h2

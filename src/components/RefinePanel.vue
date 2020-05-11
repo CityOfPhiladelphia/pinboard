@@ -70,7 +70,7 @@
                 <span
                   v-if="i18nEnabled"
                   class="service-item"
-                  v-html="$t('randomWords[\'' + item + '\']')"
+                  v-html="$t(item)"
                 />
 
             </label>
@@ -90,13 +90,12 @@
           v-if="dataStatus === 'success' && refineType === 'multipleFieldGroups'"
           class="grid-x group-service-list service-list"
         >
-          <!-- v-for="(group, ind) in getRefineSearchList()" -->
           <div
             v-for="(group, ind) in refineList"
             :key="ind"
             class="service-group-holder"
           >
-            {{ ind }}
+            {{ $t(ind) }}
 
             <div class="grid-x service-group">
 
@@ -104,8 +103,6 @@
                 v-for="(item, index) in refineList[ind]"
                 :key="index"
               >
-              <!-- class="cell" -->
-                <!-- {{ index }} -->
 
                 <input
                   :id="item"
@@ -130,7 +127,7 @@
                       <span
                         v-if="i18nEnabled"
                         class="service-item"
-                        v-html="$t('randomWords[\'' + item + '\']')"
+                        v-html="$t(item)"
                       />
 
                   </label>
@@ -412,10 +409,16 @@ $refine-panel-height: 19vh;
     border-width: 1px;
   }
 
+  .service-group{
+    padding-top: 2px;
+  }
 
   .service-group-holder{
-    border-style: solid;
-    border-width: 1px;
+    // padding: 2px;
+    // padding-top: 4px;
+    padding-left: 16px;
+    padding-right: 10px;
+    border-right: 1px solid black;
   }
 
   .group-service-list {
