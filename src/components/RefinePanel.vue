@@ -256,12 +256,12 @@ export default {
   },
   watch: {
     database(nextDatabase) {
-      console.log('watch database is running, nextDatabase:', nextDatabase);
+      // console.log('watch database is running, nextDatabase:', nextDatabase);
       this.getRefineSearchList();
     },
     selected(nextSelected) {
       window.theRouter = this.$router;
-      console.log('RefinePanel watch selected is firing, nextSelected', nextSelected);
+      // console.log('RefinePanel watch selected is firing, nextSelected', nextSelected);
       this.$store.commit('setSelectedServices', nextSelected);
       this.$router.push({ query: { ...this.$route.query, ...{ services: nextSelected.join(',') }}});
     },
@@ -276,9 +276,9 @@ export default {
     }
   },
   mounted() {
-    console.log('RefinePanel is mounted, this.$store.state.selectedServices:', this.$store.state.selectedServices, 'this.$router:', this.$router);
+    // console.log('RefinePanel is mounted, this.$store.state.selectedServices:', this.$store.state.selectedServices, 'this.$router:', this.$router);
     if (this.$store.state.selectedServices.length > 0) {
-      console.log('there are services');
+      // console.log('there are services');
     }
     // this.$data.selected = this.$store.state.selectedServices;
 
@@ -286,7 +286,7 @@ export default {
   },
   methods: {
     clearAll() {
-      console.log('RefinePanel clearAll is running');
+      // console.log('RefinePanel clearAll is running');
       if (this.selected.length) {
         this.selected = [];
       }
@@ -297,7 +297,7 @@ export default {
 
       let service = '';
 
-      console.log('in getRefineSearchList, refineData:', refineData);
+      // console.log('in getRefineSearchList, refineData:', refineData);
       refineData.forEach((arrayElem) => {
         // console.log('arrayElem:', arrayElem);
         if (this.$config.refine.categoryField) {
@@ -335,11 +335,11 @@ export default {
       if (this.$config.refine.type === 'multipleFieldGroups') {
         uniq = {};
         for (let group of Object.keys(this.$config.refine.multipleFieldGroups)){
-          console.log('group:', group);
+          // console.log('group:', group);
           uniq[group] = {};
           for (let field of Object.keys(this.$config.refine.multipleFieldGroups[group])){
             uniq[group][field] = {};
-            console.log('field:', field, 'this.$config.refine.multipleFieldGroups[group][field].name:', this.$config.refine.multipleFieldGroups[group][field].name);
+            // console.log('field:', field, 'this.$config.refine.multipleFieldGroups[group][field].name:', this.$config.refine.multipleFieldGroups[group][field].name);
             // let value = this.$config.refine.multipleFieldGroups[group][field].name;
             uniq[group][field].short_name = field;
             uniq[group][field].name = this.$config.refine.multipleFieldGroups[group][field].name;
@@ -348,7 +348,7 @@ export default {
       }
 
 
-      console.log('uniq:', uniq);
+      // console.log('uniq:', uniq);
       this.$data.refineList = uniq;
       return uniq;
     },

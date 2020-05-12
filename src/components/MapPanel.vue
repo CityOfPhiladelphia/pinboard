@@ -65,9 +65,8 @@
           :latlng="marker.latlng"
           :feature-id="marker._featureId"
         >
-        <!-- :popup-data="marker.organization_name" -->
           <popup-content-functional
-            :popup-data="marker.organization_name || marker.attributes.site_name"
+            :popup-data="marker.organization_name || marker.attributes.site_name || locationSlots.title(null, marker)"
             @didClickPopupContent="toggleMap"
           />
         </popup-simple>
@@ -230,6 +229,9 @@ export default {
     return data;
   },
   computed: {
+    locationSlots() {
+      return this.$config.locationSlots;
+    },
     isMobileOrTablet() {
       return this.$store.state.isMobileOrTablet;
     },
