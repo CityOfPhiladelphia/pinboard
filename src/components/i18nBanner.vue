@@ -7,8 +7,10 @@
         @click="handleTableHeaderClick(key)"
         :class="{ selected: isSelected === key, 'bottom-padding': true }"
       >
+      <!-- :class="key + ' underlined'" -->
         <a
-          :class="{ selected: isSelected === key, 'underlined': true }"
+          :class="{selected: isSelected === key, 'underlined': true }"
+          :data-language="key"
           target="_blank"
         >
           {{ lang.language }}
