@@ -341,7 +341,11 @@ export default {
             uniq[group][field] = {};
             // console.log('field:', field, 'this.$config.refine.multipleFieldGroups[group][field].name:', this.$config.refine.multipleFieldGroups[group][field].name);
             // let value = this.$config.refine.multipleFieldGroups[group][field].name;
-            uniq[group][field].short_name = field;
+            if (this.$config.refine.multipleFieldGroups[group][field].key) {
+              uniq[group][field].short_name = this.$config.refine.multipleFieldGroups[group][field].key;
+            } else {
+              uniq[group][field].short_name = field;
+            }
             uniq[group][field].name = this.$config.refine.multipleFieldGroups[group][field].name;
           }
         }
