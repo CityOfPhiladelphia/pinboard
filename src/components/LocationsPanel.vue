@@ -28,10 +28,16 @@
         v-if="currentData.length === 0"
         class="h3"
       >
-        <p>
+        <p
+          v-if="!i18nEnabled"
+        >
           We're sorry, there are no results for that search.
           Adjust the filters you've selected and try again.
         </p>
+        <p
+          v-if="i18nEnabled"
+          v-html="$t('app.noResults')"
+        />
       </div>
       <div
         v-for="item in currentData"
@@ -166,6 +172,13 @@ export default {
     return data;
   },
   computed: {
+    i18nEnabled() {
+      if (this.$config.i18n && this.$config.i18n.enabled) {
+        return true;
+      } else {
+        return false;
+      }
+    },
     hasCustomGreeting() {
       let value = false;
       if (this.$config.customComps) {
