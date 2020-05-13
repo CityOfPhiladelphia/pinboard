@@ -70,8 +70,10 @@
                 <span
                   v-if="i18nEnabled"
                   class="service-item"
-                  v-html="$t(item)"
-                />
+                >
+                <!-- v-html="$t(item)" -->
+                  {{ $t(item) }}
+                </span>
 
             </label>
             <icon-tool-tip
