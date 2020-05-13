@@ -288,7 +288,7 @@ export default {
       this.$data.buttonText = this.$data.isMapVisible ? 'Toggle to resource list' : 'Toggle to map';
     } else {
       // this.$data.buttonText = this.$data.isMapVisible ? 'viewMap' : 'viewList';
-      this.$data.buttonText = this.$data.isMapVisible ? 'viewList' : 'viewMap';
+      this.$data.buttonText = this.$data.isMapVisible ? 'app.viewList' : 'app.viewMap';
     }
 
     // this.$i18n.locale = 'es';
@@ -532,7 +532,7 @@ export default {
       if (!this.i18nEnabled) {
         this.$data.buttonText = this.$data.isMapVisible ? 'Toggle to resource list' : 'Toggle to map';
       } else {
-        this.$data.buttonText = this.$data.isMapVisible ? 'viewList' : 'viewMap';
+        this.$data.buttonText = this.$data.isMapVisible ? 'app.viewList' : 'app.viewMap';
       }
     },
     toggleModal() {
@@ -558,7 +558,7 @@ export default {
         if (!this.i18nEnabled) {
           this.$data.buttonText = this.$data.isMapVisible ? 'Toggle to resource list' : 'Toggle to map';
         } else {
-          this.$data.buttonText = this.$data.isMapVisible ? 'viewList': 'viewMap';
+          this.$data.buttonText = this.$data.isMapVisible ? 'app.viewList': 'app.viewMap';
         }
         this.$data.isLarge = true;
       } else {
