@@ -81,6 +81,7 @@ export default {
   }
 };
 </script>
+
 <style lang="scss">
 
 .app-footer{
@@ -94,6 +95,11 @@ export default {
   }
   a:hover, a:active{
     color: color(electric-blue);
+  }
+
+  a {
+    font-weight: normal;
+    text-decoration: none;
   }
 
   .footer-nav {

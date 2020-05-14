@@ -410,6 +410,7 @@ export default {
 </script>
 
 <style lang="scss">
+
 .app-header{
   width: 100%;
   vertical-align: middle;
@@ -450,6 +451,8 @@ export default {
     }
     a {
       color: white;
+      font-weight: normal;
+      text-decoration: none;
     }
 
     .title {

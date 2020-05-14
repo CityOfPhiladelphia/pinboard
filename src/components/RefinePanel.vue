@@ -92,14 +92,14 @@
           v-if="dataStatus === 'success' && refineType === 'multipleFieldGroups'"
           class="grid-x group-service-list service-list"
         >
-          <!-- :key="ind" -->
+        <!-- :key="group.i18n_key" -->
           <div
             v-for="(group, ind) in refineList"
-            :key="group.i18n_key"
+            :key="ind"
             class="service-group-holder"
           >
             <!-- {{ $t(ind) }} -->
-            {{ $t(group.i18n_key) }}
+            {{ $t(ind) }}
 
             <div class="grid-x service-group">
 
