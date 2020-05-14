@@ -583,6 +583,11 @@ export default {
   height: 100%;
 }
 
+a {
+  font-weight: bold;
+  text-decoration: underline !important;
+}
+
 //TODO, move to standards
 @each $value in $colors {
   //sass-lint:disable-block no-important
