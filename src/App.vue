@@ -112,6 +112,8 @@ import RefinePanel from './components/RefinePanel.vue';
 import LocationsPanel from './components/LocationsPanel.vue';
 import MapPanel from './components/MapPanel.vue';
 
+// import TopicComponent from '@phila/vue-comps/src/components/TopicComponent.vue';
+
 export default {
   name: 'App',
   components: {
@@ -126,6 +128,7 @@ export default {
     MapPanel,
     CyclomediaWidget: () => import(/* webpackChunkName: "mbmb_pvm_CyclomediaWidget" */'@phila/vue-mapping/src/cyclomedia/Widget.vue'),
   },
+  // mixins: [ TopicComponent ],
   data() {
     return {
       publicPath: process.env.BASE_URL,
@@ -139,7 +142,7 @@ export default {
   },
   computed: {
     i18nEnabled() {
-      if (this.$config.i18n && this.$config.i18n.app) {
+      if (this.$config.i18n && this.$config.i18n.enabled) {
         return true;
       } else {
         return false;
@@ -285,7 +288,7 @@ export default {
       this.$data.buttonText = this.$data.isMapVisible ? 'Toggle to resource list' : 'Toggle to map';
     } else {
       // this.$data.buttonText = this.$data.isMapVisible ? 'viewMap' : 'viewList';
-      this.$data.buttonText = this.$data.isMapVisible ? 'viewList' : 'viewMap';
+      this.$data.buttonText = this.$data.isMapVisible ? 'app.viewList' : 'app.viewMap';
     }
 
     // this.$i18n.locale = 'es';
@@ -344,34 +347,153 @@ export default {
       this.$data.buffer = pointBuffer;
     },
     filterPoints() {
-      // console.log('App.vue filterPoints is running, this.database:', this.database);
+      console.log('App.vue filterPoints is running, this.database:', this.database);
       const filteredRows = [];
 
       for (const row of this.database) {
         // console.log('row:', row);
         let booleanServices;
+        const { selectedServices } = this.$store.state;
         // console.log('row.services_offered:', row.services_offered);
         // const servicesSplit = row.services_offered.split(',');
-        let servicesSplit;
-        if (row.services_offered) {
-          servicesSplit = row.services_offered;
-        } else if (row.attributes.category_type) {
-          servicesSplit = [row.attributes.category_type];
-        }
-        // console.log('servicesSplit:', servicesSplit);
-        const { selectedServices } = this.$store.state;
-        if (selectedServices.length === 0) {
-          booleanServices = true;
+
+        // if refine.type = multipleFields
+        if (this.$config.refine && this.$config.refine.type && ['multipleFields', 'multipleFieldGroups'].includes(this.$config.refine.type)) {
+          console.log('in if');
+          let conditions = [];
+
+          if (selectedServices.length === 0) {
+            conditions.push(true);
+          } else {
+
+            if (this.$config.refine.type === 'multipleFields') {
+              console.log('this.$config.refine.type === multipleFields');
+
+              for (let field in this.$config.refine.multipleFields) {
+                if (selectedServices.includes(field)) {
+
+                  let valOrGetter = this.$config.refine.multipleFields[field];
+                  const valOrGetterType = typeof valOrGetter;
+                  let val;
+
+                  // fn
+                  if (valOrGetterType === 'function') {
+                    const state = this.$store.state;
+                    const controller = this.$controller;
+                    const getter = valOrGetter;
+
+                    const item = row;
+
+                    // if this comp is associated with an "item" (generally some object
+                    // from a list of things, e.g. dor parcels), pass the item itself
+                    // as well when evaluating
+                    if (item) {
+                      val = getter(state, item, controller);
+                    } else {
+                      // console.log('evaluateSlot, about to get value');
+                      val = getter(state);
+                      // console.log('state:', state, 'val:', val);
+                    }
+                  } else {
+                    val = valOrGetter;
+                  }
+
+                  // console.log('row:', row, 'field:', field, 'this.$config.refine.multipleFields[field]', this.$config.refine.multipleFields[field], 'val:', val);
+                  conditions.push(val);
+                }
+              }
+            } else {
+              console.log('this.$config.refine.type === multipleFieldGroups');
+
+              for (let group in this.$config.refine.multipleFieldGroups) {
+                console.log('group:', group);
+
+                for (let field in this.$config.refine.multipleFieldGroups[group]) {
+                  console.log('field:', field, "this.$config.refine.multipleFieldGroups[group][field]['unique_key']:", this.$config.refine.multipleFieldGroups[group][field]['unique_key']);
+                  // for (let name in this.$config.refine.multipleFieldGroups[group][field]) {
+                  //   console.log('name:', name, 'this.$config.refine.multipleFieldGroups[group][field][name]:', this.$config.refine.multipleFieldGroups[group][field][name]);
+                  let unique_key = this.$config.refine.multipleFieldGroups[group][field]['unique_key']
+
+                    // if (selectedServices.includes(field)) {
+                    if (selectedServices.includes(unique_key)) {
+                      // console.log('inside if, unique_key:', unique_key);
+
+                      let valOrGetter = this.$config.refine.multipleFieldGroups[group][field]['value'];
+                      const valOrGetterType = typeof valOrGetter;
+                      let val;
+
+                      // fn
+                      if (valOrGetterType === 'function') {
+                        const state = this.$store.state;
+                        const controller = this.$controller;
+                        const getter = valOrGetter;
+
+                        const item = row;
+
+                        // if this comp is associated with an "item" (generally some object
+                        // from a list of things, e.g. dor parcels), pass the item itself
+                        // as well when evaluating
+                        if (item) {
+                          val = getter(state, item, controller);
+                        } else {
+                          // console.log('evaluateSlot, about to get value');
+                          val = getter(state);
+                          // console.log('state:', state, 'val:', val);
+                        }
+                      } else {
+                        val = valOrGetter;
+                      }
+
+                      // console.log('row:', row, 'field:', field, 'this.$config.refine.multipleFields[field]', this.$config.refine.multipleFields[field], 'val:', val);
+                      conditions.push(val);
+                    }
+
+                  // } // end of for
+                } // end of for
+              } // end of for
+
+            }
+
+
+          }
+          if (conditions.includes(true)) {
+            // console.log('conditions includes true:', conditions);
+            booleanServices = true
+          }
+
+        // if refine.type = categoryField
+        } else if (this.$config.refine && this.$config.refine.type && this.$config.refine.type === 'categoryField') {
+          if (selectedServices.length === 0) {
+            booleanServices = true;
+          } else {
+            let value = this.$config.refine.categoryField(row);
+            console.log('value:', value);
+            booleanServices = selectedServices.includes(value);
+          }
+
         } else {
-          const servicesFiltered = servicesSplit.filter(f => selectedServices.includes(f));
-          booleanServices = servicesFiltered.length > 0;
+          let servicesSplit;
+          if (row.services_offered) {
+            servicesSplit = row.services_offered;
+          } else if (row.attributes.category_type) {
+            servicesSplit = [row.attributes.category_type];
+          }
+          // console.log('servicesSplit:', servicesSplit);
+          // const { selectedServices } = this.$store.state;
+          if (selectedServices.length === 0) {
+            booleanServices = true;
+          } else {
+            const servicesFiltered = servicesSplit.filter(f => selectedServices.includes(f));
+            booleanServices = servicesFiltered.length > 0;
+          }
         }
+
 
         let booleanBuffer = false;
         if (!this.$data.buffer) {
           // console.log('!this.$data.buffer');
           booleanBuffer = true;
-        // } else if (typeof row.lon === 'number' && row.lon !== null) {
+          // } else if (typeof row.lon === 'number' && row.lon !== null) {
         } else if (row.latlng) {
           if (typeof row.latlng[0] === 'number' && row.latlng[0] !== null) {
             // const rowPoint = point([ row.lon, row.lat ]);
@@ -398,6 +520,7 @@ export default {
           filteredRows.push(row);
         }
       }
+
       this.$store.commit('setCurrentData', filteredRows);
     },
     toggleMap() {
@@ -409,7 +532,7 @@ export default {
       if (!this.i18nEnabled) {
         this.$data.buttonText = this.$data.isMapVisible ? 'Toggle to resource list' : 'Toggle to map';
       } else {
-        this.$data.buttonText = this.$data.isMapVisible ? 'viewList' : 'viewMap';
+        this.$data.buttonText = this.$data.isMapVisible ? 'app.viewList' : 'app.viewMap';
       }
     },
     toggleModal() {
@@ -435,7 +558,7 @@ export default {
         if (!this.i18nEnabled) {
           this.$data.buttonText = this.$data.isMapVisible ? 'Toggle to resource list' : 'Toggle to map';
         } else {
-          this.$data.buttonText = this.$data.isMapVisible ? 'viewList': 'viewMap';
+          this.$data.buttonText = this.$data.isMapVisible ? 'app.viewList': 'app.viewMap';
         }
         this.$data.isLarge = true;
       } else {
@@ -458,6 +581,11 @@ export default {
 
 .middle-panel {
   height: 100%;
+}
+
+a {
+  font-weight: bold;
+  text-decoration: underline;
 }
 
 //TODO, move to standards

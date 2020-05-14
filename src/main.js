@@ -21,16 +21,22 @@ import configMixin from './util/config-mixin';
 // if we definitely need one, we can move it outside the project
 // and do an axios call to get it
 // import baseConfig from './config';
+import i18n from './i18n';
+console.log('i18n:', i18n);
 
 
 // any config specific to this project only can go here
 const clientConfig = {
   // map: '',
+  i18n
 };
 
 function initPinboard(clientConfig) {
-  // console.log('initPinboard is running, clientConfig:', clientConfig);
+  clientConfig = mergeDeep(i18n, clientConfig);
+  console.log('initPinboard is running, clientConfig:', clientConfig);
   const baseConfigUrl = clientConfig.baseConfig;
+
+
 
   if (baseConfigUrl === null) {
     finishInit(clientConfig);

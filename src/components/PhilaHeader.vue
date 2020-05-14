@@ -50,7 +50,7 @@
                   v-if="i18nEnabled"
                   class="title no-margins"
                 >
-                  {{ $t('title') }}
+                  {{ $t('app.title') }}
                 </h1>
                 <h1
                   v-if="!i18nEnabled"
@@ -68,7 +68,7 @@
                 <div
                   v-if="i18nEnabled"
                   id="demo-badge"
-                  v-html="$t('randomWords.betaTag')"
+                  v-html="$t('app.betaTag')"
                 />
 
                 <h2
@@ -81,7 +81,7 @@
                   v-if="i18nEnabled"
                   class="h6 hide-for-small-only tagline"
                 >
-                  {{ $t('subtitle') }}
+                  {{ $t('app.subtitle') }}
                 </h2>
                 <h2
                   v-if="!i18nEnabled"
@@ -329,7 +329,9 @@ export default {
       this.comboSearchDropdownData.address.data = nextAddress;
     },
     keywords(nextKeywords) {
-      this.comboSearchDropdownData.keyword.data = nextKeywords;
+      if (this.comboSearchDropdownData.keyword) {
+        this.comboSearchDropdownData.keyword.data = nextKeywords;
+      }
     },
   },
   created() {
@@ -408,6 +410,7 @@ export default {
 </script>
 
 <style lang="scss">
+
 .app-header{
   width: 100%;
   vertical-align: middle;
@@ -448,6 +451,8 @@ export default {
     }
     a {
       color: white;
+      font-weight: normal;
+      text-decoration: none;
     }
 
     .title {

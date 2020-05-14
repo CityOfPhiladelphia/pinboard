@@ -20,7 +20,7 @@
               <a
                 v-if="i18nEnabled"
                 href="."
-                v-html="$t('about')"
+                v-html="$t('app.about')"
               />
             </li>
 
@@ -45,7 +45,7 @@
                 v-if="i18nEnabled"
                 :href="feedbackLink"
                 target="_blank"
-                v-html="$t('feedback')"
+                v-html="$t('app.feedback')"
               />
             </li>
 
@@ -81,6 +81,7 @@ export default {
   }
 };
 </script>
+
 <style lang="scss">
 
 .app-footer{
@@ -94,6 +95,11 @@ export default {
   }
   a:hover, a:active{
     color: color(electric-blue);
+  }
+
+  a {
+    font-weight: normal;
+    text-decoration: none;
   }
 
   .footer-nav {

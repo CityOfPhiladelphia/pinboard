@@ -28,10 +28,16 @@
         v-if="currentData.length === 0"
         class="h3"
       >
-        <p>
+        <p
+          v-if="!i18nEnabled"
+        >
           We're sorry, there are no results for that search.
           Adjust the filters you've selected and try again.
         </p>
+        <p
+          v-if="i18nEnabled"
+          v-html="$t('app.noResults')"
+        />
       </div>
       <div
         v-for="item in currentData"
@@ -40,7 +46,7 @@
         <ExpandCollapse
           :item="item"
           :is-map-visible="isMapVisible"
-          :slots="locationSlots"
+          :slots="locationInfo"
         >
 
           <component
@@ -48,7 +54,7 @@
             v-if="$config.customComps && Object.keys($config.customComps).includes('expandCollapseContent')"
             :item="item"
             :is-map-visible="isMapVisible"
-            :slots="locationSlots"
+            :slots="locationInfo"
           />
 
           <div v-if="$config.useDefaultLayout">
@@ -166,6 +172,13 @@ export default {
     return data;
   },
   computed: {
+    i18nEnabled() {
+      if (this.$config.i18n && this.$config.i18n.enabled) {
+        return true;
+      } else {
+        return false;
+      }
+    },
     hasCustomGreeting() {
       let value = false;
       if (this.$config.customComps) {
@@ -211,7 +224,7 @@ export default {
     ...mapState([ 'sources' ]),
     currentData() {
       const locations = this.$store.state.currentData;
-      let value = this.locationSlots.title;
+      let value = this.locationInfo.siteName;
       // locations.sort((a, b) => a.organization_name.localeCompare(b.organization_name));
       // locations.sort((a, b) => a.site_name);//.localeCompare(b.site_name));
       locations.sort((a, b) => a[value]);//.localeCompare(b.site_name));
@@ -224,8 +237,8 @@ export default {
     dataStatus() {
       return this.$store.state.sources[this.$appType].status;
     },
-    locationSlots() {
-      return this.$config.locationSlots;
+    locationInfo() {
+      return this.$config.locationInfo;
     },
   },
   watch: {

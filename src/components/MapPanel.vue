@@ -65,9 +65,8 @@
           :latlng="marker.latlng"
           :feature-id="marker._featureId"
         >
-        <!-- :popup-data="marker.organization_name" -->
           <popup-content-functional
-            :popup-data="marker.organization_name || marker.attributes.site_name"
+            :popup-data="marker.organization_name || marker.attributes.site_name || locationInfo.siteName(null, marker)"
             @didClickPopupContent="toggleMap"
           />
         </popup-simple>
@@ -230,6 +229,9 @@ export default {
     return data;
   },
   computed: {
+    locationInfo() {
+      return this.$config.locationInfo;
+    },
     isMobileOrTablet() {
       return this.$store.state.isMobileOrTablet;
     },
@@ -301,6 +303,8 @@ export default {
             // console.log('row:', row, 'indexVal:', indexVal);
             // markerColor = this.$config.circleColors[row._featureId.slice(0, indexVal)]
             markerColor = this.$config.circleMarkers.circleColors[row.attributes.category_type]
+          } else if (this.$config.circleMarkers && this.$config.circleMarkers.color) {
+            markerColor = this.$config.circleMarkers.color;
           } else {
             markerColor = 'purple';
           }
