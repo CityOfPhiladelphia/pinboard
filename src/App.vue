@@ -359,10 +359,36 @@ export default {
 
         // if refine.type = multipleFields
         if (this.$config.refine && this.$config.refine.type && ['multipleFields', 'multipleFieldGroups'].includes(this.$config.refine.type)) {
-          console.log('in if');
+          // console.log('in if');
           let conditions = [];
 
-          if (selectedServices.length === 0) {
+          if (this.$config.hiddenRefine) {
+            for (let field in this.$config.hiddenRefine) {
+              let valOrGetter = this.$config.hiddenRefine[field];
+              const valOrGetterType = typeof valOrGetter;
+              let val;
+
+              // fn
+              if (valOrGetterType === 'function') {
+                const state = this.$store.state;
+                const controller = this.$controller;
+                const getter = valOrGetter;
+                const item = row;
+                if (item) {
+                  val = getter(state, item, controller);
+                } else {
+                  val = getter(state);
+                }
+              } else {
+                val = valOrGetter;
+              }
+              conditions.push(val);
+            }
+          }
+
+          console.log('conditions:', conditions);
+
+          if (!this.$config.hiddenRefine && selectedServices.length === 0) {
             conditions.push(true);
           } else {
 
