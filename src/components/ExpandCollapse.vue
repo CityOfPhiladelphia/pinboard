@@ -6,14 +6,14 @@
   <!-- :id="makeID(item.organization_name)" -->
   <!-- :id="makeID(item.site_name)" -->
     <h2
-      :id="makeID(evaluateSlot(slots.title))"
+      :id="makeID(evaluateSlot(slots.siteName))"
       class="h5 location-title"
       @click="expandLocation"
       tabindex="0"
       @keyup.enter="expandLocation"
       :aria-expanded="locationOpen"
     >
-      {{ evaluateSlot(slots.title) }}
+      {{ evaluateSlot(slots.siteName) }}
       <div
         v-if="section && !i18nEnabled"
         class="section-name"
@@ -31,8 +31,8 @@
     <div
       :class="{ 'location-open': locationOpen }"
       class="location-content"
-      :aria-labelledby="makeID(evaluateSlot(slots.title))"
-      >
+      :aria-labelledby="makeID(evaluateSlot(slots.siteName))"
+    >
       <!-- :aria-labelledby="makeID(item.site_name)" -->
       <!-- :aria-labelledby="makeID(item.organization_name)" -->
       <slot />
