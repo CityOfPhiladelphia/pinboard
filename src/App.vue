@@ -585,7 +585,7 @@ export default {
 
 a {
   font-weight: bold;
-  text-decoration: underline !important;
+  text-decoration: underline;
 }
 
 //TODO, move to standards
