@@ -409,14 +409,14 @@ export default {
                 console.log('group:', group);
 
                 for (let field in this.$config.refine.multipleFieldGroups[group]) {
-                  console.log('field:', field, "this.$config.refine.multipleFieldGroups[group][field]['name']:", this.$config.refine.multipleFieldGroups[group][field]['name']);
+                  console.log('field:', field, "this.$config.refine.multipleFieldGroups[group][field]['unique_key']:", this.$config.refine.multipleFieldGroups[group][field]['unique_key']);
                   // for (let name in this.$config.refine.multipleFieldGroups[group][field]) {
                   //   console.log('name:', name, 'this.$config.refine.multipleFieldGroups[group][field][name]:', this.$config.refine.multipleFieldGroups[group][field][name]);
-                  let name = this.$config.refine.multipleFieldGroups[group][field]['name']
+                  let unique_key = this.$config.refine.multipleFieldGroups[group][field]['unique_key']
 
                     // if (selectedServices.includes(field)) {
-                    if (selectedServices.includes(name)) {
-                      console.log('inside if, name:', name);
+                    if (selectedServices.includes(unique_key)) {
+                      // console.log('inside if, unique_key:', unique_key);
 
                       let valOrGetter = this.$config.refine.multipleFieldGroups[group][field]['value'];
                       const valOrGetterType = typeof valOrGetter;

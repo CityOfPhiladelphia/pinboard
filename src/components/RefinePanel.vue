@@ -38,6 +38,7 @@
 
         </div>
 
+        <!-- if using categoryField or multipleFields options -->
         <div
           v-if="dataStatus === 'success' && refineType !== 'multipleFieldGroups'"
           class="grid-x service-list"
@@ -71,7 +72,6 @@
                   v-if="i18nEnabled"
                   class="service-item"
                 >
-                <!-- v-html="$t(item)" -->
                   {{ $t(item) }}
                 </span>
 
@@ -84,20 +84,22 @@
             </icon-tool-tip>
 
           </div>
-          <!-- </input> -->
         </div>
 
 
+        <!-- if using multipleFieldsGroups option -->
         <div
           v-if="dataStatus === 'success' && refineType === 'multipleFieldGroups'"
           class="grid-x group-service-list service-list"
         >
+          <!-- :key="ind" -->
           <div
             v-for="(group, ind) in refineList"
-            :key="ind"
+            :key="group.i18n_key"
             class="service-group-holder"
           >
-            {{ $t(ind) }}
+            <!-- {{ $t(ind) }} -->
+            {{ $t(group.i18n_key) }}
 
             <div class="grid-x service-group">
 
@@ -107,17 +109,17 @@
               >
 
                 <input
-                  :id="item.name"
+                  :id="item.unique_key"
                   v-model="selected"
                   type="checkbox"
-                  :name="item.name"
-                  :value="item.name"
+                  :name="item.unique_key"
+                  :value="item.unique_key"
                 >
-                  <font-awesome-icon :for="item" :icon="['far', 'square']" v-show="!selected.includes(item.name)" class="fa-checkbox" />
-                  <font-awesome-icon :for="item" icon="check-square" v-show="selected.includes(item.name)" class="fa-checkbox" />
+                  <font-awesome-icon :for="item" :icon="['far', 'square']" v-show="!selected.includes(item.unique_key)" class="fa-checkbox" />
+                  <font-awesome-icon :for="item" icon="check-square" v-show="selected.includes(item.unique_key)" class="fa-checkbox" />
                   <label
                     class="input-label"
-                    :for="item.name"
+                    :for="item.unique_key"
                     >
                       <span
                         v-if="!i18nEnabled"
@@ -129,7 +131,7 @@
                       <span
                         v-if="i18nEnabled"
                         class="service-item"
-                        v-html="$t(item.short_name)"
+                        v-html="$t(item.box_label)"
                       />
 
                   </label>
@@ -145,7 +147,6 @@
             </div>
 
           </div>
-          <!-- </input> -->
         </div>
 
 
@@ -295,7 +296,6 @@ export default {
     },
     getRefineSearchList() {
       const refineData = this.database;
-      // const refineData = this.sources[this.$appType].data.rows;
 
       let service = '';
 
@@ -341,14 +341,13 @@ export default {
           uniq[group] = {};
           for (let field of Object.keys(this.$config.refine.multipleFieldGroups[group])){
             uniq[group][field] = {};
-            // console.log('field:', field, 'this.$config.refine.multipleFieldGroups[group][field].name:', this.$config.refine.multipleFieldGroups[group][field].name);
-            // let value = this.$config.refine.multipleFieldGroups[group][field].name;
-            if (this.$config.refine.multipleFieldGroups[group][field].key) {
-              uniq[group][field].short_name = this.$config.refine.multipleFieldGroups[group][field].key;
+            // console.log('field:', field, 'this.$config.refine.multipleFieldGroups[group][field].unique_key:', this.$config.refine.multipleFieldGroups[group][field].unique_key);
+            if (this.$config.refine.multipleFieldGroups[group][field].i18n_key) {
+              uniq[group][field].box_label = this.$config.refine.multipleFieldGroups[group][field].i18n_key;
             } else {
-              uniq[group][field].short_name = field;
+              uniq[group][field].box_label = field;
             }
-            uniq[group][field].name = this.$config.refine.multipleFieldGroups[group][field].name;
+            uniq[group][field].unique_key = this.$config.refine.multipleFieldGroups[group][field].unique_key;
           }
         }
       }
