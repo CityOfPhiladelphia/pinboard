@@ -427,6 +427,9 @@ $refine-panel-height: 19vh;
     padding-left: 16px;
     padding-right: 10px;
     border-right: 1px solid black;
+    &:last-of-type{
+      border-right: none;
+    }
   }
 
   .group-service-list {
