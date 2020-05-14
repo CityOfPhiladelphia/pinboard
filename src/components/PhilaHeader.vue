@@ -99,9 +99,24 @@
           <div class="cell large-auto hide-for-small-only text-center">
             <!-- v-if="!this.$config.addressInput || this.$config.addressInput && this.$config.addressInput.type === 'combo'" -->
             <combo-search
+              v-if="!i18nEnabled"
               :dropdown="comboSearchDropdownData"
               :position="comboSearchPosition"
               :placeholderText="comboSearchPlaceholderText"
+              :search-string="searchString"
+              :dropdown-selected="dropdownSelected"
+              :input-id="'input1'"
+              :select-id="'select1'"
+              @trigger-combo-search="comboSearchTriggered"
+              @trigger-clear-search="clearSearchTriggered"
+              @trigger-search-category-change="comboSearchCategoryChange"
+            />
+
+            <combo-search
+              v-if="i18nEnabled"
+              :dropdown="comboSearchDropdownData"
+              :position="comboSearchPosition"
+              :placeholderText="$t(comboSearchPlaceholderText)"
               :search-string="searchString"
               :dropdown-selected="dropdownSelected"
               :input-id="'input1'"
@@ -143,9 +158,23 @@
       <div class="cell show-for-small-only text-center">
         <!-- v-if="!this.$config.addressInput || this.$config.addressInput && this.$config.addressInput.type === 'combo'" -->
         <combo-search
+          v-if="!i18nEnabled"
           :dropdown="comboSearchDropdownData"
           :position="comboSearchPosition"
           :placeholderText="comboSearchPlaceholderText"
+          :search-string="searchString"
+          :dropdown-selected="dropdownSelected"
+          :input-id="'input2'"
+          :select-id="'select2'"
+          @trigger-combo-search="comboSearchTriggered"
+          @trigger-clear-search="clearSearchTriggered"
+          @trigger-search-category-change="comboSearchCategoryChange"
+        />
+        <combo-search
+          v-if="i18nEnabled"
+          :dropdown="comboSearchDropdownData"
+          :position="comboSearchPosition"
+          :placeholderText="$t(comboSearchPlaceholderText)"
           :search-string="searchString"
           :dropdown-selected="dropdownSelected"
           :input-id="'input2'"
@@ -300,7 +329,9 @@ export default {
       }
     },
     comboSearchPlaceholderText() {
-      if (this.$config.comboSearch && this.$config.comboSearch.placeholderText) {
+      if (this.i18nEnabled && this.$config.comboSearch && this.$config.comboSearch.placeholderText) {
+        return 'app.searchPlaceholder';
+      } else if (this.$config.comboSearch && this.$config.comboSearch.placeholderText) {
         return this.$config.comboSearch.placeholderText;
       } else {
         return 'Search';

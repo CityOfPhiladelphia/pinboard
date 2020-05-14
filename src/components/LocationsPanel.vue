@@ -224,10 +224,42 @@ export default {
     ...mapState([ 'sources' ]),
     currentData() {
       const locations = this.$store.state.currentData;
-      let value = this.locationInfo.siteName;
-      // locations.sort((a, b) => a.organization_name.localeCompare(b.organization_name));
-      // locations.sort((a, b) => a.site_name);//.localeCompare(b.site_name));
-      locations.sort((a, b) => a[value]);//.localeCompare(b.site_name));
+      // let value = this.locationInfo.siteName;
+
+      let valOrGetter = this.locationInfo.siteName;;
+      const valOrGetterType = typeof valOrGetter;
+      let val;
+
+      // fn
+      if (valOrGetterType === 'function') {
+        const state = this.$store.state;
+        const getter = valOrGetter;
+        locations.sort(function(a, b) {
+          let valueA = getter(state, a);
+          let valueB = getter(state, b);
+          // console.log('valueA:', valueA, 'valueB:', valueB);
+          return valueA.localeCompare(valueB);
+        });
+      } else {
+        val = valOrGetter;
+        locations.sort((a, b) => a[val].localeCompare(b[val]));
+      }
+
+
+      // let state = this.$store.state
+      // console.log('currentData computed, value:', value);
+      // // locations.sort((a, b) => a.organization_name.localeCompare(b.organization_name));
+      // // locations.sort((a, b) => a.site_name);//.localeCompare(b.site_name));
+      //
+      //
+      // // locations.sort((a, b) => value(this.$store.state, a));//.localeCompare(b.site_name));
+      // locations.sort(function(a, b) {
+      //   let valueA = value(state, a);
+      //   let valueB = value(state, b);
+      //   console.log('valueA:', valueA, 'valueB:', valueB);
+      //   return valueA.localeCompare(valueB);
+      //   // return a - b;
+      // });
 
       return locations;
     },

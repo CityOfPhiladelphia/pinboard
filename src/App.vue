@@ -181,15 +181,49 @@ export default {
       // console.log('computed database is running, database:', database);
 
       for (let [key, value] of Object.entries(database)) {
-        for (let [rowKey, rowValue] of Object.entries(value)) {
-          if ( rowKey == 'hide_on_finder' && rowValue == true ){
-            //console.log('deleted entry', database[key])
-            delete database[key]
+
+        if (this.$config.hiddenRefine) {
+          for (let field in this.$config.hiddenRefine) {
+            let valOrGetter = this.$config.hiddenRefine[field];
+            const valOrGetterType = typeof valOrGetter;
+            let val;
+
+            // fn
+            if (valOrGetterType === 'function') {
+              const state = this.$store.state;
+              const controller = this.$controller;
+              const getter = valOrGetter;
+              const item = value;
+              if (item) {
+                val = getter(state, item, controller);
+              } else {
+                val = getter(state);
+              }
+            } else {
+              val = valOrGetter;
+            }
+            console.log('val:', val);
+            if (val === false) {
+              delete database[key];
+            }
+            // conditions.push(val);
+          }
+        } else {
+
+          for (let [rowKey, rowValue] of Object.entries(value)) {
+            if ( rowKey == 'hide_on_finder' && rowValue == true ){
+              //console.log('deleted entry', database[key])
+              delete database[key];
+            }
           }
         }
+
+
       }
       //filter empty values from deleted database
       let finalDB = database.filter(_ => true);
+
+
 
       // if (this.$store.state.sources[this.$appType].data.rows) {
       return finalDB;
@@ -347,7 +381,7 @@ export default {
       this.$data.buffer = pointBuffer;
     },
     filterPoints() {
-      console.log('App.vue filterPoints is running, this.database:', this.database);
+      // console.log('App.vue filterPoints is running, this.database:', this.database);
       const filteredRows = [];
 
       for (const row of this.database) {
@@ -362,38 +396,37 @@ export default {
           // console.log('in if');
           let conditions = [];
 
-          if (this.$config.hiddenRefine) {
-            for (let field in this.$config.hiddenRefine) {
-              let valOrGetter = this.$config.hiddenRefine[field];
-              const valOrGetterType = typeof valOrGetter;
-              let val;
+          // if (this.$config.hiddenRefine) {
+          //   for (let field in this.$config.hiddenRefine) {
+          //     let valOrGetter = this.$config.hiddenRefine[field];
+          //     const valOrGetterType = typeof valOrGetter;
+          //     let val;
+          //
+          //     // fn
+          //     if (valOrGetterType === 'function') {
+          //       const state = this.$store.state;
+          //       const controller = this.$controller;
+          //       const getter = valOrGetter;
+          //       const item = row;
+          //       if (item) {
+          //         val = getter(state, item, controller);
+          //       } else {
+          //         val = getter(state);
+          //       }
+          //     } else {
+          //       val = valOrGetter;
+          //     }
+          //     conditions.push(val);
+          //   }
+          // }
+          // console.log('conditions:', conditions);
 
-              // fn
-              if (valOrGetterType === 'function') {
-                const state = this.$store.state;
-                const controller = this.$controller;
-                const getter = valOrGetter;
-                const item = row;
-                if (item) {
-                  val = getter(state, item, controller);
-                } else {
-                  val = getter(state);
-                }
-              } else {
-                val = valOrGetter;
-              }
-              conditions.push(val);
-            }
-          }
-
-          console.log('conditions:', conditions);
-
-          if (!this.$config.hiddenRefine && selectedServices.length === 0) {
+          if (selectedServices.length === 0) {
             conditions.push(true);
           } else {
 
             if (this.$config.refine.type === 'multipleFields') {
-              console.log('this.$config.refine.type === multipleFields');
+              // console.log('this.$config.refine.type === multipleFields');
 
               for (let field in this.$config.refine.multipleFields) {
                 if (selectedServices.includes(field)) {
@@ -429,13 +462,13 @@ export default {
                 }
               }
             } else {
-              console.log('this.$config.refine.type === multipleFieldGroups');
+              // console.log('this.$config.refine.type === multipleFieldGroups');
 
               for (let group in this.$config.refine.multipleFieldGroups) {
-                console.log('group:', group);
+                // console.log('group:', group);
 
                 for (let field in this.$config.refine.multipleFieldGroups[group]) {
-                  console.log('field:', field, "this.$config.refine.multipleFieldGroups[group][field]['unique_key']:", this.$config.refine.multipleFieldGroups[group][field]['unique_key']);
+                  // console.log('field:', field, "this.$config.refine.multipleFieldGroups[group][field]['unique_key']:", this.$config.refine.multipleFieldGroups[group][field]['unique_key']);
                   // for (let name in this.$config.refine.multipleFieldGroups[group][field]) {
                   //   console.log('name:', name, 'this.$config.refine.multipleFieldGroups[group][field][name]:', this.$config.refine.multipleFieldGroups[group][field][name]);
                   let unique_key = this.$config.refine.multipleFieldGroups[group][field]['unique_key']
@@ -493,7 +526,7 @@ export default {
             booleanServices = true;
           } else {
             let value = this.$config.refine.categoryField(row);
-            console.log('value:', value);
+            // console.log('value:', value);
             booleanServices = selectedServices.includes(value);
           }
 
