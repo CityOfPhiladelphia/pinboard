@@ -97,7 +97,7 @@
 
           <!-- <div class="cell large-auto small-auto small-centered text-center"> -->
           <div class="cell large-auto hide-for-small-only text-center">
-            <!-- v-if="!this.$config.addressInput || this.$config.addressInput && this.$config.addressInput.type === 'combo'" -->
+
             <combo-search
               :dropdown="comboSearchDropdownData"
               :position="comboSearchPosition"
@@ -141,7 +141,7 @@
       </div>
 
       <div class="cell show-for-small-only text-center">
-        <!-- v-if="!this.$config.addressInput || this.$config.addressInput && this.$config.addressInput.type === 'combo'" -->
+
         <combo-search
           :dropdown="comboSearchDropdownData"
           :position="comboSearchPosition"
@@ -278,6 +278,9 @@ export default {
         return false;
       }
     },
+    i18nLocale() {
+      return this.$i18n.locale;
+    },
     comboSearchDropdownData() {
       let dropdownData = {};
       if (!this.$config.comboSearch) {
@@ -300,7 +303,9 @@ export default {
       }
     },
     comboSearchPlaceholderText() {
-      if (this.$config.comboSearch && this.$config.comboSearch.placeholderText) {
+      if (this.i18nEnabled) {
+        return this.$i18n.messages[this.i18nLocale].app.searchPlaceholder;
+      } else if (this.$config.comboSearch && this.$config.comboSearch.placeholderText) {
         return this.$config.comboSearch.placeholderText;
       } else {
         return 'Search';
