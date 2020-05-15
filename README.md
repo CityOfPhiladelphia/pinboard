@@ -29,6 +29,11 @@ Create pull request for changes and merge into `master` branch for travis-ci bui
 
 ## Release Notes
 
+### 0.3.0 - 5/15/2020
+
+* uses @phila/vue-comps 2.1.2
+* adds major changes to refine panel options
+
 ### 0.2.0 - 5/5/2020
 
 * uses minor updates to libraries:
