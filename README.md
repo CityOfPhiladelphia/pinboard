@@ -29,6 +29,10 @@ Create pull request for changes and merge into `master` branch for travis-ci bui
 
 ## Release Notes
 
+### 0.3.3 - 5/18/2020
+
+* fixes tiny bug with custom greeting
+
 ### 0.3.2 - 5/18/2020
 
 * fixes small css issues and bugs
