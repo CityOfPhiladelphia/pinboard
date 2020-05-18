@@ -106,6 +106,7 @@
               <div
                 v-for="(item, index) in refineList[ind]"
                 :key="index"
+                class="service-group-member"
               >
 
                 <input
@@ -114,6 +115,7 @@
                   type="checkbox"
                   :name="item.unique_key"
                   :value="item.unique_key"
+                  class="service-group-input"
                 >
                   <font-awesome-icon :for="item" :icon="['far', 'square']" v-show="!selected.includes(item.unique_key)" class="fa-checkbox" />
                   <font-awesome-icon :for="item" icon="check-square" v-show="selected.includes(item.unique_key)" class="fa-checkbox" />
@@ -201,7 +203,7 @@ export default {
   props: {
     legendTitle: {
       type: String,
-      default: 'Refine',
+      default: 'REFINE',
     },
     infoCircles: {
 
@@ -386,7 +388,11 @@ $refine-panel-height: 19vh;
   padding: 1rem;
 
   .legend-title{
+    margin-bottom: 0;
     float:left;
+    font-weight: bold;
+    font-size: 1.2rem;
+    text-transform: uppercase;
   }
 
   .refine-title{
@@ -394,7 +400,10 @@ $refine-panel-height: 19vh;
     position: relative;
 
     .clear-all{
-      margin: .35rem 0 0 3rem;
+      font-family: "Montserrat", sans-serif;
+      font-weight: normal;
+      margin: .35rem 0 0 .75rem;
+      font-size: .8rem;
     }
 
     .clear-button{
@@ -421,6 +430,7 @@ $refine-panel-height: 19vh;
 
   .service-group{
     padding-top: 2px;
+    margin-left: -15px;
   }
 
   .service-group-holder{
@@ -429,6 +439,9 @@ $refine-panel-height: 19vh;
     padding-left: 16px;
     padding-right: 10px;
     border-right: 1px solid black;
+    &:first-of-type{
+      padding-left: 0px;
+    }
     &:last-of-type{
       border-right: none;
     }
@@ -439,7 +452,7 @@ $refine-panel-height: 19vh;
   }
 
   .service-list{
-    margin-top: 1rem;
+    // margin-top: 0.5rem;
     input{
       margin-right: -2rem;
     }

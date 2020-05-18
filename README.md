@@ -29,6 +29,10 @@ Create pull request for changes and merge into `master` branch for travis-ci bui
 
 ## Release Notes
 
+### 0.3.2 - 5/18/2020
+
+* fixes small css issues and bugs
+
 ### 0.3.1 - 5/18/2020
 
 * fixes small issues to make new changes compatible with original pinboard apps

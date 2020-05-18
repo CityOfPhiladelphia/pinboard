@@ -137,7 +137,7 @@ export default {
     },
   },
   mounted() {
-    console.log('ExpColl mounted:', this.evaluateSlot(this.slots.siteName));
+    // console.log('ExpColl mounted:', this.evaluateSlot(this.slots.siteName));
     if (this.selectedResources.includes(this.item._featureId)) {
       // console.log('ExpandCollapse mounted is running and item should be open');
       // this.locationOpen = true;

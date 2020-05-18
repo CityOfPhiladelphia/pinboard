@@ -174,7 +174,7 @@ export default {
   },
   mounted() {
     // console.log('LocationsPanel.vue mounted, this.$config:', this.$config);
-    if (!this.$config.greeting) {
+    if (!this.$config.greeting && !this.$config.customComps.customGreeting) {
       this.shouldShowGreeting = false;
     }
   },
