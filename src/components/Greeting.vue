@@ -75,7 +75,7 @@ export default {
   },
   computed: {
     i18nEnabled() {
-      if (this.$config.i18n) {
+      if (this.$config.i18n && this.$config.i18n.enabled) {
         return true;
       } else {
         return false;
@@ -101,11 +101,11 @@ export default {
 
     },
     components() {
-      console.log('computing components');
       const greetingConfig = this.$config.greeting || {};
+      // console.log('Greeting.vue computing components');
       let components;
       if (greetingConfig) {
-        console.log('inside if, greetingConfig:', greetingConfig);
+        // console.log('Greeting.vue inside if, greetingConfig:', greetingConfig);
         components = greetingConfig.components;
       }
       return components;

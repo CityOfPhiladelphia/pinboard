@@ -29,6 +29,10 @@ Create pull request for changes and merge into `master` branch for travis-ci bui
 
 ## Release Notes
 
+### 0.3.1 - 5/18/2020
+
+* fixes small issues to make new changes compatible with original pinboard apps
+
 ### 0.3.0 - 5/15/2020
 
 * uses @phila/vue-comps 2.1.2

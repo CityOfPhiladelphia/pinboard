@@ -97,9 +97,10 @@ export default {
       }
       return sectionColor;
     },
-    servicesOffered() {
-      return this.$props.item.services_offered.split(',');
-    },
+    // servicesOffered() {
+    //   // return this.$props.item.services_offered.split(',');
+    //   return this.$props.item.services_offered;
+    // },
     selectedResources() {
       return this.$store.state.selectedResources;
     },
@@ -136,6 +137,7 @@ export default {
     },
   },
   mounted() {
+    console.log('ExpColl mounted:', this.evaluateSlot(this.slots.siteName));
     if (this.selectedResources.includes(this.item._featureId)) {
       // console.log('ExpandCollapse mounted is running and item should be open');
       // this.locationOpen = true;

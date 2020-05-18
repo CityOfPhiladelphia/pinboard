@@ -8,13 +8,13 @@
     >
     <!-- :style="topicsContainerStyle" -->
       <greeting
-        v-show="shouldShowGreeting && !hasCustomGreeting"
+        v-if="shouldShowGreeting && !hasCustomGreeting"
         :message="greetingText"
         :options="greetingOptions"
       />
 
       <custom-greeting
-        v-show="shouldShowGreeting && hasCustomGreeting"
+        v-if="shouldShowGreeting && hasCustomGreeting"
         @view-list="shouldShowGreeting = false"
       />
 
@@ -57,7 +57,8 @@
             :slots="locationInfo"
           />
 
-          <div v-if="$config.useDefaultLayout">
+          <!-- <div v-if="$config.useDefaultLayout"> -->
+          <div v-if="!$config.customComps || !Object.keys($config.customComps).includes('expandCollapseContent')">
             <div class="grid-x grid-padding-x">
               <div class="cell medium-12">
                 <div
@@ -170,6 +171,12 @@ export default {
       'shouldShowGreeting': true,
     }
     return data;
+  },
+  mounted() {
+    // console.log('LocationsPanel.vue mounted, this.$config:', this.$config);
+    if (!this.$config.greeting) {
+      this.shouldShowGreeting = false;
+    }
   },
   computed: {
     i18nEnabled() {

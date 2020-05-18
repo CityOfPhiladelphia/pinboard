@@ -87,7 +87,7 @@
                   v-if="!i18nEnabled"
                   class="h6 hide-for-small-only tagline"
                 >
-                  {{ appTagLine }}
+                  {{ $config.app.subtitle }}
                 </h2>
 
               </a>
@@ -272,7 +272,7 @@ export default {
   },
   computed: {
     i18nEnabled() {
-      if (this.$config.i18n) {
+      if (this.$config.i18n && this.$config.i18n.enabled) {
         return true;
       } else {
         return false;

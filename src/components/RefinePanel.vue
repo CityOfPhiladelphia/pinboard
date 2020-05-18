@@ -218,7 +218,9 @@ export default {
   },
   computed: {
     refineType() {
-      return this.$config.refine.type;
+      if (this.$config.refine) {
+        return this.$config.refine.type;
+      }
     },
     ...mapState([ 'sources', 'geocode', 'selectedServices' ]),
     refineOpen() {
@@ -302,7 +304,7 @@ export default {
       // console.log('in getRefineSearchList, refineData:', refineData);
       refineData.forEach((arrayElem) => {
         // console.log('arrayElem:', arrayElem);
-        if (this.$config.refine.categoryField) {
+        if (this.$config.refine && this.$config.refine.categoryField) {
           let value = this.$config.refine.categoryField(arrayElem);
 
           service += `${value},`;
@@ -330,11 +332,11 @@ export default {
         uniq = this.$config.refineCategories;
       }
 
-      if (this.$config.refine.type === 'multipleFields') {
+      if (this.$config.refine && this.$config.refine.type === 'multipleFields') {
         uniq = Object.keys(this.$config.refine.multipleFields);
       }
       uniq.sort();
-      if (this.$config.refine.type === 'multipleFieldGroups') {
+      if (this.$config.refine && this.$config.refine.type === 'multipleFieldGroups') {
         uniq = {};
         for (let group of Object.keys(this.$config.refine.multipleFieldGroups)){
           // console.log('group:', group);
