@@ -1,12 +1,10 @@
 <template>
   <div class="cell medium-12 medium-cell-block-y locations-panel">
 
-    <!-- before search -->
     <div
       v-if="shouldShowGreeting"
       class="topics-container cell medium-cell-block-y"
     >
-    <!-- :style="topicsContainerStyle" -->
       <greeting
         v-if="shouldShowGreeting && !hasCustomGreeting"
         :message="greetingText"
@@ -149,13 +147,11 @@
 
 import { mapState } from 'vuex';
 import ExpandCollapse from './ExpandCollapse.vue';
-import Greeting from './Greeting.vue';
 
 export default {
   components: {
     ExpandCollapse,
-    Greeting,
-    // Greeting: () => import(/* webpackChunkName: "pb_Greeting" */'./Greeting.vue'),
+    Greeting: () => import(/* webpackChunkName: "pb_Greeting" */'./Greeting.vue'),
   },
   props: {
     isMapVisible: {
@@ -190,9 +186,6 @@ export default {
       }
       return value;
     },
-    // shouldShowGreeting() {
-    //   return true;
-    // },
     greetingText() {
       if (this.$config.greeting) {
         return this.$config.greeting.message;
@@ -234,11 +227,10 @@ export default {
       let val;
 
       if (valOrGetterType === 'function') {
-        const state = this.$store.state;
         const getter = valOrGetter;
         locations.sort(function(a, b) {
-          let valueA = getter(state, a);
-          let valueB = getter(state, b);
+          let valueA = getter(a);
+          let valueB = getter(b);
           // console.log('valueA:', valueA, 'valueB:', valueB);
           return valueA.localeCompare(valueB);
         });

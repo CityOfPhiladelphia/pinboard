@@ -172,10 +172,6 @@ export default {
     dataStatus() {
       return this.$store.state.sources[this.$appType].status;
     },
-    // dataTest() {
-    //   // console.log('computed dataTest is running');
-    //   return this.$store.state.sources[this.$appType].data.rows;
-    // },
     database() {
       let database = this.$store.state.sources[this.$appType].data.rows || this.$store.state.sources[this.$appType].data.features || this.$store.state.sources[this.$appType].data;
       // console.log('computed database is running, database:', database);
@@ -184,24 +180,8 @@ export default {
 
         if (this.$config.hiddenRefine) {
           for (let field in this.$config.hiddenRefine) {
-            let valOrGetter = this.$config.hiddenRefine[field];
-            const valOrGetterType = typeof valOrGetter;
-            let val;
-
-            if (valOrGetterType === 'function') {
-              const state = this.$store.state;
-              const controller = this.$controller;
-              const getter = valOrGetter;
-              const item = value;
-              if (item) {
-                val = getter(state, item, controller);
-              } else {
-                val = getter(state);
-              }
-            } else {
-              val = valOrGetter;
-            }
-            // console.log('val:', val);
+            let getter = this.$config.hiddenRefine[field];
+            let val = getter(value);
             if (val === false) {
               delete database[key];
             }
@@ -312,19 +292,6 @@ export default {
       this.$data.buttonText = this.$data.isMapVisible ? 'app.viewList' : 'app.viewMap';
     }
 
-    // this.$i18n.locale = 'es';
-    // let compiledDataSource = [];
-    // if (Object.keys(this.$config.dataSources).length > 1) {
-    //   console.log('this.$store.state.sources:', this.$store.state.sources);
-    //   for (let source of Object.keys(this.$store.state.sources)) {
-    //     console.log('this.$store.state.sources[source].data:', this.$store.state.sources[source].data);
-    //     compiledDataSource.push(this.$store.state.sources[source].data.features);
-    //   }
-    // }
-    // console.log('compiledDataSource:', compiledDataSource);
-
-    // this.setUpData();
-
     this.onResize();
   },
   created() {
@@ -346,7 +313,6 @@ export default {
         // console.log('this.$store.state.sources:', this.$store.state.sources);
         for (let source of theSources) {
           // console.log('source:', source, 'this.$store.state.sources[source].data:', this.$store.state.sources[source].data);
-          // for (let point of this.$store.state.sources[source].data.features) {
           for (let point of source.features) {
             // console.log('point:', point);
             Object.assign(point, point.attributes);
@@ -375,101 +341,62 @@ export default {
         // console.log('row.services_offered:', row.services_offered);
 
         if (this.$config.refine && this.$config.refine.type && ['multipleFields', 'multipleFieldGroups'].includes(this.$config.refine.type)) {
-          // console.log('in if');
-          let conditions = [];
+          let booleanConditions = [];
 
           if (selectedServices.length === 0) {
-            conditions.push(true);
+            booleanConditions.push(true);
           } else {
 
             // if refine.type = multipleFields
             if (this.$config.refine.type === 'multipleFields') {
-
               for (let field in this.$config.refine.multipleFields) {
                 if (selectedServices.includes(field)) {
 
-                  let valOrGetter = this.$config.refine.multipleFields[field];
-                  const valOrGetterType = typeof valOrGetter;
-                  let val;
-
-                  if (valOrGetterType === 'function') {
-                    const state = this.$store.state;
-                    const controller = this.$controller;
-                    const getter = valOrGetter;
-                    const item = row;
-                    if (item) {
-                      val = getter(state, item, controller);
-                    } else {
-                      // console.log('evaluateSlot, about to get value');
-                      val = getter(state);
-                      // console.log('state:', state, 'val:', val);
-                    }
-                  } else {
-                    val = valOrGetter;
-                  }
-
-                  // console.log('row:', row, 'field:', field, 'this.$config.refine.multipleFields[field]', this.$config.refine.multipleFields[field], 'val:', val);
-                  conditions.push(val);
+                  let getter = this.$config.refine.multipleFields[field];
+                  let val = getter(item);
+                  booleanConditions.push(val);
                 }
               }
             } else {
-              // console.log('this.$config.refine.type === multipleFieldGroups');
+              // if refine.type = multipleFieldsGroups
               for (let group in this.$config.refine.multipleFieldGroups) {
-                // console.log('group:', group);
                 for (let field in this.$config.refine.multipleFieldGroups[group]) {
                   // console.log('field:', field, "this.$config.refine.multipleFieldGroups[group][field]['unique_key']:", this.$config.refine.multipleFieldGroups[group][field]['unique_key']);
                   let unique_key = this.$config.refine.multipleFieldGroups[group][field]['unique_key']
                   if (selectedServices.includes(unique_key)) {
-                    // console.log('inside if, unique_key:', unique_key);
-                    let valOrGetter = this.$config.refine.multipleFieldGroups[group][field]['value'];
-                    const valOrGetterType = typeof valOrGetter;
-                    let val;
-
-                    if (valOrGetterType === 'function') {
-                      const state = this.$store.state;
-                      const controller = this.$controller;
-                      const getter = valOrGetter;
-                      const item = row;
-                      if (item) {
-                        val = getter(state, item, controller);
-                      } else {
-                        val = getter(state);
-                      }
-                    } else {
-                      val = valOrGetter;
-                    }
-                    // console.log('row:', row, 'field:', field, 'this.$config.refine.multipleFields[field]', this.$config.refine.multipleFields[field], 'val:', val);
-                    conditions.push(val);
-                  } // end of if
-                } // end of for
-              } // end of for
+                    let getter = this.$config.refine.multipleFieldGroups[group][field]['value'];
+                    let val = getter(row);
+                    booleanConditions.push(val);
+                  }
+                }
+              }
             }
 
           }
-          if (conditions.includes(true)) {
-            // console.log('conditions includes true:', conditions);
+          if (booleanConditions.includes(true)) {
+            // console.log('booleanConditions includes true:', booleanConditions);
             booleanServices = true
           }
 
-        // if refine.type = categoryField
-        } else if (this.$config.refine && this.$config.refine.type && this.$config.refine.type === 'categoryField') {
+        // if refine.type = categoryField_value
+        } else if (this.$config.refine && this.$config.refine.type === 'categoryField_value') {
           if (selectedServices.length === 0) {
             booleanServices = true;
           } else {
-            let value = this.$config.refine.categoryField(row);
+            let value = this.$config.refine.value(row);
             // console.log('value:', value);
             booleanServices = selectedServices.includes(value);
           }
 
         } else {
+          // the original default version, or refine.type = 'categoryField_array'
           let servicesSplit;
-          if (row.services_offered) {
+          if (this.$config.refine) {
+            servicesSplit = this.$config.refine.value(row);
+          } else if (row.services_offered) {
             servicesSplit = row.services_offered;
-          } else if (row.attributes.category_type) {
-            servicesSplit = [row.attributes.category_type];
           }
-          // console.log('servicesSplit:', servicesSplit);
-          // const { selectedServices } = this.$store.state;
+
           if (selectedServices.length === 0) {
             booleanServices = true;
           } else {

@@ -10,7 +10,7 @@ export default {
         const state = this.$store.state;
         const getter = valOrGetter;
         if (item) {
-          val = getter(state, item);
+          val = getter(item);
         } else {
           val = getter(state);
         }

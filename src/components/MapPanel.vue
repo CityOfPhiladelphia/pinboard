@@ -65,7 +65,6 @@
           :latlng="marker.latlng"
           :feature-id="marker._featureId"
         >
-        <!-- :popup-data="marker.organization_name || marker.attributes.site_name || locationInfo.siteName(null, marker)" -->
           <popup-content-functional
             :popup-data="getSiteName(marker)"
             @didClickPopupContent="toggleMap"
@@ -97,7 +96,6 @@
           :latlng="marker.latlng"
           :feature-id="marker._featureId"
         >
-        <!-- :popup-data="marker.organization_name" -->
           <popup-content-functional
             :popup-data="getSiteName(marker)"
             @didClickPopupContent="toggleMap"
