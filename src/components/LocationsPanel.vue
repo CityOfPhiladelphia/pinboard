@@ -46,7 +46,6 @@
         <ExpandCollapse
           :item="item"
           :is-map-visible="isMapVisible"
-          :slots="locationInfo"
         >
 
           <component
@@ -54,10 +53,8 @@
             v-if="$config.customComps && Object.keys($config.customComps).includes('expandCollapseContent')"
             :item="item"
             :is-map-visible="isMapVisible"
-            :slots="locationInfo"
           />
 
-          <!-- <div v-if="$config.useDefaultLayout"> -->
           <div v-if="!$config.customComps || !Object.keys($config.customComps).includes('expandCollapseContent')">
             <div class="grid-x grid-padding-x">
               <div class="cell medium-12">
@@ -231,13 +228,11 @@ export default {
     ...mapState([ 'sources' ]),
     currentData() {
       const locations = this.$store.state.currentData;
-      // let value = this.locationInfo.siteName;
 
-      let valOrGetter = this.locationInfo.siteName;;
+      let valOrGetter = this.locationInfo.siteName;
       const valOrGetterType = typeof valOrGetter;
       let val;
 
-      // fn
       if (valOrGetterType === 'function') {
         const state = this.$store.state;
         const getter = valOrGetter;
@@ -251,22 +246,6 @@ export default {
         val = valOrGetter;
         locations.sort((a, b) => a[val].localeCompare(b[val]));
       }
-
-
-      // let state = this.$store.state
-      // console.log('currentData computed, value:', value);
-      // // locations.sort((a, b) => a.organization_name.localeCompare(b.organization_name));
-      // // locations.sort((a, b) => a.site_name);//.localeCompare(b.site_name));
-      //
-      //
-      // // locations.sort((a, b) => value(this.$store.state, a));//.localeCompare(b.site_name));
-      // locations.sort(function(a, b) {
-      //   let valueA = value(state, a);
-      //   let valueB = value(state, b);
-      //   console.log('valueA:', valueA, 'valueB:', valueB);
-      //   return valueA.localeCompare(valueB);
-      //   // return a - b;
-      // });
 
       return locations;
     },
@@ -299,24 +278,6 @@ export default {
     },
   },
   methods: {
-    // filterExpand(item) {
-    //   // console.log('filterExpand is running, item:', item);
-    //   return this.currentDataList.includes(item._featureId);
-    //   // first filter by services
-    //   // const servicesOffered = item.services_offered;
-    //   // const servicesSplit = servicesOffered.split(',');
-    //   // const { selectedServices } = this.$store.state;
-    //   // if (selectedServices.length === 0) {
-    //   //   return true;
-    //   // }
-    //   // const servicesFiltered = servicesSplit.filter(f => selectedServices.includes(f));
-    //   // const booleanServices = servicesFiltered.length > 0;
-    //
-    //   // second filter by bufferList
-    //   // const booleanBuffer = this.$store.state.bufferList.includes(item._featureId);
-    //   //
-    //   // return booleanServices && booleanBuffer;
-    // },
     getLocationsList() {
       const locations = this.sources[this.$appType].data.rows;
       // const locations = this.bufferlist

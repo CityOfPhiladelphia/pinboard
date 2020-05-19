@@ -3,17 +3,15 @@
     class="cell medium-cell-block-container location-item"
     :class="{ 'open': locationOpen }"
   >
-  <!-- :id="makeID(item.organization_name)" -->
-  <!-- :id="makeID(item.site_name)" -->
     <h2
-      :id="makeID(evaluateSlot(slots.siteName))"
+      :id="makeID(getSiteName(item))"
       class="h5 location-title"
       @click="expandLocation"
       tabindex="0"
       @keyup.enter="expandLocation"
       :aria-expanded="locationOpen"
     >
-      {{ evaluateSlot(slots.siteName) }}
+      {{ getSiteName(item) }}
       <div
         v-if="section && !i18nEnabled"
         class="section-name"
@@ -31,19 +29,17 @@
     <div
       :class="{ 'location-open': locationOpen }"
       class="location-content"
-      :aria-labelledby="makeID(evaluateSlot(slots.siteName))"
+      :aria-labelledby="makeID(getSiteName(item))"
     >
-      <!-- :aria-labelledby="makeID(item.site_name)" -->
-      <!-- :aria-labelledby="makeID(item.organization_name)" -->
       <slot />
     </div>
   </div>
 </template>
 <script>
-import TopicComponent from '@phila/vue-comps/src/components/TopicComponent.vue';
+
+import SharedFunctions from './mixins/SharedFunctions.vue';
 
 export default {
-  mixins: [ TopicComponent ],
   props: {
     isMapVisible: {
       type: Boolean,
@@ -58,6 +54,7 @@ export default {
       locationOpen: false,
     };
   },
+  mixins: [ SharedFunctions ],
   computed: {
     i18nEnabled() {
       if (this.$config.i18n && this.$config.i18n.expandCollapseTitle) {
@@ -97,10 +94,6 @@ export default {
       }
       return sectionColor;
     },
-    // servicesOffered() {
-    //   // return this.$props.item.services_offered.split(',');
-    //   return this.$props.item.services_offered;
-    // },
     selectedResources() {
       return this.$store.state.selectedResources;
     },
@@ -139,8 +132,6 @@ export default {
   mounted() {
     // console.log('ExpColl mounted:', this.evaluateSlot(this.slots.siteName));
     if (this.selectedResources.includes(this.item._featureId)) {
-      // console.log('ExpandCollapse mounted is running and item should be open');
-      // this.locationOpen = true;
       this.openLocation();
     }
   },
@@ -154,16 +145,6 @@ export default {
       if (!visible) {
         el.scrollIntoView();
       }
-
-      // visible = this.isElementInViewport(el);
-      // console.log('visible 2:', visible)
-      // if (!visible) {
-      //   setTimeout(function () {
-      //     console.log('still not visible');
-      //     console.log('attempting to scroll into view again');
-      //     el.scrollIntoView();
-      //   }, 1000);
-      // }
     },
     isElementInViewport(el) {
       const rect = el.getBoundingClientRect();
