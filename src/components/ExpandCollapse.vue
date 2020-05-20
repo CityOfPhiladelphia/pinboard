@@ -57,7 +57,7 @@ export default {
   mixins: [ SharedFunctions ],
   computed: {
     i18nEnabled() {
-      if (this.$config.i18n && this.$config.i18n.expandCollapseTitle) {
+      if (this.$config.i18n && this.$config.i18n.enabled) {
         return true;
       } else {
         return false;

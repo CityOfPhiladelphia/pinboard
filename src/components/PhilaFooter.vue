@@ -65,7 +65,7 @@ export default {
   },
   computed: {
     i18nEnabled(){
-      if (this.$config.i18n && this.$config.i18n.footer) {
+      if (this.$config.i18n && this.$config.i18n.enabled) {
         return true;
       } else {
         return false;

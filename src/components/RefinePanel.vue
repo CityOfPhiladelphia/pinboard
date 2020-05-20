@@ -203,20 +203,22 @@ export default {
       type: String,
       default: 'REFINE',
     },
-    infoCircles: {
-
-    }
   },
   data() {
     return {
       baseUrl: process.env.VUE_APP_BASE_URL,
       refineList: null,
       selected: [],
-      // refineOpen: false,
-      // addressEntered: null,
     };
   },
   computed: {
+    infoCircles() {
+      let value = {};
+      if (this.$config.infoCircles) {
+        value = this.$config.infoCircles;
+      }
+      return value;
+    },
     refineType() {
       if (this.$config.refine) {
         return this.$config.refine.type;
@@ -227,7 +229,7 @@ export default {
       return this.$store.state.refineOpen;
     },
     i18nEnabled() {
-      if (this.$config.i18n && this.$config.i18n.refinePanel) {
+      if (this.$config.i18n && this.$config.i18n.enabled) {
         return true;
       } else {
         return false;
@@ -235,11 +237,9 @@ export default {
     },
     addressEntered() {
       let address;
-
       if (this.geocode.status === 'success') {
         address = this.geocode.data.properties.street_address;
       }
-
       return address;
     },
     keywordsEntered() {
@@ -275,11 +275,6 @@ export default {
       this.selected = this.$route.query.services.split(',');
     }
   },
-  // mounted() {
-  //   // console.log('RefinePanel is mounted, this.$store.state.selectedServices:', this.$store.state.selectedServices, 'this.$router:', this.$router);
-  //   if (this.$store.state.selectedServices.length > 0) {
-  //   }
-  // },
   methods: {
     clearAll() {
       // console.log('RefinePanel clearAll is running');

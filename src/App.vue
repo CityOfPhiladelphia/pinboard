@@ -41,7 +41,6 @@
 
       <RefinePanel
         slot="after-stripe"
-        :infoCircles="this.$config.infoCircles"
       />
 
       <!-- <component
@@ -288,7 +287,6 @@ export default {
     if (!this.i18nEnabled) {
       this.$data.buttonText = this.$data.isMapVisible ? 'Toggle to resource list' : 'Toggle to map';
     } else {
-      // this.$data.buttonText = this.$data.isMapVisible ? 'viewMap' : 'viewList';
       this.$data.buttonText = this.$data.isMapVisible ? 'app.viewList' : 'app.viewMap';
     }
 
@@ -409,10 +407,8 @@ export default {
         if (!this.$data.buffer) {
           // console.log('!this.$data.buffer');
           booleanBuffer = true;
-          // } else if (typeof row.lon === 'number' && row.lon !== null) {
         } else if (row.latlng) {
           if (typeof row.latlng[0] === 'number' && row.latlng[0] !== null) {
-            // const rowPoint = point([ row.lon, row.lat ]);
             const rowPoint = point([ row.latlng[1], row.latlng[0] ]);
             if (booleanPointInPolygon(rowPoint, this.$data.buffer)) {
               booleanBuffer = true;
@@ -423,9 +419,7 @@ export default {
         let booleanKeywords = true;
         if (this.selectedKeywords.length > 0) {
           booleanKeywords = false;
-          // console.log('row:', row);
           const description = row.tags;
-          // const description = row.tags.split(/,| /);
           const keywordsFiltered = this.selectedKeywords.filter(f => description.includes(f));
           if (keywordsFiltered.length > 0) {
             booleanKeywords = true;
