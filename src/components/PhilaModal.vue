@@ -14,6 +14,7 @@
             </button>
             <slot name="header" />
           </div>
+          <hr>
           <div class="modal-body">
             <slot name="body" />
           </div>
@@ -67,7 +68,7 @@ export default {
 
 @media screen and (min-width: 40em) {
   .modal-wrapper {
-    top: 30vh;
+    top: 10vh;
     max-width: 500px;
   }
 }
@@ -95,8 +96,12 @@ export default {
   font-family: Helvetica, Arial, sans-serif;
 }
 
+.modal-header {
+  font-size: 1.5rem;
+}
+
 .modal-body {
-  margin: 2rem 0;
+  margin: 1rem 0;
 }
 
 </style>

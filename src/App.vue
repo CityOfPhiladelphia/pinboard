@@ -19,6 +19,21 @@
 
       </div>
     </PhilaModal>
+
+    <PhilaModal
+      v-show="isAlertModalOpen"
+      @close="closeModal"
+    >
+      <div
+        slot="header"
+        v-html="alertModalHeader"
+      />
+      <div
+        slot="body"
+        v-html="alertModalBody"
+      />
+    </PhilaModal>
+
     <PhilaHeader
       :app-title="this.$config.app.title"
       :app-tag-line="this.$config.app.tagLine"
@@ -134,6 +149,7 @@ export default {
       publicPath: process.env.BASE_URL,
       isMapVisible: false,
       isModalOpen: false,
+      isAlertModalOpen: false,
       isLarge: true,
       buffer: null,
       buttonText: 'Toggle to map',
@@ -148,6 +164,20 @@ export default {
       let value = false;
       if (this.$config.alerts && this.$config.alerts.header) {
         value = this.$config.alerts.header.enabled(this.$store.state);
+      }
+      return value;
+    },
+    alertModalHeader() {
+      let value = '';
+      if (this.$config.alerts && this.$config.alerts.modal && this.$config.alerts.modal.header) {
+        value = this.$config.alerts.modal.header;
+      }
+      return value;
+    },
+    alertModalBody() {
+      let value = '';
+      if (this.$config.alerts && this.$config.alerts.modal && this.$config.alerts.modal.body) {
+        value = this.$config.alerts.modal.body;
       }
       return value;
     },
@@ -299,6 +329,10 @@ export default {
       this.$data.buttonText = this.$data.isMapVisible ? 'Toggle to resource list' : 'Toggle to map';
     } else {
       this.$data.buttonText = this.$data.isMapVisible ? 'app.viewList' : 'app.viewMap';
+    }
+
+    if (this.$config.alerts && this.$config.alerts.modal && this.$config.alerts.modal.enabled) {
+      this.isAlertModalOpen = true;
     }
 
     this.onResize();
@@ -466,6 +500,7 @@ export default {
     },
     closeModal() {
       this.isModalOpen = false;
+      this.isAlertModalOpen = false;
       this.toggleBodyClass('no-scroll');
     },
     toggleBodyClass(className) {
