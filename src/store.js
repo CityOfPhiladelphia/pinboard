@@ -9,6 +9,7 @@ import pvdStore from '@phila/vue-datafetch/src/store';
 import pvmStore from '@phila/vue-mapping/src/store';
 import pvcStore from '@phila/vue-comps/src/store';
 import mergeDeep from './util/merge-deep';
+import { format } from 'date-fns';
 
 Vue.use(Vuex);
 
@@ -34,6 +35,7 @@ function createStore(config) {
       refineOpen: false,
       fullScreen: {},
       subsections: {},
+      alertResponse: null,
     },
     mutations: {
       // setSelectedServices(state, payload) {
@@ -41,6 +43,9 @@ function createStore(config) {
       // },
       setIsMobileOrTablet(state, payload) {
         state.isMobileOrTablet = payload;
+      },
+      setalertResponse(state, payload) {
+        state.alertResponse = payload;
       },
       setSubsections(state, payload) {
         state.subsections = payload;
@@ -77,7 +82,94 @@ function createStore(config) {
       },
     },
     actions: {
+      async alertCheck({ commit }, hc) {
 
+        let alertHours = hc.filter(i => i.type === 'alertHours');
+        let alertAPI = hc.filter(i => i.type === 'alertAPI');
+
+        // let isalert = document.location.href.indexOf('alert') !== -1;
+        let isalertHours = false;
+
+        const fullDate = new Date();
+        const year = fullDate.getFullYear();
+        const month = fullDate.getMonth();
+        const date = fullDate.getDate();
+        const day = fullDate.getDay();
+        const t = format(fullDate,'k:mm');
+
+        console.log('store.js alertCheck, hc:', hc, 'alertHours:', alertHours, 'fullDate:', fullDate, 'year', year, 'month', month, 'date', date, 'day:', day, 't:', t);
+        // console.log('store.js alertCheck, hc:', hc, 'alertHours:', alertHours, 'isalert:', isalert, 'fullDate:', fullDate, 'year', year, 'month', month, 'date', date, 'day:', day, 't:', t);
+        let response = {};
+
+        if (alertHours.length === 1) {
+          console.log('alertCheck if is running');
+          for (let period of alertHours[0].condition) {
+            // console.log('format(fullDate, "k:mm")', format(fullDate,'k:mm'), 'period.day:', period.day, 'period.startTime:', period.startTime, 'period.endTime:', period.endTime);
+            if (day === period.day) {
+              let startTime = period.startTime.split(':');
+              let periodStartTime = new Date(format(new Date(year, month, date, startTime[0], startTime[1]), "MMMM d, yyyy k:mm") + ' GMT-04:00');
+              let endTime = period.endTime.split(':');
+              let periodEndTime = new Date(format(new Date(year, month, date, endTime[0], endTime[1]), "MMMM d, yyyy k:mm") + ' GMT-04:00');
+              console.log('startTime:', startTime, 'endTime:', endTime, 'periodEndTime:', periodEndTime, 'Date.parse(periodStartTime):', Date.parse(periodStartTime), 'Date.parse(fullDate):', Date.parse(fullDate), 'Date.parse(periodEndTime):', Date.parse(periodEndTime));
+              if (Date.parse(periodStartTime) <= Date.parse(fullDate) && Date.parse(fullDate) <= Date.parse(periodEndTime)) {
+                console.log('fullDate is between start and end time');
+                isalertHours = true;
+                commit('setalertResponse', 'alertHours');
+                // if (!isalert) {
+                //   window.location.href = process.env.VUE_APP_PUBLIC_PATH + '#/alert';
+                //   return;
+                // }
+                return;
+                // continue;
+              }
+            }
+          }
+        }
+
+        // sometimes the system is not on alert, it is just offline connection
+        // if (navigator.onLine === false) {
+        //   if (isalert) {
+        //     window.location.href = '/';
+        //     return;
+        //   }
+        //   return true;
+        // }
+
+        try {
+
+          if (alertAPI.length === 1) {
+            response = await axios.get(alertAPI[0].condition);
+            console.log('Alert-Check response:', response);
+            if (response.data && response.data.alert || response.status !== 200) {
+              commit('setalertResponse', 'alertAPI');
+              if (!isalert) {
+                window.location.href = process.env.VUE_APP_PUBLIC_PATH + '#/alert';
+                return;
+              }
+            } else {
+              console.log('alert check has a good response');
+              commit('setalertResponse', null);
+              if (isalert) {
+                console.log('isalert is null');
+                window.location.href = process.env.VUE_APP_PUBLIC_PATH;
+                return;
+              } else {
+                console.log('isalert is null');
+              }
+            }
+          }
+
+        } catch (err) {
+          console.log('Alert-Check-Reponse error:', err);
+          commit('setalertResponse', 'alertAPI');
+
+          if (!isalert) {
+            window.location.href = process.env.VUE_APP_PUBLIC_PATH + '#/alert';
+            return;
+          }
+        }
+        // console.log('after try/catch');
+      },
     },
   };
 
@@ -89,6 +181,7 @@ function createStore(config) {
     state: mergeStore.state,
     getters: mergeStore.getters,
     mutations: mergeStore.mutations,
+    actions: mergeStore.actions,
   });
 }
 

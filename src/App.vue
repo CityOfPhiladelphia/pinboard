@@ -29,8 +29,9 @@
 
       <AlertBanner
         slot="alert-banner"
-        v-if="this.$config.alerts && this.$config.alerts.header != null"
+        v-if="shouldShowHeaderAlert"
       >
+      <!-- v-if="this.$config.alerts && this.$config.alerts.header && this.$config.alerts.header.enabled" -->
       </AlertBanner>
 
       <div slot="mobile-menu">
@@ -140,6 +141,16 @@ export default {
     };
   },
   computed: {
+    alertResponse() {
+      return this.$store.state.alertResponse || null;
+    },
+    shouldShowHeaderAlert() {
+      let value = false;
+      if (this.$config.alerts && this.$config.alerts.header) {
+        value = this.$config.alerts.header.enabled(this.$store.state);
+      }
+      return value;
+    },
     i18nEnabled() {
       if (this.$config.i18n && this.$config.i18n.enabled) {
         return true;
