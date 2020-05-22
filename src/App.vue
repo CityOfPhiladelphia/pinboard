@@ -19,6 +19,21 @@
 
       </div>
     </PhilaModal>
+
+    <PhilaModal
+      v-show="isAlertModalOpen"
+      @close="closeModal"
+    >
+      <div
+        slot="header"
+        v-html="alertModalHeader"
+      />
+      <div
+        slot="body"
+        v-html="alertModalBody"
+      />
+    </PhilaModal>
+
     <PhilaHeader
       :app-title="this.$config.app.title"
       :app-tag-line="this.$config.app.tagLine"
@@ -29,8 +44,9 @@
 
       <AlertBanner
         slot="alert-banner"
-        v-if="this.$config.alerts && this.$config.alerts.header != null"
+        v-if="shouldShowHeaderAlert"
       >
+      <!-- v-if="this.$config.alerts && this.$config.alerts.header && this.$config.alerts.header.enabled" -->
       </AlertBanner>
 
       <div slot="mobile-menu">
@@ -41,7 +57,6 @@
 
       <RefinePanel
         slot="after-stripe"
-        :infoCircles="this.$config.infoCircles"
       />
 
       <!-- <component
@@ -134,6 +149,7 @@ export default {
       publicPath: process.env.BASE_URL,
       isMapVisible: false,
       isModalOpen: false,
+      isAlertModalOpen: false,
       isLarge: true,
       buffer: null,
       buttonText: 'Toggle to map',
@@ -141,6 +157,30 @@ export default {
     };
   },
   computed: {
+    alertResponse() {
+      return this.$store.state.alertResponse || null;
+    },
+    shouldShowHeaderAlert() {
+      let value = false;
+      if (this.$config.alerts && this.$config.alerts.header) {
+        value = this.$config.alerts.header.enabled(this.$store.state);
+      }
+      return value;
+    },
+    alertModalHeader() {
+      let value = '';
+      if (this.$config.alerts && this.$config.alerts.modal && this.$config.alerts.modal.header) {
+        value = this.$config.alerts.modal.header;
+      }
+      return value;
+    },
+    alertModalBody() {
+      let value = '';
+      if (this.$config.alerts && this.$config.alerts.modal && this.$config.alerts.modal.body) {
+        value = this.$config.alerts.modal.body;
+      }
+      return value;
+    },
     i18nEnabled() {
       if (this.$config.i18n && this.$config.i18n.enabled) {
         return true;
@@ -172,10 +212,6 @@ export default {
     dataStatus() {
       return this.$store.state.sources[this.$appType].status;
     },
-    // dataTest() {
-    //   // console.log('computed dataTest is running');
-    //   return this.$store.state.sources[this.$appType].data.rows;
-    // },
     database() {
       let database = this.$store.state.sources[this.$appType].data.rows || this.$store.state.sources[this.$appType].data.features || this.$store.state.sources[this.$appType].data;
       // console.log('computed database is running, database:', database);
@@ -184,24 +220,8 @@ export default {
 
         if (this.$config.hiddenRefine) {
           for (let field in this.$config.hiddenRefine) {
-            let valOrGetter = this.$config.hiddenRefine[field];
-            const valOrGetterType = typeof valOrGetter;
-            let val;
-
-            if (valOrGetterType === 'function') {
-              const state = this.$store.state;
-              const controller = this.$controller;
-              const getter = valOrGetter;
-              const item = value;
-              if (item) {
-                val = getter(state, item, controller);
-              } else {
-                val = getter(state);
-              }
-            } else {
-              val = valOrGetter;
-            }
-            // console.log('val:', val);
+            let getter = this.$config.hiddenRefine[field];
+            let val = getter(value);
             if (val === false) {
               delete database[key];
             }
@@ -308,22 +328,12 @@ export default {
     if (!this.i18nEnabled) {
       this.$data.buttonText = this.$data.isMapVisible ? 'Toggle to resource list' : 'Toggle to map';
     } else {
-      // this.$data.buttonText = this.$data.isMapVisible ? 'viewMap' : 'viewList';
       this.$data.buttonText = this.$data.isMapVisible ? 'app.viewList' : 'app.viewMap';
     }
 
-    // this.$i18n.locale = 'es';
-    // let compiledDataSource = [];
-    // if (Object.keys(this.$config.dataSources).length > 1) {
-    //   console.log('this.$store.state.sources:', this.$store.state.sources);
-    //   for (let source of Object.keys(this.$store.state.sources)) {
-    //     console.log('this.$store.state.sources[source].data:', this.$store.state.sources[source].data);
-    //     compiledDataSource.push(this.$store.state.sources[source].data.features);
-    //   }
-    // }
-    // console.log('compiledDataSource:', compiledDataSource);
-
-    // this.setUpData();
+    if (this.$config.alerts && this.$config.alerts.modal && this.$config.alerts.modal.enabled) {
+      this.isAlertModalOpen = true;
+    }
 
     this.onResize();
   },
@@ -346,7 +356,6 @@ export default {
         // console.log('this.$store.state.sources:', this.$store.state.sources);
         for (let source of theSources) {
           // console.log('source:', source, 'this.$store.state.sources[source].data:', this.$store.state.sources[source].data);
-          // for (let point of this.$store.state.sources[source].data.features) {
           for (let point of source.features) {
             // console.log('point:', point);
             Object.assign(point, point.attributes);
@@ -375,101 +384,62 @@ export default {
         // console.log('row.services_offered:', row.services_offered);
 
         if (this.$config.refine && this.$config.refine.type && ['multipleFields', 'multipleFieldGroups'].includes(this.$config.refine.type)) {
-          // console.log('in if');
-          let conditions = [];
+          let booleanConditions = [];
 
           if (selectedServices.length === 0) {
-            conditions.push(true);
+            booleanConditions.push(true);
           } else {
 
             // if refine.type = multipleFields
             if (this.$config.refine.type === 'multipleFields') {
-
               for (let field in this.$config.refine.multipleFields) {
                 if (selectedServices.includes(field)) {
 
-                  let valOrGetter = this.$config.refine.multipleFields[field];
-                  const valOrGetterType = typeof valOrGetter;
-                  let val;
-
-                  if (valOrGetterType === 'function') {
-                    const state = this.$store.state;
-                    const controller = this.$controller;
-                    const getter = valOrGetter;
-                    const item = row;
-                    if (item) {
-                      val = getter(state, item, controller);
-                    } else {
-                      // console.log('evaluateSlot, about to get value');
-                      val = getter(state);
-                      // console.log('state:', state, 'val:', val);
-                    }
-                  } else {
-                    val = valOrGetter;
-                  }
-
-                  // console.log('row:', row, 'field:', field, 'this.$config.refine.multipleFields[field]', this.$config.refine.multipleFields[field], 'val:', val);
-                  conditions.push(val);
+                  let getter = this.$config.refine.multipleFields[field];
+                  let val = getter(item);
+                  booleanConditions.push(val);
                 }
               }
             } else {
-              // console.log('this.$config.refine.type === multipleFieldGroups');
+              // if refine.type = multipleFieldsGroups
               for (let group in this.$config.refine.multipleFieldGroups) {
-                // console.log('group:', group);
                 for (let field in this.$config.refine.multipleFieldGroups[group]) {
                   // console.log('field:', field, "this.$config.refine.multipleFieldGroups[group][field]['unique_key']:", this.$config.refine.multipleFieldGroups[group][field]['unique_key']);
                   let unique_key = this.$config.refine.multipleFieldGroups[group][field]['unique_key']
                   if (selectedServices.includes(unique_key)) {
-                    // console.log('inside if, unique_key:', unique_key);
-                    let valOrGetter = this.$config.refine.multipleFieldGroups[group][field]['value'];
-                    const valOrGetterType = typeof valOrGetter;
-                    let val;
-
-                    if (valOrGetterType === 'function') {
-                      const state = this.$store.state;
-                      const controller = this.$controller;
-                      const getter = valOrGetter;
-                      const item = row;
-                      if (item) {
-                        val = getter(state, item, controller);
-                      } else {
-                        val = getter(state);
-                      }
-                    } else {
-                      val = valOrGetter;
-                    }
-                    // console.log('row:', row, 'field:', field, 'this.$config.refine.multipleFields[field]', this.$config.refine.multipleFields[field], 'val:', val);
-                    conditions.push(val);
-                  } // end of if
-                } // end of for
-              } // end of for
+                    let getter = this.$config.refine.multipleFieldGroups[group][field]['value'];
+                    let val = getter(row);
+                    booleanConditions.push(val);
+                  }
+                }
+              }
             }
 
           }
-          if (conditions.includes(true)) {
-            // console.log('conditions includes true:', conditions);
+          if (booleanConditions.includes(true)) {
+            // console.log('booleanConditions includes true:', booleanConditions);
             booleanServices = true
           }
 
-        // if refine.type = categoryField
-        } else if (this.$config.refine && this.$config.refine.type && this.$config.refine.type === 'categoryField') {
+        // if refine.type = categoryField_value
+        } else if (this.$config.refine && this.$config.refine.type === 'categoryField_value') {
           if (selectedServices.length === 0) {
             booleanServices = true;
           } else {
-            let value = this.$config.refine.categoryField(row);
+            let value = this.$config.refine.value(row);
             // console.log('value:', value);
             booleanServices = selectedServices.includes(value);
           }
 
         } else {
+          // the original default version, or refine.type = 'categoryField_array'
           let servicesSplit;
-          if (row.services_offered) {
+          if (this.$config.refine) {
+            servicesSplit = this.$config.refine.value(row);
+          } else if (row.services_offered) {
             servicesSplit = row.services_offered;
-          } else if (row.attributes.category_type) {
-            servicesSplit = [row.attributes.category_type];
           }
-          // console.log('servicesSplit:', servicesSplit);
-          // const { selectedServices } = this.$store.state;
+
           if (selectedServices.length === 0) {
             booleanServices = true;
           } else {
@@ -482,10 +452,8 @@ export default {
         if (!this.$data.buffer) {
           // console.log('!this.$data.buffer');
           booleanBuffer = true;
-          // } else if (typeof row.lon === 'number' && row.lon !== null) {
         } else if (row.latlng) {
           if (typeof row.latlng[0] === 'number' && row.latlng[0] !== null) {
-            // const rowPoint = point([ row.lon, row.lat ]);
             const rowPoint = point([ row.latlng[1], row.latlng[0] ]);
             if (booleanPointInPolygon(rowPoint, this.$data.buffer)) {
               booleanBuffer = true;
@@ -496,9 +464,7 @@ export default {
         let booleanKeywords = true;
         if (this.selectedKeywords.length > 0) {
           booleanKeywords = false;
-          // console.log('row:', row);
           const description = row.tags;
-          // const description = row.tags.split(/,| /);
           const keywordsFiltered = this.selectedKeywords.filter(f => description.includes(f));
           if (keywordsFiltered.length > 0) {
             booleanKeywords = true;
@@ -534,6 +500,7 @@ export default {
     },
     closeModal() {
       this.isModalOpen = false;
+      this.isAlertModalOpen = false;
       this.toggleBodyClass('no-scroll');
     },
     toggleBodyClass(className) {

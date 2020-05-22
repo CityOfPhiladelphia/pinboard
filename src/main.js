@@ -93,6 +93,10 @@ function finishInit(config) {
   Vue.use(controllerMixin, { config, store });
   // Vue.use(controllerMixin, { config, store, eventBus });
 
+  if (config.alerts && config.alerts.alertChecks) {
+    store.dispatch('alertCheck', config.alerts.alertChecks);
+  }
+
   Vue.component('font-awesome-icon', FontAwesomeIcon);
 
   Vue.use(VueI18n)

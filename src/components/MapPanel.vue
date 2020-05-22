@@ -66,7 +66,7 @@
           :feature-id="marker._featureId"
         >
           <popup-content-functional
-            :popup-data="marker.organization_name || marker.attributes.site_name || locationInfo.siteName(null, marker)"
+            :popup-data="getSiteName(marker)"
             @didClickPopupContent="toggleMap"
           />
         </popup-simple>
@@ -97,7 +97,7 @@
           :feature-id="marker._featureId"
         >
           <popup-content-functional
-            :popup-data="marker.organization_name"
+            :popup-data="getSiteName(marker)"
             @didClickPopupContent="toggleMap"
           />
         </popup-simple>
@@ -183,8 +183,11 @@
 </template>
 
 <script>
+
 import proj4 from 'proj4';
 import 'leaflet/dist/leaflet.css';
+import SharedFunctions from './mixins/SharedFunctions.vue';
+
 // import all fontawesome icons included in phila-vue-mapping
 import * as faMapping from '@phila/vue-mapping/src/fa';
 import Map_ from '@phila/vue-mapping/src/leaflet/Map.vue';
@@ -220,6 +223,7 @@ export default {
     LegendControl,
   },
   mixins: [
+    SharedFunctions,
     cyclomediaMixin,
   ],
   data() {

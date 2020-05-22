@@ -165,7 +165,7 @@
     <i18nBanner
       class="hide-for-small-only"
       slot="i18n-banner"
-      v-if="this.$config.i18n && this.$config.i18n.header != null"
+      v-if="this.$config.i18n && this.$config.i18n.enabled"
     />
 
     <slot name="alert-banner" />
@@ -202,7 +202,7 @@
       class="mobile-menu-content-container show-for-small-only"
     >
       <i18nBanner
-        v-if="this.$config.i18n && this.$config.i18n.header != null"
+        v-if="this.$config.i18n && this.$config.i18n.enabled"
         @language-selected="togglei18nMenu"
       />
     </div>
@@ -358,7 +358,7 @@ export default {
       this.searchString = query[this.searchType];
       const searchCategory = Object.keys(query)[0];
       const value = query[searchCategory];
-      // console.log('in comboSearchTriggered, value:', value, 'query:', query, 'this.searchType:', this.searchType, '{...this.$route.query}:', { ...this.$route.query }, '{...query}:', { ...query });
+      console.log('in comboSearchTriggered, value:', value, 'query:', query, 'this.searchType:', this.searchType, '{...this.$route.query}:', { ...this.$route.query }, '{...query}:', { ...query });
       this.$controller.handleSearchFormSubmit(value, searchCategory);
     },
     clearSearchTriggered() {

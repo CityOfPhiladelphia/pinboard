@@ -38,7 +38,7 @@
 
         </div>
 
-        <!-- if using categoryField or multipleFields options -->
+        <!-- if using categoryField_value, categoryField_array, or multipleFields options -->
         <div
           v-if="dataStatus === 'success' && refineType !== 'multipleFieldGroups'"
           class="grid-x service-list"
@@ -92,13 +92,11 @@
           v-if="dataStatus === 'success' && refineType === 'multipleFieldGroups'"
           class="grid-x group-service-list service-list"
         >
-        <!-- :key="group.i18n_key" -->
           <div
             v-for="(group, ind) in refineList"
             :key="ind"
             class="service-group-holder"
           >
-            <!-- {{ $t(ind) }} -->
             {{ $t(ind) }}
 
             <div class="grid-x service-group">
@@ -205,20 +203,22 @@ export default {
       type: String,
       default: 'REFINE',
     },
-    infoCircles: {
-
-    }
   },
   data() {
     return {
       baseUrl: process.env.VUE_APP_BASE_URL,
       refineList: null,
       selected: [],
-      // refineOpen: false,
-      // addressEntered: null,
     };
   },
   computed: {
+    infoCircles() {
+      let value = {};
+      if (this.$config.infoCircles) {
+        value = this.$config.infoCircles;
+      }
+      return value;
+    },
     refineType() {
       if (this.$config.refine) {
         return this.$config.refine.type;
@@ -229,7 +229,7 @@ export default {
       return this.$store.state.refineOpen;
     },
     i18nEnabled() {
-      if (this.$config.i18n && this.$config.i18n.refinePanel) {
+      if (this.$config.i18n && this.$config.i18n.enabled) {
         return true;
       } else {
         return false;
@@ -237,11 +237,9 @@ export default {
     },
     addressEntered() {
       let address;
-
       if (this.geocode.status === 'success') {
         address = this.geocode.data.properties.street_address;
       }
-
       return address;
     },
     keywordsEntered() {
@@ -254,11 +252,6 @@ export default {
       if (this.$store.state.sources[this.$appType].data) {
         return this.$store.state.sources[this.$appType].data.rows || this.$store.state.sources[this.$appType].data.features || this.$store.state.sources[this.$appType].data;
       }
-      // } else if (this.$store.state.sources[this.$appType].data.features) {
-      //   return this.$store.state.sources[this.$appType].data.features;
-      // } else {
-      //   return this.$store.state.sources[this.$appType].data;
-      // }
     },
   },
   watch: {
@@ -282,15 +275,6 @@ export default {
       this.selected = this.$route.query.services.split(',');
     }
   },
-  mounted() {
-    // console.log('RefinePanel is mounted, this.$store.state.selectedServices:', this.$store.state.selectedServices, 'this.$router:', this.$router);
-    if (this.$store.state.selectedServices.length > 0) {
-      // console.log('there are services');
-    }
-    // this.$data.selected = this.$store.state.selectedServices;
-
-    // this.getRefineSearchList();
-  },
   methods: {
     clearAll() {
       // console.log('RefinePanel clearAll is running');
@@ -302,42 +286,35 @@ export default {
       const refineData = this.database;
 
       let service = '';
+      let uniq;
 
-      // console.log('in getRefineSearchList, refineData:', refineData);
-      refineData.forEach((arrayElem) => {
-        // console.log('arrayElem:', arrayElem);
-        if (this.$config.refine && this.$config.refine.categoryField) {
-          let value = this.$config.refine.categoryField(arrayElem);
+      if (!this.$config.refine || this.$config.refine && ['categoryField_array', 'categoryField_value'].includes(this.$config.refine.type)) {
+        // console.log('in getRefineSearchList, refineData:', refineData);
+        refineData.forEach((item) => {
+          if (this.$config.refine) {
+            let value = this.$config.refine.value(item);
+            service += `${value},`;
+          } else if (item.services_offered) {
+            service += `${item.services_offered},`;
+          }
+        });
 
-          service += `${value},`;
-        } else if (arrayElem.services_offered) {
-          service += `${arrayElem.services_offered},`;
-        } else if (arrayElem.attributes.category_type) {
-          service += `${arrayElem.attributes.category_type},`;
-        }
-      });
+        // console.log('service:', service);
+        let serviceArray = service.split(/(,|;)/);
+        serviceArray = serviceArray.map(s => s.trim());
 
-      // console.log('service:', service);
+        const uniqArray = [ ...new Set(serviceArray) ];
+        // clean up any dangling , or ;
+        uniq = uniqArray.filter(a => a.length > 2);
+        uniq.filter(Boolean); // remove empties
+        uniq.sort();
 
-      // TODO: break this into smaller chunks
-      let serviceArray = service.split(/(,|;)/);
-      serviceArray = serviceArray.map(s => s.trim());
-
-      const uniqArray = [ ...new Set(serviceArray) ];
-
-      // clean up any dangling , or ;
-      let uniq = uniqArray.filter(a => a.length > 2);
-
-      uniq.filter(Boolean); // remove empties
-
-      if (this.$config.refineCategories) {
-        uniq = this.$config.refineCategories;
-      }
-
-      if (this.$config.refine && this.$config.refine.type === 'multipleFields') {
+      } else if (this.$config.refine && this.$config.refine.type === 'multipleFields') {
         uniq = Object.keys(this.$config.refine.multipleFields);
+        uniq.sort();
       }
-      uniq.sort();
+
+
       if (this.$config.refine && this.$config.refine.type === 'multipleFieldGroups') {
         uniq = {};
         for (let group of Object.keys(this.$config.refine.multipleFieldGroups)){
@@ -356,7 +333,6 @@ export default {
         }
       }
 
-
       // console.log('uniq:', uniq);
       this.$data.refineList = uniq;
       return uniq;
@@ -368,7 +344,6 @@ export default {
     expandRefine() {
       if (window.innerWidth <= 749) { // converted from rems
         this.$store.commit('setRefineOpen', !this.refineOpen);
-        // this.refineOpen = !this.refineOpen;
       }
     },
     closeRefinePanel(){
