@@ -73,6 +73,17 @@ export default {
   }
 }
 
+@media screen and (max-width: 40em) {
+  .modal-wrapper {
+    top: 5vh;
+    max-width: 300px;
+  }
+
+  hr {
+    margin: .5rem !important;
+  }
+}
+
 .modal-wrapper {
   display: block;
   position: relative;
@@ -93,15 +104,17 @@ export default {
   border-radius: 2px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, .33);
   transition: all .3s ease;
-  font-family: Helvetica, Arial, sans-serif;
+  font-family: "Montserrat", sans-serif;
+  // font-family: Helvetica, Arial, sans-serif;
 }
 
 .modal-header {
-  font-size: 1.5rem;
+  font-size: 1.3rem;
 }
 
 .modal-body {
   margin: 1rem 0;
 }
+
 
 </style>
