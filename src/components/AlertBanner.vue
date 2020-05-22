@@ -1,9 +1,12 @@
 <template>
-  <div class="alert">
-    <p
-      class="side-padding no-margin"
-      v-html="alertContent"
-    />
+  <div class="background-div">
+    <div class="alert">
+      <font-awesome-icon icon="exclamation" />
+      <p
+        class="inline-paragraph no-margin"
+        v-html="alertContent"
+      />
+    </div>
   </div>
 </template>
 
@@ -40,10 +43,24 @@ export default {
 
 <style>
 
+.background-div {
+  background: #ffffff;
+  padding: 10px;
+}
+
 .alert {
   background: #cc3000;
   font-size: 16px;
   color: white;
+  padding-top: 6px;
+  padding-bottom: 6px;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.inline-paragraph {
+  display: inline-block;
+  margin-left: 20px;
 }
 
 .no-margin {
