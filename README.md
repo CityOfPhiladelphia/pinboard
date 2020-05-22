@@ -29,6 +29,14 @@ Create pull request for changes and merge into `master` branch for travis-ci bui
 
 ## Release Notes
 
+### 0.3.5 - 5/22/2018
+
+* adds to footer
+
+### 0.3.4 - 5/22/2018
+
+* adds all kinds of alert functionality
+
 ### 0.3.3 - 5/18/2020
 
 * fixes tiny bug with custom greeting

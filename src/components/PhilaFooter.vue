@@ -49,6 +49,20 @@
               />
             </li>
 
+            <li
+              v-if="otherLinksEnabled"
+              v-for="link in otherLinks"
+            >
+              <a
+                :href="link.link"
+                target="_blank"
+                v-html="link.text"
+              >
+                {{ link }}
+              </a>
+            </li>
+
+
           </ul>
         </nav>
       </div>
@@ -76,6 +90,20 @@ export default {
         return false;
       } else {
         return true;
+      }
+    },
+    otherLinksEnabled() {
+      if (this.$config.footer && this.$config.footer.OtherLinks) {
+        return true;
+      } else {
+        return false;
+      }
+    },
+    otherLinks() {
+      if (this.otherLinksEnabled) {
+        return this.$config.footer.OtherLinks;
+      } else {
+        return null;
       }
     }
   }
