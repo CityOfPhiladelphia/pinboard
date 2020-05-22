@@ -1,7 +1,10 @@
 <template>
   <div class="background-div">
     <div class="alert">
-      <font-awesome-icon icon="exclamation" />
+      <font-awesome-icon
+        v-if="!isMobileOrTablet"
+        icon="exclamation"
+      />
       <p
         class="inline-paragraph no-margin"
         v-html="alertContent"
@@ -15,6 +18,9 @@
 export default {
   name: 'AlertBanner',
   computed: {
+    isMobileOrTablet() {
+      return this.$store.state.isMobileOrTablet;
+    },
     i18nLocale() {
       return this.$i18n.locale;
     },
