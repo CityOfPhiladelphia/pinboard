@@ -29,6 +29,10 @@ Create pull request for changes and merge into `master` branch for travis-ci bui
 
 ## Release Notes
 
+### 0.3.6 - 5/27/2018
+
+* upgrades all packages
+
 ### 0.3.5 - 5/22/2018
 
 * adds to footer
