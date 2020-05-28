@@ -113,6 +113,8 @@
 </template>
 <script>
 
+import 'mapbox-gl/dist/mapbox-gl.css';
+
 import { point } from '@turf/helpers';
 import buffer from '@turf/buffer';
 import booleanPointInPolygon from '@turf/boolean-point-in-polygon';
@@ -338,6 +340,14 @@ export default {
     this.onResize();
   },
   created() {
+    if (this.$config.map) {
+      if (this.$config.map.shouldInitialize === false) {
+        this.$store.commit('setShouldInitializeMap', false);
+      }
+      if (this.$config.map.type) {
+        this.$store.commit('setMapType', this.$config.map.type);
+      }
+    }
     window.addEventListener('resize', this.onResize);
   },
 

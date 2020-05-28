@@ -3,6 +3,7 @@
   <div class="cell medium-12 medium-cell-block-y">
     <Map_
       id="map-tag"
+      v-if="this.mapType === 'leaflet'"
       :class="{ 'mb-map-with-widget': this.$store.state.cyclomedia.active || this.$store.state.pictometry.active }"
       :center="this.$store.state.map.center"
       :zoom="this.$store.state.map.zoom"
@@ -175,6 +176,130 @@
         @l-click="handleCyclomediaRecordingClick"
       />
     </Map_>
+
+    <MglMap
+      v-if="this.mapType === 'mapbox'"
+      :mapStyle.sync="this.$config.mbStyle"
+      :zoom="this.$config.map.zoom"
+      :center="this.$config.map.center"
+      @load="this.onMapLoaded"
+      @move="this.handleMapMove"
+    >
+
+    <!-- v-if="!fullScreenMapEnabled" -->
+    <!-- :fill-color="marker.color" -->
+    <!-- :radius="marker.radius" -->
+    <!-- :opacity="1" -->
+    <!-- :fill-opacity="1" -->
+    <!-- :data="{
+      featureId: marker._featureId
+    }" -->
+      <MglCircleMarker
+        v-for="(marker) in currentMapData"
+        :coordinates="[marker.latlng[1], marker.latlng[0]]"
+        :key="marker._featureId"
+        :markerId="marker._featureId"
+        :size="marker.size"
+        :fill-color="marker.color"
+        :weight="marker.weight"
+        @click="handleMarkerClick"
+      />
+      <!-- :color="'green'" -->
+      <!-- v-for="recording in cyclomediaRecordings"
+      :coordinates="[recording.lng, recording.lat]"
+      :key="recording.imageId"
+      :image-id="recording.imageId"
+      :size="1.2"
+      :color="'#3388ff'"
+      :weight="1"
+      @click="handleCyclomediaRecordingClick" -->
+
+      <!-- <MglCircleMarker
+        v-for="recording in cyclomediaRecordings"
+        v-if="!fullScreenMapEnabled"
+        :coordinates="[recording.lng, recording.lat]"
+        :key="recording.imageId"
+        :image-id="recording.imageId"
+        :size="1.2"
+        :color="'#3388ff'"
+        :weight="1"
+        @click="handleCyclomediaRecordingClick"
+      /> -->
+
+      <!-- <MbIcon
+        v-if="!fullScreenMapEnabled"
+        :url="'https://mapboard-images.s3.amazonaws.com/camera.png'"
+        :name="'camera'"
+        :rotation-angle="cycloRotationAngle"
+      /> -->
+
+      <!-- <MglGeojsonLayer
+        v-if="!fullScreenMapEnabled"
+        :sourceId="'cameraPoint'"
+        :source="geojsonCameraSource"
+        :layerId="'cameraPoints'"
+        :layer="geojsonCameraLayer"
+        :icon="sitePath + 'images/camera.png'"
+      /> -->
+
+      <!-- <MglGeojsonLayer
+        v-if="!fullScreenMapEnabled"
+        :sourceId="'viewcone'"
+        :source="geojsonViewconeSource"
+        :layerId="'viewcones'"
+        :layer="geojsonViewconeLayer"
+      /> -->
+
+      <!-- <MglVectorLayer
+        v-if="this.$config.vectorTiles"
+        :source="this.$config.vectorTiles"
+        :sourceId="'PVL_Original'"
+        :layer="this.$config.vectorTiles"
+        :layerId="'PVL_Original'"
+      /> -->
+
+      <MglRasterLayer
+        v-for="(basemapSource, key) in this.basemapSources"
+        v-if="activeBasemap === key"
+        :sourceId="activeBasemap"
+        :layerId="activeBasemap"
+        :layer="basemapSource.layer"
+        :source="basemapSource.source"
+        :before="firstOverlay"
+      />
+
+      <MglRasterLayer
+        v-for="(basemapLabelSource, key) in this.basemapLabelSources"
+        v-if="tiledLayers.includes(key)"
+        :sourceId="key"
+        :layerId="key"
+        :layer="basemapLabelSource.layer"
+        :source="basemapLabelSource.source"
+        :before="firstOverlay"
+      />
+
+      <!-- <MglRasterLayer
+        v-for="(overlaySource, key) in this.overlaySources"
+        v-if="activeTiledOverlays.includes(key)"
+        :sourceId="key"
+        :layerId="key"
+        :layer="overlaySource.layer"
+        :source="overlaySource.source"
+        :before="cameraOverlay"
+      /> -->
+
+      <!-- <MglButtonControl
+        :buttonId="'buttonId-01'"
+        :buttonClass="'right'"
+        :imageLink="BasemapImageLink"
+        @click="this.handleBasemapToggleClick"
+      /> -->
+
+      <MglNavigationControl position="bottom-right"/>
+      <!-- <MglGeolocateControl position="bottom-left"/> -->
+
+    </MglMap>
+
     <slot
       class="widget-slot"
       name="cycloWidget"
@@ -209,18 +334,31 @@ export default {
     PopupSimple,
     PopupContentFunctional,
     // PopUpContent,
-    EsriTiledMapLayer: () => import(/* webpackChunkName: "pvm_EsriTiledMapLayer" */'@phila/vue-mapping/src/esri-leaflet/TiledMapLayer.vue'),
-    VectorMarker: () => import(/* webpackChunkName: "mbmp_pvm_VectorMarker" */'@phila/vue-mapping/src/components/VectorMarker.vue'),
-    CircleMarker: () => import(/* webpackChunkName: "mbmp_pvm_CircleMarker" */'@phila/vue-mapping/src/leaflet/CircleMarker.vue'),
-    PngMarker: () => import(/* webpackChunkName: "mbmp_pvm_PngMarker" */'@phila/vue-mapping/src/components/PngMarker.vue'),
-    CyclomediaRecordingCircle: () => import(/* webpackChunkName: "mbmp_pvm_CyclomediaRecordingCircle" */'@phila/vue-mapping/src/cyclomedia/RecordingCircle.vue'),
-    SvgViewConeMarker: () => import(/* webpackChunkName: "mbmp_pvm_CyclomediaSvgViewConeMarker" */'@phila/vue-mapping/src/cyclomedia/SvgViewConeMarker.vue'),
     CyclomediaButton,
     CyclomediaRecordingsClient,
     ControlCorner,
     BasemapToggleControl,
     BasemapSelectControl,
     LegendControl,
+    EsriTiledMapLayer: () => import(/* webpackChunkName: "pvm_EsriTiledMapLayer" */'@phila/vue-mapping/src/esri-leaflet/TiledMapLayer.vue'),
+    VectorMarker: () => import(/* webpackChunkName: "mbmp_pvm_VectorMarker" */'@phila/vue-mapping/src/components/VectorMarker.vue'),
+    CircleMarker: () => import(/* webpackChunkName: "mbmp_pvm_CircleMarker" */'@phila/vue-mapping/src/leaflet/CircleMarker.vue'),
+    PngMarker: () => import(/* webpackChunkName: "mbmp_pvm_PngMarker" */'@phila/vue-mapping/src/components/PngMarker.vue'),
+    CyclomediaRecordingCircle: () => import(/* webpackChunkName: "mbmp_pvm_CyclomediaRecordingCircle" */'@phila/vue-mapping/src/cyclomedia/RecordingCircle.vue'),
+    SvgViewConeMarker: () => import(/* webpackChunkName: "mbmp_pvm_CyclomediaSvgViewConeMarker" */'@phila/vue-mapping/src/cyclomedia/SvgViewConeMarker.vue'),
+    MglMap: () => import(/* webpackChunkName: "pvm_MglMap" */'@phila/vue-mapping/src/mapbox/map/GlMap.vue'),
+    MglMarker: () => import(/* webpackChunkName: "pvm_MglMarker" */'@phila/vue-mapping/src/mapbox/UI/Marker.vue'),
+    MglIcon: () => import(/* webpackChunkName: "mbmp_pvm_MglIcon" */'@phila/vue-mapping/src/mapbox/UI/Icon.vue'),
+    MglCircleMarker: () => import(/* webpackChunkName: "pvm_MglCircleMarker" */'@phila/vue-mapping/src/mapbox/UI/CircleMarker.vue'),
+    MglNavigationControl: () => import(/* webpackChunkName: "pvm_MglNavigationControl" */'@phila/vue-mapping/src/mapbox/UI/controls/NavigationControl'),
+    MglGeolocateControl: () => import(/* webpackChunkName: "pvm_MglGeolocateControl" */'@phila/vue-mapping/src/mapbox/UI/controls/GeolocateControl'),
+    MglRasterLayer: () => import(/* webpackChunkName: "pvm_MglRasterLayer" */'@phila/vue-mapping/src/mapbox/layer/RasterLayer'),
+    MglButtonControl: () => import(/* webpackChunkName: "pvm_MglButtonControl" */'@phila/vue-mapping/src/mapbox/UI/controls/ButtonControl.vue'),
+    MglControlContainer: () => import(/* webpackChunkName: "pvm_MglControlContainer" */'@phila/vue-mapping/src/mapbox/UI/controls/ControlContainer.vue'),
+    MglImageLayer: () => import(/* webpackChunkName: "pvm_MglImageLayer" */'@phila/vue-mapping/src/mapbox/layer/ImageLayer'),
+    MglVectorLayer: () => import(/* webpackChunkName: "pvm_MglVectorLayer" */'@phila/vue-mapping/src/mapbox/layer/VectorLayer'),
+    MbIcon: () => import(/* webpackChunkName: "pvm_MbIcon" */'@phila/vue-mapping/src/mapbox/UI/MbIcon'),
+    MglGeojsonLayer: () => import(/* webpackChunkName: "pvm_MglGeojsonLayer" */'@phila/vue-mapping/src/mapbox/layer/GeojsonLayer'),
   },
   mixins: [
     SharedFunctions,
@@ -277,28 +415,33 @@ export default {
       return "+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +wktext  +no_defs";
     },
     currentMapData() {
-      // console.log('MapPanel.vue currentMapData computed is recalculating');//, this.currentData:', this.currentData);
+      console.log('MapPanel.vue currentMapData computed is recalculating');//, this.currentData:', this.currentData);
       const newRows = [];
       for (const row of [ ...this.currentData ]) {
         // console.log('in loop, row:', row);
         let markerColor;
-        let markerSize;
+        let markerSize, size;
         let radius, nonSelectedRadius;
         let weight;
 
         if (this.$config.circleMarkers && this.$config.circleMarkers.radius) {
           if (this.isMobileOrTablet && this.$config.circleMarkers.mobileRadius) {
             radius = this.$config.circleMarkers.mobileRadius;
+            size = 14;
           } else {
             radius = this.$config.circleMarkers.radius;
+            size = 14;
           }
         } else {
           radius = 6;
+          size = 14;
         }
 
         if (this.selectedResources.includes(row._featureId)) {
+          console.log('row is selected, row._featureId:', row._featureId);
           markerColor = '#2176d2';
           markerSize = 40;
+          size = 40;
           radius = radius + 6;
           weight = 0;
         } else {
@@ -320,7 +463,9 @@ export default {
           }
           // console.log('weight:', weight, 'this.$config.circleMarkers.weight:', this.$config.circleMarkers.weight);
         }
+
         if (row.lat) {
+          // console.log('if row.lat is running')
           if (this.$config.projection === '3857') {
             row.latlng = proj4(this.projection3857, this.projection4326, [ row.lat, row.lon ]);
           } else {
@@ -328,6 +473,7 @@ export default {
           }
           row.color = markerColor;
           row.radius = radius;
+          row.size = size;
           row.weight = weight;
           row.icon = {
             prefix: 'fas',
@@ -337,6 +483,7 @@ export default {
           };
           newRows.push(row);
         } else if (row.geometry) {
+          // console.log('else if row.geometry is true, row.geometry:', row.geometry);
           if (this.$config.projection === '3857') {
             let lnglat = proj4(this.projection3857, this.projection4326, [ row.geometry.x, row.geometry.y ]);
             row.latlng = [ lnglat[1], lnglat[0] ];
@@ -345,17 +492,9 @@ export default {
           }
           row.color = markerColor;
           row.radius = radius;
+          row.size = size;
           row.weight = weight;
-          // if (this.$config.circleMarkers.radius) {
-          //   radius = this.$config.circleMarkers.radius;
-          // } else {
-          //   radius = 6;
-          // }
-          // if (this.$config.circleMarkers.weight) {
-          //   weight = this.$config.circleMarkers.weight;
-          // } else {
-          //   weight = 1;
-          // }
+
           row.icon = {
             prefix: 'fas',
             icon: 'map-marker-alt',
@@ -486,6 +625,37 @@ export default {
         return 19;
       }
     },
+
+    basemapSources() {
+      return this.$config.basemapSources;
+    },
+    basemapLabelSources() {
+      return this.$config.basemapLabelSources;
+    },
+    overlaySources() {
+      return this.$config.overlaySources;
+    },
+    mapType() {
+      return this.$store.state.map.type;
+    },
+    firstOverlay() {
+      let map = this.$store.state.map.map;
+      let overlay;
+      if (this.$config.overlaySources) {
+        let overlaySources = Object.keys(this.$config.overlaySources);
+        if (map) {
+          let overlays = map.getStyle().layers.filter(function(layer) {
+            // console.log('layer.id:', layer.id, 'overlaySources:', overlaySources);
+            return overlaySources.includes(layer.id);//[0].id;
+          })
+          if (overlays.length) {
+            overlay = overlays[0].id
+          }
+        }
+      }
+      return overlay;
+    },
+
   },
   watch: {
     geocodeResult(nextGeocodeResult) {
@@ -502,11 +672,21 @@ export default {
         if (this.$store.state.sources[this.$appType].data.rows) {
           rows = this.$store.state.sources[this.$appType].data.rows;
           const dataValue = rows.filter(row => row._featureId === nextLatestSelectedResource);
-          map.setView([ dataValue[0].lat, dataValue[0].lon ], this.geocodeZoom);
+          if (this.mapType === 'leaflet') {
+            map.setView([ dataValue[0].lat, dataValue[0].lon ], this.geocodeZoom);
+          } else if (this.mapType === 'mapbox') {
+            map.setCenter([ dataValue[0].lat, dataValue[0].lon ], this.geocodeZoom);
+          }
         } else if (this.$store.state.sources[this.$appType].data.features) {
           rows = this.$store.state.sources[this.$appType].data.features;
           const dataValue = rows.filter(row => row._featureId === nextLatestSelectedResource);
-          map.setView([ dataValue[0].latlng[0], dataValue[0].latlng[1] ], this.geocodeZoom);
+          console.log('in watch latestSelectedResourceFromExpand, nextLatestSelectedResource:', nextLatestSelectedResource, 'rows:', rows, 'dataValue:', dataValue);
+          if (this.mapType === 'leaflet') {
+            map.setView([ dataValue[0].latlng[0], dataValue[0].latlng[1] ], this.geocodeZoom);
+            // map.setView([ dataValue[0].lat, dataValue[0].lon ], this.geocodeZoom);
+          } else if (this.mapType === 'mapbox') {
+            map.setCenter([ dataValue[0].latlng[1], dataValue[0].latlng[0] ], this.geocodeZoom);
+          }
         }
       }
     },
@@ -531,9 +711,16 @@ export default {
       return this.$config.map.basemaps[basemap] || {};
     },
     handleMarkerClick(e) {
-      const { target } = e;
-      const { featureId } = target.options.data;
+      let featureId;
+      if (this.mapType === 'leaflet') {
+        const { target } = e;
+        featureId = target.options.data.featureId;
+      } else if (this.mapType === 'mapbox') {
+        featureId = e.component._props.markerId;
+      }
+      console.log('handleMarkerClick, e:', e, 'featureId:', featureId);
       // console.log('MapPanel.vue handleMarkerClick is running, target:', target, 'featureId:', featureId);
+
       const selectedResource = [ ...this.selectedResources ];
       if (selectedResource.includes(featureId)) {
         // console.log('markerClick close marker, featureId', featureId);
@@ -549,7 +736,9 @@ export default {
       this.$store.commit('setSelectedResources', selectedResource);
     },
     handleResize(event) {
-      this.$store.state.map.map.invalidateSize();
+      if (this.mapType === 'leaflet') {
+        this.$store.state.map.map.invalidateSize();
+      }
     },
     handleMapMove(e) {
       const map = this.$store.state.map.map;
@@ -578,6 +767,9 @@ export default {
     },
     toggleMap() {
       this.$emit('toggleMap');
+    },
+    onMapLoaded(map) {
+      this.$store.commit('setMap', map);
     },
   },
 };
