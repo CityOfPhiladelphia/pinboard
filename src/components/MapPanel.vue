@@ -21,7 +21,7 @@
           <h1>Finding map data...</h1>
         </div>
       </div>
-      
+
       <esri-tiled-map-layer
         v-for="(basemap, key) in this.$config.map.basemaps"
         v-if="activeBasemap === key"
@@ -180,11 +180,13 @@
     <MglMap
       v-if="this.mapType === 'mapbox'"
       :mapStyle.sync="this.$config.mbStyle"
-      :zoom="this.$config.map.zoom"
-      :center="this.$config.map.center"
+      :center="this.$store.state.map.center"
+      :zoom="this.$store.state.map.zoom"
       @load="this.onMapLoaded"
       @move="this.handleMapMove"
     >
+    <!-- :zoom="this.$config.map.zoom"
+    :center="this.$config.map.center" -->
 
       <overlay-legend
         v-for="legendControl in Object.keys(legendControls)"
@@ -194,6 +196,14 @@
         :items="legendControls[legendControl].data"
       >
       </overlay-legend>
+
+      <MglMarker
+        v-for="(marker) in markersForAddress"
+        :key="marker.key"
+        :coordinates="[marker.latlng[1], marker.latlng[0]]"
+        :color="marker.color"
+        :icon="marker.icon"
+      />
 
       <MglCircleMarker
         v-for="(marker) in currentMapData"
@@ -215,8 +225,9 @@
         <!-- :close-on-click="false" -->
           <div
             @click="toggleMap"
+            v-html="mapboxSiteName(marker)"
           >
-            {{ getSiteName(marker) }}
+            <!-- {{ getSiteName(marker) }} -->
           </div>
         </MglPopup>
 
@@ -448,10 +459,10 @@ export default {
         if (this.$config.circleMarkers && this.$config.circleMarkers.radius) {
           if (this.isMobileOrTablet && this.$config.circleMarkers.mobileRadius) {
             radius = this.$config.circleMarkers.mobileRadius;
-            size = 14;
+            size = this.$config.circleMarkers.mobileSize;
           } else {
             radius = this.$config.circleMarkers.radius;
-            size = 14;
+            size = this.$config.circleMarkers.size;
           }
         } else {
           radius = 6;
@@ -463,7 +474,7 @@ export default {
           // selected = true;
           markerColor = '#2176d2';
           markerSize = 40;
-          size = 40;
+          size = 30;
           radius = radius + 6;
           weight = 0;
         } else {
@@ -732,6 +743,9 @@ export default {
     window.removeEventListener('resize', this.handleResize);
   },
   methods: {
+    mapboxSiteName(marker) {
+      return '<span class="popup-text">' + this.getSiteName(marker) + '</span>'
+    },
     configForBasemap(basemap) {
       return this.$config.map.basemaps[basemap] || {};
     },
@@ -762,8 +776,11 @@ export default {
     },
 
     handleResize(event) {
+      console.log('MapPanel.vue handleResize is running');
       if (this.mapType === 'leaflet') {
         this.$store.state.map.map.invalidateSize();
+      } else if (this.mapType === 'mapbox') {
+        this.$store.state.map.map.resize();
       }
     },
     handleMapMove(e) {
@@ -802,6 +819,12 @@ export default {
 </script>
 
 <style>
+
+.popup-text {
+  font-family: "Montserrat", sans-serif;
+  font-size: 1.1rem;
+}
+
 @media screen and (max-width: 749px) {
   .map-container{
     min-height: calc(100vh - 192px);

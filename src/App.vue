@@ -159,6 +159,9 @@ export default {
     };
   },
   computed: {
+    mapType() {
+      return this.$store.state.map.type;
+    },
     alertResponse() {
       return this.$store.state.alertResponse || null;
     },
@@ -493,6 +496,21 @@ export default {
         this.$data.isMapVisible = true;
       } else {
         this.$data.isMapVisible = !this.$data.isMapVisible;
+        console.log('toggleMap is running');
+        if (this.$data.isMapVisible === true) {
+          console.log('toggleMap is running, this.$data.isMapVisible === true');
+            console.log('setTimeout function is running');
+            if (this.mapType === 'leaflet') {
+              this.$store.state.map.map.invalidateSize();
+            } else if (this.mapType === 'mapbox') {
+              let themap = this.$store.state.map.map;
+              setTimeout(function() {
+                console.log('mapbox running map resize now');
+                themap.resize();
+                console.log('mapbox ran map resize');
+              }, 250);
+            }
+        }
       }
       if (!this.i18nEnabled) {
         this.$data.buttonText = this.$data.isMapVisible ? 'Toggle to resource list' : 'Toggle to map';
