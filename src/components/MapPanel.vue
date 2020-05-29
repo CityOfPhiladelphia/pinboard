@@ -21,7 +21,7 @@
           <h1>Finding map data...</h1>
         </div>
       </div>
-      <!-- @l-click="handleMapClick" -->
+      
       <esri-tiled-map-layer
         v-for="(basemap, key) in this.$config.map.basemaps"
         v-if="activeBasemap === key"
@@ -186,14 +186,15 @@
       @move="this.handleMapMove"
     >
 
-    <!-- v-if="!fullScreenMapEnabled" -->
-    <!-- :fill-color="marker.color" -->
-    <!-- :radius="marker.radius" -->
-    <!-- :opacity="1" -->
-    <!-- :fill-opacity="1" -->
-    <!-- :data="{
-      featureId: marker._featureId
-    }" -->
+      <overlay-legend
+        v-for="legendControl in Object.keys(legendControls)"
+        :key="legendControl"
+        :position="'bottomleft'"
+        :options="legendControls[legendControl].options"
+        :items="legendControls[legendControl].data"
+      >
+      </overlay-legend>
+
       <MglCircleMarker
         v-for="(marker) in currentMapData"
         :coordinates="[marker.latlng[1], marker.latlng[0]]"
@@ -203,16 +204,33 @@
         :fill-color="marker.color"
         :weight="marker.weight"
         @click="handleMarkerClick"
-      />
-      <!-- :color="'green'" -->
-      <!-- v-for="recording in cyclomediaRecordings"
-      :coordinates="[recording.lng, recording.lat]"
-      :key="recording.imageId"
-      :image-id="recording.imageId"
-      :size="1.2"
-      :color="'#3388ff'"
-      :weight="1"
-      @click="handleCyclomediaRecordingClick" -->
+      >
+      <!-- v-for="(marker) in currentMapData"-->
+      <!-- :coordinates="[marker.latlng[1], marker.latlng[0]]" -->
+      <!-- v-if="marker.selected" -->
+        <MglPopup
+          v-if="latestSelectedResourceFromMap === marker._featureId"
+          :showed="true"
+        >
+        <!-- :close-on-click="false" -->
+          <div
+            @click="toggleMap"
+          >
+            {{ getSiteName(marker) }}
+          </div>
+        </MglPopup>
+
+      </MglCircleMarker>
+
+      <!-- <MglPopup
+        v-for="(marker) in currentMapData"
+        v-if="marker.selected"
+        :close-on-click="false"
+        :coordinates="[marker.latlng[1], marker.latlng[0]]"
+        :showed="marker.selected"
+      >
+        <div>Hello, I'm popup!</div>
+      </MglPopup> -->
 
       <!-- <MglCircleMarker
         v-for="recording in cyclomediaRecordings"
@@ -359,6 +377,8 @@ export default {
     MglVectorLayer: () => import(/* webpackChunkName: "pvm_MglVectorLayer" */'@phila/vue-mapping/src/mapbox/layer/VectorLayer'),
     MbIcon: () => import(/* webpackChunkName: "pvm_MbIcon" */'@phila/vue-mapping/src/mapbox/UI/MbIcon'),
     MglGeojsonLayer: () => import(/* webpackChunkName: "pvm_MglGeojsonLayer" */'@phila/vue-mapping/src/mapbox/layer/GeojsonLayer'),
+    MglPopup: () => import(/* webpackChunkName: "pvm_MglPopup" */'@phila/vue-mapping/src/mapbox/UI/Popup'),
+    OverlayLegend: () => import(/* webpackChunkName: "pvm_OverlayLegend" */'@phila/vue-mapping/src/mapbox/OverlayLegend'),
   },
   mixins: [
     SharedFunctions,
@@ -423,6 +443,7 @@ export default {
         let markerSize, size;
         let radius, nonSelectedRadius;
         let weight;
+        // let selected;
 
         if (this.$config.circleMarkers && this.$config.circleMarkers.radius) {
           if (this.isMobileOrTablet && this.$config.circleMarkers.mobileRadius) {
@@ -438,13 +459,15 @@ export default {
         }
 
         if (this.selectedResources.includes(row._featureId)) {
-          console.log('row is selected, row._featureId:', row._featureId);
+          // console.log('row is selected, row._featureId:', row._featureId);
+          // selected = true;
           markerColor = '#2176d2';
           markerSize = 40;
           size = 40;
           radius = radius + 6;
           weight = 0;
         } else {
+          // selected = false;
           if (this.$config.circleMarkers && this.$config.circleMarkers.circleColors) {
             // let indexVal = row._featureId.indexOf('-', row._featureId.indexOf('-') + 1);
             // console.log('row:', row, 'indexVal:', indexVal);
@@ -471,6 +494,7 @@ export default {
           } else {
             row.latlng = [ row.lat, row.lon ];
           }
+          // row.selected = selected;
           row.color = markerColor;
           row.radius = radius;
           row.size = size;
@@ -483,6 +507,7 @@ export default {
           };
           newRows.push(row);
         } else if (row.geometry) {
+          // row.selected = selected;
           // console.log('else if row.geometry is true, row.geometry:', row.geometry);
           if (this.$config.projection === '3857') {
             let lnglat = proj4(this.projection3857, this.projection4326, [ row.geometry.x, row.geometry.y ]);
@@ -735,6 +760,7 @@ export default {
       }
       this.$store.commit('setSelectedResources', selectedResource);
     },
+
     handleResize(event) {
       if (this.mapType === 'leaflet') {
         this.$store.state.map.map.invalidateSize();

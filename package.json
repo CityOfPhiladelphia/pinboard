@@ -19,7 +19,7 @@
     "@fortawesome/free-brands-svg-icons": "^5.11.2",
     "@phila/vue-comps": "2.1.3",
     "@phila/vue-datafetch": "1.2.1",
-    "@phila/vue-mapping": "https://github.com/CityOfPhiladelphia/phila-vue-mapping#2d2f363d6f0056cbca51f86f559a30d90a050992",
+    "@phila/vue-mapping": "https://github.com/CityOfPhiladelphia/phila-vue-mapping#7e953943db84325a6ce111517e50cf0d18d70da9",
     "axios": "^0.19.0",
     "core-js": "^3.3.3",
     "foundation-sites": "^6.5.3",
