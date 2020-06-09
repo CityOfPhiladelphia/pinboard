@@ -9,6 +9,7 @@
         v-if="shouldShowGreeting && !hasCustomGreeting"
         :message="greetingText"
         :options="greetingOptions"
+        @view-list="shouldShowGreeting = false"
       />
 
       <custom-greeting
