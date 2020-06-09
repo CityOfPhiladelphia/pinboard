@@ -236,7 +236,12 @@ export default {
         });
       } else {
         val = valOrGetter;
-        locations.sort((a, b) => a[val].localeCompare(b[val]));
+        locations.sort(function(a, b) {
+          // console.log('a:', a, 'b:', b, 'val:', val);
+          if (a[val] != null && b[val] != null) {
+            return a[val].localeCompare(b[val]);
+          }
+        });
       }
 
       return locations;
