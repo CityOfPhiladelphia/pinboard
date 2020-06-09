@@ -29,15 +29,19 @@ Create pull request for changes and merge into `master` branch for travis-ci bui
 
 ## Release Notes
 
-### 0.3.6 - 5/27/2018
+### 0.3.7 - 6/9/2020
+
+* uses pvm 2.1.5, with many new mapbox features added
+
+### 0.3.6 - 5/27/2020
 
 * upgrades all packages
 
-### 0.3.5 - 5/22/2018
+### 0.3.5 - 5/22/2020
 
 * adds to footer
 
-### 0.3.4 - 5/22/2018
+### 0.3.4 - 5/22/2020
 
 * adds all kinds of alert functionality
 
