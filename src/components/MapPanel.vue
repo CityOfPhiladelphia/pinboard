@@ -715,14 +715,14 @@ export default {
       }
     },
     latestSelectedResourceFromExpand(nextLatestSelectedResource) {
-      console.log('watch latestSelectedResourceFromExpand:', nextLatestSelectedResource, 'this.$appType:', this.$appType);
+      // console.log('watch latestSelectedResourceFromExpand:', nextLatestSelectedResource, 'this.$appType:', this.$appType);
       if (nextLatestSelectedResource) {
         let rows;
         const { map } = this.$store.state.map;
         if (this.$store.state.sources[this.$appType].data.rows) {
           rows = this.$store.state.sources[this.$appType].data.rows;
           const dataValue = rows.filter(row => row._featureId === nextLatestSelectedResource);
-          console.log('in watch latestSelectedResourceFromExpand, nextLatestSelectedResource:', nextLatestSelectedResource, 'rows:', rows, 'dataValue:', dataValue);
+          // console.log('in watch latestSelectedResourceFromExpand, nextLatestSelectedResource:', nextLatestSelectedResource, 'rows:', rows, 'dataValue:', dataValue);
           if (this.mapType === 'leaflet') {
             map.setView([ dataValue[0].lat, dataValue[0].lon ], this.geocodeZoom);
           } else if (this.mapType === 'mapbox') {
@@ -731,7 +731,17 @@ export default {
         } else if (this.$store.state.sources[this.$appType].data.features) {
           rows = this.$store.state.sources[this.$appType].data.features;
           const dataValue = rows.filter(row => row._featureId === nextLatestSelectedResource);
-          console.log('in watch latestSelectedResourceFromExpand, nextLatestSelectedResource:', nextLatestSelectedResource, 'rows:', rows, 'dataValue:', dataValue);
+          // console.log('in watch latestSelectedResourceFromExpand, nextLatestSelectedResource:', nextLatestSelectedResource, 'rows:', rows, 'dataValue:', dataValue);
+          if (this.mapType === 'leaflet') {
+            map.setView([ dataValue[0].latlng[0], dataValue[0].latlng[1] ], this.geocodeZoom);
+            // map.setView([ dataValue[0].lat, dataValue[0].lon ], this.geocodeZoom);
+          } else if (this.mapType === 'mapbox') {
+            map.setCenter([ dataValue[0].latlng[1], dataValue[0].latlng[0] ], this.geocodeZoom);
+          }
+        } else if (Array.isArray(this.$store.state.sources[this.$appType].data)) {
+          rows = this.$store.state.sources[this.$appType].data;
+          const dataValue = rows.filter(row => row._featureId === nextLatestSelectedResource);
+          // console.log('in watch latestSelectedResourceFromExpand, nextLatestSelectedResource:', nextLatestSelectedResource, 'rows:', rows, 'dataValue:', dataValue);
           if (this.mapType === 'leaflet') {
             map.setView([ dataValue[0].latlng[0], dataValue[0].latlng[1] ], this.geocodeZoom);
             // map.setView([ dataValue[0].lat, dataValue[0].lon ], this.geocodeZoom);
