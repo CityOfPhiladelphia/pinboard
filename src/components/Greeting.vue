@@ -107,7 +107,7 @@
 <script>
 
 import TopicComponent from '@phila/vue-comps/src/components/TopicComponent.vue';
-import PhilaButton from '@phila/pinboard/src/components/PhilaButton.vue';
+import PhilaButton from './PhilaButton.vue';
 import callout from '@phila/vue-comps/src/components/Callout.vue';
 
 export default {

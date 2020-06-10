@@ -701,17 +701,18 @@ export default {
       }
     },
     latestSelectedResourceFromExpand(nextLatestSelectedResource) {
-      // console.log('watch latestSelectedResourceFromExpand:', nextLatestSelectedResource, 'this.$appType:', this.$appType);
+      console.log('watch latestSelectedResourceFromExpand:', nextLatestSelectedResource, 'this.$appType:', this.$appType);
       if (nextLatestSelectedResource) {
         let rows;
         const { map } = this.$store.state.map;
         if (this.$store.state.sources[this.$appType].data.rows) {
           rows = this.$store.state.sources[this.$appType].data.rows;
           const dataValue = rows.filter(row => row._featureId === nextLatestSelectedResource);
+          console.log('in watch latestSelectedResourceFromExpand, nextLatestSelectedResource:', nextLatestSelectedResource, 'rows:', rows, 'dataValue:', dataValue);
           if (this.mapType === 'leaflet') {
             map.setView([ dataValue[0].lat, dataValue[0].lon ], this.geocodeZoom);
           } else if (this.mapType === 'mapbox') {
-            map.setCenter([ dataValue[0].lat, dataValue[0].lon ], this.geocodeZoom);
+            map.setCenter([ dataValue[0].lon, dataValue[0].lat ], this.geocodeZoom);
           }
         } else if (this.$store.state.sources[this.$appType].data.features) {
           rows = this.$store.state.sources[this.$appType].data.features;
