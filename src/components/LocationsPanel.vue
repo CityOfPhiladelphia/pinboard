@@ -232,8 +232,13 @@ export default {
         locations.sort(function(a, b) {
           let valueA = getter(a);
           let valueB = getter(b);
-          // console.log('valueA:', valueA, 'valueB:', valueB);
-          return valueA.localeCompare(valueB);
+          console.log('valueA:', valueA, 'valueB:', valueB);
+          let value;
+          if (valueA && valueB) {
+            value = valueA.localeCompare(valueB);
+          }
+          // return valueA.localeCompare(valueB);
+          return value;
         });
       } else {
         val = valOrGetter;

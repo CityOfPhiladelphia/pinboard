@@ -215,7 +215,11 @@ export default {
       return this.$store.state.selectedServices;
     },
     dataStatus() {
-      return this.$store.state.sources[this.$appType].status;
+      let value;
+      if (this.$store.state.sources[this.$appType]) {
+        value = this.$store.state.sources[this.$appType].status;
+      }
+      return value;
     },
     database() {
       let database = this.$store.state.sources[this.$appType].data.rows || this.$store.state.sources[this.$appType].data.features || this.$store.state.sources[this.$appType].data;
@@ -288,7 +292,7 @@ export default {
   },
   watch: {
     sourcesWatched(nextSourcesWatched) {
-      // console.log('watch sourcesWatched, nextSourcesWatched:', nextSourcesWatched);
+      console.log('watch sourcesWatched, nextSourcesWatched:', nextSourcesWatched);
       if (!nextSourcesWatched.includes(null)) {
         this.setUpData(nextSourcesWatched);
       }
@@ -329,6 +333,7 @@ export default {
     if (this.$config.dataSources) {
       this.$controller.dataManager.fetchData();
     }
+    // this.setUpData(this.$store.state.sources);
 
     if (!this.i18nEnabled) {
       this.$data.buttonText = this.$data.isMapVisible ? 'Toggle to resource list' : 'Toggle to map';
@@ -359,20 +364,21 @@ export default {
   },
   methods: {
     setUpData(theSources) {
-      // console.log('Pinboard App.vue setUpData is running, theSources:', theSources);
+      console.log('Pinboard App.vue setUpData is running, theSources:', theSources);
       let compiled = {
         key: 'compiled',
         data: [],
         status: 'success',
       }
       if (theSources.length > 1) {
-        // console.log('this.$store.state.sources:', this.$store.state.sources);
+        console.log('this.$store.state.sources:', this.$store.state.sources);
         for (let source of theSources) {
           // console.log('source:', source, 'this.$store.state.sources[source].data:', this.$store.state.sources[source].data);
           for (let point of source.features) {
             // console.log('point:', point);
-            Object.assign(point, point.attributes);
-            point.attributes = undefined;
+            
+            // Object.assign(point, point.attributes);
+            // point.attributes = undefined;
             compiled.data.push(point);
           }
         }
@@ -380,6 +386,7 @@ export default {
         this.$store.commit('setSourceData', compiled);
         this.$store.commit('setSourceStatus', compiled);
       }
+      console.log('end of setUpData, this.$store.state.sources:', this.$store.state.sources);
     },
     runBuffer() {
       const geocodePoint = point(this.geocodeGeom.coordinates);
