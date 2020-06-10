@@ -483,7 +483,11 @@ export default {
             // let indexVal = row._featureId.indexOf('-', row._featureId.indexOf('-') + 1);
             // console.log('row:', row, 'indexVal:', indexVal);
             // markerColor = this.$config.circleColors[row._featureId.slice(0, indexVal)]
-            markerColor = this.$config.circleMarkers.circleColors[row.attributes.category_type]
+            if (row.attributes.category_type) {
+              markerColor = this.$config.circleMarkers.circleColors[row.attributes.category_type];
+            } else if (row.attributes.CATEGORY_TYPE) {
+              markerColor = this.$config.circleMarkers.circleColors[row.attributes.CATEGORY_TYPE];
+            }
           } else if (this.$config.circleMarkers && this.$config.circleMarkers.color) {
             markerColor = this.$config.circleMarkers.color;
           } else {
@@ -500,8 +504,13 @@ export default {
 
         if (row.lat) {
           // console.log('if row.lat is running')
-          if (this.$config.projection === '3857') {
+          let projection = this.getProjection(row);
+          if (projection === '3857') {
+          // if (this.$config.projection === '3857') {
             row.latlng = proj4(this.projection3857, this.projection4326, [ row.lat, row.lon ]);
+          } else if (projection === '2272') {
+            let lnglat = proj4(this.projection2272, this.projection4326, [ row.geometry.x, row.geometry.y ]);
+            row.latlng = [ lnglat[1], lnglat[0] ];
           } else {
             row.latlng = [ row.lat, row.lon ];
           }
@@ -520,8 +529,13 @@ export default {
         } else if (row.geometry) {
           // row.selected = selected;
           // console.log('else if row.geometry is true, row.geometry:', row.geometry);
-          if (this.$config.projection === '3857') {
+          let projection = this.getProjection(row);
+          if (projection === '3857') {
+          // if (this.$config.projection === '3857') {
             let lnglat = proj4(this.projection3857, this.projection4326, [ row.geometry.x, row.geometry.y ]);
+            row.latlng = [ lnglat[1], lnglat[0] ];
+          } else if (projection === '2272') {
+            let lnglat = proj4(this.projection2272, this.projection4326, [ row.geometry.x, row.geometry.y ]);
             row.latlng = [ lnglat[1], lnglat[0] ];
           } else {
             row.latlng = [ row.geometry.y, row.geometry.x ];

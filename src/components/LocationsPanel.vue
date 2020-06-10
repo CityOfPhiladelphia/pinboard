@@ -232,7 +232,7 @@ export default {
         locations.sort(function(a, b) {
           let valueA = getter(a);
           let valueB = getter(b);
-          console.log('valueA:', valueA, 'valueB:', valueB);
+          // console.log('valueA:', valueA, 'valueB:', valueB);
           let value;
           if (valueA && valueB) {
             value = valueA.localeCompare(valueB);
