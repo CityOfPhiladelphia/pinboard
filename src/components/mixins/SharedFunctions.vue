@@ -1,7 +1,10 @@
 <script>
+import transforms from '../../util/transforms.js';
+
 export default {
   methods: {
     getSiteName(item) {
+      // console.log('in getSiteName, transforms:', transforms);
       let valOrGetter = this.$config.locationInfo.siteName;
       const valOrGetterType = typeof valOrGetter;
       let val;
@@ -10,13 +13,14 @@ export default {
         const state = this.$store.state;
         const getter = valOrGetter;
         if (item) {
-          val = getter(item);
+          val = getter(item, transforms);
         } else {
           val = getter(state);
         }
       } else {
         val = item[valOrGetter];
       }
+
       return val;
     },
     getProjection(item) {

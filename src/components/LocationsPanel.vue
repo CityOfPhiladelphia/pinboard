@@ -148,6 +148,7 @@
 
 import { mapState } from 'vuex';
 import ExpandCollapse from './ExpandCollapse.vue';
+import transforms from '../util/transforms.js';
 
 export default {
   components: {
@@ -230,8 +231,8 @@ export default {
       if (valOrGetterType === 'function') {
         const getter = valOrGetter;
         locations.sort(function(a, b) {
-          let valueA = getter(a);
-          let valueB = getter(b);
+          let valueA = getter(a, transforms);
+          let valueB = getter(b, transforms);
           // console.log('valueA:', valueA, 'valueB:', valueB);
           let value;
           if (valueA && valueB) {
