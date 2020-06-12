@@ -177,14 +177,18 @@
       />
     </Map_>
 
+    <!-- :mapboxGl="mapboxGl" -->
+    <!-- :mapStyle="'mapbox://styles/mapbox/streets-v11'" -->
     <MglMap
       v-if="this.mapType === 'mapbox'"
+      :accessToken="accessToken"
       :mapStyle.sync="this.$config.mbStyle"
-      :center="this.$store.state.map.center"
       :zoom="this.$store.state.map.zoom"
+      :center="this.$store.state.map.center"
       @load="this.onMapLoaded"
       @move="this.handleMapMove"
     >
+
     <!-- :zoom="this.$config.map.zoom"
     :center="this.$config.map.center" -->
 
@@ -338,6 +342,9 @@
 
 <script>
 
+// import Mapbox from "mapbox-gl";
+// import 'mapbox-gl/dist/mapbox-gl.css';
+
 import proj4 from 'proj4';
 import 'leaflet/dist/leaflet.css';
 import SharedFunctions from './mixins/SharedFunctions.vue';
@@ -398,6 +405,7 @@ export default {
   data() {
     const data = {
       rows: [],
+      accessToken: process.env.VUE_APP_MAPBOX_ACCESSTOKEN,
     };
     return data;
   },
@@ -761,6 +769,9 @@ export default {
       });
     },
   },
+  // created() {
+  //   this.mapbox = Mapbox;
+  // },
   mounted() {
     window.addEventListener('resize', this.handleResize);
   },
@@ -837,6 +848,7 @@ export default {
       this.$emit('toggleMap');
     },
     onMapLoaded(map) {
+      console.log('onMapLoaded is running, map.map:', map.map);
       this.$store.commit('setMap', map);
     },
   },
@@ -850,9 +862,22 @@ export default {
   font-size: 1.1rem;
 }
 
+.map-container-no-refine {
+  height: 100%;
+}
+
 @media screen and (max-width: 749px) {
   .map-container{
+    /* min-height: calc(100vh - 100px); */
     min-height: calc(100vh - 192px);
+    /* height: 100vh; */
+    /* height: 400px; */
+    /* min-height: 100%; */
+  }
+
+  .map-container-no-refine {
+    /* min-height: calc(100vh - 100px); */
+    min-height: calc(100vh - 132px);
     /* height: 100vh; */
     /* height: 400px; */
     /* min-height: 100%; */

@@ -51,12 +51,14 @@
 
       <div slot="mobile-menu">
         <PhilaFooter
+          :feedbackLink="feedbackLink"
           @howToUseLink="toggleModal()"
         />
       </div>
 
       <RefinePanel
         slot="after-stripe"
+        v-if="this.$config.refine"
       />
 
       <!-- <component
@@ -107,12 +109,14 @@
 
     <PhilaFooter
       v-show="isLarge"
+      :feedbackLink="feedbackLink"
       @howToUseLink="toggleModal()"
     />
   </div>
 </template>
 <script>
 
+import Mapbox from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 
 import { point } from '@turf/helpers';
@@ -159,6 +163,13 @@ export default {
     };
   },
   computed: {
+    feedbackLink() {
+      let value;
+      if (this.$config.footer && this.$config.footer.feedback && this.$config.footer.feedback.link) {
+        value = this.$config.footer.feedback.link;
+      }
+      return value;
+    },
     mapType() {
       return this.$store.state.map.type;
     },
