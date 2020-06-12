@@ -324,7 +324,7 @@ export default {
     },
   },
   mounted() {
-    console.log('in App.vue mounted, this.$config:', this.$config, 'window.location.href:', window.location.href);
+    console.log('in App.vue mounted, this.$store.state:', this.$store.state, 'this.$config:', this.$config, 'window.location.href:', window.location.href);
     if (this.$config.appLink) {
       this.appLink = this.$config.appLink;
     } else {
@@ -376,7 +376,7 @@ export default {
           // console.log('source:', source, 'this.$store.state.sources[source].data:', this.$store.state.sources[source].data);
           for (let point of source.features) {
             // console.log('point:', point);
-            
+
             // Object.assign(point, point.attributes);
             // point.attributes = undefined;
             compiled.data.push(point);
