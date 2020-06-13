@@ -185,8 +185,8 @@
       :mapStyle.sync="this.$config.mbStyle"
       :zoom="this.$store.state.map.zoom"
       :center="this.$store.state.map.center"
+      @moveend="this.handleMapMove"
       @load="this.onMapLoaded"
-      @move="this.handleMapMove"
     >
 
     <!-- :zoom="this.$config.map.zoom"
@@ -293,7 +293,7 @@
 
       <MglRasterLayer
         v-for="(basemapSource, key) in this.basemapSources"
-        v-if="activeBasemap === key"
+        v-if="shouldShowRasterLayer && activeBasemap === key"
         :sourceId="activeBasemap"
         :layerId="activeBasemap"
         :layer="basemapSource.layer"
@@ -303,7 +303,7 @@
 
       <MglRasterLayer
         v-for="(basemapLabelSource, key) in this.basemapLabelSources"
-        v-if="tiledLayers.includes(key)"
+        v-if="shouldShowRasterLayer && tiledLayers.includes(key)"
         :sourceId="key"
         :layerId="key"
         :layer="basemapLabelSource.layer"
@@ -410,6 +410,13 @@ export default {
     return data;
   },
   computed: {
+    shouldShowRasterLayer() {
+      let value = true;
+      if (this.$config.map.tiles === 'hosted') {
+        value = false
+      }
+      return value;
+    },
     locationInfo() {
       return this.$config.locationInfo;
     },
