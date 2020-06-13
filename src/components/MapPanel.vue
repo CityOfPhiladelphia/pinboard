@@ -1,342 +1,21 @@
 <template>
   <!-- <div class="cell medium-12 medium-cell-block-y mb-panel mb-panel-map map-height"> -->
   <div class="cell medium-12 medium-cell-block-y">
-    <Map_
-      id="map-tag"
-      v-if="this.mapType === 'leaflet'"
-      :class="{ 'mb-map-with-widget': this.$store.state.cyclomedia.active || this.$store.state.pictometry.active }"
-      :center="this.$store.state.map.center"
-      :zoom="this.$store.state.map.zoom"
-      zoom-control-position="bottomright"
-      :min-zoom="11"
-      :max-zoom="22"
-      @l-moveend="handleMapMove"
-    >
-      <div
-        v-show="isLoadingPins"
-        class="mb-map-loading-mask"
-      >
-        <div class="mb-map-loading-mask-inner">
-          <i class="fa fa-spinner fa-4x spin" />
-          <h1>Finding map data...</h1>
-        </div>
-      </div>
 
-      <esri-tiled-map-layer
-        v-for="(basemap, key) in this.$config.map.basemaps"
-        v-if="activeBasemap === key"
-        :key="key"
-        :url="basemap.url"
-      />
-
-      <!-- basemap labels and parcels outlines -->
-      <esri-tiled-map-layer
-        v-for="(tiledLayer, key) in this.$config.map.tiledLayers"
-        v-if="tiledLayers.includes(key)"
-        :key="key"
-        :url="tiledLayer.url"
-        :z-index="tiledLayer.zIndex"
-      />
-
-      <vector-marker
-        v-for="(marker) in markersForAddress"
-        :key="marker.key"
-        :latlng="marker.latlng"
-        :marker-color="marker.color"
-        :icon="marker.icon"
-      />
-
-      <circle-marker
-        v-if="markerType === 'circle-marker'"
-        v-for="(marker) in currentMapData"
-        :latlng="marker.latlng"
-        :radius="marker.radius"
-        :fill-color="marker.color"
-        :color="'black'"
-        :weight="marker.weight"
-        :opacity="1"
-        :fill-opacity="1"
-        :data="{
-          featureId: marker._featureId
-        }"
-        @l-click="handleMarkerClick"
-      >
-        <popup-simple
-          v-if="latestSelectedResourceFromMap === marker._featureId"
-          :latlng="marker.latlng"
-          :feature-id="marker._featureId"
-        >
-          <popup-content-functional
-            :popup-data="getSiteName(marker)"
-            @didClickPopupContent="toggleMap"
-          />
-        </popup-simple>
-      </circle-marker>
-      <!-- :feature-id="marker._featureId" -->
-
-      <!-- :rotation-angle="cycloRotationAngle" -->
-      <!-- :icon="sitePath + 'images/camera.png'" -->
-      <!-- :latlng="cycloLatlng" -->
-
-      <!-- <vector-marker v-for="(marker) in this.$data.rows" -->
-      <vector-marker
-        v-if="markerType === 'pin-marker'"
-        v-for="(marker) in currentMapData"
-        :key="marker.key"
-        :latlng="marker.latlng"
-        :marker-color="marker.color"
-        :feature-id="marker._featureId"
-        @l-click="handleMarkerClick"
-        :icon="marker.icon"
-        :data="{
-          featureId: marker._featureId
-        }"
-      >
-        <popup-simple
-          v-if="latestSelectedResourceFromMap === marker._featureId"
-          :latlng="marker.latlng"
-          :feature-id="marker._featureId"
-        >
-          <popup-content-functional
-            :popup-data="getSiteName(marker)"
-            @didClickPopupContent="toggleMap"
-          />
-        </popup-simple>
-      </vector-marker>
-
-      <!-- marker using a png and ablility to rotate it -->
-      <png-marker
-        v-if="cyclomediaActive"
-        :icon="sitePath + 'images/camera.png'"
-        :latlng="cycloLatlng"
-        :rotation-angle="cycloRotationAngle"
-      />
-
-      <!-- marker using custom code extending icons - https://github.com/iatkin/leaflet-svgicon -->
-      <svg-view-cone-marker
-        v-if="cyclomediaActive"
-        :latlng="cycloLatlng"
-        :rotation-angle="cycloRotationAngle"
-        :h-fov="cycloHFov"
-      />
-
-      <!-- basemap control -->
-      <control-corner
-        :v-side="'top'"
-        :h-side="'almostright'"
-      />
-
-      <control-corner
-        :v-side="'top'"
-        :h-side="'almostleft'"
-      />
-
-      <div v-once>
-        <basemap-toggle-control
-          v-if="shouldShowBasemapToggleControl"
-          v-once
-          :position="'topright'"
-        />
-      </div>
-
-      <div v-once>
-        <legend-control
-          v-for="legendControl in Object.keys(legendControls)"
-          :key="legendControl"
-          :position="'bottomleft'"
-          :options="legendControls[legendControl].options"
-          :items="legendControls[legendControl].data"
-        />
-      </div>
-
-      <div v-once>
-        <basemap-select-control :position="this.basemapSelectControlPosition" />
-      </div>
-
-      <div v-once>
-        <cyclomedia-button
-          v-if="shouldShowCyclomediaButton"
-          v-once
-          :position="'topright'"
-          :link="'cyclomedia'"
-          :img-src="sitePath + 'images/cyclomedia.png'"
-          @click="handleCyclomediaButtonClick"
-        />
-      </div>
-
-      <cyclomedia-recording-circle
-        v-for="recording in cyclomediaRecordings"
-        v-if="cyclomediaActive"
-        :key="recording.imageId"
-        :image-id="recording.imageId"
-        :latlng="[recording.lat, recording.lng]"
-        :size="1.2"
-        :color="'#3388ff'"
-        :weight="1"
-        @l-click="handleCyclomediaRecordingClick"
-      />
-    </Map_>
-
-    <!-- :mapboxGl="mapboxGl" -->
-    <!-- :mapStyle="'mapbox://styles/mapbox/streets-v11'" -->
     <MglMap
-      v-if="this.mapType === 'mapbox'"
-      :accessToken="accessToken"
-      :mapStyle.sync="this.$config.mbStyle"
-      :zoom="this.$store.state.map.zoom"
-      :center="this.$store.state.map.center"
-      @load="this.onMapLoaded"
-      @move="this.handleMapMove"
+      :accessToken="'pk.eyJ1IjoiYWpyb3Rod2VsbCIsImEiOiJXa3ZKNDg0In0.gFdKTdvy550fY_iy16YkSA'"
+      :mapStyle="'mapbox://styles/mapbox/streets-v11'"
+      :zoom="16"
+      :center="[-75.163471, 39.953338]"
     >
-
-    <!-- :zoom="this.$config.map.zoom"
-    :center="this.$config.map.center" -->
-
-      <overlay-legend
-        v-for="legendControl in Object.keys(legendControls)"
-        :key="legendControl"
-        :position="'bottomleft'"
-        :options="legendControls[legendControl].options"
-        :items="legendControls[legendControl].data"
-      >
-      </overlay-legend>
-
-      <MglMarker
-        v-for="(marker) in markersForAddress"
-        :key="marker.key"
-        :coordinates="[marker.latlng[1], marker.latlng[0]]"
-        :color="marker.color"
-        :icon="marker.icon"
-      />
-
-      <MglCircleMarker
-        v-for="(marker) in currentMapData"
-        :coordinates="[marker.latlng[1], marker.latlng[0]]"
-        :key="marker._featureId"
-        :markerId="marker._featureId"
-        :size="marker.size"
-        :fill-color="marker.color"
-        :weight="marker.weight"
-        @click="handleMarkerClick"
-      >
-      <!-- v-for="(marker) in currentMapData"-->
-      <!-- :coordinates="[marker.latlng[1], marker.latlng[0]]" -->
-      <!-- v-if="marker.selected" -->
-        <MglPopup
-          v-if="latestSelectedResourceFromMap === marker._featureId"
-          :showed="true"
-        >
-        <!-- :close-on-click="false" -->
-          <div
-            @click="toggleMap"
-            v-html="mapboxSiteName(marker)"
-          >
-            <!-- {{ getSiteName(marker) }} -->
-          </div>
-        </MglPopup>
-
-      </MglCircleMarker>
-
-      <!-- <MglPopup
-        v-for="(marker) in currentMapData"
-        v-if="marker.selected"
-        :close-on-click="false"
-        :coordinates="[marker.latlng[1], marker.latlng[0]]"
-        :showed="marker.selected"
-      >
-        <div>Hello, I'm popup!</div>
-      </MglPopup> -->
-
-      <!-- <MglCircleMarker
-        v-for="recording in cyclomediaRecordings"
-        v-if="!fullScreenMapEnabled"
-        :coordinates="[recording.lng, recording.lat]"
-        :key="recording.imageId"
-        :image-id="recording.imageId"
-        :size="1.2"
-        :color="'#3388ff'"
-        :weight="1"
-        @click="handleCyclomediaRecordingClick"
-      /> -->
-
-      <!-- <MbIcon
-        v-if="!fullScreenMapEnabled"
-        :url="'https://mapboard-images.s3.amazonaws.com/camera.png'"
-        :name="'camera'"
-        :rotation-angle="cycloRotationAngle"
-      /> -->
-
-      <!-- <MglGeojsonLayer
-        v-if="!fullScreenMapEnabled"
-        :sourceId="'cameraPoint'"
-        :source="geojsonCameraSource"
-        :layerId="'cameraPoints'"
-        :layer="geojsonCameraLayer"
-        :icon="sitePath + 'images/camera.png'"
-      /> -->
-
-      <!-- <MglGeojsonLayer
-        v-if="!fullScreenMapEnabled"
-        :sourceId="'viewcone'"
-        :source="geojsonViewconeSource"
-        :layerId="'viewcones'"
-        :layer="geojsonViewconeLayer"
-      /> -->
-
-      <!-- <MglVectorLayer
-        v-if="this.$config.vectorTiles"
-        :source="this.$config.vectorTiles"
-        :sourceId="'PVL_Original'"
-        :layer="this.$config.vectorTiles"
-        :layerId="'PVL_Original'"
-      /> -->
-
-      <MglRasterLayer
-        v-for="(basemapSource, key) in this.basemapSources"
-        v-if="activeBasemap === key"
-        :sourceId="activeBasemap"
-        :layerId="activeBasemap"
-        :layer="basemapSource.layer"
-        :source="basemapSource.source"
-        :before="firstOverlay"
-      />
-
-      <MglRasterLayer
-        v-for="(basemapLabelSource, key) in this.basemapLabelSources"
-        v-if="tiledLayers.includes(key)"
-        :sourceId="key"
-        :layerId="key"
-        :layer="basemapLabelSource.layer"
-        :source="basemapLabelSource.source"
-        :before="firstOverlay"
-      />
-
-      <!-- <MglRasterLayer
-        v-for="(overlaySource, key) in this.overlaySources"
-        v-if="activeTiledOverlays.includes(key)"
-        :sourceId="key"
-        :layerId="key"
-        :layer="overlaySource.layer"
-        :source="overlaySource.source"
-        :before="cameraOverlay"
-      /> -->
-
-      <!-- <MglButtonControl
-        :buttonId="'buttonId-01'"
-        :buttonClass="'right'"
-        :imageLink="BasemapImageLink"
-        @click="this.handleBasemapToggleClick"
-      /> -->
-
-      <MglNavigationControl position="bottom-right"/>
-      <!-- <MglGeolocateControl position="bottom-left"/> -->
-
+      <MglNavigationControl position="top-right"/>
+      <MglGeolocateControl position="top-right"/>
     </MglMap>
 
-    <slot
+    <!-- <slot
       class="widget-slot"
       name="cycloWidget"
-    />
+    /> -->
   </div>
 </template>
 
@@ -345,43 +24,43 @@
 // import Mapbox from "mapbox-gl";
 // import 'mapbox-gl/dist/mapbox-gl.css';
 
-import proj4 from 'proj4';
-import 'leaflet/dist/leaflet.css';
+// import proj4 from 'proj4';
+// import 'leaflet/dist/leaflet.css';
 import SharedFunctions from './mixins/SharedFunctions.vue';
 
 // import all fontawesome icons included in phila-vue-mapping
-import * as faMapping from '@phila/vue-mapping/src/fa';
-import Map_ from '@phila/vue-mapping/src/leaflet/Map.vue';
-import PopupSimple from '@phila/vue-mapping/src/leaflet/PopupSimple.vue';
-import PopupContentFunctional from '@phila/vue-mapping/src/leaflet/PopupContentFunctional.vue';
-
-import cyclomediaMixin from '@phila/vue-mapping/src/cyclomedia/map-panel-mixin.js';
-import CyclomediaButton from '@phila/vue-mapping/src/cyclomedia/Button.vue';
-import CyclomediaRecordingsClient from '@phila/vue-mapping/src/cyclomedia/recordings-client.js';
-import ControlCorner from '@phila/vue-mapping/src/leaflet/ControlCorner.vue';
-import BasemapToggleControl from '@phila/vue-mapping/src/components/BasemapToggleControl.vue';
-import BasemapSelectControl from '@phila/vue-mapping/src/components/BasemapSelectControl.vue';
-import LegendControl from '@phila/vue-mapping/src/components/LegendControlNoTopic.vue';
+// import * as faMapping from '@phila/vue-mapping/src/fa';
+// import Map_ from '@phila/vue-mapping/src/leaflet/Map.vue';
+// import PopupSimple from '@phila/vue-mapping/src/leaflet/PopupSimple.vue';
+// import PopupContentFunctional from '@phila/vue-mapping/src/leaflet/PopupContentFunctional.vue';
+//
+// import cyclomediaMixin from '@phila/vue-mapping/src/cyclomedia/map-panel-mixin.js';
+// import CyclomediaButton from '@phila/vue-mapping/src/cyclomedia/Button.vue';
+// import CyclomediaRecordingsClient from '@phila/vue-mapping/src/cyclomedia/recordings-client.js';
+// import ControlCorner from '@phila/vue-mapping/src/leaflet/ControlCorner.vue';
+// import BasemapToggleControl from '@phila/vue-mapping/src/components/BasemapToggleControl.vue';
+// import BasemapSelectControl from '@phila/vue-mapping/src/components/BasemapSelectControl.vue';
+// import LegendControl from '@phila/vue-mapping/src/components/LegendControlNoTopic.vue';
 
 export default {
   name: "MapPanel",
   components: {
-    Map_,
-    PopupSimple,
-    PopupContentFunctional,
-    // PopUpContent,
-    CyclomediaButton,
-    CyclomediaRecordingsClient,
-    ControlCorner,
-    BasemapToggleControl,
-    BasemapSelectControl,
-    LegendControl,
-    EsriTiledMapLayer: () => import(/* webpackChunkName: "pvm_EsriTiledMapLayer" */'@phila/vue-mapping/src/esri-leaflet/TiledMapLayer.vue'),
-    VectorMarker: () => import(/* webpackChunkName: "mbmp_pvm_VectorMarker" */'@phila/vue-mapping/src/components/VectorMarker.vue'),
-    CircleMarker: () => import(/* webpackChunkName: "mbmp_pvm_CircleMarker" */'@phila/vue-mapping/src/leaflet/CircleMarker.vue'),
-    PngMarker: () => import(/* webpackChunkName: "mbmp_pvm_PngMarker" */'@phila/vue-mapping/src/components/PngMarker.vue'),
-    CyclomediaRecordingCircle: () => import(/* webpackChunkName: "mbmp_pvm_CyclomediaRecordingCircle" */'@phila/vue-mapping/src/cyclomedia/RecordingCircle.vue'),
-    SvgViewConeMarker: () => import(/* webpackChunkName: "mbmp_pvm_CyclomediaSvgViewConeMarker" */'@phila/vue-mapping/src/cyclomedia/SvgViewConeMarker.vue'),
+    // Map_,
+    // PopupSimple,
+    // PopupContentFunctional,
+    // // PopUpContent,
+    // CyclomediaButton,
+    // CyclomediaRecordingsClient,
+    // ControlCorner,
+    // BasemapToggleControl,
+    // BasemapSelectControl,
+    // LegendControl,
+    // EsriTiledMapLayer: () => import(/* webpackChunkName: "pvm_EsriTiledMapLayer" */'@phila/vue-mapping/src/esri-leaflet/TiledMapLayer.vue'),
+    // VectorMarker: () => import(/* webpackChunkName: "mbmp_pvm_VectorMarker" */'@phila/vue-mapping/src/components/VectorMarker.vue'),
+    // CircleMarker: () => import(/* webpackChunkName: "mbmp_pvm_CircleMarker" */'@phila/vue-mapping/src/leaflet/CircleMarker.vue'),
+    // PngMarker: () => import(/* webpackChunkName: "mbmp_pvm_PngMarker" */'@phila/vue-mapping/src/components/PngMarker.vue'),
+    // CyclomediaRecordingCircle: () => import(/* webpackChunkName: "mbmp_pvm_CyclomediaRecordingCircle" */'@phila/vue-mapping/src/cyclomedia/RecordingCircle.vue'),
+    // SvgViewConeMarker: () => import(/* webpackChunkName: "mbmp_pvm_CyclomediaSvgViewConeMarker" */'@phila/vue-mapping/src/cyclomedia/SvgViewConeMarker.vue'),
     MglMap: () => import(/* webpackChunkName: "pvm_MglMap" */'@phila/vue-mapping/src/mapbox/map/GlMap.vue'),
     MglMarker: () => import(/* webpackChunkName: "pvm_MglMarker" */'@phila/vue-mapping/src/mapbox/UI/Marker.vue'),
     MglIcon: () => import(/* webpackChunkName: "mbmp_pvm_MglIcon" */'@phila/vue-mapping/src/mapbox/UI/Icon.vue'),
@@ -400,7 +79,7 @@ export default {
   },
   mixins: [
     SharedFunctions,
-    cyclomediaMixin,
+    // cyclomediaMixin,
   ],
   data() {
     const data = {
