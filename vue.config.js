@@ -1,6 +1,6 @@
 module.exports = {
   chainWebpack: (config) => {
-    // config.resolve.symlinks(false);
+    config.resolve.symlinks(false);
   },
   lintOnSave: true,
   css: {

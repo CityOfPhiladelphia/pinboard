@@ -116,7 +116,7 @@
 </template>
 <script>
 
-// import Mapbox from 'mapbox-gl';
+import Mapbox from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 
 import { point } from '@turf/helpers';
