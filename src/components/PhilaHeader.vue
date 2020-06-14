@@ -21,7 +21,10 @@
 
       <div class="cell medium-auto small-20">
         <div class="grid-x grid-padding-x align-middle">
-          <div class="cell shrink hide-for-small-only">
+          <div
+            v-if="shouldShowLogo"
+            class="cell shrink hide-for-small-only"
+          >
             <a
               :href="appLogoLink"
               class="logo flex-child-auto"
@@ -33,7 +36,10 @@
               >
             </a>
           </div>
-          <div class="cell shrink hide-for-small-only">
+          <div
+            v-if="shouldShowLogo"
+            class="cell shrink hide-for-small-only"
+          >
             <div class="app-divide flex-child-auto" />
           </div>
           <div class="cell shrink text-centered">
@@ -60,13 +66,13 @@
                 </h1>
 
                 <div
-                  v-if="!i18nEnabled"
+                  v-if="!i18nEnabled && shouldShowBetaTag"
                   id="demo-badge"
                 >
                   BETA
                 </div>
                 <div
-                  v-if="i18nEnabled"
+                  v-if="i18nEnabled && shouldShowBetaTag"
                   id="demo-badge"
                   v-html="$t('app.betaTag')"
                 />
@@ -184,6 +190,7 @@
     >
       <div class="mobile-menu-content">
         <a
+          v-if="shouldShowLogo"
           :href="appLogoLink"
           class="logo flex-child-auto"
         >
@@ -214,7 +221,7 @@
 
 <script>
 // TODO: move logo, link etc to app config.
-import Logo from '@/assets/city-of-philadelphia-logo.png';
+import Logo from '../assets/city-of-philadelphia-logo.png';
 // import AddressInput from '@phila/vue-comps/src/components/AddressInput.vue'
 // import Paragraph from '@phila/vue-comps/src/components/Paragraph.vue'
 // import '@phila/vue-comps'
@@ -271,6 +278,21 @@ export default {
     };
   },
   computed: {
+    shouldShowBetaTag() {
+      let value = true;
+      if (this.$config.header && this.$config.header.beta === false) {
+        value = false;
+      }
+      return value;
+    },
+    shouldShowLogo() {
+      let value = true;
+      // console.log('shouldShowLogo computed, this.$config.header:', this.$config.header);
+      if (this.$config.header && this.$config.header.logo === false) {
+        value = false;
+      }
+      return value;
+    },
     i18nEnabled() {
       if (this.$config.i18n && this.$config.i18n.enabled) {
         return true;

@@ -246,11 +246,17 @@ export default {
       return this.$store.state.selectedKeywords.toString();
     },
     dataStatus() {
-      return this.$store.state.sources[this.$appType].status;
+      let value;
+      if (this.$store.state.sources[this.$appType]) {
+        value = this.$store.state.sources[this.$appType].status;
+      }
+      return value;
     },
     database() {
-      if (this.$store.state.sources[this.$appType].data) {
-        return this.$store.state.sources[this.$appType].data.rows || this.$store.state.sources[this.$appType].data.features || this.$store.state.sources[this.$appType].data;
+      if (this.$store.state.sources[this.$appType]) {
+        if (this.$store.state.sources[this.$appType].data) {
+          return this.$store.state.sources[this.$appType].data.rows || this.$store.state.sources[this.$appType].data.features || this.$store.state.sources[this.$appType].data;
+        }
       }
     },
   },

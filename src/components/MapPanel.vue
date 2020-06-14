@@ -177,14 +177,19 @@
       />
     </Map_>
 
+    <!-- :mapboxGl="mapboxGl" -->
+    <!-- :mapStyle="'mapbox://styles/mapbox/streets-v11'" -->
     <MglMap
       v-if="this.mapType === 'mapbox'"
+      :accessToken="accessToken"
       :mapStyle.sync="this.$config.mbStyle"
-      :center="this.$store.state.map.center"
       :zoom="this.$store.state.map.zoom"
+      :center="this.$store.state.map.center"
+      @moveend="this.handleMapMove"
       @load="this.onMapLoaded"
-      @move="this.handleMapMove"
+      @preload="this.onMapPreloaded"
     >
+
     <!-- :zoom="this.$config.map.zoom"
     :center="this.$config.map.center" -->
 
@@ -289,7 +294,7 @@
 
       <MglRasterLayer
         v-for="(basemapSource, key) in this.basemapSources"
-        v-if="activeBasemap === key"
+        v-if="shouldShowRasterLayer && activeBasemap === key"
         :sourceId="activeBasemap"
         :layerId="activeBasemap"
         :layer="basemapSource.layer"
@@ -299,7 +304,7 @@
 
       <MglRasterLayer
         v-for="(basemapLabelSource, key) in this.basemapLabelSources"
-        v-if="tiledLayers.includes(key)"
+        v-if="shouldShowRasterLayer && tiledLayers.includes(key)"
         :sourceId="key"
         :layerId="key"
         :layer="basemapLabelSource.layer"
@@ -337,6 +342,9 @@
 </template>
 
 <script>
+
+// import Mapbox from "mapbox-gl";
+// import 'mapbox-gl/dist/mapbox-gl.css';
 
 import proj4 from 'proj4';
 import 'leaflet/dist/leaflet.css';
@@ -398,10 +406,21 @@ export default {
   data() {
     const data = {
       rows: [],
+      accessToken: process.env.VUE_APP_MAPBOX_ACCESSTOKEN,
     };
     return data;
   },
   computed: {
+    map() {
+      return this.$store.map;
+    },
+    shouldShowRasterLayer() {
+      let value = true;
+      if (this.$config.map.tiles === 'hosted') {
+        value = false
+      }
+      return value;
+    },
     locationInfo() {
       return this.$config.locationInfo;
     },
@@ -446,7 +465,7 @@ export default {
       return "+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +wktext  +no_defs";
     },
     currentMapData() {
-      console.log('MapPanel.vue currentMapData computed is recalculating');//, this.currentData:', this.currentData);
+      // console.log('MapPanel.vue currentMapData computed is recalculating');//, this.currentData:', this.currentData);
       const newRows = [];
       for (const row of [ ...this.currentData ]) {
         // console.log('in loop, row:', row);
@@ -480,10 +499,17 @@ export default {
         } else {
           // selected = false;
           if (this.$config.circleMarkers && this.$config.circleMarkers.circleColors) {
-            // let indexVal = row._featureId.indexOf('-', row._featureId.indexOf('-') + 1);
-            // console.log('row:', row, 'indexVal:', indexVal);
-            // markerColor = this.$config.circleColors[row._featureId.slice(0, indexVal)]
-            markerColor = this.$config.circleMarkers.circleColors[row.attributes.category_type]
+            if (row.attributes) {
+              markerColor = this.$config.circleMarkers.circleColors[row.attributes.category_type];
+            } else if (row.category_type) {
+              markerColor = this.$config.circleMarkers.circleColors[row.category_type];
+            // } else if (row.CATEGORY_TYPE) {
+            //   markerColor = this.$config.circleMarkers.circleColors[row.CATEGORY_TYPE];
+            // if (row.attributes.category_type) {
+            //   markerColor = this.$config.circleMarkers.circleColors[row.attributes.category_type];
+            // } else if (row.attributes.CATEGORY_TYPE) {
+            //   markerColor = this.$config.circleMarkers.circleColors[row.attributes.CATEGORY_TYPE];
+            }
           } else if (this.$config.circleMarkers && this.$config.circleMarkers.color) {
             markerColor = this.$config.circleMarkers.color;
           } else {
@@ -500,8 +526,13 @@ export default {
 
         if (row.lat) {
           // console.log('if row.lat is running')
-          if (this.$config.projection === '3857') {
+          let projection = this.getProjection(row);
+          if (projection === '3857') {
+          // if (this.$config.projection === '3857') {
             row.latlng = proj4(this.projection3857, this.projection4326, [ row.lat, row.lon ]);
+          } else if (projection === '2272') {
+            let lnglat = proj4(this.projection2272, this.projection4326, [ row.geometry.x, row.geometry.y ]);
+            row.latlng = [ lnglat[1], lnglat[0] ];
           } else {
             row.latlng = [ row.lat, row.lon ];
           }
@@ -520,8 +551,13 @@ export default {
         } else if (row.geometry) {
           // row.selected = selected;
           // console.log('else if row.geometry is true, row.geometry:', row.geometry);
-          if (this.$config.projection === '3857') {
+          let projection = this.getProjection(row);
+          if (projection === '3857') {
+          // if (this.$config.projection === '3857') {
             let lnglat = proj4(this.projection3857, this.projection4326, [ row.geometry.x, row.geometry.y ]);
+            row.latlng = [ lnglat[1], lnglat[0] ];
+          } else if (projection === '2272') {
+            let lnglat = proj4(this.projection2272, this.projection4326, [ row.geometry.x, row.geometry.y ]);
             row.latlng = [ lnglat[1], lnglat[0] ];
           } else {
             row.latlng = [ row.geometry.y, row.geometry.x ];
@@ -675,7 +711,7 @@ export default {
       return this.$store.state.map.type;
     },
     firstOverlay() {
-      let map = this.$store.state.map.map;
+      let map = this.$store.map;
       let overlay;
       if (this.$config.overlaySources) {
         let overlaySources = Object.keys(this.$config.overlaySources);
@@ -694,6 +730,9 @@ export default {
 
   },
   watch: {
+    map(nextMap) {
+      console.log('MapPanel watch map is firing, nextMap:', nextMap);
+    },
     geocodeResult(nextGeocodeResult) {
       if (nextGeocodeResult._featureId) {
         this.$store.commit('setMapCenter', nextGeocodeResult.geometry.coordinates);
@@ -704,19 +743,31 @@ export default {
       // console.log('watch latestSelectedResourceFromExpand:', nextLatestSelectedResource, 'this.$appType:', this.$appType);
       if (nextLatestSelectedResource) {
         let rows;
-        const { map } = this.$store.state.map;
+        const map = this.$store.map;
+        // const { map } = this.$store.state.map;
         if (this.$store.state.sources[this.$appType].data.rows) {
           rows = this.$store.state.sources[this.$appType].data.rows;
           const dataValue = rows.filter(row => row._featureId === nextLatestSelectedResource);
+          // console.log('in watch latestSelectedResourceFromExpand, nextLatestSelectedResource:', nextLatestSelectedResource, 'rows:', rows, 'dataValue:', dataValue);
           if (this.mapType === 'leaflet') {
             map.setView([ dataValue[0].lat, dataValue[0].lon ], this.geocodeZoom);
           } else if (this.mapType === 'mapbox') {
-            map.setCenter([ dataValue[0].lat, dataValue[0].lon ], this.geocodeZoom);
+            map.setCenter([ dataValue[0].lon, dataValue[0].lat ], this.geocodeZoom);
           }
         } else if (this.$store.state.sources[this.$appType].data.features) {
           rows = this.$store.state.sources[this.$appType].data.features;
           const dataValue = rows.filter(row => row._featureId === nextLatestSelectedResource);
-          console.log('in watch latestSelectedResourceFromExpand, nextLatestSelectedResource:', nextLatestSelectedResource, 'rows:', rows, 'dataValue:', dataValue);
+          // console.log('in watch latestSelectedResourceFromExpand, nextLatestSelectedResource:', nextLatestSelectedResource, 'rows:', rows, 'dataValue:', dataValue);
+          if (this.mapType === 'leaflet') {
+            map.setView([ dataValue[0].latlng[0], dataValue[0].latlng[1] ], this.geocodeZoom);
+            // map.setView([ dataValue[0].lat, dataValue[0].lon ], this.geocodeZoom);
+          } else if (this.mapType === 'mapbox') {
+            map.setCenter([ dataValue[0].latlng[1], dataValue[0].latlng[0] ], this.geocodeZoom);
+          }
+        } else if (Array.isArray(this.$store.state.sources[this.$appType].data)) {
+          rows = this.$store.state.sources[this.$appType].data;
+          const dataValue = rows.filter(row => row._featureId === nextLatestSelectedResource);
+          // console.log('in watch latestSelectedResourceFromExpand, nextLatestSelectedResource:', nextLatestSelectedResource, 'rows:', rows, 'dataValue:', dataValue);
           if (this.mapType === 'leaflet') {
             map.setView([ dataValue[0].latlng[0], dataValue[0].latlng[1] ], this.geocodeZoom);
             // map.setView([ dataValue[0].lat, dataValue[0].lon ], this.geocodeZoom);
@@ -732,11 +783,19 @@ export default {
     },
     cyclomediaActive(value) {
       this.$nextTick(() => {
-        this.$store.state.map.map.invalidateSize();
+        // this.$store.state.map.map.invalidateSize();
+        this.$store.map.invalidateSize();
       });
     },
   },
+  // created() {
+  //   this.mapbox = Mapbox;
+  // },
   mounted() {
+    console.log('MapPanel mounted, this.$store.map:', this.$store.map);
+    let logo = document.getElementsByClassName('mapboxgl-ctrl-logo');
+    // console.log('MapPanel mounted, logo:', logo, 'logo.length:', logo.length, 'logo.item(0):', logo.item(0));
+    // logo[0].remove();
     window.addEventListener('resize', this.handleResize);
   },
   beforeDestroy() {
@@ -757,7 +816,7 @@ export default {
       } else if (this.mapType === 'mapbox') {
         featureId = e.component._props.markerId;
       }
-      console.log('handleMarkerClick, e:', e, 'featureId:', featureId);
+      // console.log('handleMarkerClick, e:', e, 'featureId:', featureId);
       // console.log('MapPanel.vue handleMarkerClick is running, target:', target, 'featureId:', featureId);
 
       const selectedResource = [ ...this.selectedResources ];
@@ -776,15 +835,17 @@ export default {
     },
 
     handleResize(event) {
-      console.log('MapPanel.vue handleResize is running');
+      // console.log('MapPanel.vue handleResize is running');
       if (this.mapType === 'leaflet') {
         this.$store.state.map.map.invalidateSize();
       } else if (this.mapType === 'mapbox') {
-        this.$store.state.map.map.resize();
+        this.$store.map.resize();
       }
     },
     handleMapMove(e) {
-      const map = this.$store.state.map.map;
+      // const map = this.$store.state.map.map;
+      const map = this.$store.map;
+      // console.log('in handleMapMove, map:', map);
 
       const pictometryConfig = this.$config.pictometry || {};
 
@@ -811,9 +872,17 @@ export default {
     toggleMap() {
       this.$emit('toggleMap');
     },
-    onMapLoaded(map) {
-      this.$store.commit('setMap', map);
+    onMapLoaded(event) {
+      // console.log('onMapLoaded is running, event.map:', event.map, this.$store.state.map);
+      this.$store.map = event.map;
     },
+    onMapPreloaded(event) {
+      let logo = document.getElementsByClassName('mapboxgl-ctrl-logo');
+      // console.log('MapPanel onMapPreloaded, logo:', logo, 'logo.length:', logo.length, 'logo.item(0):', logo.item(0));
+      logo[0].remove();
+      let attrib = document.getElementsByClassName('mapboxgl-ctrl-attrib');
+      attrib[0].remove();
+    }
   },
 };
 </script>
@@ -825,9 +894,22 @@ export default {
   font-size: 1.1rem;
 }
 
+.map-container-no-refine {
+  height: 100%;
+}
+
 @media screen and (max-width: 749px) {
   .map-container{
+    /* min-height: calc(100vh - 100px); */
     min-height: calc(100vh - 192px);
+    /* height: 100vh; */
+    /* height: 400px; */
+    /* min-height: 100%; */
+  }
+
+  .map-container-no-refine {
+    /* min-height: calc(100vh - 100px); */
+    min-height: calc(100vh - 132px);
     /* height: 100vh; */
     /* height: 400px; */
     /* min-height: 100%; */

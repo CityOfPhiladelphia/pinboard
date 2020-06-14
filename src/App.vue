@@ -51,12 +51,14 @@
 
       <div slot="mobile-menu">
         <PhilaFooter
+          :feedbackLink="feedbackLink"
           @howToUseLink="toggleModal()"
         />
       </div>
 
       <RefinePanel
         slot="after-stripe"
+        v-if="this.$config.refine"
       />
 
       <!-- <component
@@ -107,12 +109,14 @@
 
     <PhilaFooter
       v-show="isLarge"
+      :feedbackLink="feedbackLink"
       @howToUseLink="toggleModal()"
     />
   </div>
 </template>
 <script>
 
+// import Mapbox from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 
 import { point } from '@turf/helpers';
@@ -159,6 +163,13 @@ export default {
     };
   },
   computed: {
+    feedbackLink() {
+      let value;
+      if (this.$config.footer && this.$config.footer.feedback && this.$config.footer.feedback.link) {
+        value = this.$config.footer.feedback.link;
+      }
+      return value;
+    },
     mapType() {
       return this.$store.state.map.type;
     },
@@ -215,7 +226,11 @@ export default {
       return this.$store.state.selectedServices;
     },
     dataStatus() {
-      return this.$store.state.sources[this.$appType].status;
+      let value;
+      if (this.$store.state.sources[this.$appType]) {
+        value = this.$store.state.sources[this.$appType].status;
+      }
+      return value;
     },
     database() {
       let database = this.$store.state.sources[this.$appType].data.rows || this.$store.state.sources[this.$appType].data.features || this.$store.state.sources[this.$appType].data;
@@ -246,7 +261,7 @@ export default {
       return finalDB;
     },
     shouldLoadCyclomediaWidget() {
-      return this.$config.cyclomedia.enabled && !this.isMobileOrTablet;
+      return this.$config.cyclomedia && this.$config.cyclomedia.enabled && !this.isMobileOrTablet;
     },
     cyclomediaActive() {
       return this.$store.state.cyclomedia.active;
@@ -288,7 +303,7 @@ export default {
   },
   watch: {
     sourcesWatched(nextSourcesWatched) {
-      // console.log('watch sourcesWatched, nextSourcesWatched:', nextSourcesWatched);
+      console.log('watch sourcesWatched, nextSourcesWatched:', nextSourcesWatched);
       if (!nextSourcesWatched.includes(null)) {
         this.setUpData(nextSourcesWatched);
       }
@@ -320,7 +335,7 @@ export default {
     },
   },
   mounted() {
-    console.log('in App.vue mounted, this.$config:', this.$config, 'window.location.href:', window.location.href);
+    console.log('in App.vue mounted, this.$store.state:', this.$store.state, 'this.$config:', this.$config, 'window.location.href:', window.location.href);
     if (this.$config.appLink) {
       this.appLink = this.$config.appLink;
     } else {
@@ -329,6 +344,7 @@ export default {
     if (this.$config.dataSources) {
       this.$controller.dataManager.fetchData();
     }
+    // this.setUpData(this.$store.state.sources);
 
     if (!this.i18nEnabled) {
       this.$data.buttonText = this.$data.isMapVisible ? 'Toggle to resource list' : 'Toggle to map';
@@ -359,20 +375,21 @@ export default {
   },
   methods: {
     setUpData(theSources) {
-      // console.log('Pinboard App.vue setUpData is running, theSources:', theSources);
+      console.log('Pinboard App.vue setUpData is running, theSources:', theSources);
       let compiled = {
         key: 'compiled',
         data: [],
         status: 'success',
       }
       if (theSources.length > 1) {
-        // console.log('this.$store.state.sources:', this.$store.state.sources);
+        console.log('this.$store.state.sources:', this.$store.state.sources);
         for (let source of theSources) {
           // console.log('source:', source, 'this.$store.state.sources[source].data:', this.$store.state.sources[source].data);
           for (let point of source.features) {
             // console.log('point:', point);
-            Object.assign(point, point.attributes);
-            point.attributes = undefined;
+
+            // Object.assign(point, point.attributes);
+            // point.attributes = undefined;
             compiled.data.push(point);
           }
         }
@@ -380,6 +397,7 @@ export default {
         this.$store.commit('setSourceData', compiled);
         this.$store.commit('setSourceStatus', compiled);
       }
+      console.log('end of setUpData, this.$store.state.sources:', this.$store.state.sources);
     },
     runBuffer() {
       const geocodePoint = point(this.geocodeGeom.coordinates);
@@ -503,7 +521,7 @@ export default {
             if (this.mapType === 'leaflet') {
               this.$store.state.map.map.invalidateSize();
             } else if (this.mapType === 'mapbox') {
-              let themap = this.$store.state.map.map;
+              let themap = this.$store.map;
               setTimeout(function() {
                 console.log('mapbox running map resize now');
                 themap.resize();

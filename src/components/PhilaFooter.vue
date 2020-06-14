@@ -4,13 +4,13 @@
       <div class="cell">
         <nav>
           <ul class="footer-nav">
-            <li>
+            <li v-if="cityLinkEnabled">
               <a href="https://www.phila.gov">
                 City of Philadelphia
               </a>
             </li>
 
-            <li>
+            <li v-if="aboutFinderEnabled">
               <a
                 v-if="!i18nEnabled"
                 href="."
@@ -33,7 +33,7 @@
               </a>
             </li>
 
-            <li>
+            <li v-if="feedbackEnabled">
               <a
                 v-if="!i18nEnabled"
                 :href="feedbackLink"
@@ -58,7 +58,7 @@
                 target="_blank"
                 v-html="link.text"
               >
-                {{ link }}
+                <!-- {{ link }} -->
               </a>
             </li>
 
@@ -85,8 +85,29 @@ export default {
         return false;
       }
     },
+    cityLinkEnabled() {
+      if (this.$config.footer && this.$config.footer.cityLink === false) {
+        return false;
+      } else {
+        return true;
+      }
+    },
+    aboutFinderEnabled() {
+      if (this.$config.footer && this.$config.footer.aboutFinder === false) {
+        return false;
+      } else {
+        return true;
+      }
+    },
     howToUseEnabled() {
       if (this.$config.footer && this.$config.footer.HowToUse === false) {
+        return false;
+      } else {
+        return true;
+      }
+    },
+    feedbackEnabled() {
+      if (this.$config.footer && this.$config.footer.feedback && this.$config.footer.feedback.enabled === false) {
         return false;
       } else {
         return true;

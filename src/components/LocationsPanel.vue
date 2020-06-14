@@ -9,6 +9,7 @@
         v-if="shouldShowGreeting && !hasCustomGreeting"
         :message="greetingText"
         :options="greetingOptions"
+        @view-list="shouldShowGreeting = false"
       />
 
       <custom-greeting
@@ -147,6 +148,7 @@
 
 import { mapState } from 'vuex';
 import ExpandCollapse from './ExpandCollapse.vue';
+import transforms from '../util/transforms.js';
 
 export default {
   components: {
@@ -229,14 +231,24 @@ export default {
       if (valOrGetterType === 'function') {
         const getter = valOrGetter;
         locations.sort(function(a, b) {
-          let valueA = getter(a);
-          let valueB = getter(b);
+          let valueA = getter(a, transforms);
+          let valueB = getter(b, transforms);
           // console.log('valueA:', valueA, 'valueB:', valueB);
-          return valueA.localeCompare(valueB);
+          let value;
+          if (valueA && valueB) {
+            value = valueA.localeCompare(valueB);
+          }
+          // return valueA.localeCompare(valueB);
+          return value;
         });
       } else {
         val = valOrGetter;
-        locations.sort((a, b) => a[val].localeCompare(b[val]));
+        locations.sort(function(a, b) {
+          // console.log('a:', a, 'b:', b, 'val:', val);
+          if (a[val] != null && b[val] != null) {
+            return a[val].localeCompare(b[val]);
+          }
+        });
       }
 
       return locations;
