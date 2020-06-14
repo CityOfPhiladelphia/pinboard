@@ -33,12 +33,10 @@ const clientConfig = {
 
 function initPinboard(clientConfig) {
   clientConfig = mergeDeep(i18n, clientConfig);
-  console.log('initPinboard is running, clientConfig:', clientConfig);
   const baseConfigUrl = clientConfig.baseConfig;
+  console.log('initPinboard is running, clientConfig:', clientConfig, 'baseConfigUrl:', baseConfigUrl);
 
-
-
-  if (baseConfigUrl === null) {
+  if (!baseConfigUrl || baseConfigUrl === null) {
     finishInit(clientConfig);
   } else {
     // get base config

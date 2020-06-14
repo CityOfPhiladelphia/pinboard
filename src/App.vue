@@ -261,7 +261,7 @@ export default {
       return finalDB;
     },
     shouldLoadCyclomediaWidget() {
-      return this.$config.cyclomedia.enabled && !this.isMobileOrTablet;
+      return this.$config.cyclomedia && this.$config.cyclomedia.enabled && !this.isMobileOrTablet;
     },
     cyclomediaActive() {
       return this.$store.state.cyclomedia.active;
@@ -521,7 +521,7 @@ export default {
             if (this.mapType === 'leaflet') {
               this.$store.state.map.map.invalidateSize();
             } else if (this.mapType === 'mapbox') {
-              let themap = this.$store.state.map.map;
+              let themap = this.$store.map;
               setTimeout(function() {
                 console.log('mapbox running map resize now');
                 themap.resize();
