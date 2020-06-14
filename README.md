@@ -29,6 +29,10 @@ Create pull request for changes and merge into `master` branch for travis-ci bui
 
 ## Release Notes
 
+### 0.3.8 - 6/14/2020
+
+* uses new releases of vue packages, uses airtable sources, mapbox styles hosted by mapbox
+
 ### 0.3.7 - 6/9/2020
 
 * uses pvm 2.1.5, with many new mapbox features added
