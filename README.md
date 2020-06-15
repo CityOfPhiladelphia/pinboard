@@ -29,6 +29,10 @@ Create pull request for changes and merge into `master` branch for travis-ci bui
 
 ## Release Notes
 
+### 0.3.9 - 6/15/2020
+
+* fixes issues with data rows that are missing geometries
+
 ### 0.3.8 - 6/14/2020
 
 * uses new releases of vue packages, uses airtable sources, mapbox styles hosted by mapbox
