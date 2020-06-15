@@ -744,35 +744,47 @@ export default {
       if (nextLatestSelectedResource) {
         let rows;
         const map = this.$store.map;
-        // const { map } = this.$store.state.map;
+
+        // data coming as "rows" means it came from carto
         if (this.$store.state.sources[this.$appType].data.rows) {
           rows = this.$store.state.sources[this.$appType].data.rows;
           const dataValue = rows.filter(row => row._featureId === nextLatestSelectedResource);
           // console.log('in watch latestSelectedResourceFromExpand, nextLatestSelectedResource:', nextLatestSelectedResource, 'rows:', rows, 'dataValue:', dataValue);
-          if (this.mapType === 'leaflet') {
-            map.setView([ dataValue[0].lat, dataValue[0].lon ], this.geocodeZoom);
-          } else if (this.mapType === 'mapbox') {
-            map.setCenter([ dataValue[0].lon, dataValue[0].lat ], this.geocodeZoom);
+          // do not set view if there is not lat value
+          if (dataValue[0].lat) {
+            if (this.mapType === 'leaflet') {
+              map.setView([ dataValue[0].lat, dataValue[0].lon ], this.geocodeZoom);
+            } else if (this.mapType === 'mapbox') {
+              map.setCenter([ dataValue[0].lon, dataValue[0].lat ], this.geocodeZoom);
+            }
           }
+
+        // data coming as "features" means it came from arcgis
         } else if (this.$store.state.sources[this.$appType].data.features) {
           rows = this.$store.state.sources[this.$appType].data.features;
           const dataValue = rows.filter(row => row._featureId === nextLatestSelectedResource);
           // console.log('in watch latestSelectedResourceFromExpand, nextLatestSelectedResource:', nextLatestSelectedResource, 'rows:', rows, 'dataValue:', dataValue);
-          if (this.mapType === 'leaflet') {
-            map.setView([ dataValue[0].latlng[0], dataValue[0].latlng[1] ], this.geocodeZoom);
-            // map.setView([ dataValue[0].lat, dataValue[0].lon ], this.geocodeZoom);
-          } else if (this.mapType === 'mapbox') {
-            map.setCenter([ dataValue[0].latlng[1], dataValue[0].latlng[0] ], this.geocodeZoom);
+          if (dataValue[0].latlng[0]) {
+            if (this.mapType === 'leaflet') {
+              map.setView([ dataValue[0].latlng[0], dataValue[0].latlng[1] ], this.geocodeZoom);
+              // map.setView([ dataValue[0].lat, dataValue[0].lon ], this.geocodeZoom);
+            } else if (this.mapType === 'mapbox') {
+              map.setCenter([ dataValue[0].latlng[1], dataValue[0].latlng[0] ], this.geocodeZoom);
+            }
           }
+
+        // data coming in as an array means it came from airtable
         } else if (Array.isArray(this.$store.state.sources[this.$appType].data)) {
           rows = this.$store.state.sources[this.$appType].data;
           const dataValue = rows.filter(row => row._featureId === nextLatestSelectedResource);
           // console.log('in watch latestSelectedResourceFromExpand, nextLatestSelectedResource:', nextLatestSelectedResource, 'rows:', rows, 'dataValue:', dataValue);
-          if (this.mapType === 'leaflet') {
-            map.setView([ dataValue[0].latlng[0], dataValue[0].latlng[1] ], this.geocodeZoom);
-            // map.setView([ dataValue[0].lat, dataValue[0].lon ], this.geocodeZoom);
-          } else if (this.mapType === 'mapbox') {
-            map.setCenter([ dataValue[0].latlng[1], dataValue[0].latlng[0] ], this.geocodeZoom);
+          if (dataValue[0].lat) {
+            if (this.mapType === 'leaflet') {
+              map.setView([ dataValue[0].latlng[0], dataValue[0].latlng[1] ], this.geocodeZoom);
+              // map.setView([ dataValue[0].lat, dataValue[0].lon ], this.geocodeZoom);
+            } else if (this.mapType === 'mapbox') {
+              map.setCenter([ dataValue[0].latlng[1], dataValue[0].latlng[0] ], this.geocodeZoom);
+            }
           }
         }
       }
