@@ -764,11 +764,13 @@ export default {
           rows = this.$store.state.sources[this.$appType].data.features;
           const dataValue = rows.filter(row => row._featureId === nextLatestSelectedResource);
           // console.log('in watch latestSelectedResourceFromExpand, nextLatestSelectedResource:', nextLatestSelectedResource, 'rows:', rows, 'dataValue:', dataValue);
-          if (this.mapType === 'leaflet') {
-            map.setView([ dataValue[0].latlng[0], dataValue[0].latlng[1] ], this.geocodeZoom);
-            // map.setView([ dataValue[0].lat, dataValue[0].lon ], this.geocodeZoom);
-          } else if (this.mapType === 'mapbox') {
-            map.setCenter([ dataValue[0].latlng[1], dataValue[0].latlng[0] ], this.geocodeZoom);
+          if (dataValue[0].latlng[0]) {
+            if (this.mapType === 'leaflet') {
+              map.setView([ dataValue[0].latlng[0], dataValue[0].latlng[1] ], this.geocodeZoom);
+              // map.setView([ dataValue[0].lat, dataValue[0].lon ], this.geocodeZoom);
+            } else if (this.mapType === 'mapbox') {
+              map.setCenter([ dataValue[0].latlng[1], dataValue[0].latlng[0] ], this.geocodeZoom);
+            }
           }
 
         // data coming in as an array means it came from airtable
