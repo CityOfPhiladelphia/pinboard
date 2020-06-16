@@ -29,6 +29,10 @@ Create pull request for changes and merge into `master` branch for travis-ci bui
 
 ## Release Notes
 
+### 0.4.1 - 6/16/2020
+
+* moves up minor version to test npm
+
 ### 0.3.10 - 6/16/2020
 
 * uses mapbox FontAwesomeMarker.vue from @phila/vue-mapping
