@@ -210,7 +210,32 @@
         :icon="marker.icon"
       />
 
+      <MglFontAwesomeMarker
+        v-if="markerType === 'pin-marker'"
+        v-for="(marker) in currentMapData"
+        :coordinates="[marker.latlng[1], marker.latlng[0]]"
+        :key="marker._featureId"
+        :size="marker.size"
+        :icon="marker.icon"
+        :markerId="marker._featureId"
+        :color="marker.color"
+        @click="handleMarkerClick"
+      >
+        <MglPopup
+          v-if="latestSelectedResourceFromMap === marker._featureId"
+          :showed="true"
+        >
+          <div
+            @click="toggleMap"
+            v-html="mapboxSiteName(marker)"
+          >
+          </div>
+        </MglPopup>
+
+      </MglFontAwesomeMarker>
+
       <MglCircleMarker
+        v-if="markerType === 'circle-marker'"
         v-for="(marker) in currentMapData"
         :coordinates="[marker.latlng[1], marker.latlng[0]]"
         :key="marker._featureId"
@@ -220,19 +245,14 @@
         :weight="marker.weight"
         @click="handleMarkerClick"
       >
-      <!-- v-for="(marker) in currentMapData"-->
-      <!-- :coordinates="[marker.latlng[1], marker.latlng[0]]" -->
-      <!-- v-if="marker.selected" -->
         <MglPopup
           v-if="latestSelectedResourceFromMap === marker._featureId"
           :showed="true"
         >
-        <!-- :close-on-click="false" -->
           <div
             @click="toggleMap"
             v-html="mapboxSiteName(marker)"
           >
-            <!-- {{ getSiteName(marker) }} -->
           </div>
         </MglPopup>
 
@@ -397,6 +417,7 @@ export default {
     MbIcon: () => import(/* webpackChunkName: "pvm_MbIcon" */'@phila/vue-mapping/src/mapbox/UI/MbIcon'),
     MglGeojsonLayer: () => import(/* webpackChunkName: "pvm_MglGeojsonLayer" */'@phila/vue-mapping/src/mapbox/layer/GeojsonLayer'),
     MglPopup: () => import(/* webpackChunkName: "pvm_MglPopup" */'@phila/vue-mapping/src/mapbox/UI/Popup'),
+    MglFontAwesomeMarker: () => import(/* webpackChunkName: "pvm_MglFontAwesomeMarker" */'@phila/vue-mapping/src/mapbox/UI/FontAwesomeMarker.vue'),
     OverlayLegend: () => import(/* webpackChunkName: "pvm_OverlayLegend" */'@phila/vue-mapping/src/mapbox/OverlayLegend'),
   },
   mixins: [
@@ -465,12 +486,12 @@ export default {
       return "+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +wktext  +no_defs";
     },
     currentMapData() {
-      // console.log('MapPanel.vue currentMapData computed is recalculating');//, this.currentData:', this.currentData);
+      // console.log('MapPanel.vue currentMapData computed is starting recalculating');//, this.currentData:', this.currentData);
       const newRows = [];
       for (const row of [ ...this.currentData ]) {
         // console.log('in loop, row:', row);
         let markerColor;
-        let markerSize, size;
+        let markerSize, size, faSize;
         let radius, nonSelectedRadius;
         let weight;
         // let selected;
@@ -494,6 +515,7 @@ export default {
           markerColor = '#2176d2';
           markerSize = 40;
           size = 30;
+          faSize = '4x';
           radius = radius + 6;
           weight = 0;
         } else {
@@ -503,17 +525,12 @@ export default {
               markerColor = this.$config.circleMarkers.circleColors[row.attributes.category_type];
             } else if (row.category_type) {
               markerColor = this.$config.circleMarkers.circleColors[row.category_type];
-            // } else if (row.CATEGORY_TYPE) {
-            //   markerColor = this.$config.circleMarkers.circleColors[row.CATEGORY_TYPE];
-            // if (row.attributes.category_type) {
-            //   markerColor = this.$config.circleMarkers.circleColors[row.attributes.category_type];
-            // } else if (row.attributes.CATEGORY_TYPE) {
-            //   markerColor = this.$config.circleMarkers.circleColors[row.attributes.CATEGORY_TYPE];
             }
           } else if (this.$config.circleMarkers && this.$config.circleMarkers.color) {
             markerColor = this.$config.circleMarkers.color;
           } else {
             markerColor = 'purple';
+            faSize = '2x';
           }
           markerSize = 20;
           if (this.$config.circleMarkers && this.$config.circleMarkers.weight || this.$config.circleMarkers && this.$config.circleMarkers.weight === 0) {
@@ -525,7 +542,7 @@ export default {
         }
 
         if (row.lat) {
-          // console.log('if row.lat is running')
+          // console.log('if row.lat is running, markerColor:', markerColor, 'markerSize:', markerSize);
           let projection = this.getProjection(row);
           if (projection === '3857') {
           // if (this.$config.projection === '3857') {
@@ -544,8 +561,8 @@ export default {
           row.icon = {
             prefix: 'fas',
             icon: 'map-marker-alt',
-            shadow: false,
-            size: markerSize,
+            // shadow: false,
+            size: faSize,
           };
           newRows.push(row);
         } else if (row.geometry) {
@@ -570,8 +587,8 @@ export default {
           row.icon = {
             prefix: 'fas',
             icon: 'map-marker-alt',
-            shadow: false,
-            size: markerSize,
+            // shadow: false,
+            size: faSize,
           };
           newRows.push(row);
         }
@@ -821,6 +838,7 @@ export default {
       return this.$config.map.basemaps[basemap] || {};
     },
     handleMarkerClick(e) {
+      // console.log('handleMarkerClick is running, e:', e);
       let featureId;
       if (this.mapType === 'leaflet') {
         const { target } = e;
