@@ -356,6 +356,12 @@ export default {
       this.isAlertModalOpen = true;
     }
 
+    if (this.$config.comboSearch) {
+      if (this.$config.comboSearch.dropdown && this.$config.comboSearch.dropdown.length === 1) {
+        this.$store.commit('setSearchType', this.$config.comboSearch.dropdown[0]);
+      }
+    }
+
     this.onResize();
   },
   created() {
@@ -495,13 +501,22 @@ export default {
         let booleanKeywords = true;
         if (this.selectedKeywords.length > 0) {
           booleanKeywords = false;
-          const description = row.tags;
+          let description;
+          if (Array.isArray(row.tags)) {
+            description = row.tags;
+          } else {
+            description = row.tags.split(', ');
+          }
+          // console.log('row.tags:', row.tags);
           let lowerCaseDescription = [];
           for (let tag of description) {
             lowerCaseDescription.push(tag.toLowerCase());
           }
-          // console.log('description:', description, 'lowerCaseDescription:', lowerCaseDescription);
-          const keywordsFiltered = this.selectedKeywords.filter(f => lowerCaseDescription.includes(f.toLowerCase()));
+          const keywordsFiltered = this.selectedKeywords.filter(function(f) {
+            // console.log('filter, f:', f, 'f.toLowerCase():', f.toLowerCase(), 'lowerCaseDescription:', lowerCaseDescription, 'lowerCaseDescription.includes(f.toLowerCase()):', lowerCaseDescription.includes(f.toLowerCase()));
+            return lowerCaseDescription.includes(f.toLowerCase())
+          });
+          // console.log('description:', description, 'lowerCaseDescription:', lowerCaseDescription, 'keywordsFiltered:', keywordsFiltered);
           if (keywordsFiltered.length > 0) {
             booleanKeywords = true;
           }

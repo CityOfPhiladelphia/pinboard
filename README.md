@@ -29,6 +29,10 @@ Create pull request for changes and merge into `master` branch for travis-ci bui
 
 ## Release Notes
 
+### 0.4.2 - 6/16/2020
+
+* fixes keyword search when keyword is the only option
+
 ### 0.4.1 - 6/16/2020
 
 * fixes search by keywords
