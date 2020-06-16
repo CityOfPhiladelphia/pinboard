@@ -357,7 +357,7 @@ export default {
     }
 
     if (this.$config.comboSearch) {
-      if (this.$config.comboSearch.dropdown && this.$config.comboSearch.dropdown.length === 1) {
+      if (this.$config.comboSearch.dropdown) { //&& this.$config.comboSearch.dropdown.length === 1) {
         this.$store.commit('setSearchType', this.$config.comboSearch.dropdown[0]);
       }
     }
