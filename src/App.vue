@@ -496,7 +496,12 @@ export default {
         if (this.selectedKeywords.length > 0) {
           booleanKeywords = false;
           const description = row.tags;
-          const keywordsFiltered = this.selectedKeywords.filter(f => description.includes(f));
+          let lowerCaseDescription = [];
+          for (let tag of description) {
+            lowerCaseDescription.push(tag.toLowerCase());
+          }
+          // console.log('description:', description, 'lowerCaseDescription:', lowerCaseDescription);
+          const keywordsFiltered = this.selectedKeywords.filter(f => lowerCaseDescription.includes(f.toLowerCase()));
           if (keywordsFiltered.length > 0) {
             booleanKeywords = true;
           }

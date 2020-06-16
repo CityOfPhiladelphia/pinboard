@@ -29,6 +29,10 @@ Create pull request for changes and merge into `master` branch for travis-ci bui
 
 ## Release Notes
 
+### 0.4.1 - 6/16/2020
+
+* fixes search by keywords
+
 ### 0.4.0 - 6/16/2020
 
 * moves up minor version to test npm
