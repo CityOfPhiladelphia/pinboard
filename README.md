@@ -29,6 +29,10 @@ Create pull request for changes and merge into `master` branch for travis-ci bui
 
 ## Release Notes
 
+### 0.3.10 - 6/16/2020
+
+* uses mapbox FontAwesomeMarker.vue from @phila/vue-mapping
+
 ### 0.3.9 - 6/15/2020
 
 * fixes issues with data rows that are missing geometries
