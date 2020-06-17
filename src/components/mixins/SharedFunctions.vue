@@ -20,7 +20,7 @@ export default {
       } else {
         val = item[valOrGetter];
       }
-
+      // console.log('getSiteName val:', val);
       return val;
     },
     getProjection(item) {

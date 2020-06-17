@@ -563,15 +563,18 @@ export default {
         }
 
         if (row.lat) {
-          console.log('if row.lat is running, color:', color);
+          // console.log('if row.lat is running, row.lat:', row.lat, 'row.lon:', row.lon, 'color:', color);
           // console.log('if row.lat is running, color:', color, 'markerSize:', markerSize);
           let projection = this.getProjection(row);
           if (projection === '3857') {
+            // console.log('if row.lat, and projection is 3857');
             row.latlng = proj4(this.projection3857, this.projection4326, [ row.lat, row.lon ]);
           } else if (projection === '2272') {
+            // console.log('if row.lat, and projection is 2272');
             let lnglat = proj4(this.projection2272, this.projection4326, [ row.geometry.x, row.geometry.y ]);
             row.latlng = [ lnglat[1], lnglat[0] ];
           } else {
+            // console.log('if row.lat, and else is running');
             row.latlng = [ row.lat, row.lon ];
           }
         } else if (row.geometry) {
@@ -586,7 +589,9 @@ export default {
           } else {
             row.latlng = [ row.geometry.y, row.geometry.x ];
           }
-        }
+        } //else {
+          //row.latlng = [];
+        //}
 
         row.color = color;
         row.size = size;
@@ -602,7 +607,9 @@ export default {
         // }
         // row.radius = radius;
 
-        newRows.push(row);
+        if (row.latlng) {
+          newRows.push(row);
+        }
 
       }
       // console.log('MapPanel.vue currentMapData computed is finishing');

@@ -29,6 +29,10 @@ Create pull request for changes and merge into `master` branch for travis-ci bui
 
 ## Release Notes
 
+### 0.4.5 - 6/17/2020
+
+* fixes bug with missing latlng
+
 ### 0.4.4 - 6/17/2020
 
 * fixes bug with font awesome marker placement in mapbox map
