@@ -219,6 +219,8 @@
         :icon="marker.icon"
         :markerId="marker._featureId"
         :color="marker.color"
+        :anchor="'bottom'"
+        :offset="marker.offset"
         @click="handleMarkerClick"
       >
         <MglPopup
@@ -490,49 +492,68 @@ export default {
       const newRows = [];
       for (const row of [ ...this.currentData ]) {
         // console.log('in loop, row:', row);
-        let markerColor;
-        let markerSize, size, faSize;
-        let radius, nonSelectedRadius;
-        let weight;
-        // let selected;
 
-        if (this.$config.circleMarkers && this.$config.circleMarkers.radius) {
-          if (this.isMobileOrTablet && this.$config.circleMarkers.mobileRadius) {
-            radius = this.$config.circleMarkers.mobileRadius;
+        let color, // all markers
+          size, // circleMarkers only
+          weight, // circleMarkers only
+          faSize; // font awesome markers only
+          // offset; // font awesome markers only
+          // markerSize,
+          // radius,
+          // nonSelectedRadius,
+
+        // circle-marker size
+        if (this.$config.circleMarkers && this.$config.circleMarkers.size) {
+          if (this.isMobileOrTablet && this.$config.circleMarkers.mobileSize) {
             size = this.$config.circleMarkers.mobileSize;
+            // radius = this.$config.circleMarkers.mobileRadius;
           } else {
-            radius = this.$config.circleMarkers.radius;
             size = this.$config.circleMarkers.size;
+            // radius = this.$config.circleMarkers.radius;
           }
         } else {
-          radius = 6;
           size = 14;
+          // radius = 6;
         }
 
+        // selected = true;
         if (this.selectedResources.includes(row._featureId)) {
           // console.log('row is selected, row._featureId:', row._featureId);
-          // selected = true;
-          markerColor = '#2176d2';
-          markerSize = 40;
+          color = '#2176d2';
           size = 30;
           faSize = '4x';
-          radius = radius + 6;
           weight = 0;
+          // if (this.$config.markerType === 'pin-marker') {
+          //   offset = [ 0, 0 ];
+          // }
+          // markerSize = 40;
+          // radius = radius + 6;
+
+        // selected = false;
         } else {
-          // selected = false;
+          // multiple circle colors defined
           if (this.$config.circleMarkers && this.$config.circleMarkers.circleColors) {
             if (row.attributes) {
-              markerColor = this.$config.circleMarkers.circleColors[row.attributes.category_type];
+              color = this.$config.circleMarkers.circleColors[row.attributes.category_type];
             } else if (row.category_type) {
-              markerColor = this.$config.circleMarkers.circleColors[row.category_type];
+              color = this.$config.circleMarkers.circleColors[row.category_type];
             }
+
+          // single circle color defined
           } else if (this.$config.circleMarkers && this.$config.circleMarkers.color) {
-            markerColor = this.$config.circleMarkers.color;
+            color = this.$config.circleMarkers.color;
+
+          // no circle color defined;
           } else {
-            markerColor = 'purple';
-            faSize = '2x';
+            color = 'purple';
           }
-          markerSize = 20;
+
+          faSize = '2x';
+          // if (this.$config.markerType === 'pin-marker') {
+          //   offset = [ 0, 0 ];
+          // }
+          // markerSize = 20;
+
           if (this.$config.circleMarkers && this.$config.circleMarkers.weight || this.$config.circleMarkers && this.$config.circleMarkers.weight === 0) {
             weight = this.$config.circleMarkers.weight;
           } else {
@@ -542,10 +563,10 @@ export default {
         }
 
         if (row.lat) {
-          // console.log('if row.lat is running, markerColor:', markerColor, 'markerSize:', markerSize);
+          console.log('if row.lat is running, color:', color);
+          // console.log('if row.lat is running, color:', color, 'markerSize:', markerSize);
           let projection = this.getProjection(row);
           if (projection === '3857') {
-          // if (this.$config.projection === '3857') {
             row.latlng = proj4(this.projection3857, this.projection4326, [ row.lat, row.lon ]);
           } else if (projection === '2272') {
             let lnglat = proj4(this.projection2272, this.projection4326, [ row.geometry.x, row.geometry.y ]);
@@ -553,24 +574,10 @@ export default {
           } else {
             row.latlng = [ row.lat, row.lon ];
           }
-          // row.selected = selected;
-          row.color = markerColor;
-          row.radius = radius;
-          row.size = size;
-          row.weight = weight;
-          row.icon = {
-            prefix: 'fas',
-            icon: 'map-marker-alt',
-            // shadow: false,
-            size: faSize,
-          };
-          newRows.push(row);
         } else if (row.geometry) {
-          // row.selected = selected;
           // console.log('else if row.geometry is true, row.geometry:', row.geometry);
           let projection = this.getProjection(row);
           if (projection === '3857') {
-          // if (this.$config.projection === '3857') {
             let lnglat = proj4(this.projection3857, this.projection4326, [ row.geometry.x, row.geometry.y ]);
             row.latlng = [ lnglat[1], lnglat[0] ];
           } else if (projection === '2272') {
@@ -579,19 +586,24 @@ export default {
           } else {
             row.latlng = [ row.geometry.y, row.geometry.x ];
           }
-          row.color = markerColor;
-          row.radius = radius;
-          row.size = size;
-          row.weight = weight;
-
-          row.icon = {
-            prefix: 'fas',
-            icon: 'map-marker-alt',
-            // shadow: false,
-            size: faSize,
-          };
-          newRows.push(row);
         }
+
+        row.color = color;
+        row.size = size;
+        row.weight = weight;
+        row.icon = {
+          prefix: 'fas',
+          icon: 'map-marker-alt',
+          shadow: false,
+          size: faSize,
+        };
+        // if (this.$config.markerType === 'pin-marker') {
+        //   row.offset = offset;
+        // }
+        // row.radius = radius;
+
+        newRows.push(row);
+
       }
       // console.log('MapPanel.vue currentMapData computed is finishing');
       return newRows;
@@ -757,7 +769,7 @@ export default {
       }
     },
     latestSelectedResourceFromExpand(nextLatestSelectedResource) {
-      // console.log('watch latestSelectedResourceFromExpand:', nextLatestSelectedResource, 'this.$appType:', this.$appType);
+      console.log('watch latestSelectedResourceFromExpand:', nextLatestSelectedResource, 'this.$appType:', this.$appType);
       if (nextLatestSelectedResource) {
         let rows;
         const map = this.$store.map;
@@ -766,7 +778,7 @@ export default {
         if (this.$store.state.sources[this.$appType].data.rows) {
           rows = this.$store.state.sources[this.$appType].data.rows;
           const dataValue = rows.filter(row => row._featureId === nextLatestSelectedResource);
-          // console.log('in watch latestSelectedResourceFromExpand, nextLatestSelectedResource:', nextLatestSelectedResource, 'rows:', rows, 'dataValue:', dataValue);
+          console.log('in watch latestSelectedResourceFromExpand, rows, nextLatestSelectedResource:', nextLatestSelectedResource, 'rows:', rows, 'dataValue:', dataValue);
           // do not set view if there is not lat value
           if (dataValue[0].lat) {
             if (this.mapType === 'leaflet') {
@@ -780,7 +792,7 @@ export default {
         } else if (this.$store.state.sources[this.$appType].data.features) {
           rows = this.$store.state.sources[this.$appType].data.features;
           const dataValue = rows.filter(row => row._featureId === nextLatestSelectedResource);
-          // console.log('in watch latestSelectedResourceFromExpand, nextLatestSelectedResource:', nextLatestSelectedResource, 'rows:', rows, 'dataValue:', dataValue);
+          console.log('in watch latestSelectedResourceFromExpand, features, nextLatestSelectedResource:', nextLatestSelectedResource, 'rows:', rows, 'dataValue:', dataValue);
           if (dataValue[0].latlng[0]) {
             if (this.mapType === 'leaflet') {
               map.setView([ dataValue[0].latlng[0], dataValue[0].latlng[1] ], this.geocodeZoom);
@@ -790,18 +802,15 @@ export default {
             }
           }
 
-        // data coming in as an array means it came from airtable
+        // data coming in as an array means it came from a compiled datasource or airtable
         } else if (Array.isArray(this.$store.state.sources[this.$appType].data)) {
           rows = this.$store.state.sources[this.$appType].data;
           const dataValue = rows.filter(row => row._featureId === nextLatestSelectedResource);
-          // console.log('in watch latestSelectedResourceFromExpand, nextLatestSelectedResource:', nextLatestSelectedResource, 'rows:', rows, 'dataValue:', dataValue);
-          if (dataValue[0].lat) {
-            if (this.mapType === 'leaflet') {
-              map.setView([ dataValue[0].latlng[0], dataValue[0].latlng[1] ], this.geocodeZoom);
-              // map.setView([ dataValue[0].lat, dataValue[0].lon ], this.geocodeZoom);
-            } else if (this.mapType === 'mapbox') {
-              map.setCenter([ dataValue[0].latlng[1], dataValue[0].latlng[0] ], this.geocodeZoom);
-            }
+          console.log('in watch latestSelectedResourceFromExpand, array, nextLatestSelectedResource:', nextLatestSelectedResource, 'rows:', rows, 'dataValue:', dataValue);
+          if (this.mapType === 'leaflet') {
+            map.setView([ dataValue[0].latlng[0], dataValue[0].latlng[1] ], this.geocodeZoom);
+          } else if (this.mapType === 'mapbox') {
+            map.setCenter([ dataValue[0].latlng[1], dataValue[0].latlng[0] ], this.geocodeZoom);
           }
         }
       }
