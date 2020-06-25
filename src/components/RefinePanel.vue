@@ -97,7 +97,8 @@
             :key="ind"
             class="service-group-holder"
           >
-            {{ $t(ind) }}
+            <!-- {{ $t(ind) }} -->
+            {{ ind }}
 
             <div class="grid-x service-group">
 
@@ -125,7 +126,7 @@
                         v-if="!i18nEnabled"
                         class="service-item"
                       >
-                        {{ item }}
+                        {{ item.box_label }}
                       </span>
 
                       <span

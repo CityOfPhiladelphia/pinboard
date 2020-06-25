@@ -1020,10 +1020,10 @@
     vue "^2.6.10"
     vuex "^3.1.2"
 
-"@phila/vue-mapping@2.1.8":
-  version "2.1.8"
-  resolved "https://registry.yarnpkg.com/@phila/vue-mapping/-/vue-mapping-2.1.8.tgz#d40ceceae4b212a07a57d2c0d21e9b3fb9f3d877"
-  integrity sha512-FUMVxP5iTWdXW+iv2KbMATnprOmrshefqpiE6zpGzMVJtRKijaNJ9S2fwYyEBbov20PsI7zAI5jX12Tg6Wpgug==
+"@phila/vue-mapping@2.1.9":
+  version "2.1.9"
+  resolved "https://registry.yarnpkg.com/@phila/vue-mapping/-/vue-mapping-2.1.9.tgz#206ea9b8dda546d0c1e308e83719d9b4916a4823"
+  integrity sha512-a1R6v9YzaFF2OmOEzR+DGM2I/7GVoqafPIbQcq81tlMcHXmLQ8MMm6RxNqNuaRXl8PFiQiS64tMy8K0NtUFlag==
   dependencies:
     "@fortawesome/fontawesome-svg-core" "^1.2.15"
     "@fortawesome/free-regular-svg-icons" "^5.7.2"
@@ -1043,6 +1043,7 @@
     leaflet-measure "https://github.com/CityOfPhiladelphia/leaflet-measure#1dd982b2f9c78be2af5f497d9415e66cd3df6216"
     leaflet-omnivore "https://github.com/CityOfPhiladelphia/leaflet-omnivore#f072195b03f7930690d9cbccb9375f0eda50fd41"
     leaflet-rotatedmarker "^0.2.0"
+    leaflet-shape-markers "^1.0.6"
     leaflet-vector-icon "https://github.com/CityOfPhiladelphia/leaflet-vector-icon#c37571e92c66ce0003f22058f2d246b31d3941a5"
     lodash-es "^4.17.14"
     map-promisified "^0.4.0"
@@ -7200,7 +7201,7 @@ leaflet-rotatedmarker@^0.2.0:
   resolved "https://registry.yarnpkg.com/leaflet-rotatedmarker/-/leaflet-rotatedmarker-0.2.0.tgz#4467f49f98d1bfd56959bd9c6705203dd2601277"
   integrity sha1-RGf0n5jRv9VpWb2cZwUgPdJgEnc=
 
-leaflet-shape-markers@^1.0.4:
+leaflet-shape-markers@^1.0.4, leaflet-shape-markers@^1.0.6:
   version "1.0.6"
   resolved "https://registry.yarnpkg.com/leaflet-shape-markers/-/leaflet-shape-markers-1.0.6.tgz#d54056a4e533828120107a71a237b1efc1a07649"
   integrity sha1-1UBWpOUzgoEgEHpxojex78Ggdkk=

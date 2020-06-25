@@ -102,23 +102,37 @@
           </div>
 
           <!-- <div class="cell large-auto small-auto small-centered text-center"> -->
-          <div class="cell large-auto hide-for-small-only text-center">
+          <!-- <div class="cell large-auto hide-for-small-only text-center grid-x align-right"> -->
+          <!-- <div class="cell large-auto hide-for-small-only text-center"> -->
+          <div class="cell large-auto hide-for-small-only">
 
-            <combo-search
-              :dropdown="comboSearchDropdownData"
-              :position="comboSearchPosition"
-              :placeholderText="comboSearchPlaceholderText"
-              :search-string="searchString"
-              :dropdown-selected="dropdownSelected"
-              :input-id="'input1'"
-              :select-id="'select1'"
-              @trigger-combo-search="comboSearchTriggered"
-              @trigger-clear-search="clearSearchTriggered"
-              @trigger-search-category-change="comboSearchCategoryChange"
-            />
+              <div class="inline-block-class">
+                <PhilaButton>
+                  <a
+                  target="_blank"
+                  href="https://airtable.com/shrQ8Xqx9flpQA09h"
+                  >
+                  Submit a Site
+                  </a>
+                </PhilaButton>
+              </div>
 
-            <div class="search">
-              <slot name="search" />
+              <combo-search
+                :dropdown="comboSearchDropdownData"
+                :position="comboSearchPosition"
+                :placeholderText="comboSearchPlaceholderText"
+                :search-string="searchString"
+                :dropdown-selected="dropdownSelected"
+                :input-id="'input1'"
+                :select-id="'select1'"
+                @trigger-combo-search="comboSearchTriggered"
+                @trigger-clear-search="clearSearchTriggered"
+                @trigger-search-category-change="comboSearchCategoryChange"
+              />
+
+              <div class="search">
+                <slot name="search" />
+              </div>
             </div>
           </div>
 
@@ -146,7 +160,16 @@
         />
       </div>
 
-      <div class="cell show-for-small-only text-center">
+
+      <div class="cell show-for-small-only text-center grid-x align-right">
+        <PhilaButton>
+          <a
+          target="_blank"
+          href="https://airtable.com/shrQ8Xqx9flpQA09h"
+          >
+          Submit a Site
+          </a>
+        </PhilaButton>
 
         <combo-search
           :dropdown="comboSearchDropdownData"
@@ -226,10 +249,12 @@ import Logo from '../assets/city-of-philadelphia-logo.png';
 // import Paragraph from '@phila/vue-comps/src/components/Paragraph.vue'
 // import '@phila/vue-comps'
 import i18nBanner from './i18nBanner.vue';
+import PhilaButton from './PhilaButton.vue';
 
 export default {
   components: {
     i18nBanner,
+    PhilaButton,
     ComboSearch: () => import(/* webpackChunkName: "pvc_ComboSearch" */'@phila/vue-comps/src/components/ComboSearch.vue'),
     AddressInput: () => import(/* webpackChunkName: "pvc_AddressInput" */'@phila/vue-comps/src/components/AddressInput.vue'),
   },
@@ -377,7 +402,7 @@ export default {
     // },
     comboSearchTriggered(query) {
       this.$router.push({ query: { ...this.$route.query, ...query }});
-      
+
       this.searchString = query[this.searchType];
       console.log('comboSearchTriggered is running, query:', query, 'query[this.searchType]:', query[this.searchType]);
       const searchCategory = Object.keys(query)[0];
@@ -439,6 +464,10 @@ export default {
 </script>
 
 <style lang="scss">
+
+.inline-block-class {
+  display: inline-block;
+}
 
 .app-header{
   width: 100%;
@@ -557,4 +586,5 @@ export default {
   min-height: 5px;
   background: white;
 }
+
 </style>
