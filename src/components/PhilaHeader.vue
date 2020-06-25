@@ -104,18 +104,20 @@
           <!-- <div class="cell large-auto small-auto small-centered text-center"> -->
           <!-- <div class="cell large-auto hide-for-small-only text-center grid-x align-right"> -->
           <!-- <div class="cell large-auto hide-for-small-only text-center"> -->
-          <div class="cell large-auto hide-for-small-only">
+          <div class="cell large-auto hide-for-small-only grid-x align-right">
 
-              <div class="inline-block-class">
-                <PhilaButton>
-                  <a
-                  target="_blank"
-                  href="https://airtable.com/shrQ8Xqx9flpQA09h"
-                  >
-                  Submit a Site
-                  </a>
-                </PhilaButton>
-              </div>
+              <phila-button
+                v-if="headerButton && headerButton.enabled"
+                class="button header-button"
+              >
+                <a
+                class="no-underline"
+                target="_blank"
+                :href="headerButton.href"
+                v-html="headerButton.text"
+                >
+                </a>
+              </phila-button>
 
               <combo-search
                 :dropdown="comboSearchDropdownData"
@@ -162,14 +164,18 @@
 
 
       <div class="cell show-for-small-only text-center grid-x align-right">
-        <PhilaButton>
+        <phila-button
+          v-if="headerButton && headerButton.enabled"
+          class="button header-button"
+        >
           <a
+          class="no-underline"
           target="_blank"
-          href="https://airtable.com/shrQ8Xqx9flpQA09h"
+          :href="headerButton.href"
+          v-html="headerButton.text"
           >
-          Submit a Site
           </a>
-        </PhilaButton>
+        </phila-button>
 
         <combo-search
           :dropdown="comboSearchDropdownData"
@@ -303,6 +309,13 @@ export default {
     };
   },
   computed: {
+    headerButton() {
+      let value;
+      if (this.$config.header && this.$config.header.button && this.$config.header.button.enabled === true) {
+        value = this.$config.header.button;
+      }
+      return value;
+    },
     shouldShowBetaTag() {
       let value = true;
       if (this.$config.header && this.$config.header.beta === false) {
@@ -585,6 +598,10 @@ export default {
 .white-stripe{
   min-height: 5px;
   background: white;
+}
+
+.no-underline {
+  text-decoration: none;
 }
 
 </style>

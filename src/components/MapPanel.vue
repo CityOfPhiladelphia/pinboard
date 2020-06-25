@@ -527,7 +527,7 @@ export default {
           // color = 'green';
           // }
           size = 30;
-          console.log('color:', color, 'size:', size, 'this.$config.circleMarkers.circleColors[row.category_type]:', this.$config.circleMarkers.circleColors[row.category_type]);
+          // console.log('color:', color, 'size:', size, 'this.$config.circleMarkers.circleColors[row.category_type]:', this.$config.circleMarkers.circleColors[row.category_type]);
           faSize = '4x';
           weight = 0;
           // if (this.$config.markerType === 'pin-marker') {
@@ -570,7 +570,7 @@ export default {
         }
 
         if (row.lat) {
-          console.log('if row.lat is running, row.lat:', row.lat, 'row.lon:', row.lon, 'color:', color, 'size:', size);
+          // console.log('if row.lat is running, row.lat:', row.lat, 'row.lon:', row.lon, 'color:', color, 'size:', size);
           // console.log('if row.lat is running, color:', color, 'markerSize:', markerSize);
           let projection = this.getProjection(row);
           if (projection === '3857') {
@@ -585,7 +585,7 @@ export default {
             row.latlng = [ row.lat, row.lon ];
           }
         } else if (row.geometry) {
-          console.log('else if row.geometry is true, row.geometry:', row.geometry);
+          // console.log('else if row.geometry is true, row.geometry:', row.geometry);
           let projection = this.getProjection(row);
           if (projection === '3857') {
             let lnglat = proj4(this.projection3857, this.projection4326, [ row.geometry.x, row.geometry.y ]);
@@ -599,8 +599,6 @@ export default {
         } //else {
           //row.latlng = [];
         //}
-
-        console.log('still going')
 
         row.color = color;
         row.size = size;
