@@ -29,6 +29,10 @@ Create pull request for changes and merge into `master` branch for travis-ci bui
 
 ## Release Notes
 
+### 0.4.6 - 6/25/2020
+
+* fixes css issues
+
 ### 0.4.5 - 6/17/2020
 
 * fixes bug with missing latlng
