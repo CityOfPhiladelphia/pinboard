@@ -101,40 +101,23 @@
             </section>
           </div>
 
-          <!-- <div class="cell large-auto small-auto small-centered text-center"> -->
-          <!-- <div class="cell large-auto hide-for-small-only text-center grid-x align-right"> -->
-          <!-- <div class="cell large-auto hide-for-small-only text-center"> -->
-          <div class="cell large-auto hide-for-small-only grid-x align-right">
+          <div class="cell large-auto hide-for-small-only text-center">
 
-              <phila-button
-                v-if="headerButton && headerButton.enabled"
-                class="button header-button"
-              >
-                <a
-                class="no-underline"
-                target="_blank"
-                :href="headerButton.href"
-                v-html="headerButton.text"
-                >
-                </a>
-              </phila-button>
+            <combo-search
+              :dropdown="comboSearchDropdownData"
+              :position="comboSearchPosition"
+              :placeholderText="comboSearchPlaceholderText"
+              :search-string="searchString"
+              :dropdown-selected="dropdownSelected"
+              :input-id="'input1'"
+              :select-id="'select1'"
+              @trigger-combo-search="comboSearchTriggered"
+              @trigger-clear-search="clearSearchTriggered"
+              @trigger-search-category-change="comboSearchCategoryChange"
+            />
 
-              <combo-search
-                :dropdown="comboSearchDropdownData"
-                :position="comboSearchPosition"
-                :placeholderText="comboSearchPlaceholderText"
-                :search-string="searchString"
-                :dropdown-selected="dropdownSelected"
-                :input-id="'input1'"
-                :select-id="'select1'"
-                @trigger-combo-search="comboSearchTriggered"
-                @trigger-clear-search="clearSearchTriggered"
-                @trigger-search-category-change="comboSearchCategoryChange"
-              />
-
-              <div class="search">
-                <slot name="search" />
-              </div>
+            <div class="search">
+              <slot name="search" />
             </div>
           </div>
 
@@ -163,19 +146,7 @@
       </div>
 
 
-      <div class="cell show-for-small-only text-center grid-x align-right">
-        <phila-button
-          v-if="headerButton && headerButton.enabled"
-          class="button header-button"
-        >
-          <a
-          class="no-underline"
-          target="_blank"
-          :href="headerButton.href"
-          v-html="headerButton.text"
-          >
-          </a>
-        </phila-button>
+      <div class="cell show-for-small-only text-center">
 
         <combo-search
           :dropdown="comboSearchDropdownData"
