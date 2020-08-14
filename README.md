@@ -29,6 +29,10 @@ Create pull request for changes and merge into `master` branch for travis-ci bui
 
 ## Release Notes
 
+### 0.4.7 - 8/14/2020
+
+* fixes bug with point color
+
 ### 0.4.6 - 6/25/2020
 
 * fixes css issues
