@@ -102,7 +102,8 @@
 
             <div v-if="i18nEnabled">
               <div v-if="refineOpen">
-                <b v-html="$t(ind + '.category')">
+                <b>
+                  {{ $t(ind + '.category') }}
                   <icon-tool-tip
                     v-if="Object.keys(infoCircles).includes(ind)"
                     :item="ind"
@@ -112,10 +113,8 @@
                   </icon-tool-tip>
                 </b>
               </div>
-              <div
-                v-if="!refineOpen"
-                v-html="$t(ind + '.category')"
-              >
+              <div v-if="!refineOpen">
+                {{ $t(ind + '.category') }}
                 <icon-tool-tip
                   v-if="Object.keys(infoCircles).includes(ind)"
                   :item="ind"
