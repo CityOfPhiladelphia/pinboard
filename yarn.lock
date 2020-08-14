@@ -1046,10 +1046,9 @@
     "@nodelib/fs.scandir" "2.1.3"
     fastq "^1.6.0"
 
-"@phila/vue-comps@2.1.6":
+"@phila/vue-comps@https://github.com/CityOfPhiladelphia/phila-vue-comps#eda341c8def41ecc9b9ee453cb54eff8cce62179":
   version "2.1.6"
-  resolved "https://registry.yarnpkg.com/@phila/vue-comps/-/vue-comps-2.1.6.tgz#32e520202dc3b5a25eee9f26966413b0c4640fc3"
-  integrity sha512-Ugaki0cVfUM46gzldA23pJTgZbYwq8PKYc65ymHp7ourxOPNweWrEUgFVd1mwTarxVvdDZldIpR0pf2SJDkeiA==
+  resolved "https://github.com/CityOfPhiladelphia/phila-vue-comps#eda341c8def41ecc9b9ee453cb54eff8cce62179"
   dependencies:
     "@fortawesome/fontawesome-svg-core" "^1.2.15"
     "@fortawesome/free-regular-svg-icons" "^5.7.2"

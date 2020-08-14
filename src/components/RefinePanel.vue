@@ -41,8 +41,9 @@
         <!-- if using categoryField_value, categoryField_array, or multipleFields options -->
         <div
           v-if="dataStatus === 'success' && refineType !== 'multipleFieldGroups'"
-          class="grid-x service-list"
+          :class="refineOpen ? 'grid-y service-list' : 'grid-x service-list'"
         >
+        <!-- class="grid-x service-list" -->
           <div
             v-for="(item, index) in getRefineSearchList()"
             :key="index"
@@ -90,15 +91,46 @@
         <!-- if using multipleFieldsGroups option -->
         <div
           v-if="dataStatus === 'success' && refineType === 'multipleFieldGroups'"
-          class="grid-x group-service-list service-list"
+          :class="refineOpen ? 'grid-y group-service-list service-list' : 'grid-x group-service-list service-list'"
         >
+        <!-- class="grid-x group-service-list service-list" -->
           <div
             v-for="(group, ind) in refineList"
             :key="ind"
-            class="service-group-holder"
+            :class="refineOpen ? 'service-group-holder-y' : 'service-group-holder-x'"
           >
+          <!-- class="service-group-holder" -->
             <!-- {{ $t(ind) }} -->
-            {{ ind }}
+            <div v-if="refineOpen">
+              <b>
+                {{ ind }}
+                <icon-tool-tip
+                  v-if="Object.keys(infoCircles).includes(ind)"
+                  :item="ind"
+                  :circleData="infoCircles[ind]"
+                  :circleType="'click'"
+                >
+                </icon-tool-tip>
+              </b>
+            </div>
+
+            <div v-if="!refineOpen">
+              {{ ind }}
+              <icon-tool-tip
+                v-if="Object.keys(infoCircles).includes(ind)"
+                :item="ind"
+                :circleData="infoCircles[ind]"
+                :circleType="'click'"
+              >
+              </icon-tool-tip>
+            </div>
+
+            <!-- <icon-tool-tip
+              v-if="Object.keys(infoCircles).includes(ind)"
+              :item="ind"
+              :circleData="infoCircles[ind]"
+            >
+            </icon-tool-tip> -->
 
             <div class="grid-x service-group">
 
@@ -415,7 +447,23 @@ $refine-panel-height: 19vh;
     margin-left: -15px;
   }
 
-  .service-group-holder{
+  .service-group-holder-y{
+    // padding: 2px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    padding-left: 16px;
+    padding-right: 10px;
+    border-bottom: 1px solid black;
+    &:first-of-type{
+      padding-top: 0px;
+    }
+    &:last-of-type{
+      // border-bottom: none;
+      margin-bottom: 10px;
+    }
+  }
+
+  .service-group-holder-x{
     // padding: 2px;
     // padding-top: 4px;
     padding-left: 16px;
@@ -545,6 +593,18 @@ input[type=checkbox] {
 
 .apply-filters-text {
   display: inline-block;
+}
+
+.white-font-link {
+  color: white;
+}
+
+.white-font-link:hover {
+  color: #25cef7 !important;
+}
+
+.white-font-link:visited {
+  color: white;
 }
 
 </style>
