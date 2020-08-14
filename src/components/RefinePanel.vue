@@ -99,11 +99,23 @@
             :key="ind"
             :class="refineOpen ? 'service-group-holder-y' : 'service-group-holder-x'"
           >
-          <!-- class="service-group-holder" -->
-            <!-- {{ $t(ind) }} -->
-            <div v-if="refineOpen">
-              <b>
-                {{ ind }}
+
+            <div v-if="i18nEnabled">
+              <div v-if="refineOpen">
+                <b v-html="$t(ind + '.category')">
+                  <icon-tool-tip
+                    v-if="Object.keys(infoCircles).includes(ind)"
+                    :item="ind"
+                    :circleData="infoCircles[ind]"
+                    :circleType="'click'"
+                  >
+                  </icon-tool-tip>
+                </b>
+              </div>
+              <div
+                v-if="!refineOpen"
+                v-html="$t(ind + '.category')"
+              >
                 <icon-tool-tip
                   v-if="Object.keys(infoCircles).includes(ind)"
                   :item="ind"
@@ -111,26 +123,34 @@
                   :circleType="'click'"
                 >
                 </icon-tool-tip>
-              </b>
+              </div>
             </div>
 
-            <div v-if="!refineOpen">
-              {{ ind }}
-              <icon-tool-tip
-                v-if="Object.keys(infoCircles).includes(ind)"
-                :item="ind"
-                :circleData="infoCircles[ind]"
-                :circleType="'click'"
+            <div v-if="!i18nEnabled">
+              <div v-if="refineOpen">
+                <b v-html="ind">
+                  <icon-tool-tip
+                    v-if="Object.keys(infoCircles).includes(ind)"
+                    :item="ind"
+                    :circleData="infoCircles[ind]"
+                    :circleType="'click'"
+                  >
+                  </icon-tool-tip>
+                </b>
+              </div>
+              <div
+                v-if="!refineOpen"
+                v-html="ind"
               >
-              </icon-tool-tip>
+                <icon-tool-tip
+                  v-if="Object.keys(infoCircles).includes(ind)"
+                  :item="ind"
+                  :circleData="infoCircles[ind]"
+                  :circleType="'click'"
+                >
+                </icon-tool-tip>
+              </div>
             </div>
-
-            <!-- <icon-tool-tip
-              v-if="Object.keys(infoCircles).includes(ind)"
-              :item="ind"
-              :circleData="infoCircles[ind]"
-            >
-            </icon-tool-tip> -->
 
             <div class="grid-x service-group">
 
