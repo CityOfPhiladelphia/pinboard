@@ -29,6 +29,10 @@ Create pull request for changes and merge into `master` branch for travis-ci bui
 
 ## Release Notes
 
+### 0.5.0 - 8/28/2020
+
+* uses pvd and pvm releases that do not import leaflet unless needed
+
 ### 0.4.8 - 8/14/2020
 
 * fixes bugs with i18n in refine panel, info circles in refine panel
