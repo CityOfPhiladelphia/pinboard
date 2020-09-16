@@ -568,8 +568,8 @@ export default {
             row.latlng = [ row.lat, row.lon ];
           }
         } else if (row.geometry) {
-          // console.log('else if row.geometry is true, row.geometry:', row.geometry);
           let projection = this.getProjection(row);
+          // console.log('else if row.geometry is true, row.geometry:', row.geometry, 'projection:', projection);
           if (projection === '3857') {
             let lnglat = proj4(this.projection3857, this.projection4326, [ row.geometry.x, row.geometry.y ]);
             row.latlng = [ lnglat[1], lnglat[0] ];

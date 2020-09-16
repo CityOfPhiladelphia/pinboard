@@ -433,7 +433,7 @@ export default {
                 if (selectedServices.includes(field)) {
 
                   let getter = this.$config.refine.multipleFields[field];
-                  let val = getter(item);
+                  let val = getter(row);
                   booleanConditions.push(val);
                 }
               }

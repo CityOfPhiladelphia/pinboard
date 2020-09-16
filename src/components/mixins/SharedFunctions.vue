@@ -37,7 +37,7 @@ export default {
           val = getter(state);
         }
       } else {
-        val = item[valOrGetter];
+        val = valOrGetter;
       }
       return val;
     },
