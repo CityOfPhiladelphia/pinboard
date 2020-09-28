@@ -406,8 +406,13 @@ export default {
       console.log('end of setUpData, this.$store.state.sources:', this.$store.state.sources);
     },
     runBuffer() {
+      let searchDistance = 1;
+      if (this.$config.comboSearch.searchDistance) {
+        searchDistance = this.$config.comboSearch.searchDistance;
+      }
+      console.log('runBuffer is running, searchDistance:', searchDistance);
       const geocodePoint = point(this.geocodeGeom.coordinates);
-      const pointBuffer = buffer(geocodePoint, 1, { units: 'miles' });
+      const pointBuffer = buffer(geocodePoint, searchDistance, { units: 'miles' });
       this.$data.buffer = pointBuffer;
     },
     filterPoints() {
