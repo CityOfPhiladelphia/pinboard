@@ -34,10 +34,24 @@ export default {
       return this.$i18n.locale;
     },
     i18nMessages() {
-      return this.$i18n.messages;
+      let values = {};
+      if (this.$config.i18n.languages) {
+        for (let language of this.$config.i18n.languages) {
+          values[language] = this.$i18n.messages[language];
+        }
+      } else {
+        values = this.$i18n.messages;
+      }
+      return values;
     },
     i18nLanguages() {
-      return Object.keys(this.$i18n.messages);
+      let values = [];
+      if (this.$config.i18n.languagues) {
+        values = this.$config.i18n.languages;
+      } else {
+        values = Object.keys(this.$i18n.messages);
+      }
+      return values;
     },
   },
   methods: {
