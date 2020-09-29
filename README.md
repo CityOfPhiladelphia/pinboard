@@ -29,6 +29,10 @@ Create pull request for changes and merge into `master` branch for travis-ci bui
 
 ## Release Notes
 
+### 0.5.2 - 9/29/2020
+
+* fixes issues with i18n when you use fewer languages
+
 ### 0.5.1 - 9/29/2020
 
 * updates packages, small changes for voting finder

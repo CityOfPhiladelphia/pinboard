@@ -5,9 +5,17 @@
         <nav>
           <ul class="footer-nav">
             <li v-if="cityLinkEnabled">
-              <a href="https://www.phila.gov">
+              <a
+                v-if="!i18nEnabled"
+                href="https://www.phila.gov"
+              >
                 City of Philadelphia
               </a>
+              <a
+                v-if="i18nEnabled"
+                href="https://www.phila.gov"
+                v-html="$t('cityOfPhiladelphia')"
+              />
             </li>
 
             <li v-if="aboutFinderEnabled">
@@ -54,11 +62,20 @@
               v-for="link in otherLinks"
             >
               <a
+                v-if="!i18nEnabled"
                 :href="link.link"
                 target="_blank"
                 v-html="link.text"
               >
-                <!-- {{ link }} -->
+                <!-- {{ link.text }} -->
+              </a>
+              <a
+                v-if="i18nEnabled"
+                :href="link.link"
+                target="_blank"
+                v-html="$t(link.text)"
+              >
+                <!-- {{ $t(link.text) }} -->
               </a>
             </li>
 
