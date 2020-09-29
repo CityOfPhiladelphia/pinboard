@@ -29,6 +29,10 @@ Create pull request for changes and merge into `master` branch for travis-ci bui
 
 ## Release Notes
 
+### 0.5.1 - 9/29/2020
+
+* updates packages, small changes for voting finder
+
 ### 0.5.0 - 8/28/2020
 
 * uses pvd and pvm releases that do not import leaflet unless needed

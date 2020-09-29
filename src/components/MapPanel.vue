@@ -827,10 +827,16 @@ export default {
   //   this.mapbox = Mapbox;
   // },
   mounted() {
-    console.log('MapPanel mounted, this.$store.map:', this.$store.map);
+    console.log('MapPanel mounted, this.$store.map:', this.$store.map, 'this.$config.map.zoom:', this.$config.map.zoom);
     let logo = document.getElementsByClassName('mapboxgl-ctrl-logo');
     // console.log('MapPanel mounted, logo:', logo, 'logo.length:', logo.length, 'logo.item(0):', logo.item(0));
     // logo[0].remove();
+    if (this.$config.map.zoom) {
+      this.$store.commit('setMapZoom', this.$config.map.zoom);
+    }
+    if (this.$config.map.center) {
+      this.$store.commit('setMapCenter', this.$config.map.center);
+    }
     window.addEventListener('resize', this.handleResize);
   },
   beforeDestroy() {
