@@ -386,6 +386,12 @@ export default {
       console.log('track is running');
       this.$gtag.pageview({
         page_path: '/',
+      });
+
+      this.$gtag.event('test', {
+        'event_category': 'test-category',
+        'event_label': 'test-label',
+        'value': 'test-value',
       })
     },
     setUpData(theSources) {
