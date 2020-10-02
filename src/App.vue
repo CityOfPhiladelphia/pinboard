@@ -336,6 +336,8 @@ export default {
   },
   mounted() {
     console.log('in App.vue mounted, this.$store.state:', this.$store.state, 'this.$config:', this.$config, 'window.location.href:', window.location.href);
+    this.track();
+
     if (this.$config.appLink) {
       this.appLink = this.$config.appLink;
     } else {
@@ -380,6 +382,12 @@ export default {
     window.removeEventListener('resize', this.onResize);
   },
   methods: {
+    track () {
+      console.log('track is running');
+      this.$gtag.pageview({
+        page_path: '/',
+      })
+    },
     setUpData(theSources) {
       console.log('Pinboard App.vue setUpData is running, theSources:', theSources);
       let compiled = {

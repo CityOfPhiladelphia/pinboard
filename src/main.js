@@ -11,6 +11,8 @@ import App from './App.vue';
 import router from './router';
 import createStore from './store';
 
+import VueGtag from 'vue-gtag';
+
 // importing util helpers for creating the config
 // and making it available to all components as "this.$config"
 import mergeDeep from './util/merge-deep';
@@ -105,6 +107,15 @@ function finishInit(config) {
     i18nData = {};
   }
   const i18n = new VueI18n(i18nData);
+
+  Vue.use(VueGtag, {
+    config:{
+      id: 'UA-860026-1',
+      appName: 'My application',
+      pageTrackerScreenviewEnabled: true,
+      params: {},
+    }
+  }, router);
 
   Vue.use(fonts);
   Vue.config.productionTip = false;
