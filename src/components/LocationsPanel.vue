@@ -9,12 +9,12 @@
         v-if="shouldShowGreeting && !hasCustomGreeting"
         :message="greetingText"
         :options="greetingOptions"
-        @view-list="shouldShowGreeting = false"
+        @view-list="clickedViewList"
       />
 
       <custom-greeting
         v-if="shouldShowGreeting && hasCustomGreeting"
-        @view-list="shouldShowGreeting = false"
+        @view-list="clickedViewList"
       />
 
     </div>
@@ -282,6 +282,15 @@ export default {
     },
   },
   methods: {
+    clickedViewList() {
+      console.log('clickedViewList is running');
+      this.shouldShowGreeting = false;
+      this.$gtag.event('clickedViewList', {
+        'event_category': 'test-category',
+        'event_label': 'test-label',
+        'value': 'clicked-view-list',
+      })
+    },
     getLocationsList() {
       const locations = this.sources[this.$appType].data.rows;
       // const locations = this.bufferlist
