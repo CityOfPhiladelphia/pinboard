@@ -29,6 +29,13 @@ Create pull request for changes and merge into `master` branch for travis-ci bui
 
 ## Release Notes
 
+### 0.5.3 - 10/7/2020
+
+* uses upgraded vue libraries:
+    * @phila/vue-mapping 2.2.9
+    * @phila/vue-comps 2.1.15
+    * @phila/vue-datafetch 1.4.3
+
 ### 0.5.2 - 9/29/2020
 
 * fixes issues with i18n when you use fewer languages
