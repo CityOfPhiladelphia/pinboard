@@ -285,10 +285,10 @@ export default {
     clickedViewList() {
       console.log('clickedViewList is running');
       this.shouldShowGreeting = false;
-      this.$gtag.event('clickedViewList', {
-        'event_category': 'test-category',
-        'event_label': 'test-label',
-        'value': 'clicked-view-list',
+      this.$gtag.event('clicked on view list', {
+        'event_category': 'phila-gov-voting',
+        'event_label': 'clicked-view-list-label',
+        // 'value': 'clicked-view-list',
       })
     },
     getLocationsList() {

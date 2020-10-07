@@ -388,10 +388,10 @@ export default {
         page_path: '/',
       });
 
-      this.$gtag.event('test', {
-        'event_category': 'test-category',
-        'event_label': 'test-label',
-        'value': 'test-value',
+      this.$gtag.event('page view', {
+        'event_category': 'phila-gov-voting',
+        'event_label': 'page-view-label',
+        // 'value': 'page-view',
       })
     },
     setUpData(theSources) {
