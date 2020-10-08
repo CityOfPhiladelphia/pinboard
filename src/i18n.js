@@ -6,6 +6,7 @@ export default {
       messages: {
         'en-US': {
           language: 'English',
+          cityOfPhiladelphia: 'City of Philadelphia',
           app: {
             about: 'About this finder',
             betaTag: 'Beta',
@@ -22,6 +23,7 @@ export default {
         },
         'es': {
           language: 'Español',
+          cityOfPhiladelphia: 'La Ciudad de Filadelfia',
           app: {
             about: 'Sobre este buscador',
             betaTag: 'Beta',
@@ -38,6 +40,7 @@ export default {
         },
         'ch': {
           language: '中文',
+          cityOfPhiladelphia: '费城市',
           app: {
             about: '有关这个搜索工具',
             betaTag: '贝塔',
@@ -54,6 +57,7 @@ export default {
         },
         'vi': {
           language: 'Tiếng Việt',
+          cityOfPhiladelphia: 'Thành Phố Philadelphia',
           app: {
             about: 'Giới thiệu công cụ tìm kiếm này',
             betaTag: 'Bản Beta',
@@ -70,6 +74,7 @@ export default {
         },
         'ru': {
           language: 'Pусский',
+          cityOfPhiladelphia: 'Городская администрация Филадельфии',
           app: {
             about: 'Об этом средстве поиска ',
             betaTag: 'Бета-версия',
@@ -86,6 +91,7 @@ export default {
         },
         'fr': {
           language: 'Français',
+          cityOfPhiladelphia: 'Ville de Philadelphie',
           app: {
             about: 'À propos de cet outil de recherche',
             betaTag: 'Bêta',

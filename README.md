@@ -29,6 +29,10 @@ Create pull request for changes and merge into `master` branch for travis-ci bui
 
 ## Release Notes
 
+### 0.5.6 - 10/8/2020
+
+* adds "cityOfPhiladelphia" to pinboard built in i18n values
+
 ### 0.5.5 - 10/8/2020
 
 * makes vue-gtag work for all resource finders
