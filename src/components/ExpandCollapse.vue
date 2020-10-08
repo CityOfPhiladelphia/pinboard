@@ -177,11 +177,16 @@ export default {
       if (this.locationOpen) {
         selectedResources.push(selectedResource);
         latestSelectedResourceFromExpand = selectedResource;
+        this.$gtag.event('list-click', {
+          'event_category': this.$store.state.gtag.category,
+          'event_label': this.$props.item.site_name,
+        })
       } else {
         selectedResources.splice(selectedResources.indexOf(selectedResource), 1);
       }
       // this.locationOpen ? selectedResources.push(selectedResource) : selectedResources.splice(selectedResources.indexOf(selectedResource), 1);
       // console.log('ExpandCollapse expandLocation after selectedResources is defined');
+
       this.$store.commit('setSelectedResources', selectedResources);
       this.$store.commit('setLatestSelectedResourceFromExpand', latestSelectedResourceFromExpand);
     },

@@ -55,6 +55,7 @@
             type="checkbox"
             :name="item"
             :value="item"
+            @click="clickedRefineBox(item)"
           >
             <font-awesome-icon :for="item" :icon="['far', 'square']" v-show="!selected.includes(item)" class="fa-checkbox" />
             <font-awesome-icon :for="item" icon="check-square" v-show="selected.includes(item)" class="fa-checkbox" />
@@ -166,6 +167,7 @@
                   :name="item.unique_key"
                   :value="item.unique_key"
                   class="service-group-input"
+                  @click="clickedRefineBox(item)"
                 >
                   <font-awesome-icon :for="item" :icon="['far', 'square']" v-show="!selected.includes(item.unique_key)" class="fa-checkbox" />
                   <font-awesome-icon :for="item" icon="check-square" v-show="selected.includes(item.unique_key)" class="fa-checkbox" />
@@ -334,6 +336,21 @@ export default {
     }
   },
   methods: {
+    clickedRefineBox(item) {
+      // console.log('clickedRefineBox, item:', item, 'this.$data.selected:', this.$data.selected);
+      let data = this.$data;
+      let gtag = this.$gtag
+      let category = this.$store.state.gtag.category;
+      setTimeout(function() {
+        if (data.selected.includes(item.unique_key)) {
+          // console.log('item.unique_key:', item.unique_key, 'is now selected');
+          gtag.event('refine', {
+            'event_category': category,
+            'event_label': item.unique_key,
+          })
+        }
+      }, 1000);
+    },
     clearAll() {
       // console.log('RefinePanel clearAll is running');
       if (this.selected.length) {
@@ -401,6 +418,9 @@ export default {
     },
     expandRefine() {
       if (window.innerWidth <= 749) { // converted from rems
+        this.$gtag.event('refine-panel-open', {
+          'event_category': this.$store.state.gtag.category,
+        })
         this.$store.commit('setRefineOpen', !this.refineOpen);
       }
     },

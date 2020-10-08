@@ -36,11 +36,17 @@ function createStore(config) {
       fullScreen: {},
       subsections: {},
       alertResponse: null,
+      gtag: {
+        category: 'unspecified-pinboard-app'
+      }
     },
     mutations: {
       // setSelectedServices(state, payload) {
       //   state.selectedServices = payload;
       // },
+      setGtagCategory(state, payload) {
+        state.gtag.category = payload;
+      },
       setIsMobileOrTablet(state, payload) {
         state.isMobileOrTablet = payload;
       },

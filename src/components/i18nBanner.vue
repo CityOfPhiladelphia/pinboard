@@ -56,10 +56,17 @@ export default {
   },
   methods: {
     handleTableHeaderClick(key) {
-      console.log('handleTableHeaderClick is running');
-      this.$i18n.locale = key;
-      this.$data.isSelected = key;
-      this.$emit('language-selected', key);
+      // console.log('handleTableHeaderClick is running');
+
+      if (this.$data.isSelected !== key) {
+        this.$gtag.event('language-click', {
+          'event_category': this.$store.state.gtag.category,
+          'event_label': key,
+        })
+        this.$i18n.locale = key;
+        this.$data.isSelected = key;
+        this.$emit('language-selected', key);
+      }
     }
   }
 };
