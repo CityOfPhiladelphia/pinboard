@@ -4,10 +4,14 @@
       <div class="cell">
         <nav>
           <ul class="footer-nav">
-            <li v-if="cityLinkEnabled">
+            <li
+              v-if="cityLinkEnabled"
+              @click="clickedCityLink"
+            >
               <a
                 v-if="!i18nEnabled"
                 href="https://www.phila.gov"
+                target="_blank"
               >
                 City of Philadelphia
               </a>
@@ -15,10 +19,14 @@
                 v-if="i18nEnabled"
                 href="https://www.phila.gov"
                 v-html="$t('cityOfPhiladelphia')"
+                target="_blank"
               />
             </li>
 
-            <li v-if="aboutFinderEnabled">
+            <li
+              v-if="aboutFinderEnabled"
+              @click="clickedAboutFinder"
+            >
               <a
                 v-if="!i18nEnabled"
                 href="."
@@ -41,7 +49,10 @@
               </a>
             </li>
 
-            <li v-if="feedbackEnabled">
+            <li
+              v-if="feedbackEnabled"
+              @click="clickedFeedback"
+            >
               <a
                 v-if="!i18nEnabled"
                 :href="feedbackLink"
@@ -66,6 +77,7 @@
                 :href="link.link"
                 target="_blank"
                 v-html="link.text"
+                @click="clickedOtherLink(link.text)"
               >
                 <!-- {{ link.text }} -->
               </a>
@@ -74,6 +86,7 @@
                 :href="link.link"
                 target="_blank"
                 v-html="$t(link.text)"
+                @click="clickedOtherLink($i18n.messages['en-US'][link.text])"
               >
                 <!-- {{ $t(link.text) }} -->
               </a>
@@ -144,6 +157,32 @@ export default {
         return null;
       }
     }
+  },
+  methods: {
+    clickedCityLink() {
+      this.$gtag.event('footer-click', {
+        'event_category': this.$store.state.gtag.category,
+        'event_label': 'City of Philadelphia',
+      })
+    },
+    clickedAboutFinder() {
+      this.$gtag.event('footer-click', {
+        'event_category': this.$store.state.gtag.category,
+        'event_label': 'About this finder',
+      })
+    },
+    clickedFeedback() {
+      this.$gtag.event('footer-click', {
+        'event_category': this.$store.state.gtag.category,
+        'event_label': 'Feedback',
+      })
+    },
+    clickedOtherLink(label) {
+      this.$gtag.event('footer-click', {
+        'event_category': this.$store.state.gtag.category,
+        'event_label': label,
+      })
+    },
   }
 };
 </script>

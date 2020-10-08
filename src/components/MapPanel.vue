@@ -1,171 +1,6 @@
 <template>
   <!-- <div class="cell medium-12 medium-cell-block-y mb-panel mb-panel-map map-height"> -->
   <div class="cell medium-12 medium-cell-block-y">
-    <!-- <Map_
-      id="map-tag"
-      v-if="this.mapType === 'leaflet'"
-      :class="{ 'mb-map-with-widget': this.$store.state.cyclomedia.active || this.$store.state.pictometry.active }"
-      :center="this.$store.state.map.center"
-      :zoom="this.$store.state.map.zoom"
-      zoom-control-position="bottomright"
-      :min-zoom="11"
-      :max-zoom="22"
-      @l-moveend="handleMapMove"
-    >
-      <div
-        v-show="isLoadingPins"
-        class="mb-map-loading-mask"
-      >
-        <div class="mb-map-loading-mask-inner">
-          <i class="fa fa-spinner fa-4x spin" />
-          <h1>Finding map data...</h1>
-        </div>
-      </div>
-
-      <esri-tiled-map-layer
-        v-for="(basemap, key) in this.$config.map.basemaps"
-        v-if="activeBasemap === key"
-        :key="key"
-        :url="basemap.url"
-      />
-
-      <esri-tiled-map-layer
-        v-for="(tiledLayer, key) in this.$config.map.tiledLayers"
-        v-if="tiledLayers.includes(key)"
-        :key="key"
-        :url="tiledLayer.url"
-        :z-index="tiledLayer.zIndex"
-      />
-
-      <vector-marker
-        v-for="(marker) in markersForAddress"
-        :key="marker.key"
-        :latlng="marker.latlng"
-        :marker-color="marker.color"
-        :icon="marker.icon"
-      />
-
-      <circle-marker
-        v-if="markerType === 'circle-marker'"
-        v-for="(marker) in currentMapData"
-        :latlng="marker.latlng"
-        :radius="marker.radius"
-        :fill-color="marker.color"
-        :color="'black'"
-        :weight="marker.weight"
-        :opacity="1"
-        :fill-opacity="1"
-        :data="{
-          featureId: marker._featureId
-        }"
-        @l-click="handleMarkerClick"
-      >
-        <popup-simple
-          v-if="latestSelectedResourceFromMap === marker._featureId"
-          :latlng="marker.latlng"
-          :feature-id="marker._featureId"
-        >
-          <popup-content-functional
-            :popup-data="getSiteName(marker)"
-            @didClickPopupContent="toggleMap"
-          />
-        </popup-simple>
-      </circle-marker>
-
-      <vector-marker
-        v-if="markerType === 'pin-marker'"
-        v-for="(marker) in currentMapData"
-        :key="marker.key"
-        :latlng="marker.latlng"
-        :marker-color="marker.color"
-        :feature-id="marker._featureId"
-        @l-click="handleMarkerClick"
-        :icon="marker.icon"
-        :data="{
-          featureId: marker._featureId
-        }"
-      >
-        <popup-simple
-          v-if="latestSelectedResourceFromMap === marker._featureId"
-          :latlng="marker.latlng"
-          :feature-id="marker._featureId"
-        >
-          <popup-content-functional
-            :popup-data="getSiteName(marker)"
-            @didClickPopupContent="toggleMap"
-          />
-        </popup-simple>
-      </vector-marker>
-
-      <png-marker
-        v-if="cyclomediaActive"
-        :icon="sitePath + 'images/camera.png'"
-        :latlng="cycloLatlng"
-        :rotation-angle="cycloRotationAngle"
-      />
-
-      <svg-view-cone-marker
-        v-if="cyclomediaActive"
-        :latlng="cycloLatlng"
-        :rotation-angle="cycloRotationAngle"
-        :h-fov="cycloHFov"
-      />
-
-      <control-corner
-        :v-side="'top'"
-        :h-side="'almostright'"
-      />
-
-      <control-corner
-        :v-side="'top'"
-        :h-side="'almostleft'"
-      />
-
-      <div v-once>
-        <basemap-toggle-control
-          v-if="shouldShowBasemapToggleControl"
-          v-once
-          :position="'topright'"
-        />
-      </div>
-
-      <div v-once>
-        <legend-control
-          v-for="legendControl in Object.keys(legendControls)"
-          :key="legendControl"
-          :position="'bottomleft'"
-          :options="legendControls[legendControl].options"
-          :items="legendControls[legendControl].data"
-        />
-      </div>
-
-      <div v-once>
-        <basemap-select-control :position="this.basemapSelectControlPosition" />
-      </div>
-
-      <div v-once>
-        <cyclomedia-button
-          v-if="shouldShowCyclomediaButton"
-          v-once
-          :position="'topright'"
-          :link="'cyclomedia'"
-          :img-src="sitePath + 'images/cyclomedia.png'"
-          @click="handleCyclomediaButtonClick"
-        />
-      </div>
-
-      <cyclomedia-recording-circle
-        v-for="recording in cyclomediaRecordings"
-        v-if="cyclomediaActive"
-        :key="recording.imageId"
-        :image-id="recording.imageId"
-        :latlng="[recording.lat, recording.lng]"
-        :size="1.2"
-        :color="'#3388ff'"
-        :weight="1"
-        @l-click="handleCyclomediaRecordingClick"
-      />
-    </Map_> -->
 
     <MglMap
       v-if="this.mapType === 'mapbox'"
@@ -850,16 +685,15 @@ export default {
       return this.$config.map.basemaps[basemap] || {};
     },
     handleMarkerClick(e) {
-      // console.log('handleMarkerClick is running, e:', e);
-      let featureId;
-      if (this.mapType === 'leaflet') {
-        const { target } = e;
-        featureId = target.options.data.featureId;
-      } else if (this.mapType === 'mapbox') {
-        featureId = e.component._props.markerId;
+      let featureId = e.component._props.markerId;
+      let siteName;
+      for (let datum of this.currentData) {
+        if (datum._featureId === featureId) {
+          siteName = datum.site_name;
+          continue;
+        }
       }
-      // console.log('handleMarkerClick, e:', e, 'featureId:', featureId);
-      // console.log('MapPanel.vue handleMarkerClick is running, target:', target, 'featureId:', featureId);
+      // console.log('handleMarkerClick is running, e:', e, 'siteName:', siteName);
 
       const selectedResource = [ ...this.selectedResources ];
       if (selectedResource.includes(featureId)) {
@@ -868,6 +702,10 @@ export default {
         this.$store.commit('setLatestSelectedResourceFromMap', null);
       } else {
         // console.log('markerClick open marker, featureId', featureId);
+        this.$gtag.event('map-click', {
+          'event_category': this.$store.state.gtag.category,
+          'event_label': siteName,
+        })
         selectedResource.push(featureId);
         if (window.innerWidth < 750) {
           this.$store.commit('setLatestSelectedResourceFromMap', featureId);

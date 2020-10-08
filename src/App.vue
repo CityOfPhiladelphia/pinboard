@@ -336,6 +336,8 @@ export default {
   },
   mounted() {
     console.log('in App.vue mounted, this.$store.state:', this.$store.state, 'this.$config:', this.$config, 'window.location.href:', window.location.href);
+    // this.track();
+
     if (this.$config.appLink) {
       this.appLink = this.$config.appLink;
     } else {
@@ -362,6 +364,10 @@ export default {
       }
     }
 
+    if (this.$config.gtag && this.$config.gtag.category) {
+      this.$store.commit('setGtagCategory', this.$config.gtag.category);
+    }
+
     this.onResize();
   },
   created() {
@@ -380,6 +386,18 @@ export default {
     window.removeEventListener('resize', this.onResize);
   },
   methods: {
+    // track () {
+    //   console.log('track is running');
+    //   this.$gtag.pageview({
+    //     page_path: '/',
+    //   });
+    //
+    //   this.$gtag.event('page view', {
+    //     'event_category': 'rf-voting',
+    //     'event_label': 'page-view-label',
+    //     // 'value': 'page-view',
+    //   })
+    // },
     setUpData(theSources) {
       console.log('Pinboard App.vue setUpData is running, theSources:', theSources);
       let compiled = {
