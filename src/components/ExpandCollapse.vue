@@ -169,7 +169,8 @@ export default {
       return Object.values(visibility).every(val => val);
     },
     expandLocation() {
-      // console.log('ExpandCollapse expandLocation is starting');
+      let siteName = this.getSiteName(this.$props.item);
+      console.log('ExpandCollapse expandLocation is starting, siteName:', siteName);
       this.locationOpen = !this.locationOpen;
       const selectedResource = this.$props.item._featureId;
       const selectedResources = [ ...this.selectedResources ];
@@ -179,7 +180,7 @@ export default {
         latestSelectedResourceFromExpand = selectedResource;
         this.$gtag.event('list-click', {
           'event_category': this.$store.state.gtag.category,
-          'event_label': this.$props.item.site_name,
+          'event_label': siteName,
         })
       } else {
         selectedResources.splice(selectedResources.indexOf(selectedResource), 1);

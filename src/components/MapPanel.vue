@@ -689,11 +689,11 @@ export default {
       let siteName;
       for (let datum of this.currentData) {
         if (datum._featureId === featureId) {
-          siteName = datum.site_name;
+          siteName = this.getSiteName(datum);
           continue;
         }
       }
-      // console.log('handleMarkerClick is running, e:', e, 'siteName:', siteName);
+      console.log('handleMarkerClick is running, e:', e, 'siteName:', siteName);
 
       const selectedResource = [ ...this.selectedResources ];
       if (selectedResource.includes(featureId)) {
@@ -701,7 +701,7 @@ export default {
         selectedResource.splice(selectedResource.indexOf(featureId), 1);
         this.$store.commit('setLatestSelectedResourceFromMap', null);
       } else {
-        // console.log('markerClick open marker, featureId', featureId);
+        console.log('markerClick open marker, featureId', featureId);
         this.$gtag.event('map-click', {
           'event_category': this.$store.state.gtag.category,
           'event_label': siteName,

@@ -337,19 +337,28 @@ export default {
   },
   methods: {
     clickedRefineBox(item) {
-      // console.log('clickedRefineBox, item:', item, 'this.$data.selected:', this.$data.selected);
+      // console.log('clickedRefineBox, item:', item, 'typeof item:', typeof item, 'this.$data.selected:', this.$data.selected);
       let data = this.$data;
       let gtag = this.$gtag
       let category = this.$store.state.gtag.category;
       setTimeout(function() {
-        if (data.selected.includes(item.unique_key)) {
-          // console.log('item.unique_key:', item.unique_key, 'is now selected');
-          gtag.event('refine', {
-            'event_category': category,
-            'event_label': item.unique_key,
-          })
+        if (typeof item === 'object') {
+          if (data.selected.includes(item.unique_key)) {
+            gtag.event('refine', {
+              'event_category': category,
+              'event_label': item.unique_key,
+            })
+          }
+        } else if (typeof item === 'string') {
+          console.log('data.selected:', data.selected);
+          if (data.selected.includes(item)) {
+            gtag.event('refine', {
+              'event_category': category,
+              'event_label': item,
+            })
+          }
         }
-      }, 1000);
+      }, 2000);
     },
     clearAll() {
       // console.log('RefinePanel clearAll is running');

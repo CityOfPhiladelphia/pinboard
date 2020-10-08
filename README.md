@@ -29,6 +29,10 @@ Create pull request for changes and merge into `master` branch for travis-ci bui
 
 ## Release Notes
 
+### 0.5.5 - 10/8/2020
+
+* makes vue-gtag work for all resource finders
+
 ### 0.5.4 - 10/8/2020
 
 * adds vue-gtag package and tags events
