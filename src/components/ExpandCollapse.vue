@@ -25,6 +25,21 @@
         :style="{ 'background-color': sectionColor }"
         v-html="'<b>'+$t(sectionTitle)+'</b>'"
       />
+
+      <!-- <div
+        v-if="!section && showLabels && !i18nEnabled"
+        class="section-name"
+        :style="{ 'background-color': sectionColor }"
+        >
+        {{ sectionTitle }}
+      </div>
+      <div
+        v-if="!section && showLabels && i18nEnabled"
+        class="section-name"
+        :style="{ 'background-color': sectionColor }"
+        v-html="'<b>'+$t(sectionTitle)+'</b>'"
+      /> -->
+
     </h2>
     <div
       :class="{ 'location-open': locationOpen }"
@@ -56,6 +71,13 @@ export default {
   },
   mixins: [ SharedFunctions ],
   computed: {
+    showLabels() {
+      let value = false;
+      if (this.$config.refine.showLabels) {
+        value = true;
+      }
+      return value;
+    },
     i18nEnabled() {
       if (this.$config.i18n && this.$config.i18n.enabled) {
         return true;
@@ -70,6 +92,8 @@ export default {
       let section;
       if (Object.keys(this.subsections).length) {
         section = this.subsections[this.$props.item.attributes['CATEGORY']];
+      } else if (this.$config.sections) {
+        section = this.$props.item.site_type;
       }
       return section;
     },
@@ -84,12 +108,16 @@ export default {
       let sectionTitle;
       if (Object.keys(this.subsections).length) {
         sectionTitle = this.$config.sections[this.section].titleSingular;
+      } else if (this.$config.sections) {
+        sectionTitle = this.$props.item.site_type;
       }
       return sectionTitle;
     },
     sectionColor() {
       let sectionColor;
       if (Object.keys(this.subsections).length) {
+        sectionColor = this.$config.sections[this.section].color;
+      } else if (this.$config.sections) {
         sectionColor = this.$config.sections[this.section].color;
       }
       return sectionColor;

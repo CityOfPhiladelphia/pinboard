@@ -362,6 +362,8 @@ export default {
               color = this.$config.circleMarkers.circleColors[row.attributes.category_type];
             } else if (row.category_type) {
               color = this.$config.circleMarkers.circleColors[row.category_type];
+            } else if (row.site_type) {
+              color = this.$config.circleMarkers.circleColors[row.site_type];
             }
 
           // single circle color defined
