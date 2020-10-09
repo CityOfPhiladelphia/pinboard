@@ -26,20 +26,6 @@
         v-html="'<b>'+$t(sectionTitle)+'</b>'"
       />
 
-      <!-- <div
-        v-if="!section && showLabels && !i18nEnabled"
-        class="section-name"
-        :style="{ 'background-color': sectionColor }"
-        >
-        {{ sectionTitle }}
-      </div>
-      <div
-        v-if="!section && showLabels && i18nEnabled"
-        class="section-name"
-        :style="{ 'background-color': sectionColor }"
-        v-html="'<b>'+$t(sectionTitle)+'</b>'"
-      /> -->
-
     </h2>
     <div
       :class="{ 'location-open': locationOpen }"
