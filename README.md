@@ -29,6 +29,12 @@ Create pull request for changes and merge into `master` branch for travis-ci bui
 
 ## Release Notes
 
+### 0.5.8 - 10/23/2020
+
+* uses pvc 2.1.19
+* uses pvd 1.4.4
+* uses github actions for push to npmjs
+
 ### 0.5.7 -10/9/2020
 
 * changes for adding sections to the voting site
