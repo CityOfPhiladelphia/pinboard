@@ -1046,10 +1046,10 @@
     "@nodelib/fs.scandir" "2.1.3"
     fastq "^1.6.0"
 
-"@phila/vue-comps@2.1.15":
-  version "2.1.15"
-  resolved "https://registry.yarnpkg.com/@phila/vue-comps/-/vue-comps-2.1.15.tgz#9105adddaaf7099d7965860bb81e87f98a674dff"
-  integrity sha512-FmMdOTEkV4D0mF3JXSG5OJ3UXC1e8lfeCVn9uJn1/1ZyQpe5yrgdYTR2A1ZmNydcm4ptt0RFDFCSscFj6fijcw==
+"@phila/vue-comps@2.1.19":
+  version "2.1.19"
+  resolved "https://registry.yarnpkg.com/@phila/vue-comps/-/vue-comps-2.1.19.tgz#94621b55b755eb5dc50c8a8acfbe8e007568c9b3"
+  integrity sha512-D9VO4hrb83+a3vLN2ws2EpEsyMmC25YDYXiM36sMjqUTQS4ezJ2RQGanPQYstBiL4vW2CLXi1EcSNygam9fj5w==
   dependencies:
     "@fortawesome/fontawesome-svg-core" "^1.2.15"
     "@fortawesome/free-regular-svg-icons" "^5.7.2"
@@ -1065,10 +1065,10 @@
     vue "^2.6.11"
     vuex "^3.1.2"
 
-"@phila/vue-datafetch@1.4.3":
-  version "1.4.3"
-  resolved "https://registry.yarnpkg.com/@phila/vue-datafetch/-/vue-datafetch-1.4.3.tgz#8bfa2d8893534c0e070f907b6a2d120f0d0b10f8"
-  integrity sha512-Z6DpFb69fP6GsphernIm/Bz3EizOWhwC3MEbGvAOeMc8o71j3a/WuEGMElw+ASxz7GfyLn/zIGK5huqPoV0fqQ==
+"@phila/vue-datafetch@1.4.4":
+  version "1.4.4"
+  resolved "https://registry.yarnpkg.com/@phila/vue-datafetch/-/vue-datafetch-1.4.4.tgz#a93bf1c89b4df22d8d8e6f82c6c8945bb0349806"
+  integrity sha512-axQvi843v31KIBXkdsCXuJB3YUHZdu27g5dtDhGoCWhk2tQ9lEe9WajwvhZ6vHz4wMkVarOYEPMeBpY7x7AO+w==
   dependencies:
     "@turf/turf" "^5.1.6"
     airtable "^0.8.1"
