@@ -476,7 +476,7 @@ export default {
             }
 
           }
-          if (booleanConditions.includes(true)) {
+          if (!booleanConditions.includes(false)) {
             // console.log('booleanConditions includes true:', booleanConditions);
             booleanServices = true
           }
@@ -487,7 +487,7 @@ export default {
             booleanServices = true;
           } else {
             let value = this.$config.refine.value(row);
-            // console.log('value:', value);
+            // console.log('in App.vue, filterPoints computed, value:', value);
             booleanServices = selectedServices.includes(value);
           }
 
@@ -504,7 +504,9 @@ export default {
             booleanServices = true;
           } else {
             const servicesFiltered = servicesSplit.filter(f => selectedServices.includes(f));
-            booleanServices = servicesFiltered.length > 0;
+            console.log('servicesFiltered:', servicesFiltered, 'selectedServices:', selectedServices);
+            // booleanServices = servicesFiltered.length > 0;
+            booleanServices = servicesFiltered.length == selectedServices.length;
           }
         }
 

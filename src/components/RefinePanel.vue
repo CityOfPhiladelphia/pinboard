@@ -51,14 +51,24 @@
           >
           <input
             :id="item"
+            v-if="refineType != 'categoryField_value'"
             v-model="selected"
             type="checkbox"
             :name="item"
             :value="item"
             @click="clickedRefineBox(item)"
           >
-            <font-awesome-icon :for="item" :icon="['far', 'square']" v-show="!selected.includes(item)" class="fa-checkbox" />
-            <font-awesome-icon :for="item" icon="check-square" v-show="selected.includes(item)" class="fa-checkbox" />
+          <input
+            :id="item"
+            v-if="refineType == 'categoryField_value'"
+            v-model="selected"
+            type="radio"
+            :name="item"
+            :value="item"
+            @click="clickedRefineBox(item)"
+          >
+            <font-awesome-icon v-if="refineType != 'categoryField_value'" :for="item" :icon="['far', 'square']" v-show="!selected.includes(item)" class="fa-checkbox" />
+            <font-awesome-icon v-if="refineType != 'categoryField_value'" :for="item" icon="check-square" v-show="selected.includes(item)" class="fa-checkbox" />
             <label
               class="input-label"
               :for="item"
@@ -195,6 +205,7 @@
                     :circleData="infoCircles[item]"
                   >
                   </icon-tool-tip>
+                
 
               </div>
 

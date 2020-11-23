@@ -29,6 +29,11 @@ Create pull request for changes and merge into `master` branch for travis-ci bui
 
 ## Release Notes
 
+### 0.5.10 - 11/23/2020
+
+* makes any categoryField_value app use radio buttons instead of checkboxes
+* makes filtering using multiple checkboxes use an AND query, to reduce results if more boxes are clicked
+
 ### 0.5.9 - 10/23/2020
 
 * fixes githubs actions for push to npmjs
