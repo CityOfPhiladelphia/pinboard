@@ -504,7 +504,7 @@ export default {
             booleanServices = true;
           } else {
             const servicesFiltered = servicesSplit.filter(f => selectedServices.includes(f));
-            console.log('servicesFiltered:', servicesFiltered, 'selectedServices:', selectedServices);
+            // console.log('servicesFiltered:', servicesFiltered, 'selectedServices:', selectedServices);
             // booleanServices = servicesFiltered.length > 0;
             booleanServices = servicesFiltered.length == selectedServices.length;
           }

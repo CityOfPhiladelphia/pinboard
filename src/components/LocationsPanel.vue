@@ -123,7 +123,7 @@
                 </div>
               </section>
             </div>
-            <div v-if="item.tags">
+            <div v-if="item.tags && item.tags.length">
               <section class="tags grid-x grid-padding-x mtm">
                 <div class="cell">
                   <h3 class="h4">
