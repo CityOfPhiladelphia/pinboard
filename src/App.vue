@@ -524,15 +524,25 @@ export default {
         }
 
         let booleanKeywords = true;
+        // console.log('this.selectedKeywords:', this.selectedKeywords, 'this.selectedKeywords.length:', this.selectedKeywords.length);
         if (this.selectedKeywords.length > 0) {
           booleanKeywords = false;
-          let description;
+          let description = [];
           if (Array.isArray(row.tags)) {
             description = row.tags;
-          } else {
+          } else if (row.tags) {
             description = row.tags.split(', ');
+          } else if (this.$config.tags && this.$config.tags.type == 'fieldValues') {
+            for (let tag of this.$config.tags.tags) {
+              // console.log('tag:', tag, 'tag.field:', tag.field, 'row.attributes[tag.field]:', row.attributes[tag.field]);
+              if (tag.type == 'boolean' && row.attributes[tag.field] == 'Yes') {
+                description.push(tag.value);
+              } else if (tag.type == 'value' && row.attributes[tag.field] !== null && row.attributes[tag.field] != ' ') {
+                description.push(row.attributes[tag.field].charAt(0) + row.attributes[tag.field].substring(1).toLowerCase());
+              }
+            }
           }
-          // console.log('row.tags:', row.tags);
+          // console.log('still going, row.tags:', row.tags, 'description:', description);
           let lowerCaseDescription = [];
           for (let tag of description) {
             lowerCaseDescription.push(tag.toLowerCase());

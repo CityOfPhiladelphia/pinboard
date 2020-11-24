@@ -29,6 +29,10 @@ Create pull request for changes and merge into `master` branch for travis-ci bui
 
 ## Release Notes
 
+### 0.5.11 - 11/24/2020
+
+* allows tags types to be set in config
+
 ### 0.5.10 - 11/23/2020
 
 * makes any categoryField_value app use radio buttons instead of checkboxes
