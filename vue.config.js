@@ -6,11 +6,15 @@ module.exports = {
   css: {
     loaderOptions: {
       sass: {
-        prependData: `@import "@/scss/_variables.scss";
-              @import "@/scss/_mixins.scss";
-              @import "~@phila/phila-ui/src/assets/styles/scss/functions.scss";
-              @import "~@phila/phila-ui/src/assets/styles/scss/colors.scss";
-              @import "~@phila/phila-ui/src/assets/styles/scss/variables.scss";`,
+        prependData: `
+          @import "@/scss/_variables.scss";
+          @import "@/scss/_mixins.scss";
+        `,
+        data: `
+          @import "~@phila/phila-ui/src/assets/styles/scss/functions.scss";
+          @import "~@phila/phila-ui/src/assets/styles/scss/colors.scss";
+          @import "~@phila/phila-ui/src/assets/styles/scss/variables.scss";
+        `,
       },
     },
   },
