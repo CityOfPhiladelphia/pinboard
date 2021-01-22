@@ -34,7 +34,7 @@
       />
     </PhilaModal>
 
-    <!-- <app-header
+    <app-header
       :app-title="$config.app.title"
       :is-sticky="true"
       :branding-image="brandingImage"
@@ -67,7 +67,7 @@
           </button>
         </div>
       </input-form>
-    </app-header> -->
+    </app-header>
 
     <!-- <PhilaHeader
       :app-title="this.$config.app.title"
@@ -730,6 +730,7 @@ a {
     margin-bottom:2rem;
   }
 }
+
 .no-scroll{
   overflow: hidden;
   height: 100vh;
@@ -741,37 +742,37 @@ a {
   z-index: 1002;
 }
 
-.step-group{
-  margin-left:$spacing-medium;
-
-  .step-label {
-    @include secondary-font(400);
-    display: inline-block;
-    margin-left: -$spacing-medium;
-    background: black;
-    border-radius: $spacing-extra-large;
-    color:white;
-    padding: 0 $spacing-small;
-    width:$spacing-large;
-    height:$spacing-large;
-    line-height: $spacing-large;
-    text-align: center;
-  }
-  .step{
-    margin-top: -$spacing-large;
-    padding-left: $spacing-large;
-    padding-bottom: $spacing-large;
-    border-left:1px solid black;
-
-    &:last-of-type {
-      border:none;
-    }
-
-    .step-title{
-      @include secondary-font(400);
-      font-size:1.2rem;
-      margin-bottom: $spacing-small;
-    }
-  }
-}
+// .step-group{
+//   margin-left:$spacing-medium;
+//
+//   .step-label {
+//     @include secondary-font(400);
+//     display: inline-block;
+//     margin-left: -$spacing-medium;
+//     background: black;
+//     border-radius: $spacing-extra-large;
+//     color:white;
+//     padding: 0 $spacing-small;
+//     width:$spacing-large;
+//     height:$spacing-large;
+//     line-height: $spacing-large;
+//     text-align: center;
+//   }
+//   .step{
+//     margin-top: -$spacing-large;
+//     padding-left: $spacing-large;
+//     padding-bottom: $spacing-large;
+//     border-left:1px solid black;
+//
+//     &:last-of-type {
+//       border:none;
+//     }
+//
+//     .step-title{
+//       @include secondary-font(400);
+//       font-size:1.2rem;
+//       margin-bottom: $spacing-small;
+//     }
+//   }
+// }
 </style>
