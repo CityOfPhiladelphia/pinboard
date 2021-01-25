@@ -131,15 +131,17 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
   #trusted-site {
-    color: $white;
+    // color: $white;
+    // @include tablet {
+    @include until ($tablet) {
+      padding-left: 1rem !important;
+    }
     .container {
-      @include until ($tablet) {
-        padding-left: 1rem !important;
-      }
     }
     a, strong {
-      color: $white;
+      // color: $white;
     }
   }
 

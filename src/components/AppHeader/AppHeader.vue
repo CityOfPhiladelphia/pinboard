@@ -296,13 +296,13 @@ export default {
 </style>
 
 <style lang="scss" scoped>
+  // @import "@phila/phila-ui/src/assets/styles/scss/all.scss";
 
+  // @include tablet {
+  //   border-bottom: 2px solid $electric-blue;
+  // }
 
   #app-header {
-    @include tablet {
-      border-bottom: 2px solid $electric-blue;
-    }
-
     &.is-sticky {
       width: 100%;
       position: fixed;

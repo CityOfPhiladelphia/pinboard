@@ -462,7 +462,7 @@ export default {
 .app-header{
   width: 100%;
   vertical-align: middle;
-  background: $dark-ben-franklin;
+  // background: $dark-ben-franklin;
 
   @media screen and (max-width: 749px) {
     // position: fixed;
@@ -549,7 +549,7 @@ export default {
   overflow: hidden;
   color: white;
   z-index: 100;
-  background: $dark-ben-franklin;
+  // background: $dark-ben-franklin;
   height: 100vh;
   width:100%;
 
