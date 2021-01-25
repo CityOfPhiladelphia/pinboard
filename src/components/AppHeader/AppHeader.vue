@@ -278,13 +278,11 @@ export default {
 };
 </script>
 <style lang="scss">
-  @import "../../scss/global.scss";
-
   #app-header {
     .container {
       padding: 0 1rem;
     }
-    @include until ($tablet) {
+    @include tablet {
       .container {
         padding-left: 0 !important;
         padding-right: 0 !important;
@@ -298,11 +296,10 @@ export default {
 </style>
 
 <style lang="scss" scoped>
-  @import "../../scss/global.scss";
+
 
   #app-header {
-
-    @include until ($tablet) {
+    @include tablet {
       border-bottom: 2px solid $electric-blue;
     }
 

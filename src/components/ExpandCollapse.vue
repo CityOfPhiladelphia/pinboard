@@ -222,7 +222,7 @@ export default {
 };
 </script>
 <style lang="scss">
-@import "../assets/scss/main.scss";
+// @import "../assets/scss/main.scss";
 
 .location-item {
   position: relative;
@@ -264,7 +264,7 @@ export default {
     font-weight: 900;
     font-size:1.5rem;
     z-index: 100;
-    color: color(dark-ben-franklin)
+    color: $ben-franklin-blue;
   }
   &.open{
     h2{

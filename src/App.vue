@@ -758,7 +758,10 @@ export default {
 </script>
 
 <style lang="scss">
-@import "./scss/global.scss";
+// @import "@/assets/scss/main.scss";
+// @import "~@phila/phila-ui/src/assets/styles/scss/functions.scss";
+// @import "~@phila/phila-ui/src/assets/styles/scss/colors.scss";
+// @import "~@phila/phila-ui/src/assets/styles/scss/variables.scss";
 
 // .toggle-map{
 //   margin:0 !important;

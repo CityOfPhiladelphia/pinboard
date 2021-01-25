@@ -191,7 +191,7 @@ export default {
 
 .app-footer{
   vertical-align: middle;
-  background: color(dark-ben-franklin);
+  background: $dark-ben-franklin;
   text-align: center;
   /*needed for IE11*/
   z-index: 1000;
@@ -199,7 +199,7 @@ export default {
     color: white;
   }
   a:hover, a:active{
-    color: color(electric-blue);
+    color: $electric-blue;
   }
 
   a {

@@ -504,7 +504,7 @@ $refine-panel-height: 19vh;
   }
 
   .refine-title{
-    color: color(dark-ben-franklin);
+    color: $dark-ben-franklin;
     position: relative;
 
     .clear-all{
@@ -664,7 +664,7 @@ input[type=checkbox] {
 
 .input-label {
   display: inline-block;
-  color: color(dark-ben-franklin);
+  color: $dark-ben-franklin;
   font-size: 14px;
   margin-bottom: .5rem;
   padding-left: 10px;
@@ -672,14 +672,14 @@ input[type=checkbox] {
 
 .fa-checkbox {
   pointer-events: none;
-  color: color(dark-ben-franklin);
+  color: $dark-ben-franklin;
   position: relative;
   right: -15px;
   bottom: 1px;
 }
 
 .fa-infoCircle {
-  color: color(dark-ben-franklin);
+  color: $dark-ben-franklin;
   cursor: pointer;
 }
 
