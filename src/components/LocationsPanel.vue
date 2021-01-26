@@ -5,17 +5,17 @@
       v-if="shouldShowGreeting"
       class="topics-container cell medium-cell-block-y"
     >
-      <!-- <greeting
+      <greeting
         v-if="shouldShowGreeting && !hasCustomGreeting"
         :message="greetingText"
         :options="greetingOptions"
         @view-list="clickedViewList"
-      /> -->
+      />
 
-      <!-- <custom-greeting
+      <custom-greeting
         v-if="shouldShowGreeting && hasCustomGreeting"
         @view-list="clickedViewList"
-      /> -->
+      />
 
     </div>
 

@@ -4,7 +4,7 @@
     id="app"
     class="app"
   >
-    <PhilaModal
+    <!-- <PhilaModal
       v-show="isModalOpen"
       @close="closeModal"
     >
@@ -19,9 +19,9 @@
         <p>If you’re interested in a particular service or resource, contact the provider to learn more and confirm that it’s still available.</p>
 
       </div>
-    </PhilaModal>
+    </PhilaModal> -->
 
-    <PhilaModal
+    <!-- <PhilaModal
       v-show="isAlertModalOpen"
       @close="closeModal"
     >
@@ -33,7 +33,7 @@
         slot="body"
         v-html="alertModalBody"
       />
-    </PhilaModal>
+    </PhilaModal> -->
 
     <app-header
       :app-title="$config.app.title"
@@ -82,17 +82,12 @@
         id="column-div"
         class="columns is-mobile"
       >
-      <!-- class="grid-x middle-panel" -->
 
         <div
           v-show="isTablet || isDesktop || !isMapVisible"
           class="column overflows"
         >
           <locations-panel />
-          <!-- <LocationsPanel
-            v-show="!isMapVisible || isLarge"
-            :is-map-visible="this.$data.isMapVisible"
-          /> -->
         </div>
 
         <div
@@ -100,18 +95,6 @@
           class="column no-padding"
         >
           <map-panel />
-          <!-- <MapPanel
-          v-show="isMapVisible || isLarge"
-          @toggleMap="toggleMap"
-          >
-          <cyclomedia-widget
-          v-if="this.shouldLoadCyclomediaWidget"
-          v-show="cyclomediaActive"
-          slot="cycloWidget"
-          screen-percent="2"
-          />
-        </MapPanel> -->
-
         </div>
 
       </div>
@@ -122,24 +105,9 @@
       id="switch-button"
       class="button is-sticky-to-bottom full-screen is-primary is-hidden-tablet"
       @click="toggleMap"
-    >
+      >
       switch button
     </button>
-
-    <!-- <PhilaButton
-      v-if="!i18nEnabled"
-      class="button toggle-map hide-for-medium"
-      @click.native="toggleMap"
-    >
-      {{ buttonText }}
-    </PhilaButton> -->
-
-    <!-- <PhilaButton
-      v-if="i18nEnabled"
-      class="button toggle-map hide-for-medium"
-      @click.native="toggleMap"
-      v-html="$t(buttonText)"
-    /> -->
 
     <app-footer
       :is-sticky="true"
@@ -154,12 +122,6 @@
         </li>
       </ul>
     </app-footer>
-
-    <!-- <PhilaFooter
-      v-show="isLarge"
-      :feedbackLink="feedbackLink"
-      @howToUseLink="toggleModal()"
-    /> -->
 
   </div>
 
@@ -176,7 +138,6 @@ import buffer from '@turf/buffer';
 import booleanPointInPolygon from '@turf/boolean-point-in-polygon';
 
 import PhilaButton from './components/PhilaButton.vue';
-import PhilaHeader from './components/PhilaHeader.vue';
 import AlertBanner from './components/AlertBanner.vue';
 import i18nBanner from './components/i18nBanner.vue';
 import PhilaModal from './components/PhilaModal.vue';
@@ -495,12 +456,15 @@ export default {
         } else {
           let offsetHeight = headerOffsetHeight + footerOffsetHeight;
           let offsetHeight2 = headerOffsetHeight + refineDivOffsetHeight;
+          let offsetHeight3 = headerOffsetHeight + footerOffsetHeight + refineDivOffsetHeight;
           console.log('handleResize is NOT mobile, refineDiv:', refineDiv, 'refineDivOffsetHeight:', refineDivOffsetHeight, 'offsetHeight2:', offsetHeight2, 'offsetHeight:', offsetHeight, 'headerClientHeight:', headerClientHeight, 'headerOffsetHeight:', headerOffsetHeight, 'footerOffsetHeight:', footerOffsetHeight, 'switchButtonOffsetHeight:', switchButtonOffsetHeight);
-          main.style['height'] = `calc(100vh - ${offsetHeight}px)`;
+          main.style['height'] = '100px';
+          main.style['height'] = `calc(100vh - ${offsetHeight3}px)`;
           main.style['padding-bottom'] = '0px';
           main.style['margin-bottom'] = '0px';
           refineDiv.style['top'] = headerOffsetHeight + 'px';
           columnDiv.style['margin-top'] = offsetHeight2 + 'px';
+          columnDiv.style['padding-bottom'] = footerOffsetHeight + 'px';
           columnDiv.style['height'] = `calc(100vh - ${offsetHeight2}px)`;
         }
         // console.log('App.vue handleResize, offsetHeight:', offsetHeight, 'headerOffsetHeight:', headerOffsetHeight, 'footerOffsetHeight:', footerOffsetHeight);
@@ -710,26 +674,26 @@ export default {
       this.$store.commit('setCurrentData', filteredRows);
     },
     toggleMap() {
-      if (window.innerWidth > 749) {
-        this.$data.isMapVisible = true;
-      } else {
-        this.$data.isMapVisible = !this.$data.isMapVisible;
-        console.log('toggleMap is running');
-        if (this.$data.isMapVisible === true) {
-          console.log('toggleMap is running, this.$data.isMapVisible === true');
-            console.log('setTimeout function is running');
-            if (this.mapType === 'leaflet') {
-              this.$store.state.map.map.invalidateSize();
-            } else if (this.mapType === 'mapbox') {
-              let themap = this.$store.map;
-              setTimeout(function() {
-                console.log('mapbox running map resize now');
-                themap.resize();
-                console.log('mapbox ran map resize');
-              }, 250);
-            }
-        }
+      // if (window.innerWidth > 749) {
+      //   this.$data.isMapVisible = true;
+      // } else {
+      this.$data.isMapVisible = !this.$data.isMapVisible;
+      console.log('toggleMap is running');
+      if (this.$data.isMapVisible === true) {
+        console.log('toggleMap is running, this.$data.isMapVisible === true');
+        // console.log('setTimeout function is running');
+        // if (this.mapType === 'leaflet') {
+        //   this.$store.state.map.map.invalidateSize();
+        // } else if (this.mapType === 'mapbox') {
+        let themap = this.$store.map;
+        setTimeout(function() {
+          console.log('mapbox running map resize now');
+          themap.resize();
+          console.log('mapbox ran map resize');
+        }, 250);
+        // }
       }
+      // }
       if (!this.i18nEnabled) {
         this.$data.buttonText = this.$data.isMapVisible ? 'Toggle to resource list' : 'Toggle to map';
       } else {
@@ -758,21 +722,6 @@ export default {
 </script>
 
 <style lang="scss">
-// @import "@/assets/scss/main.scss";
-// @import "~@phila/phila-ui/src/assets/styles/scss/functions.scss";
-// @import "~@phila/phila-ui/src/assets/styles/scss/colors.scss";
-// @import "~@phila/phila-ui/src/assets/styles/scss/variables.scss";
-
-// .toggle-map{
-//   margin:0 !important;
-// }
-// .main-content{
-//   margin-top:.5rem;
-// }
-//
-// .middle-panel {
-//   height: 100%;
-// }
 
 .full-screen {
   width: 100%;

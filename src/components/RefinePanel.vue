@@ -118,7 +118,7 @@
           <div
             v-for="(group, ind) in refineList"
             :key="ind"
-            :class="refineOpen ? 'service-group-holder-y' : 'service-group-holder-x'"
+            :class="refineOpen ? isMobile === false : isMobile === true"
           >
 
             <div v-if="i18nEnabled">
@@ -306,6 +306,13 @@ export default {
     },
     ...mapState([ 'sources', 'geocode', 'selectedServices' ]),
     refineOpen() {
+      // let value;
+      // if (this.isMobile) {
+      //   value = false;
+      // } else {
+      //   value = true;
+      // }
+      // return value;
       return this.$store.state.refineOpen;
     },
     i18nEnabled() {
