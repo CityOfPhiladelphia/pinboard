@@ -111,14 +111,14 @@
         <!-- if using multipleFieldsGroups option -->
         <div
           v-if="dataStatus === 'success' && refineType === 'multipleFieldGroups'"
-          class="a-flex-div"
+          class="columns"
         >
         <!-- :class="refineOpen ? 'grid-y group-service-list service-list' : 'grid-x group-service-list service-list'" -->
         <!-- class="grid-x group-service-list service-list" -->
           <div
             v-for="(group, ind) in refineList"
             :key="ind"
-            :class="refineOpen ? isMobile === false : isMobile === true"
+            class="column is-narrow"
           >
 
             <div v-if="i18nEnabled">
@@ -173,53 +173,53 @@
             </div>
 
             <!-- <div class="grid-x service-group"> -->
-            <div
-              class="a-flex-div"
-            >
+            <!-- <div
+              class="column"
+            > -->
             <!-- class="service-group" -->
-
-              <div
-                v-for="(item, index) in refineList[ind]"
-                :key="index"
-                class="service-group-member"
-              >
-
-                <input
-                  :id="item.unique_key"
-                  v-model="selected"
-                  type="checkbox"
-                  :name="item.unique_key"
-                  :value="item.unique_key"
-                  class="service-group-input"
-                  @click="clickedRefineBox(item)"
+              <div class="columns">
+                <div
+                  v-for="(item, index) in refineList[ind]"
+                  :key="index"
+                  class="service-group-member column is-narrow"
                 >
-                  <font-awesome-icon :for="item" :icon="['far', 'square']" v-show="!selected.includes(item.unique_key)" class="fa-checkbox" />
-                  <font-awesome-icon :for="item" icon="check-square" v-show="selected.includes(item.unique_key)" class="fa-checkbox" />
-                  <label
-                    class="input-label"
-                    :for="item.unique_key"
-                    >
-                      <span
-                        v-if="!i18nEnabled"
-                        class="service-item"
-                      >
-                        {{ item.box_label }}
-                      </span>
 
-                      <span
-                        v-if="i18nEnabled"
-                        class="service-item"
-                        v-html="$t(item.box_label)"
-                      />
-
-                  </label>
-                  <icon-tool-tip
-                    v-if="Object.keys(infoCircles).includes(item)"
-                    :item="item"
-                    :circleData="infoCircles[item]"
+                  <input
+                    :id="item.unique_key"
+                    v-model="selected"
+                    type="checkbox"
+                    :name="item.unique_key"
+                    :value="item.unique_key"
+                    class="service-group-input"
+                    @click="clickedRefineBox(item)"
                   >
-                  </icon-tool-tip>
+                    <font-awesome-icon :for="item" :icon="['far', 'square']" v-show="!selected.includes(item.unique_key)" class="fa-checkbox" />
+                    <font-awesome-icon :for="item" icon="check-square" v-show="selected.includes(item.unique_key)" class="fa-checkbox" />
+                    <label
+                      class="input-label"
+                      :for="item.unique_key"
+                      >
+                        <span
+                          v-if="!i18nEnabled"
+                          class="service-item"
+                        >
+                          {{ item.box_label }}
+                        </span>
 
+                        <span
+                          v-if="i18nEnabled"
+                          class="service-item"
+                          v-html="$t(item.box_label)"
+                        />
+
+                    </label>
+                    <icon-tool-tip
+                      v-if="Object.keys(infoCircles).includes(item)"
+                      :item="item"
+                      :circleData="infoCircles[item]"
+                    >
+                    </icon-tool-tip>
+              </div>
 
               </div>
 
@@ -271,12 +271,14 @@
 
 import { mapState } from 'vuex';
 import IconToolTip from './IconToolTip.vue';
+import { Checkbox } from '@phila/phila-ui';
 // import PhilaButton from './PhilaButton.vue';
 
 export default {
   components: {
     // PhilaButton,
     IconToolTip,
+    Checkbox
   },
   props: {
     legendTitle: {
@@ -289,6 +291,11 @@ export default {
       baseUrl: process.env.VUE_APP_BASE_URL,
       refineList: null,
       selected: [],
+      options: {
+        'option-1': 'Option 1',
+        'option-2': 'Option 2',
+        'option-3': 'Option 3',
+      }
     };
   },
   computed: {
@@ -483,17 +490,18 @@ export default {
 </script>
 <style lang="scss">
 
-.a-flex-div {
-  display: flex;
-  flex-direction: row;
-  padding-top: 2px;
-}
+// .a-flex-div {
+//   display: flex;
+//   flex-direction: row;
+//   padding-top: 2px;
+// }
 
 #refine-div {
   height: 100px;
   width: 100%;
   position: fixed;
   left: 0;
+  background: #ccc;
 }
 
 $refine-panel-height: 19vh;
