@@ -111,7 +111,7 @@
         <!-- if using multipleFieldsGroups option -->
         <div
           v-if="dataStatus === 'success' && refineType === 'multipleFieldGroups'"
-          class="columns"
+          class="columns is-multiline"
         >
         <!-- :class="refineOpen ? 'grid-y group-service-list service-list' : 'grid-x group-service-list service-list'" -->
         <!-- class="grid-x group-service-list service-list" -->
@@ -497,11 +497,13 @@ export default {
 // }
 
 #refine-div {
-  height: 100px;
   width: 100%;
-  position: fixed;
-  left: 0;
+  position: relative;
   background: #ccc;
+  overflow: hidden;
+  &.refine-open{
+    height:100vh;
+  }
 }
 
 $refine-panel-height: 19vh;

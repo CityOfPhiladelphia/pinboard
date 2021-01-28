@@ -52,8 +52,33 @@
         </ul>
       </mobile-nav>
       <input-form slot="textbox-form">
+      
         <div class="columns">
-          <textbox
+
+          <div class="field has-addons">
+            <div class="control is-expanded">
+              <input
+                v-model="myValue"
+                class="column is-10"
+                placeholder="Search an address"
+                label="Search an address in Philadelphia"
+              >
+            </div>
+            <div class="control">
+              <font-awesome-icon  
+                :icon="['fa', 'search']" 
+                class="is-link fa-w-10"
+                slot="submit"
+                @click.prevent="handleSubmit"/>
+              <!-- <a
+                class="button is-link fa fa-search fa-fw fa-sm"
+                slot="submit"
+                @click.prevent="handleSubmit"
+              /> -->
+            </div>
+          </div>
+
+          <!-- <textbox
             v-model="myValue"
             class="column is-10"
             placeholder="Search an address"
@@ -65,7 +90,7 @@
             @click.prevent="handleSubmit"
           >
             Submit
-          </button>
+          </button> -->
         </div>
       </input-form>
     </app-header>
@@ -460,12 +485,12 @@ export default {
           let offsetHeight2 = headerOffsetHeight + refineDivOffsetHeight;
           let offsetHeight3 = headerOffsetHeight + footerOffsetHeight + refineDivOffsetHeight;
           console.log('handleResize is NOT mobile, refineDiv:', refineDiv, 'refineDivOffsetHeight:', refineDivOffsetHeight, 'offsetHeight2:', offsetHeight2, 'offsetHeight:', offsetHeight, 'headerClientHeight:', headerClientHeight, 'headerOffsetHeight:', headerOffsetHeight, 'footerOffsetHeight:', footerOffsetHeight, 'switchButtonOffsetHeight:', switchButtonOffsetHeight);
-          main.style['height'] = '100px';
-          main.style['height'] = `calc(100vh - ${offsetHeight3}px)`;
+          //main.style['height'] = '100px';
+          main.style['height'] = `calc(100vh - ${offsetHeight2}px)`;
           main.style['padding-bottom'] = '0px';
           main.style['margin-bottom'] = '0px';
           refineDiv.style['top'] = headerOffsetHeight + 'px';
-          columnDiv.style['margin-top'] = offsetHeight2 + 'px';
+          // columnDiv.style['margin-top'] = offsetHeight2 + 'px';
           columnDiv.style['padding-bottom'] = footerOffsetHeight + 'px';
           columnDiv.style['height'] = `calc(100vh - ${offsetHeight2}px)`;
         }
@@ -725,6 +750,10 @@ export default {
 
 <style lang="scss">
 
+#switch-button{
+  position: absolute;
+  bottom: 0;
+}
 .full-screen {
   width: 100%;
 }
