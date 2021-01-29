@@ -52,7 +52,7 @@
         </ul>
       </mobile-nav>
       <input-form slot="textbox-form">
-      
+
         <div class="columns">
 
           <div class="field has-addons">
@@ -65,8 +65,8 @@
               >
             </div>
             <div class="control">
-              <font-awesome-icon  
-                :icon="['fa', 'search']" 
+              <font-awesome-icon
+                :icon="['fa', 'search']"
                 class="is-link fa-w-10"
                 slot="submit"
                 @click.prevent="handleSubmit"/>
