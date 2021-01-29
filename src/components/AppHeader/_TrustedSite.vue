@@ -132,18 +132,7 @@ export default {
 
 <style lang="scss" scoped>
 
-  #trusted-site {
-    // color: $white;
-    // @include tablet {
-    @include until ($tablet) {
-      padding-left: 1rem !important;
-    }
-    .container {
-    }
-    a, strong {
-      // color: $white;
-    }
-  }
+
 
   #trusted-site-bar {
     background-color: $ben-franklin-blue;
@@ -153,7 +142,7 @@ export default {
         margin-right: 0.188rem;
       }
       font-size: $size-small;
-      font-weight: $weight-semibold;
+      //font-weight: $weight-semibold;
       font-stretch: normal;
       font-style: normal;
       line-height: 1.45;
@@ -161,7 +150,7 @@ export default {
     .level-right {
       font-size: 0.75rem;
       a {
-        font-weight: $weight-semibold;
+        //font-weight: $weight-semibold;
         text-decoration: underline;
       }
     }
@@ -186,16 +175,16 @@ export default {
     .trust-icon-right {
       @extend .trust-icon;
       width: 75px;
-      @include until ($tablet) {
-        width: 115px;
-      }
+      // @include until ($tablet) {
+      //   width: 115px;
+      // }
     }
     .trust-details-right {
       @extend .trust-details;
       width: calc(100% - 80px);
-      @include until ($tablet) {
-        width: calc(100% - 120px);
-      }
+      // @include until ($tablet) {
+      //   width: calc(100% - 120px);
+      // }
     }
     .circle-icon {
       border-radius: 50%;
@@ -210,7 +199,7 @@ export default {
     .icon-text {
       font-family: $family-secondary;
       font-size: $size-3;
-      font-weight: $weight-semibold;
+      //font-weight: $weight-semibold;
       line-height: 1.5rem;
     }
   }
@@ -239,7 +228,7 @@ export default {
     top: 0;
     right: 0;
     font-size: $size-2;
-    font-weight: $weight-normal;
+    //font-weight: $weight-normal;
     width: 3rem;
     height: 3rem;
     padding: 0.875rem;

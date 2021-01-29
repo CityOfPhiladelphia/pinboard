@@ -282,12 +282,12 @@ export default {
     .container {
       padding: 0 1rem;
     }
-    @include tablet {
-      .container {
-        padding-left: 0 !important;
-        padding-right: 0 !important;
-      }
-    }
+    // @include tablet {
+    //   .container {
+    //     padding-left: 0 !important;
+    //     padding-right: 0 !important;
+    //   }
+    // }
   }
   .m-nav-opened {
     height:100%;
@@ -318,16 +318,16 @@ export default {
         padding-top: 0.5rem;
         padding-bottom: 1rem;
 
-        @include until ($tablet) {
-          padding: 0;
-        }
+        // @include until ($tablet) {
+        //   padding: 0;
+        // }
 
-        &.mobile-nav-col {
-          @include until ($tablet) {
-            width: 50px;
-            flex: none;
-          }
-        }
+        // &.mobile-nav-col {
+        //   @include until ($tablet) {
+        //     width: 50px;
+        //     flex: none;
+        //   }
+        // }
 
         &.branding-col {
           padding-left: 0;
@@ -337,24 +337,24 @@ export default {
         &.title-col {
           padding-left: 0;
           text-align: left;
-          @include until ($tablet) {
-            padding-top: 0.5rem;
-            padding-bottom: 0.5rem;
-            width: calc(100% - 100px);
-            flex: none;
-            &.no-mobile-nav {
-              padding-left: 1rem;
-              width: calc(100% - 50px);
-            }
-          }
+          // @include until ($tablet) {
+          //   padding-top: 0.5rem;
+          //   padding-bottom: 0.5rem;
+          //   width: calc(100% - 100px);
+          //   flex: none;
+          //   &.no-mobile-nav {
+          //     padding-left: 1rem;
+          //     width: calc(100% - 50px);
+          //   }
+          // }
         }
 
         &.nav-col {
           padding: 0;
-          @include until ($tablet) {
-            width: 50px;
-            flex: none;
-          }
+          // @include until ($tablet) {
+          //   width: 50px;
+          //   flex: none;
+          // }
         }
 
       }
@@ -371,18 +371,18 @@ export default {
     h1 {
       font-family: $family-secondary;
       font-size: 1.375rem;
-      font-weight: $weight-bold;
+      //font-weight: $weight-bold;
       line-height: 1.09;
       padding: 0;
-      @include until ($tablet) {
-        font-weight: $weight-normal;
-        font-size: $size-normal;
-      }
+      // @include until ($tablet) {
+      //   font-weight: $weight-normal;
+      //   font-size: $size-normal;
+      // }
     }
     h2 {
       font-family: $family-secondary;
       font-size: $size-large;
-      font-weight: $weight-normal;
+      //font-weight: $weight-normal;
       line-height: 1.33;
       padding: 0;
     }

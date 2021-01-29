@@ -51,48 +51,7 @@
           </li>
         </ul>
       </mobile-nav>
-      <input-form slot="textbox-form">
-
-        <div class="columns">
-
-          <div class="field has-addons">
-            <div class="control is-expanded">
-              <input
-                v-model="myValue"
-                class="column is-10"
-                placeholder="Search an address"
-                label="Search an address in Philadelphia"
-              >
-            </div>
-            <div class="control">
-              <font-awesome-icon
-                :icon="['fa', 'search']"
-                class="is-link fa-w-10"
-                slot="submit"
-                @click.prevent="handleSubmit"/>
-              <!-- <a
-                class="button is-link fa fa-search fa-fw fa-sm"
-                slot="submit"
-                @click.prevent="handleSubmit"
-              /> -->
-            </div>
-          </div>
-
-          <!-- <textbox
-            v-model="myValue"
-            class="column is-10"
-            placeholder="Search an address"
-            label="Search an address in Philadelphia"
-          />
-          <button
-            slot="submit"
-            class="button is-dark is-large"
-            @click.prevent="handleSubmit"
-          >
-            Submit
-          </button> -->
-        </div>
-      </input-form>
+     
     </app-header>
 
     <refine-panel>
@@ -161,7 +120,6 @@ import Fuse from 'fuse.js'
 import { point } from '@turf/helpers';
 import buffer from '@turf/buffer';
 import booleanPointInPolygon from '@turf/boolean-point-in-polygon';
-
 import PhilaButton from './components/PhilaButton.vue';
 import AlertBanner from './components/AlertBanner.vue';
 import i18nBanner from './components/i18nBanner.vue';
@@ -170,8 +128,8 @@ import RefinePanel from './components/RefinePanel.vue';
 import LocationsPanel from './components/LocationsPanel.vue';
 import MapPanel from './components/MapPanel.vue';
 
-import AppHeader from './components/AppHeader';
 import {
+  AppHeader,
   MobileNav,
   AppFooter,
   InputForm,
@@ -749,6 +707,7 @@ export default {
 </script>
 
 <style lang="scss">
+@import "./assets/scss/main.scss";
 
 #switch-button{
   position: absolute;
