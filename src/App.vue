@@ -51,7 +51,36 @@
           </li>
         </ul>
       </mobile-nav>
-     
+      <input-form slot="textbox-form">
+
+       <div class="columns">
+
+         <div class="field has-addons">
+           <div class="control is-expanded">
+             <input
+               v-model="myValue"
+               class="column is-10"
+               placeholder="Search an address"
+               label="Search an address in Philadelphia"
+             >
+           </div>
+           <div class="control">
+             <font-awesome-icon
+               :icon="['fa', 'search']"
+               class="is-link fa-w-10"
+               slot="submit"
+               @click.prevent="handleSubmit"/>
+             <!-- <a
+               class="button is-link fa fa-search fa-fw fa-sm"
+               slot="submit"
+               @click.prevent="handleSubmit"
+             /> -->
+           </div>
+         </div>
+
+       </div>
+     </input-form>
+
     </app-header>
 
     <refine-panel>
@@ -414,6 +443,9 @@ export default {
     window.removeEventListener('resize', this.handleResize);
   },
   methods: {
+    handleSubmit() {
+      this.$controller.handleSearchFormSubmit(this.myValue);
+    },
     handleResize () {
       console.log('handleResize is starting');
       //wait for dom to finish updating
