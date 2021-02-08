@@ -119,6 +119,8 @@
 // import Mapbox from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 
+import Fuse from 'fuse.js'
+
 import { point } from '@turf/helpers';
 import buffer from '@turf/buffer';
 import booleanPointInPolygon from '@turf/boolean-point-in-polygon';
@@ -542,19 +544,47 @@ export default {
               }
             }
           }
-          // console.log('still going, row.tags:', row.tags, 'description:', description);
-          let lowerCaseDescription = [];
-          for (let tag of description) {
-            lowerCaseDescription.push(tag.toLowerCase());
-          }
-          const keywordsFiltered = this.selectedKeywords.filter(function(f) {
-            // console.log('filter, f:', f, 'f.toLowerCase():', f.toLowerCase(), 'lowerCaseDescription:', lowerCaseDescription, 'lowerCaseDescription.includes(f.toLowerCase()):', lowerCaseDescription.includes(f.toLowerCase()));
-            return lowerCaseDescription.includes(f.toLowerCase())
-          });
-          // console.log('description:', description, 'lowerCaseDescription:', lowerCaseDescription, 'keywordsFiltered:', keywordsFiltered);
-          if (keywordsFiltered.length > 0) {
+          console.log('still going, this.selectedKeywords:', this.selectedKeywords, 'row.tags:', row.tags, 'description:', description);
+
+          const options = {
+    			  // isCaseSensitive: false,
+    			  // includeScore: false,
+    			  // shouldSort: true,
+    			  // includeMatches: false,
+    			  // findAllMatches: false,
+    			  minMatchCharLength: 3,
+    			  // location: 0,
+    			  // threshold: 0.6,
+    			  // distance: 100,
+    			  // useExtendedSearch: false,
+    			  // ignoreLocation: false,
+    			  // ignoreFieldNorm: false,
+
+    			  // keys: [
+    			  //   "title",
+    			  //   "author.firstName"
+    			  // ]
+    			};
+
+          const fuse = new Fuse(description, options);
+    			const result = fuse.search(this.selectedKeywords[0]);
+          // console.log('result:', result);
+          if (result.length > 0) {
             booleanKeywords = true;
           }
+
+          // let lowerCaseDescription = [];
+          // for (let tag of description) {
+          //   lowerCaseDescription.push(tag.toLowerCase());
+          // }
+          // const keywordsFiltered = this.selectedKeywords.filter(function(f) {
+          //   // console.log('filter, f:', f, 'f.toLowerCase():', f.toLowerCase(), 'lowerCaseDescription:', lowerCaseDescription, 'lowerCaseDescription.includes(f.toLowerCase()):', lowerCaseDescription.includes(f.toLowerCase()));
+          //   return lowerCaseDescription.includes(f.toLowerCase())
+          // });
+          // // console.log('description:', description, 'lowerCaseDescription:', lowerCaseDescription, 'keywordsFiltered:', keywordsFiltered);
+          // if (keywordsFiltered.length > 0) {
+          //   booleanKeywords = true;
+          // }
         }
 
         if (booleanServices && booleanBuffer && booleanKeywords) {
