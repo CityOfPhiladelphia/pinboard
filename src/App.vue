@@ -566,7 +566,6 @@ export default {
     			  // ]
     			};
 
-
           const fuse = new Fuse(description, options);
     			const result = fuse.search(this.selectedKeywords[0]);
           // console.log('result:', result);
