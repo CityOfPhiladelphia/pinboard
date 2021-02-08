@@ -29,6 +29,10 @@ Create pull request for changes and merge into `master` branch for travis-ci bui
 
 ## Release Notes
 
+### 0.5.13 - 2/8/2021
+
+* adds fuse.js, uses it on keyword search
+
 ### 0.5.12 - 11/24/2020
 
 * hides tags label in default expand-collapse-content if there are none
