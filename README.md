@@ -29,6 +29,10 @@ Create pull request for changes and merge into `master` branch for travis-ci bui
 
 ## Release Notes
 
+### 0.5.14 - 2/9/2021
+
+* fixes bug in RefinePanel.vue if refine value is a string
+
 ### 0.5.13 - 2/8/2021
 
 * adds fuse.js, uses it on keyword search
