@@ -205,7 +205,7 @@
                     :circleData="infoCircles[item]"
                   >
                   </icon-tool-tip>
-                
+
 
               </div>
 
@@ -332,8 +332,11 @@ export default {
     },
     selected(nextSelected) {
       window.theRouter = this.$router;
-      // console.log('RefinePanel watch selected is firing, nextSelected', nextSelected);
+      // console.log('RefinePanel watch selected is firing, nextSelected', nextSelected, 'typeof nextSelected:', typeof nextSelected);
       this.$store.commit('setSelectedServices', nextSelected);
+      if (typeof nextSelected === 'string') {
+        nextSelected = [nextSelected];
+      }
       this.$router.push({ query: { ...this.$route.query, ...{ services: nextSelected.join(',') }}});
     },
     selectedServices(nextSelectedServices) {
