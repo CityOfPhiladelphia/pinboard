@@ -86,39 +86,18 @@
     </div>
 
     <div
+      v-if="i18nEnabled"
+      class="i18n-banner-holder"
+    >
+      <i18n-banner />
+    </div>
+
+    <div
       v-if="refineEnabled"
       :class="refinePanelClass"
     >
       <refine-panel />
     </div>
-
-    <!-- <main
-      class="main no-padding"
-    > -->
-
-      <!-- <div
-        v-show="!refineOpen"
-        id="column-div"
-        class="columns is-mobile"
-      >
-
-        <div
-          v-show="isTablet || isDesktop || !isMapVisible"
-          class="column overflows"
-        >
-          <locations-panel />
-        </div>
-
-        <div
-          v-show="isTablet || isDesktop || isMapVisible"
-          class="column no-padding"
-        >
-          <map-panel />
-        </div>
-
-      </div>
-
-    </main> -->
 
     <div
       v-show="!isMobile || isMobile && !refineOpen"
@@ -129,7 +108,6 @@
         class="locations-panel-holder column"
       >
         <locations-panel />
-        <!-- LOCATIONS PANEL HOLDER -->
       </div>
 
       <div
@@ -137,7 +115,6 @@
         class="map-panel-holder column"
       >
         <map-panel />
-        <!-- MAP PANEL HOLDER -->
       </div>
 
     </div>
@@ -238,7 +215,7 @@ export default {
       myValue: '',
       brandingImage: {
         src: require('@/assets/city-of-philadelphia-logo.png'),
-        alt: "City of Philadelphia Office of Immigrant Affairs logo",
+        alt: "City of Philadelphia logo",
         width: "200px",
       },
       brandingLink: {
@@ -432,30 +409,6 @@ export default {
     },
   },
   watch: {
-    // isMobile(nextIsMobile) {
-    //   if (nextIsMobile) {
-    //     console.log('is mobile');
-    //     this.handleResize();
-    //   }
-    // },
-    // isTablet(nextIsTablet) {
-    //   if (nextIsTablet) {
-    //     console.log('is tablet');
-    //     this.handleResize();
-    //   }
-    // },
-    // isDesktop(nextIsDesktop) {
-    //   if (nextIsDesktop) {
-    //     console.log('is desktop');
-    //     this.handleResize();
-    //   }
-    // },
-    // isWideScreen(nextIsWidescreen) {
-    //   if (nextIsWidescreen) {
-    //     console.log('is widescreen');
-    //     this.handleResize();
-    //   }
-    // },
     sourcesWatched(nextSourcesWatched) {
       console.log('watch sourcesWatched, nextSourcesWatched:', nextSourcesWatched);
       if (!nextSourcesWatched.includes(null)) {
@@ -535,56 +488,10 @@ export default {
     }
   },
 
-  // beforeDestroy() {
-  //   window.removeEventListener('resize', this.handleResize);
-  // },
   methods: {
     handleSubmit() {
       this.$controller.handleSearchFormSubmit(this.myValue);
     },
-    // handleResize () {
-    //   console.log('handleResize is starting');
-    //   //wait for dom to finish updating
-    //   let isMobile = this.isMobile;
-    //   Vue.nextTick(function () {
-    //     let header = document.querySelector('#app-header');
-    //     let footer = document.querySelector('#app-footer');
-    //     let switchButton = document.querySelector('#switch-button');
-    //     let main = document.querySelector('main');
-    //     let refineDiv = document.querySelector('#refine-div');
-    //     let columnDiv = document.querySelector('#column-div');
-    //     let refineDivOffsetHeight = refineDiv.offsetHeight || 0;
-    //     let headerOffsetHeight = header.offsetHeight || 0;
-    //     let headerClientHeight = header.clientHeight || 0;
-    //     let headerInnerHeight = header.clientHeight || 0;
-    //     let footerOffsetHeight = 0;
-    //     if (footer !== null) {
-    //       footerOffsetHeight = footer.offsetHeight;
-    //     }
-    //     let switchButtonOffsetHeight = switchButton.offsetHeight;
-    //     let offsetHeight;
-    //     if (isMobile) {
-    //       let offsetHeight = headerOffsetHeight  + switchButtonOffsetHeight + refineDivOffsetHeight;
-    //       console.log('handleResize isMobile, offsetHeight:', offsetHeight, 'headerClientHeight:', headerClientHeight, 'headerOffsetHeight:', headerOffsetHeight, 'footerOffsetHeight:', footerOffsetHeight, 'switchButtonOffsetHeight:', switchButtonOffsetHeight);
-    //     } else {
-    //       let offsetHeight = headerOffsetHeight + footerOffsetHeight;
-    //       let offsetHeight2 = headerOffsetHeight + refineDivOffsetHeight;
-    //       let offsetHeight3 = headerOffsetHeight + footerOffsetHeight + refineDivOffsetHeight;
-    //       console.log('handleResize is NOT mobile, refineDiv:', refineDiv, 'refineDivOffsetHeight:', refineDivOffsetHeight, 'offsetHeight2:', offsetHeight2, 'offsetHeight:', offsetHeight, 'headerClientHeight:', headerClientHeight, 'headerOffsetHeight:', headerOffsetHeight, 'footerOffsetHeight:', footerOffsetHeight, 'switchButtonOffsetHeight:', switchButtonOffsetHeight);
-    //       //main.style['height'] = '100px';
-    //       main.style['height'] = `calc(100vh - ${offsetHeight2}px)`;
-    //       main.style['padding-bottom'] = '0px';
-    //       main.style['margin-bottom'] = '0px';
-    //       refineDiv.style['top'] = headerOffsetHeight + 'px';
-    //       // columnDiv.style['margin-top'] = offsetHeight2 + 'px';
-    //       columnDiv.style['padding-bottom'] = footerOffsetHeight + 'px';
-    //       columnDiv.style['height'] = `calc(100vh - ${offsetHeight2}px)`;
-    //     }
-    //     // console.log('App.vue handleResize, offsetHeight:', offsetHeight, 'headerOffsetHeight:', headerOffsetHeight, 'footerOffsetHeight:', footerOffsetHeight);
-    //     console.log('end of handleResize');
-    //   });
-    //
-    // },
     setUpData(theSources) {
       // console.log('Pinboard App.vue setUpData is running, theSources:', theSources);
       let compiled = {
@@ -880,12 +787,14 @@ html, body {
   padding: 0px !important;
 }
 
-.i18n-panel-holder {
-  background-color: white;
+@media screen and (max-width: 767px) {
+  .i18n-banner-holder {
+    display: none;
+  }
 }
 
 .refine-panel-holder {
-  background-color: #f0f0f0;
+  // background-color: #f0f0f0;
 }
 
 .refine-panel-holder-open {
@@ -914,13 +823,13 @@ html, body {
 @media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
   /* IE10+ CSS styles go here */
 
-  @media (min-width: 750px) {
+  @media (min-width: 768px) {
     .locations-and-map-panels-holder {
       overflow-y: hidden;
       height: 100px;
     }
   }
-  @media (max-width: 749px) {
+  @media (max-width: 767px) {
     .locations-and-map-panels-holder {
       height: 100px;
     }

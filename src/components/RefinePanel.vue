@@ -1,6 +1,6 @@
 <template>
   <div
-    id="refine-div"
+    id="refine-panel-component"
     :class="refinePanelClass"
   >
 
@@ -100,7 +100,7 @@
     <!-- if using multipleFieldsGroups option -->
     <div
       v-if="dataStatus === 'success' && refineType === 'multipleFieldGroups'"
-      id="multipleFieldGroups-div"
+      id="multiple-field-groups-div"
       class="columns is-multiline"
     >
       <div
@@ -293,12 +293,12 @@ export default {
       let value;
       if (this.isMobile) {
         if (this.refineOpen) {
-          value = 'refine-panel-open';
+          value = 'refine-panel refine-panel-open';
         } else {
-          value = 'refine-panel-closed';
+          value = 'refine-panel refine-panel-closed';
         }
       } else {
-        value = 'refine-panel-non-mobile';
+        value = 'refine-panel refine-panel-non-mobile';
       }
       return value;
     },
@@ -476,7 +476,8 @@ export default {
       container.scrollTo(0, 0);
     },
     expandRefine() {
-      if (window.innerWidth <= 749) { // converted from rems
+      console.log('expandRefine is running');
+      if (window.innerWidth <= 767) { // converted from rems
         this.$gtag.event('refine-panel-open', {
           'event_category': this.$store.state.gtag.category,
         })
@@ -494,20 +495,8 @@ export default {
 
 <style lang="scss">
 
-// .a-flex-div {
-//   display: flex;
-//   flex-direction: row;
-//   padding-top: 2px;
-// }
-
-#refine-div {
-  width: 100%;
-  position: relative;
-  background: #ccc;
-  overflow: hidden;
-  &.refine-open{
-    height:100vh;
-  }
+#refine-panel-component {
+  background: $ghost-grey;
 }
 
 .refine-panel-open {
@@ -519,142 +508,80 @@ export default {
 }
 
 .refine-panel-non-mobile {
-  
+
 }
 
 // $refine-panel-height: 19vh;
-// .refine-panel{
-//   max-height: $refine-panel-height;
-//   overflow-y: hidden;
-//   padding: 1rem;
-//
-//   .legend-title{
-//     margin-bottom: 0;
-//     float:left;
-//     font-weight: bold;
-//     font-size: 1.2rem;
-//     text-transform: uppercase;
-//   }
-//
-//   .refine-title{
-//     color: $ben-franklin-blue-dark;
-//     position: relative;
-//
-//     .clear-all{
-//       font-family: "Montserrat", sans-serif;
-//       font-weight: normal;
-//       margin: .35rem 0 0 .75rem;
-//       font-size: .8rem;
-//     }
-//
-//     .clear-button{
-//       background-color: rgb(0, 204, 255);
-//       height: 30px;
-//       width: 80px;
-//       margin-left: 10px;
-//       margin-right: 10px;
-//     }
-//   }
-//
-//   .margin-add{
-//     margin-left: 10px;
-//     margin-right: 10px;
-//     display: inline-block;
-//   }
-//
-//   .min-width-needed{
-//     min-width: 140px;
-//     min-height: 30px;
-//     border-style: solid;
-//     border-width: 1px;
-//   }
-//
-//   .service-group{
-//     display: flex;
-//     flex-direction: row;
-//     padding-top: 2px;
-//     margin-left: -15px;
-//   }
-//
-//   .service-group-holder-y{
-//     // padding: 2px;
-//     padding-top: 8px;
-//     padding-bottom: 8px;
-//     padding-left: 16px;
-//     padding-right: 10px;
-//     border-bottom: 1px solid black;
-//     &:first-of-type{
-//       padding-top: 0px;
-//     }
-//     &:last-of-type{
-//       margin-bottom: 10px;
-//     }
-//   }
-//
-//   .service-group-holder-x{
-//     padding-left: 16px;
-//     padding-right: 10px;
-//     border-right: 1px solid black;
-//     &:first-of-type{
-//       padding-left: 0px;
-//     }
-//     &:last-of-type{
-//       border-right: none;
-//     }
-//   }
-//
-//   .group-service-list {
-//     width: 100%;
-//   }
-//
-//   .service-list{
-//     input{
-//       margin-right: -2rem;
-//     }
-//     .service-item {
-//       margin-left: 1rem;
-//       display: inline-block;
-//       line-height: 1.3rem;
-//       vertical-align: text-top;
-//       padding-right: 3px;
-//     }
-//   }
-//   label {
-//     font-weight: normal;
-//     cursor: pointer;
-//   }
-//   @media screen and (max-width: 749px) {
-//     height: 3rem;
-//     padding: .5rem;
-//     position: relative;
-//     z-index: 10000;
-//     .refine-title{
-//       cursor: pointer;
-//       height:7vh;
-//       padding: .5rem;
-//
-//       &::after{
-//         content: '+';
-//         font-weight: 900;
-//         position: absolute;
-//         font-size: 1.2rem;
-//         right: 0;
-//         top: 0;
-//       }
-//     }
-//   }
-//   &.refine-open{
-//     overflow-y: scroll;
-//     height: calc(100vh - 90px);
-//     max-height: 100vh;
-//     z-index: 1002;
-//     .refine-title{
-//       &::after{
-//         content: '-';
-//       }
-//     }
-//   }
-// }
+.refine-panel {
+  // max-height: $refine-panel-height;
+  overflow-y: hidden;
+  padding: 1rem;
+
+  .legend-title{
+    margin-bottom: 0;
+    float:left;
+    font-weight: bold;
+    font-size: 1.2rem;
+    text-transform: uppercase;
+  }
+
+  .refine-title{
+    color: $ben-franklin-blue-dark;
+    position: relative;
+
+    .clear-all{
+      font-family: "Montserrat", sans-serif;
+      font-weight: normal;
+      margin: .35rem 0 0 .75rem;
+      font-size: .8rem;
+    }
+
+    .clear-button{
+      background-color: rgb(0, 204, 255);
+      height: 30px;
+      width: 80px;
+      margin-left: 10px;
+      margin-right: 10px;
+    }
+  }
+
+  label {
+    font-weight: normal;
+    cursor: pointer;
+  }
+
+  @media screen and (max-width: 767px) {
+    height: 3rem;
+    padding: .5rem;
+    position: relative;
+    z-index: 10000;
+    .refine-title{
+      cursor: pointer;
+      height:7vh;
+      padding: .5rem;
+
+      &::after{
+        content: '+';
+        font-weight: 900;
+        position: absolute;
+        font-size: 1.2rem;
+        right: 0;
+        top: 0;
+      }
+    }
+  }
+  &.refine-open{
+    overflow-y: scroll;
+    height: calc(100vh - 90px);
+    max-height: 100vh;
+    z-index: 1002;
+    .refine-title{
+      &::after{
+        content: '-';
+      }
+    }
+  }
+}
 
 //add outline to checkboxes
 input[type=checkbox]:focus + svg,
