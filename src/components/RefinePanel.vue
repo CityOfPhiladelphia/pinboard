@@ -5,25 +5,25 @@
   >
 
     <div
-      class="refine-title"
+      class="refine-title columns"
       @click="expandRefine"
     >
       <legend
         v-if="!i18nEnabled"
-        class="legend-title h3"
+        class="column is-narrow legend-title h3"
       >
         {{ legendTitle }}
       </legend>
       <legend
         v-if="i18nEnabled"
-        class="legend-title h3"
+        class="column is-narrow legend-title h3"
         v-html="$t('refinePanel.refine')"
       />
 
       <a
         v-if="!i18nEnabled && isTablet || !i18nEnabled && isDesktop || !i18nEnabled && isWideScreen"
         href=""
-        class="clear-all"
+        class="column is-narrow clear-all"
         @click.prevent="clearAll"
       >
         Clear all
@@ -31,7 +31,7 @@
       <a
         v-if="i18nEnabled && isTablet || i18nEnabled && isDesktop || i18nEnabled && isWideScreen"
         href=""
-        class="clear-all"
+        class="column is-narrow clear-all"
         @click.prevent="clearAll"
         v-html="$t('refinePanel.clearAll')"
       />
@@ -519,7 +519,7 @@ export default {
 
   .legend-title{
     margin-bottom: 0;
-    float:left;
+    // float:left;
     font-weight: bold;
     font-size: 1.2rem;
     text-transform: uppercase;
