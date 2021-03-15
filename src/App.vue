@@ -121,10 +121,12 @@
 
     <div
       v-show="toggleButtonVisible"
-      class="toggle-button"
       @click="toggleMap"
     >
-      TOGGLE
+    <!-- class="toggle-button" -->
+      <button class="button is-primary is-fullwidth">
+        {{ $t(this.$data.buttonText) }}
+      </button>
     </div>
 
     <!-- <button

@@ -118,7 +118,7 @@
           <checkbox
             :options="refineListTranslated[ind]"
             :num-of-columns="Object.keys(refineList[ind]).length"
-            small="true"
+            :small="true"
             v-model="selectedList[ind]"
             text-key="textLabel"
             value-key="data"

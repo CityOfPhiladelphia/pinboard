@@ -279,7 +279,9 @@ export default {
     },
     selectedServices(nextSelectedServices) {
       // console.log('watch, nextSelectedServices:', nextSelectedServices);
-      this.shouldShowGreeting = false;
+      if (nextSelectedServices.length) {
+        this.shouldShowGreeting = false;
+      }
     },
     selectedResources(nextSelectedResources) {
       // console.log('watch, nextSelectedResources:', nextSelectedResources);
