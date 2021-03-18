@@ -5,13 +5,6 @@
       v-if="shouldShowGreeting"
       class="topics-container cell medium-cell-block-y"
     >
-      <!-- <greeting
-        v-if="shouldShowGreeting && !hasCustomGreeting"
-        :message="greetingText"
-        :options="greetingOptions"
-        @view-list="clickedViewList"
-      /> -->
-
       <custom-greeting
         v-if="shouldShowGreeting && hasCustomGreeting"
         @view-list="clickedViewList"
@@ -335,7 +328,7 @@ export default {
 <style lang="scss">
 
 .locations-panel{
-  overflow-y: auto;
+  overflow-y: visible !important;
   // height: calc(100vh - 192px);
   .detail{
     margin-bottom: 1rem;
@@ -362,5 +355,6 @@ export default {
 }
 .location-container{
   padding: 1rem;
+  overflow-y: visible;
 }
 </style>

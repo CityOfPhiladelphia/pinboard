@@ -16,7 +16,7 @@
       </legend>
       <legend
         v-if="i18nEnabled"
-        class="column is-narrow legend-title h3"
+        class="column is-narrow legend-title"
         v-html="$t('refinePanel.refine')"
       />
 
@@ -458,27 +458,12 @@ export default {
   background: $ghost-grey;
 }
 
-.refine-panel-open {
-  height: 100vh;
-}
-
-.refine-panel-closed {
-  height: 4vh;
-}
-
-.refine-panel-non-mobile {
-
-}
-
-// $refine-panel-height: 19vh;
 .refine-panel {
-  // max-height: $refine-panel-height;
   overflow-y: hidden;
   padding: 1rem;
 
   .legend-title{
     margin-bottom: 0;
-    // float:left;
     font-weight: bold;
     font-size: 1.2rem;
     text-transform: uppercase;
@@ -500,12 +485,10 @@ export default {
 
   .refine-title{
     color: $ben-franklin-blue-dark;
-    position: relative;
+    margin-bottom: 0px !important;
 
     .clear-all{
-      font-family: "Montserrat", sans-serif;
       font-weight: normal;
-      margin: .35rem 0 0 .75rem;
       font-size: .8rem;
     }
 
@@ -529,6 +512,7 @@ export default {
     position: relative;
     z-index: 10000;
     .refine-title{
+      margin-bottom: 14px !important;
       cursor: pointer;
       height:7vh;
       padding: .5rem;
@@ -537,13 +521,14 @@ export default {
         content: '+';
         font-weight: 900;
         position: absolute;
-        font-size: 1.2rem;
-        right: 0;
-        top: 0;
+        font-size: 1.6rem;
+        right: 5px;
+        top: 10px;
       }
     }
   }
-  &.refine-open{
+
+  &.refine-panel-open{
     overflow-y: scroll;
     height: calc(100vh - 90px);
     max-height: 100vh;

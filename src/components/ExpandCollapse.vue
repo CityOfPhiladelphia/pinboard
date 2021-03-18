@@ -235,6 +235,7 @@ export default {
   .location-title {
     cursor: pointer;
     padding: 1rem;
+    padding-right: 2rem;
     margin-bottom: 0;
     &:hover{
       background: #2176d2;
@@ -257,8 +258,8 @@ export default {
 
   &::after{
     position: absolute;
-    right:1rem;
-    top: 0;
+    right: 1rem;
+    top: 1rem;
     content: '+';
     font-weight: 900;
     font-size:1.5rem;

@@ -123,8 +123,7 @@
       v-show="toggleButtonVisible"
       @click="toggleMap"
     >
-    <!-- class="toggle-button" -->
-      <button class="button is-primary is-fullwidth">
+      <button class="button capitalized is-primary is-fullwidth">
         {{ $t(this.$data.buttonText) }}
       </button>
     </div>
@@ -746,20 +745,6 @@ export default {
 <style lang="scss">
 @import "./assets/scss/main.scss";
 
-// #switch-button{
-//   position: absolute;
-//   bottom: 0;
-// }
-// .full-screen {
-//   width: 100%;
-// }
-//
-// .is-sticky-to-bottom {
-//   position: fixed;
-//   bottom: 0;
-//   z-index: 99;
-// }
-
 html, body {
   box-sizing: border-box;
   height: 100%;
@@ -767,13 +752,16 @@ html, body {
 
 #app {
   height: 100%;
-  font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #000000;
   display: flex;
   display: -ms-flexbox;
   flex-direction: column;
+}
+
+.capitalized {
+  text-transform: uppercase;
 }
 
 .header-holder {
@@ -785,23 +773,15 @@ html, body {
   margin-top: auto;
 }
 
-.no-padding {
-  padding: 0px !important;
-}
-
 @media screen and (max-width: 767px) {
   .i18n-banner-holder {
     display: none;
   }
 }
 
-.refine-panel-holder {
-  // background-color: #f0f0f0;
-}
-
 .refine-panel-holder-open {
   flex-grow: 1;
-  background-color: #f0f0f0;
+  background: $ghost-grey;
 }
 
 .locations-and-map-panels-holder {
@@ -849,7 +829,6 @@ html, body {
 .map-panel-holder {
   height: 100%;
   padding: 0px;
-  // background-color: #ff6f69;
 }
 
 .toggle-button {
