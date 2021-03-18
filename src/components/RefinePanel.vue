@@ -384,9 +384,7 @@ export default {
       //   this.selected = [];
       // }
       for (let checkbox of Object.keys(this.$data.selectedList)) {
-        // this.$nextTick(() => {
-        Vue.$set(this.$data.selectedList, checkbox, []);
-        // })
+        this.$data.selectedList[checkbox].splice(0);
       }
     },
     getRefineSearchList() {
