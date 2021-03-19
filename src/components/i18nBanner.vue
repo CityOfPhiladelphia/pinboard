@@ -54,6 +54,11 @@ export default {
       return values;
     },
   },
+  watch: {
+    i18nLocale(nexti18nLocale) {
+      this.$data.isSelected = nexti18nLocale;
+    },
+  },
   methods: {
     handleTableHeaderClick(key) {
       // console.log('handleTableHeaderClick is running');

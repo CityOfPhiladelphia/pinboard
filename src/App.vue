@@ -33,6 +33,7 @@
         v-html="alertModalBody"
       />
     </PhilaModal> -->
+
     <div
       class="header-holder"
     >
@@ -52,35 +53,37 @@
             </li>
           </ul>
         </mobile-nav>
-        <input-form slot="textbox-form">
+        <!-- <input-form slot="textbox-form">
 
-         <div class="columns">
+          <div class="columns">
 
-           <div class="field has-addons">
-             <div class="control is-expanded">
-               <input
-                 v-model="myValue"
-                 class="column is-10"
-                 placeholder="Search an address"
-                 label="Search an address in Philadelphia"
-               >
-             </div>
-             <div class="control">
-               <font-awesome-icon
-                 :icon="['fa', 'search']"
-                 class="is-link fa-w-10"
-                 slot="submit"
-                 @click.prevent="handleSubmit"/>
-               <!-- <a
-                 class="button is-link fa fa-search fa-fw fa-sm"
-                 slot="submit"
-                 @click.prevent="handleSubmit"
-               /> -->
-             </div>
-           </div>
+            <div class="field has-addons">
+              <div class="control is-expanded">
+                <input
+                  v-model="myValue"
+                  class="column is-10"
+                  placeholder="Search an address"
+                  label="Search an address in Philadelphia"
+                >
+              </div>
+              <div class="control">
+                <font-awesome-icon
+                  :icon="['fa', 'search']"
+                  class="is-link fa-w-10"
+                  slot="submit"
+                  @click.prevent="handleSubmit"/>
+              </div>
+            </div>
 
-         </div>
-       </input-form>
+          </div>
+        </input-form> -->
+
+        <lang-selector
+          slot="lang-selector-nav"
+          v-show="isMobile"
+          :languages="i18nLanguages"
+        >
+        </lang-selector>
 
       </app-header>
     </div>
@@ -168,7 +171,7 @@ import Fuse from 'fuse.js'
 import { point } from '@turf/helpers';
 import buffer from '@turf/buffer';
 import booleanPointInPolygon from '@turf/boolean-point-in-polygon';
-import PhilaButton from './components/PhilaButton.vue';
+// import PhilaButton from './components/PhilaButton.vue';
 import AlertBanner from './components/AlertBanner.vue';
 import i18nBanner from './components/i18nBanner.vue';
 import PhilaModal from './components/PhilaModal.vue';
@@ -182,7 +185,8 @@ import {
   AppFooter,
   InputForm,
   Textbox,
-  Checkbox
+  Checkbox,
+  LangSelector,
 } from '@phila/phila-ui';
 
 export default {
@@ -194,7 +198,8 @@ export default {
     InputForm,
     Textbox,
     Checkbox,
-    PhilaButton,
+    LangSelector,
+    // PhilaButton,
     AlertBanner,
     i18nBanner,
     PhilaModal,
@@ -238,6 +243,23 @@ export default {
     };
   },
   computed: {
+    i18nLanguages() {
+      let values = [];
+      if (this.$config.i18n.languagues) {
+        values = this.$config.i18n.languages;
+      } else {
+        // for (let key of Object.keys(this.$config.i18n.data.messages)) {
+        for (let key of Object.keys(this.$i18n.messages)) {
+          let value = {};
+          console.log('in loop, key:', key, 'this.$i18n.locale:', this.$i18n.locale, 'this.$i18n.messages[key]:', this.$i18n.messages[key]);
+          value.language = key;
+          value.title = this.$i18n.messages[key].language;
+          values.push(value);
+        }
+        // values = Object.keys(this.$i18n.messages);
+      }
+      return values;
+    },
     feedbackLink() {
       let value;
       if (this.$config.footer && this.$config.footer.feedback && this.$config.footer.feedback.link) {
@@ -479,6 +501,7 @@ export default {
     // this.handleResize();
   },
   created() {
+    console.log('App.vue created, this.$config:', this.$config);
     if (this.$config.map) {
       if (this.$config.map.shouldInitialize === false) {
         this.$store.commit('setShouldInitializeMap', false);

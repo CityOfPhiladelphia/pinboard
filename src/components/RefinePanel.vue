@@ -543,7 +543,7 @@ export default {
     height: 3rem;
     padding: .5rem;
     position: relative;
-    z-index: 10000;
+    // z-index: 10000;
 
     .refine-title{
       margin-bottom: 14px !important;
@@ -584,7 +584,7 @@ export default {
     overflow-y: scroll;
     height: calc(100vh - 90px);
     max-height: 100vh;
-    z-index: 1002;
+    // z-index: 1002;
     .refine-title{
       &::after{
         content: '-';
