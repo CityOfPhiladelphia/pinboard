@@ -53,30 +53,45 @@
             </li>
           </ul>
         </mobile-nav>
-        <!-- <input-form slot="textbox-form">
 
-          <div class="columns">
+        <input-form slot="right-nav">
 
-            <div class="field has-addons">
-              <div class="control is-expanded">
-                <input
-                  v-model="myValue"
-                  class="column is-10"
-                  placeholder="Search an address"
-                  label="Search an address in Philadelphia"
-                >
-              </div>
-              <div class="control">
-                <font-awesome-icon
-                  :icon="['fa', 'search']"
-                  class="is-link fa-w-10"
-                  slot="submit"
-                  @click.prevent="handleSubmit"/>
-              </div>
+          <div class="columns is-vcentered">
+
+            <div
+              class="column is-10"
+            >
+              <textbox
+                v-model="myValue"
+                placeholder="Search an address"
+                label="Search an address in Philadelphia"
+              >
+              <!-- class="column is-10" -->
+              </textbox>
+            </div>
+
+            <!-- <input
+              v-model="myValue"
+              class="column is-10"
+              placeholder="Search an address"
+              label="Search an address in Philadelphia"
+            > -->
+            <div
+              class="column button is-flex is-flex-direction-column is-flex-grow-0"
+            >
+              <!-- test -->
+              <font-awesome-icon
+                :icon="['fa', 'search']"
+                class="is-link fa-2x"
+                slot="submit"
+                @click.prevent="handleSubmit"
+              />
+              <!-- class="is-link fa-w-10" -->
             </div>
 
           </div>
-        </input-form> -->
+
+        </input-form>
 
         <lang-selector
           slot="lang-selector-nav"
