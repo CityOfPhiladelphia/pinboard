@@ -69,12 +69,12 @@
           />
         </template>
 
-        <!-- <lang-selector
+        <lang-selector
           slot="lang-selector-nav"
           v-show="isMobile"
           :languages="i18nLanguages"
         >
-        </lang-selector> -->
+        </lang-selector>
 
       </app-header>
     </div>
