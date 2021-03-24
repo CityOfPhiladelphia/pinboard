@@ -122,6 +122,7 @@
             v-model="selectedList[ind]"
             text-key="textLabel"
             value-key="data"
+            shrinkToFit="true"
           >
             <div
               slot="label"
@@ -487,6 +488,23 @@ export default {
 
 #refine-panel-component {
   background: $ghost-grey;
+}
+
+#columns-div-for-checkboxes {
+
+  .input-checkbox {
+    padding-bottom: 16px;
+  }
+
+  .checkbox-div {
+    margin-left: 0px;
+    margin-right: 0px;
+    margin-top: 0px;
+
+    .control {
+      margin-right: 12px;
+    }
+  }
 }
 
 .refine-panel {

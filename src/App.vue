@@ -37,11 +37,14 @@
     <div
       class="header-holder"
     >
+    <!-- :app-title="$config.app.title" -->
       <app-header
-        :app-title="$config.app.title"
+        :app-title="appTitle"
+        :app-subtitle="appSubTitle"
         :is-sticky="false"
         :branding-image="brandingImage"
         :branding-link="brandingLink"
+        isFluid="true"
       >
         <mobile-nav slot="mobile-nav">
           <ul>
@@ -53,19 +56,25 @@
             </li>
           </ul>
         </mobile-nav>
+
         <template slot="search-bar">
           <search-bar
             v-model="myValue"
+            v-on:dropdownSelect="handleSearchbarChange"
             v-on:search="handleSubmit"
+            :dropdownOptions="searchBarOptions"
+            :dropdownDefault="searchBarType"
+            :textboxPlaceholder="searchBarPlaceholderText"
+            :textboxLabel="searchBarLabelText"
           />
         </template>
 
-        <lang-selector
+        <!-- <lang-selector
           slot="lang-selector-nav"
           v-show="isMobile"
           :languages="i18nLanguages"
         >
-        </lang-selector>
+        </lang-selector> -->
 
       </app-header>
     </div>
@@ -213,21 +222,80 @@ export default {
         href: 'https://www.phila.gov/',
         target: '_blank',
       },
-      dropdownOptions: {
-        address: {
-          text: 'Address',
-          data: null,
-        },
-        keyword: {
-          text: 'Keyword',
-          data: null,
-        },
-      },
+      // dropdownOptions: [
+      //   'address',
+      //   'keyword',
+      // ],
+      // dropdownOptions: {
+      //   address: {
+      //     text: 'Address',
+      //     data: null,
+      //   },
+      //   keyword: {
+      //     text: 'Keyword',
+      //     data: null,
+      //   },
+      // },
       // i18nEnabled: true,
       refineEnabled: true,
     };
   },
   computed: {
+    appTitle() {
+      // return 'test';
+      let value;
+      if (this.$config.app.title) {
+        value = this.$config.app.title;
+      } else if (this.i18nEnabled) {
+        value = this.$i18n.messages[this.i18nLocale].app.title;
+      }
+      return value;
+    },
+    appSubTitle() {
+      let value;
+      if (this.$config.app.subtitle) {
+        value = this.$config.app.subtitle;
+      } else if (this.i18nEnabled) {
+        value = this.$i18n.messages[this.i18nLocale].app.subtitle;
+      }
+      return value;
+    },
+    i18nLocale() {
+      return this.$i18n.locale;
+    },
+    searchBarPlaceholderText() {
+      if (this.i18nEnabled) {
+        return this.$i18n.messages[this.i18nLocale].app.searchPlaceholders[this.searchBarType];
+      } else if (this.$config.searchBar && this.$config.searchBar.placeholderText) {
+        return this.$config.searchBar.placeholderText;
+      } else {
+        return 'Search';
+      }
+    },
+    searchBarLabelText() {
+      if (this.i18nEnabled) {
+        return this.$i18n.messages[this.i18nLocale].app.searchLabel;
+      } else if (this.$config.searchBar && this.$config.searchBar.labelText) {
+        return this.$config.searchBar.labelText;
+      } else {
+        return 'Search';
+      }
+    },
+    searchBarOptions() {
+      let final;
+      if (this.i18nEnabled) {
+        final = {};
+        for (let value of this.$config.searchBar.dropdown) {
+          final[value] = this.$i18n.messages[this.i18nLocale][value];
+        }
+      } else {
+        final = this.$config.searchBar.dropdown;
+      }
+      return final;
+    },
+    searchBarType() {
+      return this.$store.state.searchType;
+    },
     i18nLanguages() {
       let values = [];
       if (this.$config.i18n.languagues) {
@@ -473,9 +541,9 @@ export default {
       this.isAlertModalOpen = true;
     }
 
-    if (this.$config.comboSearch) {
-      if (this.$config.comboSearch.dropdown) { //&& this.$config.comboSearch.dropdown.length === 1) {
-        this.$store.commit('setSearchType', this.$config.comboSearch.dropdown[0]);
+    if (this.$config.searchBar) {
+      if (this.$config.searchBar.dropdown) { //&& this.$config.searchBar.dropdown.length === 1) {
+        this.$store.commit('setSearchType', this.$config.searchBar.dropdown[0]);
       }
     }
 
@@ -498,6 +566,10 @@ export default {
   },
 
   methods: {
+    handleSearchbarChange(value) {
+      console.log('App.vue handleSearchbarChange is running, value:', value);
+      this.$store.commit('setSearchType', value);
+    },
     handleSubmit() {
       this.$controller.handleSearchFormSubmit(this.myValue);
     },
@@ -523,8 +595,8 @@ export default {
     },
     runBuffer() {
       let searchDistance = 1;
-      if (this.$config.comboSearch.searchDistance) {
-        searchDistance = this.$config.comboSearch.searchDistance;
+      if (this.$config.searchBar.searchDistance) {
+        searchDistance = this.$config.searchBar.searchDistance;
       }
       // console.log('runBuffer is running, searchDistance:', searchDistance);
       const geocodePoint = point(this.geocodeGeom.coordinates);
@@ -766,6 +838,14 @@ html, body {
   display: flex;
   display: -ms-flexbox;
   flex-direction: column;
+
+  // #nav-wrap {
+  //   .container {
+  //     padding-right: 0px;
+  //     margin-right: 10px;
+  //   }
+  // }
+
 }
 
 // #tb-app-search {
