@@ -40,15 +40,23 @@
     <!-- if using categoryField_value, categoryField_array, or multipleFields options -->
     <div
       v-if="dataStatus === 'success' && refineType !== 'multipleFieldGroups'"
-      class="columns"
+      id="field-div"
     >
-      <div class="column is-one-quarter">
-        <div
+    <!-- class="columns is-multiline" -->
+      <!-- <div class="column"> -->
+        <!-- <div
           v-for="(item, index) in getRefineSearchList()"
           :key="index"
-        >
-          <!-- <checkbox></checkbox> -->
-          <input
+        > -->
+          <checkbox
+            :options="getRefineSearchList()"
+            numOfColumns=4
+            :small="true"
+            v-model="selected"
+
+          >
+          </checkbox>
+          <!-- <input
             :id="item"
             v-if="refineType != 'categoryField_value'"
             v-model="selected"
@@ -56,8 +64,8 @@
             :name="item"
             :value="item"
             @click="clickedRefineBox(item)"
-          >
-          <input
+          > -->
+          <!-- <input
             :id="item"
             v-if="refineType == 'categoryField_value'"
             v-model="selected"
@@ -65,10 +73,10 @@
             :name="item"
             :value="item"
             @click="clickedRefineBox(item)"
-          >
-          <font-awesome-icon v-if="refineType != 'categoryField_value'" :for="item" :icon="['far', 'square']" v-show="!selected.includes(item)" class="fa-checkbox" />
-          <font-awesome-icon v-if="refineType != 'categoryField_value'" :for="item" icon="check-square" v-show="selected.includes(item)" class="fa-checkbox" />
-          <label
+          > -->
+          <!-- <font-awesome-icon v-if="refineType != 'categoryField_value'" :for="item" :icon="['far', 'square']" v-show="!selected.includes(item)" class="fa-checkbox" />
+          <font-awesome-icon v-if="refineType != 'categoryField_value'" :for="item" icon="check-square" v-show="selected.includes(item)" class="fa-checkbox" /> -->
+          <!-- <label
             class="input-label"
             :for="item"
             >
@@ -86,15 +94,15 @@
                 {{ $t(item) }}
               </span>
 
-          </label>
-          <icon-tool-tip
+          </label> -->
+          <!-- <icon-tool-tip
             v-if="Object.keys(infoCircles).includes(item)"
             :item="item"
             :circleData="infoCircles[item]"
           >
-          </icon-tool-tip>
-        </div>
-      </div>
+          </icon-tool-tip> -->
+        <!-- </div> -->
+      <!-- </div> -->
     </div>
 
 
@@ -334,6 +342,8 @@ export default {
     },
     selected(nextSelected) {
       console.log('watch selected is firing, nextSelected:', nextSelected);
+      this.$store.commit('setSelectedServices', nextSelected);
+      this.$router.push({ query: { ...this.$route.query, ...{ services: nextSelected.join(',') }}});
     },
     // selectedList(nextSelectedList) {
     //   console.log('watch selectedList is firing');
@@ -435,6 +445,7 @@ export default {
         selected = uniqArray.filter(a => a.length > 2);
         selected.filter(Boolean); // remove empties
         selected.sort();
+        // this.selected = selected;
 
       } else if (this.$config.refine && this.$config.refine.type === 'multipleFields') {
         uniq = Object.keys(this.$config.refine.multipleFields);
@@ -442,6 +453,7 @@ export default {
 
         selected = Object.keys(this.$config.refine.multipleFields);
         selected.sort();
+        // this.selected = selected;
       }
 
 
@@ -469,26 +481,26 @@ export default {
             // }
           }
         }
-      }
 
-      console.log('RefinePanel end of getRefineSearchList, uniq:', uniq, 'selected:', selected, 'this.selected:', this.selected);
-      this.$data.refineList = uniq;
+        console.log('RefinePanel end of getRefineSearchList, uniq:', uniq, 'selected:', selected, 'this.selected:', this.selected);
+        this.$data.refineList = uniq;
 
-      if (this.selected.length) {
-        for (let group of Object.keys(uniq)) {
-          for (let field of Object.keys(uniq[group])) {
-            if (this.selected.includes(uniq[group][field].unique_key)) {
-              console.log('RefinePanel end of getRefineSearchList, group:', group, 'field:', field, 'uniq[group][field].unique_key', uniq[group][field].unique_key, 'this.selected:', this.selected);
-              if (!selected[group]) {
-                selected[group] = [];
+        if (this.selected.length) {
+          for (let group of Object.keys(uniq)) {
+            for (let field of Object.keys(uniq[group])) {
+              if (this.selected.includes(uniq[group][field].unique_key)) {
+                console.log('RefinePanel end of getRefineSearchList, group:', group, 'field:', field, 'uniq[group][field].unique_key', uniq[group][field].unique_key, 'this.selected:', this.selected);
+                if (!selected[group]) {
+                  selected[group] = [];
+                }
+                selected[group].push(uniq[group][field].unique_key);
               }
-              selected[group].push(uniq[group][field].unique_key);
             }
           }
         }
+        console.log('RefinePanel end of getRefineSearchList, selected:', selected);
+        this.$data.selectedList = selected;
       }
-      console.log('RefinePanel end of getRefineSearchList, selected:', selected);
-      this.$data.selectedList = selected;
 
       return uniq;
     },
