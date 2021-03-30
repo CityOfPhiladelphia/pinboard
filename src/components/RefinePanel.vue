@@ -405,6 +405,10 @@ export default {
         // clean up any dangling , or ;
         uniq = uniqArray.filter(a => a.length > 2);
         uniq.filter(Boolean); // remove empties
+        let undef = uniq.indexOf('undefined');
+        if (undef > -1) {
+          uniq.splice(undef, 1);
+        }
         uniq.sort();
 
       } else if (this.$config.refine && this.$config.refine.type === 'multipleFields') {
