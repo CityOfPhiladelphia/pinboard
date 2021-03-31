@@ -3,7 +3,7 @@
     id="app"
     class="app"
   >
-    <!-- <PhilaModal
+    <PhilaModal
       v-show="isModalOpen"
       @close="closeModal"
     >
@@ -18,9 +18,9 @@
         <p>If you’re interested in a particular service or resource, contact the provider to learn more and confirm that it’s still available.</p>
 
       </div>
-    </PhilaModal> -->
+    </PhilaModal>
 
-    <!-- <PhilaModal
+    <PhilaModal
       v-show="isAlertModalOpen"
       @close="closeModal"
     >
@@ -32,12 +32,11 @@
         slot="body"
         v-html="alertModalBody"
       />
-    </PhilaModal> -->
+    </PhilaModal>
 
     <div
       class="header-holder"
     >
-    <!-- :app-title="$config.app.title" -->
       <app-header
         :app-title="appTitle"
         :app-subtitle="appSubTitle"
@@ -46,15 +45,10 @@
         :branding-link="brandingLink"
         :isFluid="true"
       >
-        <mobile-nav slot="mobile-nav">
-          <ul>
-            <li>
-              <a href="/home">Home</a>
-            </li>
-            <li>
-              <a href="/about">About</a>
-            </li>
-          </ul>
+        <mobile-nav
+          slot="mobile-nav"
+          :links="footerLinks"
+        >
         </mobile-nav>
 
         <template slot="search-bar">
@@ -125,14 +119,6 @@
       </button>
     </div>
 
-    <!-- <button
-      id="switch-button"
-      class="button is-sticky-to-bottom full-screen is-primary is-hidden-tablet"
-      @click="toggleMap"
-      >
-      switch button
-    </button> -->
-
     <div
       class="footer-holder"
     >
@@ -140,15 +126,8 @@
         id="app-footer"
         :is-sticky="false"
         :is-hidden-mobile="true"
+        :links="footerLinks"
       >
-        <ul>
-          <li>
-            <a href="/about">About</a>
-          </li>
-          <li>
-            <a href="/terms-and-conditions">Terms & Conditions</a>
-          </li>
-        </ul>
       </app-footer>
     </div>
 
@@ -220,9 +199,28 @@ export default {
       },
       searchString: null,
       refineEnabled: true,
+      // footerLinks: [],
     };
   },
   computed: {
+    footerLinks() {
+      if (this.$config.footer) {
+        let newValues = []
+        for (let i of this.$config.footer) {
+          let value = {}
+          for (let j of Object.keys(i)) {
+            if (j !== "text") {
+              value[j] = i[j];
+            } else {
+              console.log('i:', i, 'j:', j, 'this.$i18n.messages[this.i18nLocale][i[j]]:', this.$i18n.messages[this.i18nLocale][i[j]]);
+              value[j] = this.$i18n.messages[this.i18nLocale].app[i[j]];
+            }
+          }
+          newValues.push(value)
+        }
+        return newValues;
+      }
+    },
     appTitle() {
       let value;
       if (this.$config.app.title) {
