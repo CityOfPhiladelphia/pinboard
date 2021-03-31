@@ -245,7 +245,11 @@ export default {
       if (this.i18nEnabled) {
         return this.$i18n.messages[this.i18nLocale].app.searchPlaceholders[this.searchBarType];
       } else if (this.$config.searchBar && this.$config.searchBar.placeholderText) {
-        return this.$config.searchBar.placeholderText;
+        if (typeof this.$config.searchBar.placeholderText === 'string') {
+          return this.$config.searchBar.placeholderText;
+        } else {
+          return this.$config.searchBar.placeholderText[this.searchBarType];
+        }
       } else {
         return 'Search';
       }
@@ -254,7 +258,11 @@ export default {
       if (this.i18nEnabled) {
         return this.$i18n.messages[this.i18nLocale].app.searchPlaceholders[this.searchBarType];
       } else if (this.$config.searchBar && this.$config.searchBar.labelText) {
-        return this.$config.searchBar.labelText;
+        if (typeof this.$config.searchBar.labelText === 'string') {
+          return this.$config.searchBar.labelText;
+        } else {
+          return this.$config.searchBar.labelText[this.searchBarType];
+        }
       } else {
         return 'Search';
       }
@@ -519,11 +527,17 @@ export default {
 
     if (this.$config.searchBar) {
       if (this.$config.searchBar.dropdown) { //&& this.$config.searchBar.dropdown.length === 1) {
-        let routeQuery = Object.keys(this.$route.query)[0];
+        let routeQuery = Object.keys(this.$route.query);
         console.log('App.vue mounted in dropdown section, routeQuery:', routeQuery, 'Object.keys(this.$route.query)[0]', Object.keys(this.$route.query)[0]);
-        if (routeQuery !== 'services') {
-          console.log('setting searchType to routeQuery:', routeQuery);
-          this.$store.commit('setSearchType', routeQuery);
+        let queryValue;
+        if (routeQuery.includes('keyword')) {
+          queryValue = 'keyword';
+        } else if (routeQuery.includes('address')) {
+          queryValue = 'address';
+        }
+        if (queryValue) {
+          console.log('setting searchType to queryValue:', queryValue);
+          this.$store.commit('setSearchType', queryValue);
         } else {
           console.log('setting searchType to this.$config.searchBar.dropdown[0]:', this.$config.searchBar.dropdown[0]);
           this.$store.commit('setSearchType', this.$config.searchBar.dropdown[0]);
