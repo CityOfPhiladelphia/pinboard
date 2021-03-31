@@ -212,7 +212,6 @@ export default {
             if (j !== "text") {
               value[j] = i[j];
             } else {
-              console.log('i:', i, 'j:', j, 'this.$i18n.messages[this.i18nLocale][i[j]]:', this.$i18n.messages[this.i18nLocale][i[j]]);
               value[j] = this.$i18n.messages[this.i18nLocale].app[i[j]];
             }
           }
@@ -253,7 +252,7 @@ export default {
     },
     searchBarLabelText() {
       if (this.i18nEnabled) {
-        return this.$i18n.messages[this.i18nLocale].app.searchLabel;
+        return this.$i18n.messages[this.i18nLocale].app.searchPlaceholders[this.searchBarType];
       } else if (this.$config.searchBar && this.$config.searchBar.labelText) {
         return this.$config.searchBar.labelText;
       } else {
@@ -522,7 +521,7 @@ export default {
       if (this.$config.searchBar.dropdown) { //&& this.$config.searchBar.dropdown.length === 1) {
         let routeQuery = Object.keys(this.$route.query)[0];
         console.log('App.vue mounted in dropdown section, routeQuery:', routeQuery, 'Object.keys(this.$route.query)[0]', Object.keys(this.$route.query)[0]);
-        if (routeQuery) {
+        if (routeQuery !== 'services') {
           console.log('setting searchType to routeQuery:', routeQuery);
           this.$store.commit('setSearchType', routeQuery);
         } else {
