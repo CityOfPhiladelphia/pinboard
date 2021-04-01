@@ -42,67 +42,13 @@
       v-if="dataStatus === 'success' && refineType !== 'multipleFieldGroups'"
       id="field-div"
     >
-    <!-- class="columns is-multiline" -->
-      <!-- <div class="column"> -->
-        <!-- <div
-          v-for="(item, index) in getRefineSearchList()"
-          :key="index"
-        > -->
-          <checkbox
-            :options="getRefineSearchList()"
-            numOfColumns=4
-            :small="true"
-            v-model="selected"
-
-          >
-          </checkbox>
-          <!-- <input
-            :id="item"
-            v-if="refineType != 'categoryField_value'"
-            v-model="selected"
-            type="checkbox"
-            :name="item"
-            :value="item"
-            @click="clickedRefineBox(item)"
-          > -->
-          <!-- <input
-            :id="item"
-            v-if="refineType == 'categoryField_value'"
-            v-model="selected"
-            type="radio"
-            :name="item"
-            :value="item"
-            @click="clickedRefineBox(item)"
-          > -->
-          <!-- <font-awesome-icon v-if="refineType != 'categoryField_value'" :for="item" :icon="['far', 'square']" v-show="!selected.includes(item)" class="fa-checkbox" />
-          <font-awesome-icon v-if="refineType != 'categoryField_value'" :for="item" icon="check-square" v-show="selected.includes(item)" class="fa-checkbox" /> -->
-          <!-- <label
-            class="input-label"
-            :for="item"
-            >
-              <span
-                v-if="!i18nEnabled"
-                class="service-item"
-              >
-                {{ item }}
-              </span>
-
-              <span
-                v-if="i18nEnabled"
-                class="service-item"
-              >
-                {{ $t(item) }}
-              </span>
-
-          </label> -->
-          <!-- <icon-tool-tip
-            v-if="Object.keys(infoCircles).includes(item)"
-            :item="item"
-            :circleData="infoCircles[item]"
-          >
-          </icon-tool-tip> -->
-        <!-- </div> -->
-      <!-- </div> -->
+      <checkbox
+        :options="getRefineSearchList()"
+        :numOfColumns="NumRefineColumns"
+        :small="true"
+        v-model="selected"
+      >
+      </checkbox>
     </div>
 
 
@@ -241,6 +187,15 @@ export default {
     };
   },
   computed: {
+    NumRefineColumns() {
+      let value;
+      if (this.isMobile) {
+        value = 1;
+      } else {
+        value = 4;
+      }
+      return value;
+    },
     selectedListCompiled() {
       let compiled = [];
       for (let value of Object.keys(this.$data.selectedList)) {
@@ -402,11 +357,12 @@ export default {
     },
     clearAll() {
       console.log('RefinePanel clearAll is running');
-      // if (this.selected.length) {
-      //   this.selected = [];
-      // }
-      for (let checkbox of Object.keys(this.$data.selectedList)) {
-        this.$data.selectedList[checkbox].splice(0);
+      if (this.refineType === 'multipleFieldGroups') {
+        for (let checkbox of Object.keys(this.$data.selectedList)) {
+          this.$data.selectedList[checkbox].splice(0);
+        }
+      } else {
+        this.selected = [];
       }
     },
     getRefineSearchList() {
