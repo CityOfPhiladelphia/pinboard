@@ -48,8 +48,9 @@
           />
 
           <div v-if="!$config.customComps || !Object.keys($config.customComps).includes('expandCollapseContent')">
-            <div class="grid-x grid-padding-x">
-              <div class="cell medium-12">
+            <div class="columns is-marginless">
+
+              <div class="column">
                 <div
                   v-if="item.street_address"
                   class="detail"
@@ -60,7 +61,8 @@
                   </span>
                 </div>
               </div>
-              <div class="cell medium-12">
+
+              <div class="column">
                 <div
                   v-if="item.phone_number"
                   class="detail"
@@ -98,37 +100,33 @@
                 </div>
               </div>
             </div>
-            <div v-if="item.services_offered">
-              <section class="services grid-x grid-padding-x">
-                <div class="cell">
-                  <h3 class="h4">
-                    Services offered
-                  </h3>
-                  <div class="grid-x">
-                    <div
-                      v-for="i in parseServiceList(item.services_offered)"
-                      :key="i"
-                      class="cell medium-12 service-item"
-                    >
-                      {{ i }}
-                    </div>
-                  </div>
+
+            <div
+              v-if="item.services_offered"
+            >
+              <h3 class="title is-3">
+                Services offered
+              </h3>
+              <div class="columns is-multiline">
+                <div
+                  v-for="i in parseServiceList(item.services_offered)"
+                  :key="i"
+                  class="service-item column is-half"
+                >
+                  {{ i }}
                 </div>
-              </section>
+              </div>
             </div>
-            <div v-if="item.tags && item.tags.length">
-              <section class="tags grid-x grid-padding-x mtm">
-                <div class="cell">
-                  <h3 class="h4">
-                    Tags
-                  </h3>
-                  <div class="grid-x">
-                    <div>
-                      {{ parseTagsList(item.tags) }}
-                    </div>
-                  </div>
-                </div>
-              </section>
+
+            <div
+              v-if="item.tags && item.tags.length"
+            >
+              <h3 class="title is-3">
+                Tags
+              </h3>
+              <div>
+                {{ parseTagsList(item.tags) }}
+              </div>
             </div>
           </div>
 
@@ -329,7 +327,7 @@ export default {
 
 .locations-panel{
   overflow-y: visible !important;
-  // height: calc(100vh - 192px);
+
   .detail{
     margin-bottom: 1rem;
     svg {
@@ -343,16 +341,19 @@ export default {
       padding-left: 2rem;
     }
   }
-  .services{
-    margin-top: 1rem;
-  }
+  // .services{
+  //   margin-top: 1rem;
+  // }
   .service-item{
-    margin-bottom: .5rem;
+    margin-bottom: 0px;
+    padding-bottom: 0px;
+    padding-top: 0px;
   }
-  .tags {
-    margin-top: 2rem;
-  }
+  // .tags {
+  //   margin-top: 2rem;
+  // }
 }
+
 .location-container{
   padding: 1rem;
   overflow-y: visible;
