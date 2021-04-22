@@ -104,14 +104,15 @@
             <div
               v-if="item.services_offered"
             >
+            <!-- class="columns" -->
               <h3 class="title is-3">
                 Services offered
               </h3>
-              <div class="columns is-multiline">
+              <div class="columns is-multiline is-gapless">
                 <div
                   v-for="i in parseServiceList(item.services_offered)"
                   :key="i"
-                  class="service-item column is-half"
+                  class="column is-half"
                 >
                   {{ i }}
                 </div>
@@ -121,7 +122,7 @@
             <div
               v-if="item.tags && item.tags.length"
             >
-              <h3 class="title is-3">
+              <h3 class="title is-3 pt-2">
                 Tags
               </h3>
               <div>
@@ -344,11 +345,11 @@ export default {
   // .services{
   //   margin-top: 1rem;
   // }
-  .service-item{
-    margin-bottom: 0px;
-    padding-bottom: 0px;
-    padding-top: 0px;
-  }
+  // .service-item{
+  //   margin-bottom: 0px;
+  //   padding-bottom: 0px;
+  //   padding-top: 0px;
+  // }
   // .tags {
   //   margin-top: 2rem;
   // }
@@ -358,4 +359,5 @@ export default {
   padding: 1rem;
   overflow-y: visible;
 }
+
 </style>
