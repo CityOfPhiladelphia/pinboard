@@ -29,6 +29,10 @@ Create pull request for changes and merge into `master` branch for travis-ci bui
 
 ## Release Notes
 
+### 0.6.0 - 6/10/2021
+
+* fixes refine for Multiple Field Groups apps
+
 ### 0.5.15 - 3/30/2021
 
 * removes undefined boxes from refine panel
