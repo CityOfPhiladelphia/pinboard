@@ -401,21 +401,16 @@ export default {
     //   })
     // },
     setUpData(theSources) {
-      console.log('Pinboard App.vue setUpData is running, theSources:', theSources);
+      // console.log('Pinboard App.vue setUpData is running, theSources:', theSources);
       let compiled = {
         key: 'compiled',
         data: [],
         status: 'success',
       }
       if (theSources.length > 1) {
-        console.log('this.$store.state.sources:', this.$store.state.sources);
         for (let source of theSources) {
-          // console.log('source:', source, 'this.$store.state.sources[source].data:', this.$store.state.sources[source].data);
           for (let point of source.features) {
             // console.log('point:', point);
-
-            // Object.assign(point, point.attributes);
-            // point.attributes = undefined;
             compiled.data.push(point);
           }
         }
@@ -423,20 +418,20 @@ export default {
         this.$store.commit('setSourceData', compiled);
         this.$store.commit('setSourceStatus', compiled);
       }
-      console.log('end of setUpData, this.$store.state.sources:', this.$store.state.sources);
+      // console.log('end of setUpData, this.$store.state.sources:', this.$store.state.sources);
     },
     runBuffer() {
       let searchDistance = 1;
       if (this.$config.comboSearch.searchDistance) {
         searchDistance = this.$config.comboSearch.searchDistance;
       }
-      console.log('runBuffer is running, searchDistance:', searchDistance);
+      // console.log('runBuffer is running, searchDistance:', searchDistance);
       const geocodePoint = point(this.geocodeGeom.coordinates);
       const pointBuffer = buffer(geocodePoint, searchDistance, { units: 'miles' });
       this.$data.buffer = pointBuffer;
     },
     filterPoints() {
-      console.log('App.vue filterPoints is running, this.database:', this.database);
+      // console.log('App.vue filterPoints is running, this.database:', this.database);
       const filteredRows = [];
 
       for (const row of this.database) {
@@ -471,45 +466,28 @@ export default {
                   selectedGroups.push(valueGroup)
                 }
               }
-              console.log('selectedServices:', selectedServices, 'selectedGroups:', selectedGroups);
-
+              // console.log('selectedServices:', selectedServices, 'selectedGroups:', selectedGroups);
               let groupValues = [];
               for (let group of selectedGroups) {
                 let groupBooleanConditions = [];
                 for (let service of selectedServices) {
-                  console.log('service.split("_", 1)[0]:', service.split('_', 1)[0], 'service.split("_")[1]:', service.split('_')[1], 'group', group);
                   if (service.split('_', 1)[0] === group) {
+                    // console.log('service.split("_", 1)[0]:', service.split('_', 1)[0], 'service.split("_")[1]:', service.split('_')[1], 'group', group, 'this.$config.refine.multipleFieldGroups[group]', this.$config.refine.multipleFieldGroups[group], 'this.$config.refine.multipleFieldGroups[group][service.split("_")[1]]:', this.$config.refine.multipleFieldGroups[group][service.split('_')[1]]);
                     let getter = this.$config.refine.multipleFieldGroups[group][service.split('_')[1]]['value'];
                     let val = getter(row);
                     groupBooleanConditions.push(val);
                   }
                 }
-                console.log('groupBooleanConditions:', groupBooleanConditions);
                 if (groupBooleanConditions.includes(true)) {
-                  // console.log('booleanConditions includes true:', booleanConditions);
-                  // booleanServices = true
                   booleanConditions.push(true);
                 } else {
                   booleanConditions.push(false);
                 }
               }
-              // for (let group in this.$config.refine.multipleFieldGroups) {
-              //   for (let field in this.$config.refine.multipleFieldGroups[group]) {
-              //     console.log('row:', row, 'selectedServices:', selectedServices, 'field:', field, "this.$config.refine.multipleFieldGroups[group][field]['unique_key']:", this.$config.refine.multipleFieldGroups[group][field]['unique_key']);
-              //     let unique_key = this.$config.refine.multipleFieldGroups[group][field]['unique_key']
-              //     if (selectedServices.includes(unique_key)) {
-              //       let getter = this.$config.refine.multipleFieldGroups[group][field]['value'];
-              //       let val = getter(row);
-              //       booleanConditions.push(val);
-              //     }
-              //   }
-              // }
             }
-
           }
-          console.log('booleanConditions:', booleanConditions);
+          // console.log('booleanConditions:', booleanConditions);
           if (!booleanConditions.includes(false)) {
-            // console.log('booleanConditions includes true:', booleanConditions);
             booleanServices = true
           }
 
@@ -519,7 +497,6 @@ export default {
             booleanServices = true;
           } else {
             let value = this.$config.refine.value(row);
-            // console.log('in App.vue, filterPoints computed, value:', value);
             booleanServices = selectedServices.includes(value);
           }
 
