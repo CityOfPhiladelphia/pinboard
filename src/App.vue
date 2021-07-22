@@ -116,8 +116,7 @@
 </template>
 <script>
 
-// import Mapbox from 'mapbox-gl';
-import 'mapbox-gl/dist/mapbox-gl.css';
+import 'maplibre-gl/dist/maplibre-gl.css';
 
 import Fuse from 'fuse.js'
 
