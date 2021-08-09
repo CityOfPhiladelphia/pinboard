@@ -44,7 +44,7 @@
         :is-sticky="false"
         :branding-image="brandingImage"
         :branding-link="brandingLink"
-        isFluid="true"
+        :isFluid="true"
       >
         <mobile-nav slot="mobile-nav">
           <ul>
@@ -165,7 +165,6 @@ import Fuse from 'fuse.js'
 import { point } from '@turf/helpers';
 import buffer from '@turf/buffer';
 import booleanPointInPolygon from '@turf/boolean-point-in-polygon';
-// import PhilaButton from './components/PhilaButton.vue';
 import AlertBanner from './components/AlertBanner.vue';
 import i18nBanner from './components/i18nBanner.vue';
 import PhilaModal from './components/PhilaModal.vue';
@@ -195,7 +194,6 @@ export default {
     Checkbox,
     LangSelector,
     SearchBar,
-    // PhilaButton,
     AlertBanner,
     i18nBanner,
     PhilaModal,
@@ -215,37 +213,17 @@ export default {
       buttonText: 'Toggle to map',
       appLink: '/',
       myValue: '',
-      brandingImage: {
-        src: require('@/assets/city-of-philadelphia-logo.png'),
-        alt: "City of Philadelphia logo",
-        width: "200px",
-      },
+      brandingImage: null,
       brandingLink: {
         href: 'https://www.phila.gov/',
         target: '_blank',
       },
       searchString: null,
-      // dropdownOptions: [
-      //   'address',
-      //   'keyword',
-      // ],
-      // dropdownOptions: {
-      //   address: {
-      //     text: 'Address',
-      //     data: null,
-      //   },
-      //   keyword: {
-      //     text: 'Keyword',
-      //     data: null,
-      //   },
-      // },
-      // i18nEnabled: true,
       refineEnabled: true,
     };
   },
   computed: {
     appTitle() {
-      // return 'test';
       let value;
       if (this.$config.app.title) {
         value = this.$config.app.title;
@@ -308,15 +286,13 @@ export default {
       if (this.$config.i18n.languagues) {
         values = this.$config.i18n.languages;
       } else {
-        // for (let key of Object.keys(this.$config.i18n.data.messages)) {
         for (let key of Object.keys(this.$i18n.messages)) {
           let value = {};
-          console.log('in loop, key:', key, 'this.$i18n.locale:', this.$i18n.locale, 'this.$i18n.messages[key]:', this.$i18n.messages[key]);
+          // console.log('in loop, key:', key, 'this.$i18n.locale:', this.$i18n.locale, 'this.$i18n.messages[key]:', this.$i18n.messages[key]);
           value.language = key;
           value.title = this.$i18n.messages[key].language;
           values.push(value);
         }
-        // values = Object.keys(this.$i18n.messages);
       }
       return values;
     },
@@ -529,8 +505,13 @@ export default {
     // this.track();
 
     this.$config.searchBar.dropdown.forEach(item => {
-      if (item == 'address' && this.$route.query[item]) {
-        console.log('App.vue mounted item:', item);
+      if (this.$route.query[item]) {
+      // if (item == 'address' && this.$route.query[item]) {
+        console.log('App.vue mounted item:', item, 'this.searchBarType:', this.searchBarType);
+        // if (this.item !== this.searchBarType) {
+        //   console.log('App.vue mounted, this.item !== this.searchBarType');
+        //   this.$store.commit('setSearchType', this.item);
+        // }
         this.$controller.handleSearchFormSubmit(this.$route.query[item], item);
         // console.log('philaHeader created item:', item)
         this.searchString = this.$route.query[item];
@@ -538,6 +519,20 @@ export default {
         // this.$store.commit('setSearchType', item);
       }
     });
+
+    if (this.$config.searchBar) {
+      if (this.$config.searchBar.dropdown) { //&& this.$config.searchBar.dropdown.length === 1) {
+        let routeQuery = Object.keys(this.$route.query)[0];
+        console.log('App.vue mounted in dropdown section, routeQuery:', routeQuery, 'Object.keys(this.$route.query)[0]', Object.keys(this.$route.query)[0]);
+        if (routeQuery) {
+          console.log('setting searchType to routeQuery:', routeQuery);
+          this.$store.commit('setSearchType', routeQuery);
+        } else {
+          console.log('setting searchType to this.$config.searchBar.dropdown[0]:', this.$config.searchBar.dropdown[0]);
+          this.$store.commit('setSearchType', this.$config.searchBar.dropdown[0]);
+        }
+      }
+    }
 
     if (this.$config.appLink) {
       this.appLink = this.$config.appLink;
@@ -558,12 +553,6 @@ export default {
       this.isAlertModalOpen = true;
     }
 
-    if (this.$config.searchBar) {
-      if (this.$config.searchBar.dropdown) { //&& this.$config.searchBar.dropdown.length === 1) {
-        this.$store.commit('setSearchType', this.$config.searchBar.dropdown[0]);
-      }
-    }
-
     if (this.$config.gtag && this.$config.gtag.category) {
       this.$store.commit('setGtagCategory', this.$config.gtag.category);
     }
@@ -579,8 +568,12 @@ export default {
       }
     }
 
-    if (this.$config.app.logoAlt) {
-      console.log('App.vue created, there is logoAlt');
+    if (this.$config.app.logoSrc) {
+      this.brandingImage = {
+        src: this.$config.app.logoSrc,
+        alt: this.$config.app.logoAlt,
+        width: "200px",
+      }
     }
   },
 
@@ -601,19 +594,30 @@ export default {
       this.searchString = '';
       this.$controller.resetGeocode();
     },
+    compareArrays(arr1, arr2) {
+      const finalArray = [];
+      arr1.forEach((e1) => arr2.forEach((e2) =>
+        {
+          if (e1 === e2) {
+            finalArray.push(e1);
+          }
+        }
+      ));
+      return finalArray;
+    },
     handleSubmit(query) {
       console.log('handleSubmit is running, this.$route.query:', this.$route.query, 'query:', query);
       this.$router.push({ query: { ...this.$route.query, ...query }});
-      console.log('handleSubmit is running, query:', query);
+      // console.log('handleSubmit is running, query:', query);
       this.searchString = query[this.searchBarType];
-      console.log('comboSearchTriggered is running, query:', query, 'this.searchType:', this.searchBarType, 'query[this.searchBarType]:', query[this.searchBarType]);
+      // console.log('handleSubmit is running, query:', query, 'this.searchBarType:', this.searchBarType, 'query[this.searchBarType]:', query[this.searchBarType]);
       const searchCategory = Object.keys(query)[0];
       const value = query[searchCategory];
       this.$gtag.event(this.searchBarType + '-search', {
         'event_category': this.$store.state.gtag.category,
         'event_label': value,
       })
-      this.$controller.handleSearchFormSubmit(this.myValue);
+      this.$controller.handleSearchFormSubmit(this.myValue, this.searchBarType);
     },
     clearSearchTriggered() {
       let startQuery = { ...this.$route.query };
