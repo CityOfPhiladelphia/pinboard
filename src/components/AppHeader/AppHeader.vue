@@ -278,7 +278,7 @@ export default {
 };
 </script>
 <style lang="scss">
-  @import "../../scss/main.scss";
+  @import "../../scss/global.scss";
 
   #app-header {
     .container {
@@ -298,7 +298,7 @@ export default {
 </style>
 
 <style lang="scss" scoped>
-  @import "../../scss/main.scss";
+  @import "../../scss/global.scss";
 
   #app-header {
 

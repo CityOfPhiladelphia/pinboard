@@ -131,7 +131,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @import "../../scss/main.scss";
+  @import "../../scss/global.scss";
 
   #trusted-site {
     color: $white;
