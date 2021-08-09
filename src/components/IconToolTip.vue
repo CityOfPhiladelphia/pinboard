@@ -67,12 +67,14 @@ export default {
       console.log('iconToolTip mounted, iconStyle:', iconStyle, 'rootWidthNum:', rootWidthNum, 'gap:', gap);
       if (gap < 250) {
         this.tooltipStyle = {
-          'top': iconStyle.top + 20 + 'px',
+          'top': '-20px',
+          // 'top': iconStyle.top + 20 + 'px',
           'right': '10px',
         };
       } else {
         this.tooltipStyle = {
-          'top': iconStyle.top + 20 + 'px',
+          'top': '-20px',
+          // 'top': iconStyle.top + 20 + 'px',
         };
       }
     },

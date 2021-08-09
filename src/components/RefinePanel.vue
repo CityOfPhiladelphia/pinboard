@@ -105,21 +105,27 @@
       class="columns is-multiline"
     >
       <div
-        v-for="(group, ind) in refineList"
+        v-for="(ind) in Object.keys(refineListTranslated)"
         :id="'refine-list-'+ind"
         :key="ind"
         class="column is-narrow service-group-holder-x"
       >
 
         <div
-          v-if="i18nEnabled"
-          id="i18n-enabled-div"
+          id="columns-div-for-checkboxes"
+          class="columns"
         >
-          <div
-            v-if="refineOpen"
-            id="refine-is-open-div"
+          <checkbox
+            :options="refineListTranslated[ind]"
+            :num-of-columns="Object.keys(refineList[ind]).length"
+            small="true"
+            v-model="selectedList[ind]"
+            text-key="textLabel"
+            value-key="data"
           >
-            <b>
+            <div
+              slot="label"
+            >
               {{ $t(ind + '.category') }}
               <icon-tool-tip
                 v-if="Object.keys(infoCircles).includes(ind)"
@@ -128,105 +134,8 @@
                 :circleType="'click'"
               >
               </icon-tool-tip>
-            </b>
-          </div>
-          <div
-            v-if="!refineOpen"
-            id="refine-is-not-open-div"
-          >
-            {{ $t(ind + '.category') }}
-            <icon-tool-tip
-              v-if="Object.keys(infoCircles).includes(ind)"
-              :item="ind"
-              :circleData="infoCircles[ind]"
-              :circleType="'click'"
-            >
-            </icon-tool-tip>
-          </div>
-        </div>
-
-        <div v-if="!i18nEnabled">
-          <div
-            v-if="refineOpen"
-            id="refine-is-open-div"
-          >
-            <b v-html="ind">
-              <icon-tool-tip
-                v-if="Object.keys(infoCircles).includes(ind)"
-                :item="ind"
-                :circleData="infoCircles[ind]"
-                :circleType="'click'"
-              >
-              </icon-tool-tip>
-            </b>
-          </div>
-          <div
-            v-if="!refineOpen"
-            v-html="ind"
-          >
-            <icon-tool-tip
-              v-if="Object.keys(infoCircles).includes(ind)"
-              :item="ind"
-              :circleData="infoCircles[ind]"
-              :circleType="'click'"
-            >
-            </icon-tool-tip>
-          </div>
-        </div>
-
-        <div
-          id="columns-div-for-checkboxes"
-          class="columns"
-        >
-          <!-- <div
-            v-for="(item, index) in refineList[ind]"
-            :id="'refine-item-'+index"
-            :key="index"
-            class="service-group-member column is-narrow"
-          > -->
-            <checkbox
-              :options="refineList[ind]"
-              :label="$t(ind + '.category')"
-              :num-of-columns="Object.keys(refineList[ind]).length"
-              :text-key="'box_label'"
-              :value-key="refineList[ind].box_label"
-            >
-            </checkbox>
-            <!-- <input
-              :id="item.unique_key"
-              v-model="selected"
-              type="checkbox"
-              :name="item.unique_key"
-              :value="item.unique_key"
-              class="service-group-input"
-              @click="clickedRefineBox(item)"
-            > -->
-            <!-- <font-awesome-icon :for="item" :icon="['far', 'square']" v-show="!selected.includes(item.unique_key)" class="fa-checkbox" /> -->
-            <!-- <font-awesome-icon :for="item" icon="check-square" v-show="selected.includes(item.unique_key)" class="fa-checkbox" /> -->
-            <!-- <label
-              class="input-label"
-              :for="item.unique_key"
-              >
-                <span
-                  v-if="!i18nEnabled"
-                  class="service-item"
-                >
-                  {{ item.box_label }}
-                </span>
-
-                <span
-                  v-if="i18nEnabled"
-                  class="service-item"
-                  v-html="$t(item.box_label)"
-                />
-            </label> -->
-            <!-- <icon-tool-tip
-              v-if="Object.keys(infoCircles).includes(item)"
-              :item="item"
-              :circleData="infoCircles[item]"
-            >
-            </icon-tool-tip> -->
-          </div>
+            </div>
+          </checkbox>
         </div>
       </div>
     </div>
@@ -271,11 +180,9 @@
 import { mapState } from 'vuex';
 import IconToolTip from './IconToolTip.vue';
 import { Checkbox } from '@phila/phila-ui';
-// import PhilaButton from './PhilaButton.vue';
 
 export default {
   components: {
-    // PhilaButton,
     IconToolTip,
     Checkbox
   },
@@ -290,14 +197,40 @@ export default {
       baseUrl: process.env.VUE_APP_BASE_URL,
       refineList: null,
       selected: [],
-      options: {
-        'option-1': 'Option 1',
-        'option-2': 'Option 2',
-        'option-3': 'Option 3',
-      }
+      selectedList: {},
+      pushValue: [],
+      pushValue2: {
+        pushValue2Child: [],
+      },
     };
   },
   computed: {
+    selectedListCompiled() {
+      let compiled = [];
+      for (let value of Object.keys(this.$data.selectedList)) {
+        console.log('in selectedListCompiled, value:', value);
+        for (let selected of this.$data.selectedList[value]) {
+          compiled.push(selected);
+        }
+      }
+      return compiled;
+    },
+    refineListTranslated() {
+      let mainObject = {};
+      for (let category of Object.keys(this.$data.refineList)) {
+        mainObject[category] = [];
+        for (let box of Object.keys(this.$data.refineList[category])) {
+          let data = this.$data.refineList[category][box].unique_key;
+          let textLabel = this.$t(this.$data.refineList[category][box].box_label);
+          let keyPairs = {
+            data: data,
+            textLabel: textLabel,
+          };
+          mainObject[category].push(keyPairs)
+        }
+      }
+      return mainObject;
+    },
     refinePanelClass() {
       let value;
       if (this.isMobile) {
@@ -368,12 +301,15 @@ export default {
   },
   watch: {
     database(nextDatabase) {
-      // console.log('watch database is running, nextDatabase:', nextDatabase);
+      console.log('watch database is running, nextDatabase:', nextDatabase);
       this.getRefineSearchList();
     },
-    selected(nextSelected) {
+    // selectedList(nextSelectedList) {
+    //   console.log('watch selectedList is firing');
+    // },
+    selectedListCompiled(nextSelected) {
       window.theRouter = this.$router;
-      // console.log('RefinePanel watch selected is firing, nextSelected', nextSelected, 'typeof nextSelected:', typeof nextSelected);
+      console.log('RefinePanel watch selected is firing, nextSelected', nextSelected);
       this.$store.commit('setSelectedServices', nextSelected);
       if (typeof nextSelected === 'string') {
         nextSelected = [nextSelected];
@@ -422,10 +358,12 @@ export default {
       }
     },
     getRefineSearchList() {
+      console.log('getRefineSearchList is running');
       const refineData = this.database;
 
       let service = '';
       let uniq;
+      let selected;
 
       if (!this.$config.refine || this.$config.refine && ['categoryField_array', 'categoryField_value'].includes(this.$config.refine.type)) {
         // console.log('in getRefineSearchList, refineData:', refineData);
@@ -452,22 +390,33 @@ export default {
         }
         uniq.sort();
 
+        selected = uniqArray.filter(a => a.length > 2);
+        selected.filter(Boolean); // remove empties
+        selected.sort();
+
       } else if (this.$config.refine && this.$config.refine.type === 'multipleFields') {
         uniq = Object.keys(this.$config.refine.multipleFields);
         uniq.sort();
+
+        selected = Object.keys(this.$config.refine.multipleFields);
+        selected.sort();
       }
 
 
       if (this.$config.refine && this.$config.refine.type === 'multipleFieldGroups') {
         uniq = {};
+        selected = {};
         for (let group of Object.keys(this.$config.refine.multipleFieldGroups)){
           // console.log('group:', group);
           uniq[group] = {};
+          selected[group] = [];
           for (let field of Object.keys(this.$config.refine.multipleFieldGroups[group])){
             uniq[group][field] = {};
+            // selected[group][field] = [];
             // console.log('field:', field, 'this.$config.refine.multipleFieldGroups[group][field].unique_key:', this.$config.refine.multipleFieldGroups[group][field].unique_key);
             if (this.$config.refine.multipleFieldGroups[group][field].i18n_key) {
               uniq[group][field].box_label = this.$config.refine.multipleFieldGroups[group][field].i18n_key;
+              // uniq[group][field].box_label = this.$t(this.$config.refine.multipleFieldGroups[group][field].i18n_key);
             } else {
               uniq[group][field].box_label = field;
             }
@@ -478,6 +427,7 @@ export default {
 
       // console.log('uniq:', uniq);
       this.$data.refineList = uniq;
+      this.$data.selectedList = selected;
       return uniq;
     },
     scrollToTop() {
