@@ -5,12 +5,12 @@
       v-if="shouldShowGreeting"
       class="topics-container cell medium-cell-block-y"
     >
-      <greeting
+      <!-- <greeting
         v-if="shouldShowGreeting && !hasCustomGreeting"
         :message="greetingText"
         :options="greetingOptions"
         @view-list="clickedViewList"
-      />
+      /> -->
 
       <custom-greeting
         v-if="shouldShowGreeting && hasCustomGreeting"
@@ -153,7 +153,6 @@ import transforms from '../util/transforms.js';
 export default {
   components: {
     ExpandCollapse,
-    // Greeting: () => import(/* webpackChunkName: "pb_Greeting" */'./Greeting.vue'),
   },
   props: {
     isMapVisible: {

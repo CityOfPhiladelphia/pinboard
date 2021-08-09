@@ -3,268 +3,258 @@
     id="refine-div"
     :class="{ 'refine-open': refineOpen }"
   >
-  <!-- class="refine-panel" -->
-  <!-- class="cell medium-cell-block-container bg-ghost-gray refine-panel" -->
-    <div>
-      <!-- <fieldset class="cell"> -->
-        <div
-          class="refine-title"
-          @click="expandRefine"
-        >
-          <legend
-            v-if="!i18nEnabled"
-            class="legend-title h3"
-          >
-            {{ legendTitle }}
-          </legend>
-          <legend
-            v-if="i18nEnabled"
-            class="legend-title h3"
-            v-html="$t('refinePanel.refine')"
-          />
-          <a
-            v-if="!i18nEnabled"
-            href=""
-            class="clear-all hide-for-small-only"
-            @click.prevent="clearAll"
-          >
-            Clear all
-          </a>
-          <a
-            v-if="i18nEnabled"
-            href=""
-            class="clear-all hide-for-small-only"
-            @click.prevent="clearAll"
-            v-html="$t('refinePanel.clearAll')"
-          />
 
+    <div
+      class="refine-title"
+      @click="expandRefine"
+    >
+      <legend
+        v-if="!i18nEnabled"
+        class="legend-title h3"
+      >
+        {{ legendTitle }}
+      </legend>
+      <legend
+        v-if="i18nEnabled"
+        class="legend-title h3"
+        v-html="$t('refinePanel.refine')"
+      />
+
+      <a
+        v-if="!i18nEnabled && isTablet || !i18nEnabled && isDesktop || !i18nEnabled && isWideScreen"
+        href=""
+        class="clear-all"
+        @click.prevent="clearAll"
+      >
+        Clear all
+      </a>
+      <a
+        v-if="i18nEnabled && isTablet || i18nEnabled && isDesktop || i18nEnabled && isWideScreen"
+        href=""
+        class="clear-all"
+        @click.prevent="clearAll"
+        v-html="$t('refinePanel.clearAll')"
+      />
+    </div>
+
+    <!-- if using categoryField_value, categoryField_array, or multipleFields options -->
+    <div
+      v-if="dataStatus === 'success' && refineType !== 'multipleFieldGroups'"
+      class="columns"
+    >
+      <div class="column is-one-quarter">
+        <div
+          v-for="(item, index) in getRefineSearchList()"
+          :key="index"
+        >
+        <input
+          :id="item"
+          v-if="refineType != 'categoryField_value'"
+          v-model="selected"
+          type="checkbox"
+          :name="item"
+          :value="item"
+          @click="clickedRefineBox(item)"
+        >
+        <input
+          :id="item"
+          v-if="refineType == 'categoryField_value'"
+          v-model="selected"
+          type="radio"
+          :name="item"
+          :value="item"
+          @click="clickedRefineBox(item)"
+        >
+          <font-awesome-icon v-if="refineType != 'categoryField_value'" :for="item" :icon="['far', 'square']" v-show="!selected.includes(item)" class="fa-checkbox" />
+          <font-awesome-icon v-if="refineType != 'categoryField_value'" :for="item" icon="check-square" v-show="selected.includes(item)" class="fa-checkbox" />
+          <label
+            class="input-label"
+            :for="item"
+            >
+              <span
+                v-if="!i18nEnabled"
+                class="service-item"
+              >
+                {{ item }}
+              </span>
+
+              <span
+                v-if="i18nEnabled"
+                class="service-item"
+              >
+                {{ $t(item) }}
+              </span>
+
+          </label>
+          <icon-tool-tip
+            v-if="Object.keys(infoCircles).includes(item)"
+            :item="item"
+            :circleData="infoCircles[item]"
+          >
+          </icon-tool-tip>
         </div>
+      </div>
+    </div>
 
-        <!-- if using categoryField_value, categoryField_array, or multipleFields options -->
+
+    <!-- if using multipleFieldsGroups option -->
+    <div
+      v-if="dataStatus === 'success' && refineType === 'multipleFieldGroups'"
+      id="multipleFieldGroups-div"
+      class="columns is-multiline"
+    >
+      <div
+        v-for="(group, ind) in refineList"
+        :id="'refine-list-'+ind"
+        :key="ind"
+        class="column is-narrow"
+      >
+
         <div
-          v-if="dataStatus === 'success' && refineType !== 'multipleFieldGroups'"
-          class="columns"
+          v-if="i18nEnabled"
+          id="i18n-enabled-div"
         >
-        <!-- :class="refineOpen ? 'grid-y service-list' : 'grid-x service-list'" -->
-
-          <div class="column is-one-quarter">
-
-            <div
-              v-for="(item, index) in getRefineSearchList()"
-              :key="index"
-            >
-            <!-- class="column is-one-quarter" -->
-            <!-- class="cell medium-6" -->
-            <input
-              :id="item"
-              v-if="refineType != 'categoryField_value'"
-              v-model="selected"
-              type="checkbox"
-              :name="item"
-              :value="item"
-              @click="clickedRefineBox(item)"
-            >
-            <input
-              :id="item"
-              v-if="refineType == 'categoryField_value'"
-              v-model="selected"
-              type="radio"
-              :name="item"
-              :value="item"
-              @click="clickedRefineBox(item)"
-            >
-              <font-awesome-icon v-if="refineType != 'categoryField_value'" :for="item" :icon="['far', 'square']" v-show="!selected.includes(item)" class="fa-checkbox" />
-              <font-awesome-icon v-if="refineType != 'categoryField_value'" :for="item" icon="check-square" v-show="selected.includes(item)" class="fa-checkbox" />
-              <label
-                class="input-label"
-                :for="item"
-                >
-                  <span
-                    v-if="!i18nEnabled"
-                    class="service-item"
-                  >
-                    {{ item }}
-                  </span>
-
-                  <span
-                    v-if="i18nEnabled"
-                    class="service-item"
-                  >
-                    {{ $t(item) }}
-                  </span>
-
-              </label>
+          <div
+            v-if="refineOpen"
+            id="refine-is-open-div"
+          >
+            <b>
+              {{ $t(ind + '.category') }}
               <icon-tool-tip
-                v-if="Object.keys(infoCircles).includes(item)"
-                :item="item"
-                :circleData="infoCircles[item]"
+                v-if="Object.keys(infoCircles).includes(ind)"
+                :item="ind"
+                :circleData="infoCircles[ind]"
+                :circleType="'click'"
               >
               </icon-tool-tip>
-
-            </div>
-
+            </b>
           </div>
-
-        </div>
-
-
-        <!-- if using multipleFieldsGroups option -->
-        <div
-          v-if="dataStatus === 'success' && refineType === 'multipleFieldGroups'"
-          class="columns is-multiline"
-        >
-        <!-- :class="refineOpen ? 'grid-y group-service-list service-list' : 'grid-x group-service-list service-list'" -->
-        <!-- class="grid-x group-service-list service-list" -->
           <div
-            v-for="(group, ind) in refineList"
-            :key="ind"
-            class="column is-narrow"
+            v-if="!refineOpen"
+            id="refine-is-not-open-div"
           >
-
-            <div v-if="i18nEnabled">
-              <div v-if="refineOpen">
-                <b>
-                  {{ $t(ind + '.category') }}
-                  <icon-tool-tip
-                    v-if="Object.keys(infoCircles).includes(ind)"
-                    :item="ind"
-                    :circleData="infoCircles[ind]"
-                    :circleType="'click'"
-                  >
-                  </icon-tool-tip>
-                </b>
-              </div>
-              <div v-if="!refineOpen">
-                {{ $t(ind + '.category') }}
-                <icon-tool-tip
-                  v-if="Object.keys(infoCircles).includes(ind)"
-                  :item="ind"
-                  :circleData="infoCircles[ind]"
-                  :circleType="'click'"
-                >
-                </icon-tool-tip>
-              </div>
-            </div>
-
-            <div v-if="!i18nEnabled">
-              <div v-if="refineOpen">
-                <b v-html="ind">
-                  <icon-tool-tip
-                    v-if="Object.keys(infoCircles).includes(ind)"
-                    :item="ind"
-                    :circleData="infoCircles[ind]"
-                    :circleType="'click'"
-                  >
-                  </icon-tool-tip>
-                </b>
-              </div>
-              <div
-                v-if="!refineOpen"
-                v-html="ind"
-              >
-                <icon-tool-tip
-                  v-if="Object.keys(infoCircles).includes(ind)"
-                  :item="ind"
-                  :circleData="infoCircles[ind]"
-                  :circleType="'click'"
-                >
-                </icon-tool-tip>
-              </div>
-            </div>
-
-            <!-- <div class="grid-x service-group"> -->
-            <!-- <div
-              class="column"
-            > -->
-            <!-- class="service-group" -->
-              <div class="columns">
-                <div
-                  v-for="(item, index) in refineList[ind]"
-                  :key="index"
-                  class="service-group-member column is-narrow"
-                >
-
-                  <input
-                    :id="item.unique_key"
-                    v-model="selected"
-                    type="checkbox"
-                    :name="item.unique_key"
-                    :value="item.unique_key"
-                    class="service-group-input"
-                    @click="clickedRefineBox(item)"
-                  >
-                    <font-awesome-icon :for="item" :icon="['far', 'square']" v-show="!selected.includes(item.unique_key)" class="fa-checkbox" />
-                    <font-awesome-icon :for="item" icon="check-square" v-show="selected.includes(item.unique_key)" class="fa-checkbox" />
-                    <label
-                      class="input-label"
-                      :for="item.unique_key"
-                      >
-                        <span
-                          v-if="!i18nEnabled"
-                          class="service-item"
-                        >
-                          {{ item.box_label }}
-                        </span>
-
-                        <span
-                          v-if="i18nEnabled"
-                          class="service-item"
-                          v-html="$t(item.box_label)"
-                        />
-
-                    </label>
-                    <icon-tool-tip
-                      v-if="Object.keys(infoCircles).includes(item)"
-                      :item="item"
-                      :circleData="infoCircles[item]"
-                    >
-                    </icon-tool-tip>
-              </div>
-
-              </div>
-
-            </div>
-
+            {{ $t(ind + '.category') }}
+            <icon-tool-tip
+              v-if="Object.keys(infoCircles).includes(ind)"
+              :item="ind"
+              :circleData="infoCircles[ind]"
+              :circleType="'click'"
+            >
+            </icon-tool-tip>
           </div>
         </div>
 
-
-        <div class="mobile-filter-actions show-for-small-only">
-
-          <!-- <PhilaButton
-            v-if="!i18nEnabled"
-            @click.native="expandRefine(); scrollToTop();"
+        <div v-if="!i18nEnabled">
+          <div
+            v-if="refineOpen"
+            id="refine-is-open-div"
           >
-            <font-awesome-icon icon="filter" />
-            Apply filters
-          </PhilaButton>
-          <PhilaButton
-            v-if="i18nEnabled"
-            @click.native="expandRefine(); scrollToTop();"
+            <b v-html="ind">
+              <icon-tool-tip
+                v-if="Object.keys(infoCircles).includes(ind)"
+                :item="ind"
+                :circleData="infoCircles[ind]"
+                :circleType="'click'"
+              >
+              </icon-tool-tip>
+            </b>
+          </div>
+          <div
+            v-if="!refineOpen"
+            v-html="ind"
           >
-            <font-awesome-icon icon="filter" />
-            <div
-              v-html="$t('refinePanel.applyFilters')"
-              class="apply-filters-text"
-            />
-          </PhilaButton>
-
-          <PhilaButton
-            v-if="!i18nEnabled"
-            @click.native="closeRefinePanel"
-          >
-            Clear all
-          </PhilaButton>
-          <PhilaButton
-            v-if="i18nEnabled"
-            @click.native="closeRefinePanel"
-            v-html="$t('refinePanel.clearAll')"
-          /> -->
-
+            <icon-tool-tip
+              v-if="Object.keys(infoCircles).includes(ind)"
+              :item="ind"
+              :circleData="infoCircles[ind]"
+              :circleType="'click'"
+            >
+            </icon-tool-tip>
+          </div>
         </div>
 
-      <!-- </fieldset> -->
+        <div
+          id="columns-div-for-checkboxes"
+          class="columns"
+        >
+          <div
+            v-for="(item, index) in refineList[ind]"
+            :id="'refine-item-'+index"
+            :key="index"
+            class="service-group-member column is-narrow"
+          >
+            <input
+              :id="item.unique_key"
+              v-model="selected"
+              type="checkbox"
+              :name="item.unique_key"
+              :value="item.unique_key"
+              class="service-group-input"
+              @click="clickedRefineBox(item)"
+            >
+            <font-awesome-icon :for="item" :icon="['far', 'square']" v-show="!selected.includes(item.unique_key)" class="fa-checkbox" />
+            <font-awesome-icon :for="item" icon="check-square" v-show="selected.includes(item.unique_key)" class="fa-checkbox" />
+            <label
+              class="input-label"
+              :for="item.unique_key"
+              >
+                <span
+                  v-if="!i18nEnabled"
+                  class="service-item"
+                >
+                  {{ item.box_label }}
+                </span>
+
+                <span
+                  v-if="i18nEnabled"
+                  class="service-item"
+                  v-html="$t(item.box_label)"
+                />
+            </label>
+            <icon-tool-tip
+              v-if="Object.keys(infoCircles).includes(item)"
+              :item="item"
+              :circleData="infoCircles[item]"
+            >
+            </icon-tool-tip>
+          </div>
+        </div>
+      </div>
     </div>
+
+    <!-- <div class="mobile-filter-actions show-for-small-only">
+      <PhilaButton
+        v-if="!i18nEnabled"
+        @click.native="expandRefine(); scrollToTop();"
+      >
+        <font-awesome-icon icon="filter" />
+        Apply filters
+      </PhilaButton>
+      <PhilaButton
+        v-if="i18nEnabled"
+        @click.native="expandRefine(); scrollToTop();"
+      >
+        <font-awesome-icon icon="filter" />
+        <div
+          v-html="$t('refinePanel.applyFilters')"
+          class="apply-filters-text"
+        />
+      </PhilaButton>
+
+      <PhilaButton
+        v-if="!i18nEnabled"
+        @click.native="closeRefinePanel"
+      >
+        Clear all
+      </PhilaButton>
+      <PhilaButton
+        v-if="i18nEnabled"
+        @click.native="closeRefinePanel"
+        v-html="$t('refinePanel.clearAll')"
+      />
+
+    </div> -->
+
   </div>
 </template>
 <script>
@@ -488,6 +478,7 @@ export default {
   },
 };
 </script>
+
 <style lang="scss">
 
 // .a-flex-div {

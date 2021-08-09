@@ -222,7 +222,6 @@ export default {
 };
 </script>
 <style lang="scss">
-// @import "../assets/scss/main.scss";
 
 .location-item {
   position: relative;

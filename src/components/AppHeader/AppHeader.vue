@@ -296,7 +296,6 @@ export default {
 </style>
 
 <style lang="scss" scoped>
-  // @import "@phila/phila-ui/src/assets/styles/scss/all.scss";
 
   // @include tablet {
   //   border-bottom: 2px solid $electric-blue;

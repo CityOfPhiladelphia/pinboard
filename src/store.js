@@ -7,7 +7,6 @@ import Vuex from 'vuex';
 import isMobileDevice from './util/is-mobile-device';
 import pvdStore from '@phila/vue-datafetch/src/store';
 import pvmStore from '@phila/vue-mapping/src/store';
-import pvcStore from '@phila/vue-comps/src/store';
 import mergeDeep from './util/merge-deep';
 import { format } from 'date-fns';
 
@@ -179,8 +178,8 @@ function createStore(config) {
     },
   };
 
-  let mergeStore = mergeDeep(pvcStore, pvdStore.store);
-  mergeStore = mergeDeep(mergeStore, pvmStore);
+  // let mergeStore = mergeDeep(pvcStore, pvdStore.store);
+  let mergeStore = mergeDeep(pvdStore.store, pvmStore);
   mergeStore = mergeDeep(mergeStore, rfStore);
 
   return new Vuex.Store({
