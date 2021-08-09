@@ -34,6 +34,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+  @import "../../scss/global.scss";
   #app-logo {
     padding-right: 0.75rem;
     border-right: 1px solid $white;

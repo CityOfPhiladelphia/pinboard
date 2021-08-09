@@ -3,6 +3,8 @@
 </template>
 
 <style lang="scss" scoped>
+@import "../scss/global.scss";
+
 button,
 .button {
   @include secondary-font(700);
