@@ -140,42 +140,69 @@
       </div>
     </div>
 
-    <!-- <div class="mobile-filter-actions show-for-small-only">
-      <PhilaButton
+    <div
+      v-if="isMobile"
+      class="columns is-mobile"
+    >
+      <div
+        class="column is-narrow"
         v-if="!i18nEnabled"
-        @click.native="expandRefine(); scrollToTop();"
       >
-        <font-awesome-icon icon="filter" />
-        Apply filters
-      </PhilaButton>
-      <PhilaButton
+        <button
+          class="button is-primary"
+          @click="expandRefine(); scrollToTop();"
+        >
+          <font-awesome-icon icon="filter" />
+          Apply filters
+        </button>
+      </div>
+
+      <div
+        class="column is-narrow"
         v-if="i18nEnabled"
-        @click.native="expandRefine(); scrollToTop();"
       >
-        <font-awesome-icon icon="filter" />
         <div
-          v-html="$t('refinePanel.applyFilters')"
-          class="apply-filters-text"
-        />
-      </PhilaButton>
+          class="button is-primary"
+          @click="expandRefine(); scrollToTop();"
+        >
+          <font-awesome-icon icon="filter" />
+          <div
+            v-html="$t('refinePanel.applyFilters')"
+            class="apply-filters-text"
+          />
+        </div>
+      </div>
 
-      <PhilaButton
+      <div
+        class="column is-narrow"
         v-if="!i18nEnabled"
-        @click.native="closeRefinePanel"
       >
-        Clear all
-      </PhilaButton>
-      <PhilaButton
-        v-if="i18nEnabled"
-        @click.native="closeRefinePanel"
-        v-html="$t('refinePanel.clearAll')"
-      />
+        <button
+          class="button is-primary"
+          @click="closeRefinePanel"
+        >
+          Clear all
+        </button>
+      </div>
 
-    </div> -->
+      <div
+        class="column is-narrow"
+        v-if="i18nEnabled"
+      >
+        <div
+          class="button is-primary"
+          @click="closeRefinePanel"
+          v-html="$t('refinePanel.clearAll')"
+        />
+      </div>
+
+    </div>
 
   </div>
 </template>
 <script>
+
+import Vue from 'vue';
 
 import { mapState } from 'vuex';
 import IconToolTip from './IconToolTip.vue';
@@ -352,9 +379,14 @@ export default {
       }, 2000);
     },
     clearAll() {
-      // console.log('RefinePanel clearAll is running');
-      if (this.selected.length) {
-        this.selected = [];
+      console.log('RefinePanel clearAll is running');
+      // if (this.selected.length) {
+      //   this.selected = [];
+      // }
+      for (let checkbox of Object.keys(this.$data.selectedList)) {
+        // this.$nextTick(() => {
+        Vue.$set(this.$data.selectedList, checkbox, []);
+        // })
       }
     },
     getRefineSearchList() {
@@ -444,6 +476,7 @@ export default {
       }
     },
     closeRefinePanel(){
+      console.log('closeRefinePanel is running');
       this.scrollToTop();
       this.expandRefine();
       this.clearAll();
@@ -469,17 +502,19 @@ export default {
     text-transform: uppercase;
   }
 
-  .service-group-holder-x{
-    padding-bottom: 0px;
-    margin-bottom: 10px;
-    padding-left: 16px;
-    padding-right: 10px;
-    border-right: 1px solid black;
-    &:first-of-type{
-      // padding-left: 0px;
-    }
-    &:last-of-type{
-      border-right: none;
+  @media screen and (min-width: 768px) {
+    .service-group-holder-x{
+      padding-bottom: 0px;
+      margin-bottom: 10px;
+      padding-left: 16px;
+      padding-right: 10px;
+      border-right: 1px solid black;
+      &:first-of-type{
+        // padding-left: 0px;
+      }
+      &:last-of-type{
+        border-right: none;
+      }
     }
   }
 
@@ -511,6 +546,7 @@ export default {
     padding: .5rem;
     position: relative;
     z-index: 10000;
+
     .refine-title{
       margin-bottom: 14px !important;
       cursor: pointer;
@@ -525,6 +561,24 @@ export default {
         right: 5px;
         top: 10px;
       }
+    }
+
+    .service-group-holder-x{
+      padding-bottom: 10px;
+      margin-bottom: 10px;
+      padding-left: 16px;
+      padding-right: 10px;
+      border-bottom: 1px solid black;
+      &:first-of-type{
+        // padding-left: 0px;
+      }
+      &:last-of-type{
+        border-bottom: none;
+      }
+    }
+
+    #multiple-field-groups-div {
+      margin: 5px;
     }
   }
 
