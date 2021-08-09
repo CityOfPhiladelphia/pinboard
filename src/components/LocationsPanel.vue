@@ -1,21 +1,21 @@
 <template>
-  <div class="cell medium-12 medium-cell-block-y locations-panel">
+  <div class="locations-panel">
 
     <div
       v-if="shouldShowGreeting"
       class="topics-container cell medium-cell-block-y"
     >
-      <greeting
+      <!-- <greeting
         v-if="shouldShowGreeting && !hasCustomGreeting"
         :message="greetingText"
         :options="greetingOptions"
         @view-list="clickedViewList"
-      />
+      /> -->
 
-      <custom-greeting
+      <!-- <custom-greeting
         v-if="shouldShowGreeting && hasCustomGreeting"
         @view-list="clickedViewList"
-      />
+      /> -->
 
     </div>
 
@@ -42,13 +42,13 @@
         v-for="item in currentData"
         :key="item.cartodb_id"
       >
-        <ExpandCollapse
+        <expand-collapse
           :item="item"
           :is-map-visible="isMapVisible"
         >
 
           <component
-            is="expandCollapseContent"
+            :is="'expandCollapseContent'"
             v-if="$config.customComps && Object.keys($config.customComps).includes('expandCollapseContent')"
             :item="item"
             :is-map-visible="isMapVisible"
@@ -139,7 +139,7 @@
             </div>
           </div>
 
-        </ExpandCollapse>
+        </expand-collapse>
       </div>
     </div>
   </div>
@@ -153,7 +153,7 @@ import transforms from '../util/transforms.js';
 export default {
   components: {
     ExpandCollapse,
-    Greeting: () => import(/* webpackChunkName: "pb_Greeting" */'./Greeting.vue'),
+    // Greeting: () => import(/* webpackChunkName: "pb_Greeting" */'./Greeting.vue'),
   },
   props: {
     isMapVisible: {
@@ -164,7 +164,7 @@ export default {
   data() {
     const data = {
       'shouldShowGreeting': true,
-    }
+    };
     return data;
   },
   mounted() {
@@ -175,11 +175,13 @@ export default {
   },
   computed: {
     i18nEnabled() {
+      let value;
       if (this.$config.i18n && this.$config.i18n.enabled) {
-        return true;
+        value = true;
       } else {
-        return false;
+        value = false;
       }
+      return value;
     },
     hasCustomGreeting() {
       let value = false;
@@ -189,18 +191,22 @@ export default {
       return value;
     },
     greetingText() {
+      let value;
       if (this.$config.greeting) {
-        return this.$config.greeting.message;
+        value = this.$config.greeting.message;
       } else {
-        return null;
+        value = null;
       }
+      return value;
     },
     greetingOptions() {
+      let value;
       if (this.$config.greeting) {
-        return this.$config.greeting.options;
+        value = this.$config.greeting.options;
       } else {
-        return {};
+        value = {};
       }
+      return value;
     },
     geocode() {
       return this.$store.state.geocode.data;
@@ -288,7 +294,7 @@ export default {
       this.$gtag.event('click', {
         'event_category': this.$store.state.gtag.category,
         'event_label': 'view list',
-      })
+      });
     },
     getLocationsList() {
       const locations = this.sources[this.$appType].data.rows;
@@ -329,7 +335,7 @@ export default {
 
 .locations-panel{
   overflow-y: auto;
-  height: calc(100vh - 192px);
+  // height: calc(100vh - 192px);
   .detail{
     margin-bottom: 1rem;
     svg {

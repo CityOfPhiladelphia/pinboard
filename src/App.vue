@@ -1,7 +1,8 @@
 <template>
+
   <div
     id="app"
-    class="grid-y small-grid-frame medium-grid-frame"
+    class="app"
   >
     <PhilaModal
       v-show="isModalOpen"
@@ -69,78 +70,101 @@
       </input-form>
     </app-header>
 
-    <!-- <PhilaHeader
-      :app-title="this.$config.app.title"
-      :app-tag-line="this.$config.app.tagLine"
-      :app-logo="`${publicPath}logo.png`"
-      :app-logo-alt="this.$config.app.logoAlt"
-      :app-link="this.appLink"
+    <refine-panel>
+    </refine-panel>
+
+    <main
+      class="main no-padding"
     >
-      <AlertBanner
-        slot="alert-banner"
-        v-if="shouldShowHeaderAlert"
-      >
-      </AlertBanner>
 
-      <div slot="mobile-menu">
-        <PhilaFooter
-          :feedbackLink="feedbackLink"
-          @howToUseLink="toggleModal()"
-        />
-      </div>
-
-      <RefinePanel
-        slot="after-stripe"
-        v-if="this.$config.refine"
-      />
-    </PhilaHeader> -->
-
-    <!-- <div class="cell medium-auto medium-cell-block-container main-content"> -->
-    <div class="cell medium-auto medium-cell-block-container">
       <div
         v-show="!refineOpen"
-        class="grid-x middle-panel"
+        id="column-div"
+        class="columns is-mobile"
       >
-        <LocationsPanel
-          v-show="!isMapVisible || isLarge"
-          :is-map-visible="this.$data.isMapVisible"
-        />
-        <MapPanel
+      <!-- class="grid-x middle-panel" -->
+
+        <div
+          v-show="isTablet || isDesktop || !isMapVisible"
+          class="column overflows"
+        >
+          <locations-panel />
+          <!-- <LocationsPanel
+            v-show="!isMapVisible || isLarge"
+            :is-map-visible="this.$data.isMapVisible"
+          /> -->
+        </div>
+
+        <div
+          v-show="isTablet || isDesktop || isMapVisible"
+          class="column no-padding"
+        >
+          <map-panel />
+          <!-- <MapPanel
           v-show="isMapVisible || isLarge"
           @toggleMap="toggleMap"
-        >
+          >
           <cyclomedia-widget
-            v-if="this.shouldLoadCyclomediaWidget"
-            v-show="cyclomediaActive"
-            slot="cycloWidget"
-            screen-percent="2"
+          v-if="this.shouldLoadCyclomediaWidget"
+          v-show="cyclomediaActive"
+          slot="cycloWidget"
+          screen-percent="2"
           />
-        </MapPanel>
-      </div>
-    </div>
+        </MapPanel> -->
 
-    <PhilaButton
+        </div>
+
+      </div>
+
+    </main>
+
+    <button
+      id="switch-button"
+      class="button is-sticky-to-bottom full-screen is-primary is-hidden-tablet"
+      @click="toggleMap"
+    >
+      switch button
+    </button>
+
+    <!-- <PhilaButton
       v-if="!i18nEnabled"
       class="button toggle-map hide-for-medium"
       @click.native="toggleMap"
     >
       {{ buttonText }}
-    </PhilaButton>
+    </PhilaButton> -->
 
-    <PhilaButton
+    <!-- <PhilaButton
       v-if="i18nEnabled"
       class="button toggle-map hide-for-medium"
       @click.native="toggleMap"
       v-html="$t(buttonText)"
-    />
+    /> -->
 
-    <PhilaFooter
+    <app-footer
+      :is-sticky="true"
+      :is-hidden-mobile="true"
+    >
+      <ul>
+        <li>
+          <a href="/about">About</a>
+        </li>
+        <li>
+          <a href="/terms-and-conditions">Terms & Conditions</a>
+        </li>
+      </ul>
+    </app-footer>
+
+    <!-- <PhilaFooter
       v-show="isLarge"
       :feedbackLink="feedbackLink"
       @howToUseLink="toggleModal()"
-    />
+    /> -->
+
   </div>
+
 </template>
+
 <script>
 
 import 'maplibre-gl/dist/maplibre-gl.css';
@@ -155,32 +179,36 @@ import PhilaButton from './components/PhilaButton.vue';
 import PhilaHeader from './components/PhilaHeader.vue';
 import AlertBanner from './components/AlertBanner.vue';
 import i18nBanner from './components/i18nBanner.vue';
-import PhilaFooter from './components/PhilaFooter.vue';
 import PhilaModal from './components/PhilaModal.vue';
 import RefinePanel from './components/RefinePanel.vue';
 import LocationsPanel from './components/LocationsPanel.vue';
 import MapPanel from './components/MapPanel.vue';
 
 import AppHeader from './components/AppHeader';
-
-// import TopicComponent from '@phila/vue-comps/src/components/TopicComponent.vue';
+import {
+  MobileNav,
+  AppFooter,
+  InputForm,
+  Textbox,
+} from '@phila/phila-ui';
 
 export default {
   name: 'App',
   components: {
     AppHeader,
+    MobileNav,
+    AppFooter,
+    InputForm,
+    Textbox,
     PhilaButton,
-    PhilaHeader,
     AlertBanner,
     i18nBanner,
-    PhilaFooter,
     PhilaModal,
     RefinePanel,
     LocationsPanel,
     MapPanel,
     CyclomediaWidget: () => import(/* webpackChunkName: "mbmb_pvm_CyclomediaWidget" */'@phila/vue-mapping/src/cyclomedia/Widget.vue'),
   },
-  // mixins: [ TopicComponent ],
   data() {
     return {
       publicPath: process.env.BASE_URL,
@@ -333,6 +361,30 @@ export default {
     },
   },
   watch: {
+    isMobile(nextIsMobile) {
+      if (nextIsMobile) {
+        console.log('is mobile');
+        this.handleResize();
+      }
+    },
+    isTablet(nextIsTablet) {
+      if (nextIsTablet) {
+        console.log('is tablet');
+        this.handleResize();
+      }
+    },
+    isDesktop(nextIsDesktop) {
+      if (nextIsDesktop) {
+        console.log('is desktop');
+        this.handleResize();
+      }
+    },
+    isWideScreen(nextIsWidescreen) {
+      if (nextIsWidescreen) {
+        console.log('is widescreen');
+        this.handleResize();
+      }
+    },
     sourcesWatched(nextSourcesWatched) {
       console.log('watch sourcesWatched, nextSourcesWatched:', nextSourcesWatched);
       if (!nextSourcesWatched.includes(null)) {
@@ -399,7 +451,7 @@ export default {
       this.$store.commit('setGtagCategory', this.$config.gtag.category);
     }
 
-    this.onResize();
+    this.handleResize();
   },
   created() {
     if (this.$config.map) {
@@ -410,25 +462,52 @@ export default {
         this.$store.commit('setMapType', this.$config.map.type);
       }
     }
-    window.addEventListener('resize', this.onResize);
   },
 
   beforeDestroy() {
-    window.removeEventListener('resize', this.onResize);
+    window.removeEventListener('resize', this.handleResize);
   },
   methods: {
-    // track () {
-    //   console.log('track is running');
-    //   this.$gtag.pageview({
-    //     page_path: '/',
-    //   });
-    //
-    //   this.$gtag.event('page view', {
-    //     'event_category': 'rf-voting',
-    //     'event_label': 'page-view-label',
-    //     // 'value': 'page-view',
-    //   })
-    // },
+    handleResize () {
+      console.log('handleResize is starting');
+      //wait for dom to finish updating
+      let isMobile = this.isMobile;
+      Vue.nextTick(function () {
+        let header = document.querySelector('#app-header');
+        let footer = document.querySelector('#app-footer');
+        let switchButton = document.querySelector('#switch-button');
+        let main = document.querySelector('main');
+        let refineDiv = document.querySelector('#refine-div');
+        let columnDiv = document.querySelector('#column-div');
+        let refineDivOffsetHeight = refineDiv.offsetHeight || 0;
+        let headerOffsetHeight = header.offsetHeight || 0;
+        let headerClientHeight = header.clientHeight || 0;
+        let headerInnerHeight = header.clientHeight || 0;
+        let footerOffsetHeight = 0;
+        if (footer !== null) {
+          footerOffsetHeight = footer.offsetHeight;
+        }
+        let switchButtonOffsetHeight = switchButton.offsetHeight;
+        let offsetHeight;
+        if (isMobile) {
+          let offsetHeight = headerOffsetHeight  + switchButtonOffsetHeight + refineDivOffsetHeight;
+          console.log('handleResize isMobile, offsetHeight:', offsetHeight, 'headerClientHeight:', headerClientHeight, 'headerOffsetHeight:', headerOffsetHeight, 'footerOffsetHeight:', footerOffsetHeight, 'switchButtonOffsetHeight:', switchButtonOffsetHeight);
+        } else {
+          let offsetHeight = headerOffsetHeight + footerOffsetHeight;
+          let offsetHeight2 = headerOffsetHeight + refineDivOffsetHeight;
+          console.log('handleResize is NOT mobile, refineDiv:', refineDiv, 'refineDivOffsetHeight:', refineDivOffsetHeight, 'offsetHeight2:', offsetHeight2, 'offsetHeight:', offsetHeight, 'headerClientHeight:', headerClientHeight, 'headerOffsetHeight:', headerOffsetHeight, 'footerOffsetHeight:', footerOffsetHeight, 'switchButtonOffsetHeight:', switchButtonOffsetHeight);
+          main.style['height'] = `calc(100vh - ${offsetHeight}px)`;
+          main.style['padding-bottom'] = '0px';
+          main.style['margin-bottom'] = '0px';
+          refineDiv.style['top'] = headerOffsetHeight + 'px';
+          columnDiv.style['margin-top'] = offsetHeight2 + 'px';
+          columnDiv.style['height'] = `calc(100vh - ${offsetHeight2}px)`;
+        }
+        // console.log('App.vue handleResize, offsetHeight:', offsetHeight, 'headerOffsetHeight:', headerOffsetHeight, 'footerOffsetHeight:', footerOffsetHeight);
+        console.log('end of handleResize');
+      });
+
+    },
     setUpData(theSources) {
       // console.log('Pinboard App.vue setUpData is running, theSources:', theSources);
       let compiled = {
@@ -674,20 +753,6 @@ export default {
       const el = document.body;
       return this.isOpen ? el.classList.add(className) : el.classList.remove(className);
     },
-    onResize() {
-      if (window.innerWidth > 749) {
-        this.$data.isMapVisible = true;
-
-        if (!this.i18nEnabled) {
-          this.$data.buttonText = this.$data.isMapVisible ? 'Toggle to resource list' : 'Toggle to map';
-        } else {
-          this.$data.buttonText = this.$data.isMapVisible ? 'app.viewList': 'app.viewMap';
-        }
-        this.$data.isLarge = true;
-      } else {
-        this.$data.isLarge = false;
-      }
-    },
   },
 };
 </script>
@@ -695,15 +760,33 @@ export default {
 <style lang="scss">
 @import "./scss/global.scss";
 
-.toggle-map{
-  margin:0 !important;
-}
-.main-content{
-  margin-top:.5rem;
+// .toggle-map{
+//   margin:0 !important;
+// }
+// .main-content{
+//   margin-top:.5rem;
+// }
+//
+// .middle-panel {
+//   height: 100%;
+// }
+
+.full-screen {
+  width: 100%;
 }
 
-.middle-panel {
-  height: 100%;
+.is-sticky-to-bottom {
+  position: fixed;
+  bottom: 0;
+  z-index: 99;
+}
+
+.no-padding {
+  padding: 0px;
+}
+
+.overflows {
+  overflow-y: scroll;
 }
 
 a {
@@ -711,30 +794,15 @@ a {
   text-decoration: underline;
 }
 
-//TODO, move to standards
-@each $value in $colors {
-  //sass-lint:disable-block no-important
-  .#{nth($value, 1)} {
-    color: nth($value, 2) !important;
-  }
-  .bg-#{nth($value, 1)} {
-    background-color: nth($value, 2) !important;
-  }
-  .bdr-#{nth($value, 1)} {
-    border-color: nth($value, 2) !important;
-  }
-}
-@media screen and (max-width: 749px) {
-  .main-content{
-    margin-top:9rem;
-    margin-bottom:2rem;
-  }
-}
-
 .no-scroll{
   overflow: hidden;
   height: 100vh;
 }
+
+::-webkit-scrollbar {
+  display: none;
+}
+
 .toggle-map{
   position: fixed;
   bottom:0;
@@ -742,37 +810,4 @@ a {
   z-index: 1002;
 }
 
-// .step-group{
-//   margin-left:$spacing-medium;
-//
-//   .step-label {
-//     @include secondary-font(400);
-//     display: inline-block;
-//     margin-left: -$spacing-medium;
-//     background: black;
-//     border-radius: $spacing-extra-large;
-//     color:white;
-//     padding: 0 $spacing-small;
-//     width:$spacing-large;
-//     height:$spacing-large;
-//     line-height: $spacing-large;
-//     text-align: center;
-//   }
-//   .step{
-//     margin-top: -$spacing-large;
-//     padding-left: $spacing-large;
-//     padding-bottom: $spacing-large;
-//     border-left:1px solid black;
-//
-//     &:last-of-type {
-//       border:none;
-//     }
-//
-//     .step-title{
-//       @include secondary-font(400);
-//       font-size:1.2rem;
-//       margin-bottom: $spacing-small;
-//     }
-//   }
-// }
 </style>

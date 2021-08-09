@@ -9,6 +9,9 @@ import fonts from './fa';
 
 import App from './App.vue';
 import router from './router';
+
+import ResponsiveHelpers from './plugins/ResponsiveHelpers.js';
+
 import createStore from './store';
 
 import VueGtag from 'vue-gtag';
@@ -118,6 +121,7 @@ function finishInit(config) {
   }, router);
 
   Vue.use(fonts);
+  Vue.use(ResponsiveHelpers);
   Vue.config.productionTip = false;
   // Vue.prototype.$appType = 'immigrant';
   Vue.prototype.$appType = config.app.type;

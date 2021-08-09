@@ -1,11 +1,8 @@
 <template>
-  <!-- <div class="cell medium-12 medium-cell-block-y mb-panel mb-panel-map map-height"> -->
-  <div class="cell medium-12 medium-cell-block-y">
+  <!-- <div> -->
 
     <MglMap
-      v-if="this.mapType === 'mapbox'"
-      :accessToken="accessToken"
-      :mapStyle.sync="this.$config.mbStyle"
+      :map-style.sync="this.$config.mbStyle"
       :zoom="this.$store.state.map.zoom"
       :center="this.$store.state.map.center"
       @moveend="this.handleMapMove"
@@ -81,63 +78,10 @@
 
       </MglCircleMarker>
 
-      <!-- <MglPopup
-        v-for="(marker) in currentMapData"
-        v-if="marker.selected"
-        :close-on-click="false"
-        :coordinates="[marker.latlng[1], marker.latlng[0]]"
-        :showed="marker.selected"
-      >
-        <div>Hello, I'm popup!</div>
-      </MglPopup> -->
-
-      <!-- <MglCircleMarker
-        v-for="recording in cyclomediaRecordings"
-        v-if="!fullScreenMapEnabled"
-        :coordinates="[recording.lng, recording.lat]"
-        :key="recording.imageId"
-        :image-id="recording.imageId"
-        :size="1.2"
-        :color="'#3388ff'"
-        :weight="1"
-        @click="handleCyclomediaRecordingClick"
-      /> -->
-
-      <!-- <MbIcon
-        v-if="!fullScreenMapEnabled"
-        :url="'https://mapboard-images.s3.amazonaws.com/camera.png'"
-        :name="'camera'"
-        :rotation-angle="cycloRotationAngle"
-      /> -->
-
-      <!-- <MglGeojsonLayer
-        v-if="!fullScreenMapEnabled"
-        :sourceId="'cameraPoint'"
-        :source="geojsonCameraSource"
-        :layerId="'cameraPoints'"
-        :layer="geojsonCameraLayer"
-        :icon="sitePath + 'images/camera.png'"
-      /> -->
-
-      <!-- <MglGeojsonLayer
-        v-if="!fullScreenMapEnabled"
-        :sourceId="'viewcone'"
-        :source="geojsonViewconeSource"
-        :layerId="'viewcones'"
-        :layer="geojsonViewconeLayer"
-      /> -->
-
-      <!-- <MglVectorLayer
-        v-if="this.$config.vectorTiles"
-        :source="this.$config.vectorTiles"
-        :sourceId="'PVL_Original'"
-        :layer="this.$config.vectorTiles"
-        :layerId="'PVL_Original'"
-      /> -->
-
       <MglRasterLayer
         v-for="(basemapSource, key) in this.basemapSources"
         v-if="shouldShowRasterLayer && activeBasemap === key"
+        :key="key"
         :sourceId="activeBasemap"
         :layerId="activeBasemap"
         :layer="basemapSource.layer"
@@ -148,6 +92,7 @@
       <MglRasterLayer
         v-for="(basemapLabelSource, key) in this.basemapLabelSources"
         v-if="shouldShowRasterLayer && tiledLayers.includes(key)"
+        :key="key"
         :sourceId="key"
         :layerId="key"
         :layer="basemapLabelSource.layer"
@@ -155,87 +100,45 @@
         :before="firstOverlay"
       />
 
-      <!-- <MglRasterLayer
-        v-for="(overlaySource, key) in this.overlaySources"
-        v-if="activeTiledOverlays.includes(key)"
-        :sourceId="key"
-        :layerId="key"
-        :layer="overlaySource.layer"
-        :source="overlaySource.source"
-        :before="cameraOverlay"
-      /> -->
-
-      <!-- <MglButtonControl
-        :buttonId="'buttonId-01'"
-        :buttonClass="'right'"
-        :imageLink="BasemapImageLink"
-        @click="this.handleBasemapToggleClick"
-      /> -->
-
       <MglNavigationControl position="bottom-right"/>
-      <!-- <MglGeolocateControl position="bottom-left"/> -->
 
     </MglMap>
 
-    <slot
+    <!-- <slot
       class="widget-slot"
       name="cycloWidget"
-    />
-  </div>
+    /> -->
+  <!-- </div> -->
 </template>
 
 <script>
 
 import proj4 from 'proj4';
-// import 'leaflet/dist/leaflet.css';
 import SharedFunctions from './mixins/SharedFunctions.vue';
 
 // import all fontawesome icons included in phila-vue-mapping
 import * as faMapping from '@phila/vue-mapping/src/fa';
-// import Map_ from '@phila/vue-mapping/src/leaflet/Map.vue';
-// import PopupSimple from '@phila/vue-mapping/src/leaflet/PopupSimple.vue';
-// import PopupContentFunctional from '@phila/vue-mapping/src/leaflet/PopupContentFunctional.vue';
 
 import cyclomediaMixin from '@phila/vue-mapping/src/cyclomedia/map-panel-mixin.js';
-// import CyclomediaButton from '@phila/vue-mapping/src/cyclomedia/Button.vue';
-import CyclomediaRecordingsClient from '@phila/vue-mapping/src/cyclomedia/recordings-client.js';
-// import ControlCorner from '@phila/vue-mapping/src/leaflet/ControlCorner.vue';
-// import BasemapToggleControl from '@phila/vue-mapping/src/components/BasemapToggleControl.vue';
-// import BasemapSelectControl from '@phila/vue-mapping/src/components/BasemapSelectControl.vue';
-// import LegendControl from '@phila/vue-mapping/src/components/LegendControlNoTopic.vue';
+// import CyclomediaRecordingsClient from '@phila/vue-mapping/src/cyclomedia/recordings-client.js';
 
 export default {
   name: "MapPanel",
   components: {
-    // Map_,
-    // PopupSimple,
-    // PopupContentFunctional,
-    // PopUpContent,
-    // CyclomediaButton,
-    CyclomediaRecordingsClient,
-    // ControlCorner,
-    // BasemapToggleControl,
-    // BasemapSelectControl,
-    // LegendControl,
-    // EsriTiledMapLayer: () => import(/* webpackChunkName: "pvm_EsriTiledMapLayer" */'@phila/vue-mapping/src/esri-leaflet/TiledMapLayer.vue'),
-    // VectorMarker: () => import(/* webpackChunkName: "mbmp_pvm_VectorMarker" */'@phila/vue-mapping/src/components/VectorMarker.vue'),
-    // CircleMarker: () => import(/* webpackChunkName: "mbmp_pvm_CircleMarker" */'@phila/vue-mapping/src/leaflet/CircleMarker.vue'),
-    // PngMarker: () => import(/* webpackChunkName: "mbmp_pvm_PngMarker" */'@phila/vue-mapping/src/components/PngMarker.vue'),
-    // CyclomediaRecordingCircle: () => import(/* webpackChunkName: "mbmp_pvm_CyclomediaRecordingCircle" */'@phila/vue-mapping/src/cyclomedia/RecordingCircle.vue'),
-    // SvgViewConeMarker: () => import(/* webpackChunkName: "mbmp_pvm_CyclomediaSvgViewConeMarker" */'@phila/vue-mapping/src/cyclomedia/SvgViewConeMarker.vue'),
+    // CyclomediaRecordingsClient,
     MglMap: () => import(/* webpackChunkName: "pvm_MglMap" */'@phila/vue-mapping/src/mapbox/map/GlMap.vue'),
     MglMarker: () => import(/* webpackChunkName: "pvm_MglMarker" */'@phila/vue-mapping/src/mapbox/UI/Marker.vue'),
-    MglIcon: () => import(/* webpackChunkName: "mbmp_pvm_MglIcon" */'@phila/vue-mapping/src/mapbox/UI/Icon.vue'),
+    // MglIcon: () => import(/* webpackChunkName: "mbmp_pvm_MglIcon" */'@phila/vue-mapping/src/mapbox/UI/Icon.vue'),
     MglCircleMarker: () => import(/* webpackChunkName: "pvm_MglCircleMarker" */'@phila/vue-mapping/src/mapbox/UI/CircleMarker.vue'),
     MglNavigationControl: () => import(/* webpackChunkName: "pvm_MglNavigationControl" */'@phila/vue-mapping/src/mapbox/UI/controls/NavigationControl'),
-    MglGeolocateControl: () => import(/* webpackChunkName: "pvm_MglGeolocateControl" */'@phila/vue-mapping/src/mapbox/UI/controls/GeolocateControl'),
+    // MglGeolocateControl: () => import(/* webpackChunkName: "pvm_MglGeolocateControl" */'@phila/vue-mapping/src/mapbox/UI/controls/GeolocateControl'),
     MglRasterLayer: () => import(/* webpackChunkName: "pvm_MglRasterLayer" */'@phila/vue-mapping/src/mapbox/layer/RasterLayer.vue'),
-    MglButtonControl: () => import(/* webpackChunkName: "pvm_MglButtonControl" */'@phila/vue-mapping/src/mapbox/UI/controls/ButtonControl.vue'),
-    MglControlContainer: () => import(/* webpackChunkName: "pvm_MglControlContainer" */'@phila/vue-mapping/src/mapbox/UI/controls/ControlContainer.vue'),
-    MglImageLayer: () => import(/* webpackChunkName: "pvm_MglImageLayer" */'@phila/vue-mapping/src/mapbox/layer/ImageLayer'),
-    MglVectorLayer: () => import(/* webpackChunkName: "pvm_MglVectorLayer" */'@phila/vue-mapping/src/mapbox/layer/VectorLayer'),
-    MbIcon: () => import(/* webpackChunkName: "pvm_MbIcon" */'@phila/vue-mapping/src/mapbox/UI/MbIcon'),
-    MglGeojsonLayer: () => import(/* webpackChunkName: "pvm_MglGeojsonLayer" */'@phila/vue-mapping/src/mapbox/layer/GeojsonLayer'),
+    // MglButtonControl: () => import(/* webpackChunkName: "pvm_MglButtonControl" */'@phila/vue-mapping/src/mapbox/UI/controls/ButtonControl.vue'),
+    // MglControlContainer: () => import(/* webpackChunkName: "pvm_MglControlContainer" */'@phila/vue-mapping/src/mapbox/UI/controls/ControlContainer.vue'),
+    // MglImageLayer: () => import(/* webpackChunkName: "pvm_MglImageLayer" */'@phila/vue-mapping/src/mapbox/layer/ImageLayer'),
+    // MglVectorLayer: () => import(/* webpackChunkName: "pvm_MglVectorLayer" */'@phila/vue-mapping/src/mapbox/layer/VectorLayer'),
+    // MbIcon: () => import(/* webpackChunkName: "pvm_MbIcon" */'@phila/vue-mapping/src/mapbox/UI/MbIcon'),
+    // MglGeojsonLayer: () => import(/* webpackChunkName: "pvm_MglGeojsonLayer" */'@phila/vue-mapping/src/mapbox/layer/GeojsonLayer'),
     MglPopup: () => import(/* webpackChunkName: "pvm_MglPopup" */'@phila/vue-mapping/src/mapbox/UI/Popup'),
     MglFontAwesomeMarker: () => import(/* webpackChunkName: "pvm_MglFontAwesomeMarker" */'@phila/vue-mapping/src/mapbox/UI/FontAwesomeMarker.vue'),
     OverlayLegend: () => import(/* webpackChunkName: "pvm_OverlayLegend" */'@phila/vue-mapping/src/mapbox/OverlayLegend'),
@@ -258,7 +161,7 @@ export default {
     shouldShowRasterLayer() {
       let value = true;
       if (this.$config.map.tiles === 'hosted') {
-        value = false
+        value = false;
       }
       return value;
     },
@@ -416,9 +319,7 @@ export default {
           } else {
             row.latlng = [ row.geometry.y, row.geometry.x ];
           }
-        } //else {
-          //row.latlng = [];
-        //}
+        }
 
         row.color = color;
         row.size = size;
@@ -554,11 +455,13 @@ export default {
       return false;
     },
     geocodeZoom() {
+      let value;
       if (this.$config.map.geocodeZoom) {
-        return this.$config.map.geocodeZoom;
+        value = this.$config.map.geocodeZoom;
       } else {
-        return 19;
+        value = 19;
       }
+      return value;
     },
 
     basemapSources() {
@@ -582,9 +485,9 @@ export default {
           let overlays = map.getStyle().layers.filter(function(layer) {
             // console.log('layer.id:', layer.id, 'overlaySources:', overlaySources);
             return overlaySources.includes(layer.id);//[0].id;
-          })
+          });
           if (overlays.length) {
-            overlay = overlays[0].id
+            overlay = overlays[0].id;
           }
         }
       }
@@ -615,11 +518,11 @@ export default {
           console.log('in watch latestSelectedResourceFromExpand, rows, nextLatestSelectedResource:', nextLatestSelectedResource, 'rows:', rows, 'dataValue:', dataValue);
           // do not set view if there is not lat value
           if (dataValue[0].lat) {
-            if (this.mapType === 'leaflet') {
-              map.setView([ dataValue[0].lat, dataValue[0].lon ], this.geocodeZoom);
-            } else if (this.mapType === 'mapbox') {
-              map.setCenter([ dataValue[0].lon, dataValue[0].lat ], this.geocodeZoom);
-            }
+            // if (this.mapType === 'leaflet') {
+            //   map.setView([ dataValue[0].lat, dataValue[0].lon ], this.geocodeZoom);
+            // } else if (this.mapType === 'mapbox') {
+            map.setCenter([ dataValue[0].lon, dataValue[0].lat ], this.geocodeZoom);
+            // }
           }
 
         // data coming as "features" means it came from arcgis
@@ -628,12 +531,12 @@ export default {
           const dataValue = rows.filter(row => row._featureId === nextLatestSelectedResource);
           console.log('in watch latestSelectedResourceFromExpand, features, nextLatestSelectedResource:', nextLatestSelectedResource, 'rows:', rows, 'dataValue:', dataValue);
           if (dataValue[0].latlng[0]) {
-            if (this.mapType === 'leaflet') {
-              map.setView([ dataValue[0].latlng[0], dataValue[0].latlng[1] ], this.geocodeZoom);
-              // map.setView([ dataValue[0].lat, dataValue[0].lon ], this.geocodeZoom);
-            } else if (this.mapType === 'mapbox') {
-              map.setCenter([ dataValue[0].latlng[1], dataValue[0].latlng[0] ], this.geocodeZoom);
-            }
+            // if (this.mapType === 'leaflet') {
+            //   map.setView([ dataValue[0].latlng[0], dataValue[0].latlng[1] ], this.geocodeZoom);
+            //   // map.setView([ dataValue[0].lat, dataValue[0].lon ], this.geocodeZoom);
+            // } else if (this.mapType === 'mapbox') {
+            map.setCenter([ dataValue[0].latlng[1], dataValue[0].latlng[0] ], this.geocodeZoom);
+            // }
           }
 
         // data coming in as an array means it came from a compiled datasource or airtable
@@ -641,11 +544,11 @@ export default {
           rows = this.$store.state.sources[this.$appType].data;
           const dataValue = rows.filter(row => row._featureId === nextLatestSelectedResource);
           console.log('in watch latestSelectedResourceFromExpand, array, nextLatestSelectedResource:', nextLatestSelectedResource, 'rows:', rows, 'dataValue:', dataValue);
-          if (this.mapType === 'leaflet') {
-            map.setView([ dataValue[0].latlng[0], dataValue[0].latlng[1] ], this.geocodeZoom);
-          } else if (this.mapType === 'mapbox') {
-            map.setCenter([ dataValue[0].latlng[1], dataValue[0].latlng[0] ], this.geocodeZoom);
-          }
+          // if (this.mapType === 'leaflet') {
+          //   map.setView([ dataValue[0].latlng[0], dataValue[0].latlng[1] ], this.geocodeZoom);
+          // } else if (this.mapType === 'mapbox') {
+          map.setCenter([ dataValue[0].latlng[1], dataValue[0].latlng[0] ], this.geocodeZoom);
+          // }
         }
       }
     },
@@ -681,7 +584,7 @@ export default {
   },
   methods: {
     mapboxSiteName(marker) {
-      return '<span class="popup-text">' + this.getSiteName(marker) + '</span>'
+      return '<span class="popup-text">' + this.getSiteName(marker) + '</span>';
     },
     configForBasemap(basemap) {
       return this.$config.map.basemaps[basemap] || {};
@@ -707,7 +610,7 @@ export default {
         this.$gtag.event('map-click', {
           'event_category': this.$store.state.gtag.category,
           'event_label': siteName,
-        })
+        });
         selectedResource.push(featureId);
         if (window.innerWidth < 750) {
           this.$store.commit('setLatestSelectedResourceFromMap', featureId);
@@ -718,11 +621,11 @@ export default {
 
     handleResize(event) {
       // console.log('MapPanel.vue handleResize is running');
-      if (this.mapType === 'leaflet') {
-        this.$store.state.map.map.invalidateSize();
-      } else if (this.mapType === 'mapbox') {
-        this.$store.map.resize();
-      }
+      // if (this.mapType === 'leaflet') {
+      //   this.$store.state.map.map.invalidateSize();
+      // } else if (this.mapType === 'mapbox') {
+      this.$store.map.resize();
+      // }
     },
     handleMapMove(e) {
       // const map = this.$store.state.map.map;
@@ -755,7 +658,7 @@ export default {
       this.$emit('toggleMap');
     },
     onMapLoaded(event) {
-      // console.log('onMapLoaded is running, event.map:', event.map, this.$store.state.map);
+      console.log('onMapLoaded is running, event.map:', event.map, this.$store.state.map);
       this.$store.map = event.map;
     },
     onMapPreloaded(event) {
@@ -764,7 +667,7 @@ export default {
       logo[0].remove();
       let attrib = document.getElementsByClassName('mapboxgl-ctrl-attrib');
       attrib[0].remove();
-    }
+    },
   },
 };
 </script>
@@ -780,23 +683,23 @@ export default {
   height: 100%;
 }
 
-@media screen and (max-width: 749px) {
-  .map-container{
+/* @media screen and (max-width: 749px) {
+  .map-container{ */
+    /* min-height: calc(100vh - 192px); */
     /* min-height: calc(100vh - 100px); */
-    min-height: calc(100vh - 192px);
     /* height: 100vh; */
     /* height: 400px; */
     /* min-height: 100%; */
-  }
+  /* } */
 
-  .map-container-no-refine {
+  /* .map-container-no-refine { */
+    /* min-height: calc(100vh - 132px); */
     /* min-height: calc(100vh - 100px); */
-    min-height: calc(100vh - 132px);
     /* height: 100vh; */
     /* height: 400px; */
     /* min-height: 100%; */
-  }
-}
+  /* }
+} */
 
 .mb-map-with-widget {
   height: 50%;

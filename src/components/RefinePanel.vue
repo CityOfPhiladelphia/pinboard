@@ -1,10 +1,12 @@
 <template>
   <div
-    class="cell medium-cell-block-container bg-ghost-gray refine-panel"
+    id="refine-div"
     :class="{ 'refine-open': refineOpen }"
   >
-    <div class="grid-x">
-      <fieldset class="cell">
+  <!-- class="refine-panel" -->
+  <!-- class="cell medium-cell-block-container bg-ghost-gray refine-panel" -->
+    <div>
+      <!-- <fieldset class="cell"> -->
         <div
           class="refine-title"
           @click="expandRefine"
@@ -41,69 +43,77 @@
         <!-- if using categoryField_value, categoryField_array, or multipleFields options -->
         <div
           v-if="dataStatus === 'success' && refineType !== 'multipleFieldGroups'"
-          :class="refineOpen ? 'grid-y service-list' : 'grid-x service-list'"
+          class="columns"
         >
-        <!-- class="grid-x service-list" -->
-          <div
-            v-for="(item, index) in getRefineSearchList()"
-            :key="index"
-            class="cell medium-6"
-          >
-          <input
-            :id="item"
-            v-if="refineType != 'categoryField_value'"
-            v-model="selected"
-            type="checkbox"
-            :name="item"
-            :value="item"
-            @click="clickedRefineBox(item)"
-          >
-          <input
-            :id="item"
-            v-if="refineType == 'categoryField_value'"
-            v-model="selected"
-            type="radio"
-            :name="item"
-            :value="item"
-            @click="clickedRefineBox(item)"
-          >
-            <font-awesome-icon v-if="refineType != 'categoryField_value'" :for="item" :icon="['far', 'square']" v-show="!selected.includes(item)" class="fa-checkbox" />
-            <font-awesome-icon v-if="refineType != 'categoryField_value'" :for="item" icon="check-square" v-show="selected.includes(item)" class="fa-checkbox" />
-            <label
-              class="input-label"
-              :for="item"
-              >
-                <span
-                  v-if="!i18nEnabled"
-                  class="service-item"
-                >
-                  {{ item }}
-                </span>
+        <!-- :class="refineOpen ? 'grid-y service-list' : 'grid-x service-list'" -->
 
-                <span
-                  v-if="i18nEnabled"
-                  class="service-item"
-                >
-                  {{ $t(item) }}
-                </span>
+          <div class="column is-one-quarter">
 
-            </label>
-            <icon-tool-tip
-              v-if="Object.keys(infoCircles).includes(item)"
-              :item="item"
-              :circleData="infoCircles[item]"
+            <div
+              v-for="(item, index) in getRefineSearchList()"
+              :key="index"
             >
-            </icon-tool-tip>
+            <!-- class="column is-one-quarter" -->
+            <!-- class="cell medium-6" -->
+            <input
+              :id="item"
+              v-if="refineType != 'categoryField_value'"
+              v-model="selected"
+              type="checkbox"
+              :name="item"
+              :value="item"
+              @click="clickedRefineBox(item)"
+            >
+            <input
+              :id="item"
+              v-if="refineType == 'categoryField_value'"
+              v-model="selected"
+              type="radio"
+              :name="item"
+              :value="item"
+              @click="clickedRefineBox(item)"
+            >
+              <font-awesome-icon v-if="refineType != 'categoryField_value'" :for="item" :icon="['far', 'square']" v-show="!selected.includes(item)" class="fa-checkbox" />
+              <font-awesome-icon v-if="refineType != 'categoryField_value'" :for="item" icon="check-square" v-show="selected.includes(item)" class="fa-checkbox" />
+              <label
+                class="input-label"
+                :for="item"
+                >
+                  <span
+                    v-if="!i18nEnabled"
+                    class="service-item"
+                  >
+                    {{ item }}
+                  </span>
+
+                  <span
+                    v-if="i18nEnabled"
+                    class="service-item"
+                  >
+                    {{ $t(item) }}
+                  </span>
+
+              </label>
+              <icon-tool-tip
+                v-if="Object.keys(infoCircles).includes(item)"
+                :item="item"
+                :circleData="infoCircles[item]"
+              >
+              </icon-tool-tip>
+
+            </div>
 
           </div>
+
         </div>
 
 
         <!-- if using multipleFieldsGroups option -->
         <div
           v-if="dataStatus === 'success' && refineType === 'multipleFieldGroups'"
-          :class="refineOpen ? 'grid-y group-service-list service-list' : 'grid-x group-service-list service-list'"
+          class="a-flex-div"
         >
+        <!-- :class="refineOpen ? 'grid-y group-service-list service-list' : 'grid-x group-service-list service-list'" -->
         <!-- class="grid-x group-service-list service-list" -->
           <div
             v-for="(group, ind) in refineList"
@@ -162,7 +172,11 @@
               </div>
             </div>
 
-            <div class="grid-x service-group">
+            <!-- <div class="grid-x service-group"> -->
+            <div
+              class="a-flex-div"
+            >
+            <!-- class="service-group" -->
 
               <div
                 v-for="(item, index) in refineList[ind]"
@@ -217,7 +231,7 @@
 
         <div class="mobile-filter-actions show-for-small-only">
 
-          <PhilaButton
+          <!-- <PhilaButton
             v-if="!i18nEnabled"
             @click.native="expandRefine(); scrollToTop();"
           >
@@ -245,23 +259,24 @@
             v-if="i18nEnabled"
             @click.native="closeRefinePanel"
             v-html="$t('refinePanel.clearAll')"
-          />
+          /> -->
 
         </div>
 
-      </fieldset>
+      <!-- </fieldset> -->
     </div>
   </div>
 </template>
 <script>
 
 import { mapState } from 'vuex';
-import PhilaButton from './PhilaButton.vue';
+import IconToolTip from './IconToolTip.vue';
+// import PhilaButton from './PhilaButton.vue';
 
 export default {
   components: {
-    PhilaButton,
-    IconToolTip: () => import(/* webpackChunkName: "mbmp_pvc_IconToolTip" */'@phila/vue-comps/src/components/IconToolTip.vue'),
+    // PhilaButton,
+    IconToolTip,
   },
   props: {
     legendTitle: {
@@ -461,6 +476,19 @@ export default {
 </script>
 <style lang="scss">
 
+.a-flex-div {
+  display: flex;
+  flex-direction: row;
+  padding-top: 2px;
+}
+
+#refine-div {
+  height: 100px;
+  width: 100%;
+  position: fixed;
+  left: 0;
+}
+
 $refine-panel-height: 19vh;
 .refine-panel{
   max-height: $refine-panel-height;
@@ -509,6 +537,8 @@ $refine-panel-height: 19vh;
   }
 
   .service-group{
+    display: flex;
+    flex-direction: row;
     padding-top: 2px;
     margin-left: -15px;
   }
@@ -524,14 +554,11 @@ $refine-panel-height: 19vh;
       padding-top: 0px;
     }
     &:last-of-type{
-      // border-bottom: none;
       margin-bottom: 10px;
     }
   }
 
   .service-group-holder-x{
-    // padding: 2px;
-    // padding-top: 4px;
     padding-left: 16px;
     padding-right: 10px;
     border-right: 1px solid black;
@@ -548,7 +575,6 @@ $refine-panel-height: 19vh;
   }
 
   .service-list{
-    // margin-top: 0.5rem;
     input{
       margin-right: -2rem;
     }
