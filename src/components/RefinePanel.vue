@@ -47,24 +47,25 @@
           v-for="(item, index) in getRefineSearchList()"
           :key="index"
         >
-        <input
-          :id="item"
-          v-if="refineType != 'categoryField_value'"
-          v-model="selected"
-          type="checkbox"
-          :name="item"
-          :value="item"
-          @click="clickedRefineBox(item)"
-        >
-        <input
-          :id="item"
-          v-if="refineType == 'categoryField_value'"
-          v-model="selected"
-          type="radio"
-          :name="item"
-          :value="item"
-          @click="clickedRefineBox(item)"
-        >
+          <!-- <checkbox></checkbox> -->
+          <input
+            :id="item"
+            v-if="refineType != 'categoryField_value'"
+            v-model="selected"
+            type="checkbox"
+            :name="item"
+            :value="item"
+            @click="clickedRefineBox(item)"
+          >
+          <input
+            :id="item"
+            v-if="refineType == 'categoryField_value'"
+            v-model="selected"
+            type="radio"
+            :name="item"
+            :value="item"
+            @click="clickedRefineBox(item)"
+          >
           <font-awesome-icon v-if="refineType != 'categoryField_value'" :for="item" :icon="['far', 'square']" v-show="!selected.includes(item)" class="fa-checkbox" />
           <font-awesome-icon v-if="refineType != 'categoryField_value'" :for="item" icon="check-square" v-show="selected.includes(item)" class="fa-checkbox" />
           <label
@@ -177,13 +178,21 @@
           id="columns-div-for-checkboxes"
           class="columns"
         >
-          <div
+          <!-- <div
             v-for="(item, index) in refineList[ind]"
             :id="'refine-item-'+index"
             :key="index"
             class="service-group-member column is-narrow"
-          >
-            <input
+          > -->
+            <checkbox
+              :options="refineList[ind]"
+              :label="$t(ind + '.category')"
+              :num-of-columns="Object.keys(refineList[ind]).length"
+              :text-key="'box_label'"
+              :value-key="refineList[ind].box_label"
+            >
+            </checkbox>
+            <!-- <input
               :id="item.unique_key"
               v-model="selected"
               type="checkbox"
@@ -191,10 +200,10 @@
               :value="item.unique_key"
               class="service-group-input"
               @click="clickedRefineBox(item)"
-            >
-            <font-awesome-icon :for="item" :icon="['far', 'square']" v-show="!selected.includes(item.unique_key)" class="fa-checkbox" />
-            <font-awesome-icon :for="item" icon="check-square" v-show="selected.includes(item.unique_key)" class="fa-checkbox" />
-            <label
+            > -->
+            <!-- <font-awesome-icon :for="item" :icon="['far', 'square']" v-show="!selected.includes(item.unique_key)" class="fa-checkbox" /> -->
+            <!-- <font-awesome-icon :for="item" icon="check-square" v-show="selected.includes(item.unique_key)" class="fa-checkbox" /> -->
+            <!-- <label
               class="input-label"
               :for="item.unique_key"
               >
@@ -210,13 +219,13 @@
                   class="service-item"
                   v-html="$t(item.box_label)"
                 />
-            </label>
-            <icon-tool-tip
+            </label> -->
+            <!-- <icon-tool-tip
               v-if="Object.keys(infoCircles).includes(item)"
               :item="item"
               :circleData="infoCircles[item]"
             >
-            </icon-tool-tip>
+            </icon-tool-tip> -->
           </div>
         </div>
       </div>
