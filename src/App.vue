@@ -34,19 +34,52 @@
       />
     </PhilaModal>
 
-    <PhilaHeader
+    <!-- <app-header
+      :app-title="$config.app.title"
+      :is-sticky="true"
+      :branding-image="brandingImage"
+      :branding-link="brandingLink"
+    >
+      <mobile-nav slot="mobile-nav">
+        <ul>
+          <li>
+            <a href="/home">Home</a>
+          </li>
+          <li>
+            <a href="/about">About</a>
+          </li>
+        </ul>
+      </mobile-nav>
+      <input-form slot="textbox-form">
+        <div class="columns">
+          <textbox
+            v-model="myValue"
+            class="column is-10"
+            placeholder="Search an address"
+            label="Search an address in Philadelphia"
+          />
+          <button
+            slot="submit"
+            class="button is-dark is-large"
+            @click.prevent="handleSubmit"
+          >
+            Submit
+          </button>
+        </div>
+      </input-form>
+    </app-header> -->
+
+    <!-- <PhilaHeader
       :app-title="this.$config.app.title"
       :app-tag-line="this.$config.app.tagLine"
       :app-logo="`${publicPath}logo.png`"
       :app-logo-alt="this.$config.app.logoAlt"
       :app-link="this.appLink"
     >
-
       <AlertBanner
         slot="alert-banner"
         v-if="shouldShowHeaderAlert"
       >
-      <!-- v-if="this.$config.alerts && this.$config.alerts.header && this.$config.alerts.header.enabled" -->
       </AlertBanner>
 
       <div slot="mobile-menu">
@@ -60,13 +93,7 @@
         slot="after-stripe"
         v-if="this.$config.refine"
       />
-
-      <!-- <component
-        :is="this.$config.alerts.header"
-      /> -->
-      <!-- v-if="this.$config.alerts && this.$config.alerts.header != null" -->
-
-    </PhilaHeader>
+    </PhilaHeader> -->
 
     <!-- <div class="cell medium-auto medium-cell-block-container main-content"> -->
     <div class="cell medium-auto medium-cell-block-container">
@@ -134,11 +161,14 @@ import RefinePanel from './components/RefinePanel.vue';
 import LocationsPanel from './components/LocationsPanel.vue';
 import MapPanel from './components/MapPanel.vue';
 
+import AppHeader from './components/AppHeader';
+
 // import TopicComponent from '@phila/vue-comps/src/components/TopicComponent.vue';
 
 export default {
   name: 'App',
   components: {
+    AppHeader,
     PhilaButton,
     PhilaHeader,
     AlertBanner,
