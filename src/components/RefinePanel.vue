@@ -107,7 +107,7 @@
         v-for="(group, ind) in refineList"
         :id="'refine-list-'+ind"
         :key="ind"
-        class="column is-narrow"
+        class="column is-narrow service-group-holder-x"
       >
 
         <div
@@ -523,6 +523,20 @@ export default {
     font-weight: bold;
     font-size: 1.2rem;
     text-transform: uppercase;
+  }
+
+  .service-group-holder-x{
+    padding-bottom: 0px;
+    margin-bottom: 10px;
+    padding-left: 16px;
+    padding-right: 10px;
+    border-right: 1px solid black;
+    &:first-of-type{
+      // padding-left: 0px;
+    }
+    &:last-of-type{
+      border-right: none;
+    }
   }
 
   .refine-title{
