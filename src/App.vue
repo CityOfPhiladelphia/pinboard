@@ -63,6 +63,7 @@
             v-on:dropdownSelect="handleSearchbarChange"
             v-on:search="handleSubmit"
             v-on:clear-search="clearSearchTriggered"
+            :searchString="searchString"
             :dropdownOptions="searchBarOptions"
             :dropdownDefault="searchBarType"
             :textboxPlaceholder="searchBarPlaceholderText"
@@ -223,6 +224,7 @@ export default {
         href: 'https://www.phila.gov/',
         target: '_blank',
       },
+      searchString: null,
       // dropdownOptions: [
       //   'address',
       //   'keyword',
@@ -526,6 +528,17 @@ export default {
     console.log('in App.vue mounted, this.$store.state:', this.$store.state, 'this.$config:', this.$config, 'window.location.href:', window.location.href);
     // this.track();
 
+    this.$config.searchBar.dropdown.forEach(item => {
+      if (item == 'address' && this.$route.query[item]) {
+        console.log('App.vue mounted item:', item);
+        this.$controller.handleSearchFormSubmit(this.$route.query[item], item);
+        // console.log('philaHeader created item:', item)
+        this.searchString = this.$route.query[item];
+        // this.comboSearchDropdownData[item].selected = true;
+        // this.$store.commit('setSearchType', item);
+      }
+    });
+
     if (this.$config.appLink) {
       this.appLink = this.$config.appLink;
     } else {
@@ -574,14 +587,38 @@ export default {
     handleSearchbarChange(value) {
       console.log('App.vue handleSearchbarChange is running, value:', value);
       this.$store.commit('setSearchType', value);
+
+      this.$store.commit('setSelectedKeywords', []);
+      let startQuery = { ...this.$route.query };
+      let overlap = this.compareArrays(Object.keys(startQuery), this.$config.searchBar.dropdown);
+      if (overlap.length) {
+        for (let item of overlap) {
+          delete startQuery[item];
+        }
+        this.$router.push({ query: startQuery });
+      }
+      this.searchString = '';
+      this.$controller.resetGeocode();
     },
-    handleSubmit() {
+    handleSubmit(query) {
+      console.log('handleSubmit is running, this.$route.query:', this.$route.query, 'query:', query);
+      this.$router.push({ query: { ...this.$route.query, ...query }});
+      console.log('handleSubmit is running, query:', query);
+      this.searchString = query[this.searchBarType];
+      console.log('comboSearchTriggered is running, query:', query, 'this.searchType:', this.searchBarType, 'query[this.searchBarType]:', query[this.searchBarType]);
+      const searchCategory = Object.keys(query)[0];
+      const value = query[searchCategory];
+      this.$gtag.event(this.searchBarType + '-search', {
+        'event_category': this.$store.state.gtag.category,
+        'event_label': value,
+      })
       this.$controller.handleSearchFormSubmit(this.myValue);
     },
     clearSearchTriggered() {
-      // console.log('in clearSearchTriggered, this.$route.query:', this.$route.query);
       let startQuery = { ...this.$route.query };
-      delete startQuery[this.searchType];
+      console.log('in clearSearchTriggered1, this.$route.query:', this.$route.query, 'startQuery:', startQuery);
+      delete startQuery[this.searchBarType];
+      console.log('in clearSearchTriggered2, this.$route.query:', this.$route.query, 'startQuery:', startQuery);
       this.$router.push({ query: startQuery });
       this.searchString = '';
       this.$store.commit('setSelectedKeywords', []);

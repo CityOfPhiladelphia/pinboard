@@ -332,28 +332,39 @@ export default {
       console.log('watch database is running, nextDatabase:', nextDatabase);
       this.getRefineSearchList();
     },
+    selected(nextSelected) {
+      console.log('watch selected is firing, nextSelected:', nextSelected);
+    },
     // selectedList(nextSelectedList) {
     //   console.log('watch selectedList is firing');
     // },
     selectedListCompiled(nextSelected) {
       window.theRouter = this.$router;
-      console.log('RefinePanel watch selected is firing, nextSelected', nextSelected);
+      console.log('RefinePanel watch selectedListCompiled is firing, nextSelected', nextSelected);
       this.$store.commit('setSelectedServices', nextSelected);
       if (typeof nextSelected === 'string') {
         nextSelected = [nextSelected];
       }
       this.$router.push({ query: { ...this.$route.query, ...{ services: nextSelected.join(',') }}});
+      // }
     },
     selectedServices(nextSelectedServices) {
-      // console.log('watch selectedServices is firing:', nextSelectedServices);
+      console.log('RefinePanel watch selectedServices is firing:', nextSelectedServices);
       this.$data.selected = nextSelectedServices;
     },
   },
   beforeMount() {
     if (this.$route.query.services) {
-      this.selected = this.$route.query.services.split(',');
+      console.log('RefinePanel.vue beforeMount is running, this.selectedList:', this.selectedList, 'this.$route.query:', this.$route.query, 'this.$route.query.services.split(','):', this.$route.query.services.split(','));
+      this.$data.selected = this.$route.query.services.split(',');
     }
   },
+  // mounted() {
+  //   if (this.refineType === 'multipleFieldGroups') {
+  //     console.log('RefinePanel.vue mounted is running, this.selectedList:', this.selectedList, 'this.$route.query:', this.$route.query, 'this.$route.query.services.split(','):', this.$route.query.services.split(','));
+  //
+  //   }
+  // },
   methods: {
     clickedRefineBox(item) {
       // console.log('clickedRefineBox, item:', item, 'typeof item:', typeof item, 'this.$data.selected:', this.$data.selected);
@@ -440,11 +451,11 @@ export default {
         for (let group of Object.keys(this.$config.refine.multipleFieldGroups)){
           // console.log('group:', group);
           uniq[group] = {};
-          selected[group] = [];
+          // selected[group] = {};
           for (let field of Object.keys(this.$config.refine.multipleFieldGroups[group])){
             uniq[group][field] = {};
             // selected[group][field] = [];
-            // console.log('field:', field, 'this.$config.refine.multipleFieldGroups[group][field].unique_key:', this.$config.refine.multipleFieldGroups[group][field].unique_key);
+            console.log('field:', field, 'selected:', selected, 'this.$config.refine.multipleFieldGroups[group][field].unique_key:', this.$config.refine.multipleFieldGroups[group][field].unique_key);
             if (this.$config.refine.multipleFieldGroups[group][field].i18n_key) {
               uniq[group][field].box_label = this.$config.refine.multipleFieldGroups[group][field].i18n_key;
               // uniq[group][field].box_label = this.$t(this.$config.refine.multipleFieldGroups[group][field].i18n_key);
@@ -452,13 +463,33 @@ export default {
               uniq[group][field].box_label = field;
             }
             uniq[group][field].unique_key = this.$config.refine.multipleFieldGroups[group][field].unique_key;
+            // if (this.$config.refine.multipleFieldGroups[group][field].unique_key == 'year18') {
+            // console.log('pushing, selected:', selected, 'this.$config.refine.multipleFieldGroups[group][field].unique_key:', this.$config.refine.multipleFieldGroups[group][field].unique_key);
+            // selected[group][field].push(this.$config.refine.multipleFieldGroups[group][field].unique_key);
+            // }
           }
         }
       }
 
-      // console.log('uniq:', uniq);
+      console.log('RefinePanel end of getRefineSearchList, uniq:', uniq, 'selected:', selected, 'this.selected:', this.selected);
       this.$data.refineList = uniq;
+
+      if (this.selected.length) {
+        for (let group of Object.keys(uniq)) {
+          for (let field of Object.keys(uniq[group])) {
+            if (this.selected.includes(uniq[group][field].unique_key)) {
+              console.log('RefinePanel end of getRefineSearchList, group:', group, 'field:', field, 'uniq[group][field].unique_key', uniq[group][field].unique_key, 'this.selected:', this.selected);
+              if (!selected[group]) {
+                selected[group] = [];
+              }
+              selected[group].push(uniq[group][field].unique_key);
+            }
+          }
+        }
+      }
+      console.log('RefinePanel end of getRefineSearchList, selected:', selected);
       this.$data.selectedList = selected;
+
       return uniq;
     },
     scrollToTop() {
