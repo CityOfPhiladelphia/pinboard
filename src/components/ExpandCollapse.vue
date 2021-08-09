@@ -264,12 +264,12 @@ export default {
     font-weight: 900;
     font-size:1.5rem;
     z-index: 100;
-    color: $ben-franklin-blue;
+    color: $ben-franklin-blue-dark;
   }
   &.open{
     h2{
       color:white;
-      background-color: $ben-franklin-blue;
+      background-color: $ben-franklin-blue-dark;
       // background-color: color(ben-franklin-blue);
       font-weight: 900;
     }
