@@ -62,6 +62,7 @@
             v-model="myValue"
             v-on:dropdownSelect="handleSearchbarChange"
             v-on:search="handleSubmit"
+            v-on:clear-search="clearSearchTriggered"
             :dropdownOptions="searchBarOptions"
             :dropdownDefault="searchBarType"
             :textboxPlaceholder="searchBarPlaceholderText"
@@ -285,11 +286,15 @@ export default {
       let final;
       if (this.i18nEnabled) {
         final = {};
-        for (let value of this.$config.searchBar.dropdown) {
-          final[value] = this.$i18n.messages[this.i18nLocale][value];
+        if (this.$config.searchBar.dropdown) {
+          for (let value of this.$config.searchBar.dropdown) {
+            final[value] = this.$i18n.messages[this.i18nLocale][value];
+          }
         }
       } else {
-        final = this.$config.searchBar.dropdown;
+        if (this.$config.searchBar.dropdown) {
+          final = this.$config.searchBar.dropdown;
+        }
       }
       return final;
     },
@@ -572,6 +577,15 @@ export default {
     },
     handleSubmit() {
       this.$controller.handleSearchFormSubmit(this.myValue);
+    },
+    clearSearchTriggered() {
+      // console.log('in clearSearchTriggered, this.$route.query:', this.$route.query);
+      let startQuery = { ...this.$route.query };
+      delete startQuery[this.searchType];
+      this.$router.push({ query: startQuery });
+      this.searchString = '';
+      this.$store.commit('setSelectedKeywords', []);
+      this.$controller.resetGeocode();
     },
     setUpData(theSources) {
       // console.log('Pinboard App.vue setUpData is running, theSources:', theSources);
