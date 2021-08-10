@@ -51,7 +51,7 @@
         >
         </mobile-nav>
 
-        <template slot="search-bar">
+        <!-- <template slot="search-bar">
           <search-bar
             v-model="myValue"
             v-on:dropdownSelect="handleSearchbarChange"
@@ -63,7 +63,7 @@
             :textboxPlaceholder="searchBarPlaceholderText"
             :textboxLabel="searchBarLabelText"
           />
-        </template>
+        </template> -->
 
         <lang-selector
           slot="lang-selector-nav"
@@ -105,7 +105,10 @@
         v-show="mapPanelVisible"
         class="map-panel-holder column"
       >
-        <map-panel />
+        <map-panel
+          @handle-search-form-submit="handleSubmit"
+          @clear-search="clearSearchTriggered"
+        />
       </div>
 
     </div>
@@ -159,7 +162,7 @@ import {
   Textbox,
   Checkbox,
   LangSelector,
-  SearchBar,
+  // SearchBar,
 } from '@phila/phila-ui';
 
 export default {
@@ -172,7 +175,7 @@ export default {
     Textbox,
     Checkbox,
     LangSelector,
-    SearchBar,
+    // SearchBar,
     AlertBanner,
     i18nBanner,
     PhilaModal,
@@ -199,6 +202,7 @@ export default {
       },
       searchString: null,
       refineEnabled: true,
+      searchBarType: 'address',
       // footerLinks: [],
     };
   },
@@ -283,9 +287,9 @@ export default {
       }
       return final;
     },
-    searchBarType() {
-      return this.$store.state.searchType;
-    },
+    // searchBarType() {
+    //   return this.$store.state.searchType;
+    // },
     i18nLanguages() {
       let values = [];
       if (this.$config.i18n.languagues) {
@@ -616,9 +620,22 @@ export default {
       ));
       return finalArray;
     },
-    handleSubmit(query) {
-      console.log('handleSubmit is running, this.$route.query:', this.$route.query, 'query:', query);
+    handleSubmit(val) {
+      let query;
+      let searchBarType;
+      let val2 = parseFloat(val.substring(0));
+      if (isNaN(val2)) {
+        query = { 'keyword': val };
+        this.searchBarType = 'keyword';
+        searchBarType = 'keyword';
+      } else {
+        query = { 'address': val };
+        this.searchBarType = 'address';
+        searchBarType = 'address';
+      }
+      console.log('handleSubmit is running, val2:', val2, 'this.$route.query:', this.$route.query, 'query:', query, 'val:', val, 'val.substring(0, 1):', val.substring(0, 1));
       this.$router.push({ query: { ...this.$route.query, ...query }});
+      // this.$router.push(query);
       // console.log('handleSubmit is running, query:', query);
       this.searchString = query[this.searchBarType];
       // console.log('handleSubmit is running, query:', query, 'this.searchBarType:', this.searchBarType, 'query[this.searchBarType]:', query[this.searchBarType]);
@@ -628,7 +645,8 @@ export default {
         'event_category': this.$store.state.gtag.category,
         'event_label': value,
       })
-      this.$controller.handleSearchFormSubmit(this.myValue, this.searchBarType);
+      this.$controller.handleSearchFormSubmit(val, searchBarType);
+      // this.$controller.handleSearchFormSubmit(this.myValue, this.searchBarType);
     },
     clearSearchTriggered() {
       let startQuery = { ...this.$route.query };

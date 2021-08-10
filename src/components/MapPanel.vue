@@ -100,6 +100,13 @@
         :before="firstOverlay"
       />
 
+      <phila-ui-address-input
+        :placeholder="addressInputPlaceholder"
+        :width-from-config="addressInputWidth"
+        @clear-search="handleClearSearch"
+        @handle-search-form-submit="handleSearchFormSubmit"
+      />
+
       <MglNavigationControl position="bottom-right"/>
 
     </MglMap>
@@ -121,11 +128,13 @@ import * as faMapping from '@phila/vue-mapping/src/fa';
 
 import cyclomediaMixin from '@phila/vue-mapping/src/cyclomedia/map-panel-mixin.js';
 // import CyclomediaRecordingsClient from '@phila/vue-mapping/src/cyclomedia/recordings-client.js';
+import PhilaUiAddressInput from './PhilaUiAddressInput.vue';
 
 export default {
   name: "MapPanel",
   components: {
     // CyclomediaRecordingsClient,
+    PhilaUiAddressInput,
     MglMap: () => import(/* webpackChunkName: "pvm_MglMap" */'@phila/vue-mapping/src/mapbox/map/GlMap.vue'),
     MglMarker: () => import(/* webpackChunkName: "pvm_MglMarker" */'@phila/vue-mapping/src/mapbox/UI/Marker.vue'),
     // MglIcon: () => import(/* webpackChunkName: "mbmp_pvm_MglIcon" */'@phila/vue-mapping/src/mapbox/UI/Icon.vue'),
@@ -155,6 +164,18 @@ export default {
     return data;
   },
   computed: {
+    addressInputPlaceholder() {
+      if (this.$config.addressInput) {
+        return this.$config.addressInput.placeholder;
+      }
+      return null;
+    },
+    addressInputWidth() {
+      if (this.$config.addressInput) {
+        return this.$config.addressInput.mapWidth;
+      }
+      return 415;
+    },
     map() {
       return this.$store.map;
     },
@@ -583,6 +604,12 @@ export default {
     window.removeEventListener('resize', this.handleResize);
   },
   methods: {
+    handleSearchFormSubmit(value) {
+      this.$emit('handle-search-form-submit', value);
+    },
+    handleClearSearch() {
+      this.$emit('clear-search');
+    },
     mapboxSiteName(marker) {
       return '<span class="popup-text">' + this.getSiteName(marker) + '</span>';
     },
