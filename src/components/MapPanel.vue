@@ -101,6 +101,7 @@
       />
 
       <phila-ui-address-input
+        v-show="!isMobile"
         :placeholder="addressInputPlaceholder"
         :width-from-config="addressInputWidth"
         @clear-search="handleClearSearch"
@@ -229,11 +230,40 @@ export default {
     projection3857() {
       return "+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +wktext  +no_defs";
     },
+    // database() {
+    //   console.log('Mappanel computed database is running, this.$appType:', this.$appType);
+    //   let database = this.$store.state.sources[this.$appType].data.rows || this.$store.state.sources[this.$appType].data.features || this.$store.state.sources[this.$appType].data;
+    //
+    //   for (let [key, value] of Object.entries(database)) {
+    //
+    //     if (this.$config.hiddenRefine) {
+    //       for (let field in this.$config.hiddenRefine) {
+    //         let getter = this.$config.hiddenRefine[field];
+    //         let val = getter(value);
+    //         if (val === false) {
+    //           delete database[key];
+    //         }
+    //       }
+    //     }
+    //
+    //     for (let [rowKey, rowValue] of Object.entries(value)) {
+    //       if ( rowKey == 'hide_on_finder' && rowValue == true ){
+    //         //console.log('deleted entry', database[key])
+    //         delete database[key];
+    //       }
+    //     }
+    //
+    //   }
+    //   //filter empty values from deleted database
+    //   let finalDB = database.filter(_ => true);
+    //   return finalDB;
+    // },
     currentMapData() {
-      // console.log('MapPanel.vue currentMapData computed is starting recalculating');//, this.currentData:', this.currentData);
+      console.log('MapPanel.vue currentMapData computed is starting recalculating');//, this.currentData:', this.currentData);
       const newRows = [];
       for (const row of [ ...this.currentData ]) {
-        // console.log('in loop, row:', row);
+      // for (const row of this.database) {
+        console.log('MapPanel in loop, row:', row);
 
         let color, // all markers
           size, // circleMarkers only
@@ -314,7 +344,7 @@ export default {
         }
 
         if (row.lat) {
-          // console.log('if row.lat is running, row.lat:', row.lat, 'row.lon:', row.lon, 'color:', color, 'size:', size);
+          console.log('MapPanel if row.lat is running, row.lat:', row.lat, 'row.lon:', row.lon, 'color:', color, 'size:', size);
           // console.log('if row.lat is running, color:', color, 'markerSize:', markerSize);
           let projection = this.getProjection(row);
           if (projection === '3857') {

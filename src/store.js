@@ -16,6 +16,7 @@ function createStore(config) {
   const sources = pvdStore.createSources(config);
   const rfStore = {
     state: {
+      currentSearch: null,
       isMobileOrTablet: isMobileDevice(),
       sources,
       map: {
@@ -43,6 +44,9 @@ function createStore(config) {
       // setSelectedServices(state, payload) {
       //   state.selectedServices = payload;
       // },
+      setCurrentSearch(state, payload) {
+        state.currentSearch = payload;
+      },
       setGtagCategory(state, payload) {
         state.gtag.category = payload;
       },

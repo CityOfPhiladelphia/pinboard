@@ -83,6 +83,19 @@
     </div>
 
     <div
+      v-show="isMobile"
+      class="search-bar-container-class"
+    >
+    <!-- :class="refinePanelClass" -->
+      <phila-ui-address-input
+        :placeholder="addressInputPlaceholder"
+        @clear-search="clearSearchTriggered"
+        @handle-search-form-submit="handleSubmit"
+      />
+      <!-- :width-from-config="addressInputWidth" -->
+    </div>
+
+    <div
       v-if="refineEnabled"
       :class="refinePanelClass"
     >
@@ -153,6 +166,7 @@ import PhilaModal from './components/PhilaModal.vue';
 import RefinePanel from './components/RefinePanel.vue';
 import LocationsPanel from './components/LocationsPanel.vue';
 import MapPanel from './components/MapPanel.vue';
+import PhilaUiAddressInput from './components/PhilaUiAddressInput.vue';
 
 import {
   AppHeader,
@@ -182,6 +196,7 @@ export default {
     RefinePanel,
     LocationsPanel,
     MapPanel,
+    PhilaUiAddressInput,
     CyclomediaWidget: () => import(/* webpackChunkName: "mbmb_pvm_CyclomediaWidget" */'@phila/vue-mapping/src/cyclomedia/Widget.vue'),
   },
   data() {
@@ -530,23 +545,30 @@ export default {
     });
 
     if (this.$config.searchBar) {
-      if (this.$config.searchBar.dropdown) { //&& this.$config.searchBar.dropdown.length === 1) {
-        let routeQuery = Object.keys(this.$route.query);
-        console.log('App.vue mounted in dropdown section, routeQuery:', routeQuery, 'Object.keys(this.$route.query)[0]', Object.keys(this.$route.query)[0]);
-        let queryValue;
-        if (routeQuery.includes('keyword')) {
-          queryValue = 'keyword';
-        } else if (routeQuery.includes('address')) {
-          queryValue = 'address';
-        }
-        if (queryValue) {
-          console.log('setting searchType to queryValue:', queryValue);
-          this.$store.commit('setSearchType', queryValue);
-        } else {
-          console.log('setting searchType to this.$config.searchBar.dropdown[0]:', this.$config.searchBar.dropdown[0]);
-          this.$store.commit('setSearchType', this.$config.searchBar.dropdown[0]);
+      // if (this.$config.searchBar.dropdown) { //&& this.$config.searchBar.dropdown.length === 1) {
+      let routeQuery = Object.keys(this.$route.query);
+      console.log('App.vue mounted in dropdown section, this.$route:', this.$route, 'routeQuery:', routeQuery, 'Object.keys(this.$route.query)[0]', Object.keys(this.$route.query)[0]);
+      let value;
+      for (let query of routeQuery) {
+        if (query === 'address' || query === 'keyword') {
+          value = this.$route.query[query];
         }
       }
+      this.$store.commit('setCurrentSearch', value);
+      // let queryValue;
+      // if (routeQuery.includes('keyword')) {
+      //   queryValue = 'keyword';
+      // } else if (routeQuery.includes('address')) {
+      //   queryValue = 'address';
+      // }
+      // if (queryValue) {
+      //   console.log('setting searchType to queryValue:', queryValue);
+      //   this.$store.commit('setSearchType', queryValue);
+      // } else {
+      //   console.log('setting searchType to this.$config.searchBar.dropdown[0]:', this.$config.searchBar.dropdown[0]);
+      //   this.$store.commit('setSearchType', this.$config.searchBar.dropdown[0]);
+      // }
+      // }
     }
 
     if (this.$config.appLink) {
@@ -635,18 +657,15 @@ export default {
       }
       console.log('handleSubmit is running, val2:', val2, 'this.$route.query:', this.$route.query, 'query:', query, 'val:', val, 'val.substring(0, 1):', val.substring(0, 1));
       this.$router.push({ query: { ...this.$route.query, ...query }});
-      // this.$router.push(query);
-      // console.log('handleSubmit is running, query:', query);
       this.searchString = query[this.searchBarType];
-      // console.log('handleSubmit is running, query:', query, 'this.searchBarType:', this.searchBarType, 'query[this.searchBarType]:', query[this.searchBarType]);
       const searchCategory = Object.keys(query)[0];
       const value = query[searchCategory];
       this.$gtag.event(this.searchBarType + '-search', {
         'event_category': this.$store.state.gtag.category,
         'event_label': value,
       })
+      this.$store.commit('setCurrentSearch', val);
       this.$controller.handleSearchFormSubmit(val, searchBarType);
-      // this.$controller.handleSearchFormSubmit(this.myValue, this.searchBarType);
     },
     clearSearchTriggered() {
       let startQuery = { ...this.$route.query };
@@ -657,6 +676,7 @@ export default {
       this.searchString = '';
       this.$store.commit('setSelectedKeywords', []);
       this.$controller.resetGeocode();
+      this.$store.commit('setCurrentSearch', null);
     },
     setUpData(theSources) {
       // console.log('Pinboard App.vue setUpData is running, theSources:', theSources);
@@ -689,7 +709,7 @@ export default {
       this.$data.buffer = pointBuffer;
     },
     filterPoints() {
-      // console.log('App.vue filterPoints is running, this.database:', this.database);
+      console.log('App.vue filterPoints is running, this.database:', this.database);
       const filteredRows = [];
 
       for (const row of this.database) {
@@ -775,19 +795,24 @@ export default {
             // booleanServices = servicesFiltered.length > 0;
             booleanServices = servicesFiltered.length == selectedServices.length;
           }
+          // console.log('else is running, booleanServices:', booleanServices);
         }
 
         let booleanBuffer = false;
         if (!this.$data.buffer) {
-          // console.log('!this.$data.buffer');
+          console.log('!this.$data.buffer');
           booleanBuffer = true;
         } else if (row.latlng) {
+          console.log('row.latlng:', row.latlng);
           if (typeof row.latlng[0] === 'number' && row.latlng[0] !== null) {
             const rowPoint = point([ row.latlng[1], row.latlng[0] ]);
             if (booleanPointInPolygon(rowPoint, this.$data.buffer)) {
               booleanBuffer = true;
             }
           }
+        } else {
+          console.log('neither ran');
+          // booleanBuffer = true;
         }
 
         let booleanKeywords = true;
@@ -851,6 +876,8 @@ export default {
           //   booleanKeywords = true;
           // }
         }
+
+        console.log('booleanServices:', booleanServices, 'booleanBuffer:', booleanBuffer, 'booleanKeywords:', booleanKeywords);
 
         if (booleanServices && booleanBuffer && booleanKeywords) {
           filteredRows.push(row);
@@ -946,6 +973,11 @@ html, body {
 //     color: $grey-dark;
 //   }
 // }
+
+.search-bar-container-class {
+  // flex-grow: 1;
+  min-height: 4.5rem;
+}
 
 .capitalized {
   text-transform: uppercase;
