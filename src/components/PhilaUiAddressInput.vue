@@ -317,6 +317,7 @@ export default {
 </script>
 
 <style lang="scss">
+@import "../assets/scss/main.scss";
 
 #tb-map-textbox {
   border-width: 3px !important;
