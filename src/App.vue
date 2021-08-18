@@ -800,7 +800,7 @@ export default {
 
         let booleanBuffer = false;
         if (!this.$data.buffer) {
-          console.log('!this.$data.buffer');
+          // console.log('!this.$data.buffer');
           booleanBuffer = true;
         } else if (row.latlng) {
           console.log('row.latlng:', row.latlng);
@@ -877,7 +877,7 @@ export default {
           // }
         }
 
-        console.log('booleanServices:', booleanServices, 'booleanBuffer:', booleanBuffer, 'booleanKeywords:', booleanKeywords);
+        // console.log('booleanServices:', booleanServices, 'booleanBuffer:', booleanBuffer, 'booleanKeywords:', booleanKeywords);
 
         if (booleanServices && booleanBuffer && booleanKeywords) {
           filteredRows.push(row);

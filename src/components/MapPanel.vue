@@ -130,6 +130,7 @@ import * as faMapping from '@phila/vue-mapping/src/fa';
 import cyclomediaMixin from '@phila/vue-mapping/src/cyclomedia/map-panel-mixin.js';
 // import CyclomediaRecordingsClient from '@phila/vue-mapping/src/cyclomedia/recordings-client.js';
 import PhilaUiAddressInput from './PhilaUiAddressInput.vue';
+import MglFontAwesomeMarker from '@phila/vue-mapping/src/mapbox/UI/FontAwesomeMarker.vue';
 
 export default {
   name: "MapPanel",
@@ -150,7 +151,8 @@ export default {
     // MbIcon: () => import(/* webpackChunkName: "pvm_MbIcon" */'@phila/vue-mapping/src/mapbox/UI/MbIcon'),
     // MglGeojsonLayer: () => import(/* webpackChunkName: "pvm_MglGeojsonLayer" */'@phila/vue-mapping/src/mapbox/layer/GeojsonLayer'),
     MglPopup: () => import(/* webpackChunkName: "pvm_MglPopup" */'@phila/vue-mapping/src/mapbox/UI/Popup'),
-    MglFontAwesomeMarker: () => import(/* webpackChunkName: "pvm_MglFontAwesomeMarker" */'@phila/vue-mapping/src/mapbox/UI/FontAwesomeMarker.vue'),
+    // MglFontAwesomeMarker: () => import(/* webpackChunkName: "pvm_MglFontAwesomeMarker" */'@phila/vue-mapping/src/mapbox/UI/FontAwesomeMarker.vue'),
+    MglFontAwesomeMarker,
     OverlayLegend: () => import(/* webpackChunkName: "pvm_OverlayLegend" */'@phila/vue-mapping/src/mapbox/OverlayLegend'),
   },
   mixins: [
@@ -263,7 +265,7 @@ export default {
       const newRows = [];
       for (const row of [ ...this.currentData ]) {
       // for (const row of this.database) {
-        console.log('MapPanel in loop, row:', row);
+        // console.log('MapPanel in loop, row:', row);
 
         let color, // all markers
           size, // circleMarkers only
@@ -344,7 +346,7 @@ export default {
         }
 
         if (row.lat) {
-          console.log('MapPanel if row.lat is running, row.lat:', row.lat, 'row.lon:', row.lon, 'color:', color, 'size:', size);
+          // console.log('MapPanel if row.lat is running, row.lat:', row.lat, 'row.lon:', row.lon, 'color:', color, 'size:', size);
           // console.log('if row.lat is running, color:', color, 'markerSize:', markerSize);
           let projection = this.getProjection(row);
           if (projection === '3857') {

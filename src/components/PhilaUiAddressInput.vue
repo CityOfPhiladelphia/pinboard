@@ -196,7 +196,7 @@ export default {
     }
   },
   mounted() {
-    console.log('PhilaUiAddressInput mounted is running, this.currentSearch:', this.currentSearch);
+    // console.log('PhilaUiAddressInput mounted is running, this.currentSearch:', this.currentSearch);
     if (this.currentSearch) {
       console.log('inside mounted if');
       this.addressEntered = this.currentSearch;
