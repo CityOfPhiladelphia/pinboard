@@ -971,6 +971,10 @@ html, body {
 
 }
 
+.title-col {
+  width: 60% !important;
+}
+
 // #tb-app-search {
 //   padding: inherit 0;
 // }
