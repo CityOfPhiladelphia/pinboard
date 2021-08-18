@@ -222,6 +222,12 @@ export default {
     };
   },
   computed: {
+    addressInputPlaceholder() {
+      if (this.$config.addressInput) {
+        return this.$config.addressInput.placeholder;
+      }
+      return null;
+    },
     footerLinks() {
       if (this.$config.footer) {
         let newValues = []
@@ -525,7 +531,7 @@ export default {
     },
   },
   mounted() {
-    console.log('in App.vue mounted, this.$store.state:', this.$store.state, 'this.$config:', this.$config, 'window.location.href:', window.location.href);
+    console.log('in App.vue mounted 210818, this.$store.state:', this.$store.state, 'this.$config:', this.$config, 'window.location.href:', window.location.href);
     // this.track();
 
     this.$config.searchBar.dropdown.forEach(item => {
@@ -655,8 +661,11 @@ export default {
         this.searchBarType = 'address';
         searchBarType = 'address';
       }
-      console.log('handleSubmit is running, val2:', val2, 'this.$route.query:', this.$route.query, 'query:', query, 'val:', val, 'val.substring(0, 1):', val.substring(0, 1));
-      this.$router.push({ query: { ...this.$route.query, ...query }});
+      let startQuery = { ...this.$route.query };
+      delete startQuery['address'];
+      delete startQuery['keyword'];
+      console.log('handleSubmit is running, val2:', val2, 'startQuery:', startQuery, 'this.$route.query:', this.$route.query, 'query:', query, 'val:', val, 'val.substring(0, 1):', val.substring(0, 1));
+      this.$router.push({ query: { ...startQuery, ...query }});
       this.searchString = query[this.searchBarType];
       const searchCategory = Object.keys(query)[0];
       const value = query[searchCategory];
@@ -670,7 +679,9 @@ export default {
     clearSearchTriggered() {
       let startQuery = { ...this.$route.query };
       console.log('in clearSearchTriggered1, this.$route.query:', this.$route.query, 'startQuery:', startQuery);
-      delete startQuery[this.searchBarType];
+      delete startQuery['address'];
+      delete startQuery['keyword'];
+      // delete startQuery[this.searchBarType];
       console.log('in clearSearchTriggered2, this.$route.query:', this.$route.query, 'startQuery:', startQuery);
       this.$router.push({ query: startQuery });
       this.searchString = '';
@@ -803,7 +814,7 @@ export default {
           // console.log('!this.$data.buffer');
           booleanBuffer = true;
         } else if (row.latlng) {
-          console.log('row.latlng:', row.latlng);
+          // console.log('row.latlng:', row.latlng);
           if (typeof row.latlng[0] === 'number' && row.latlng[0] !== null) {
             const rowPoint = point([ row.latlng[1], row.latlng[0] ]);
             if (booleanPointInPolygon(rowPoint, this.$data.buffer)) {
@@ -834,7 +845,7 @@ export default {
               }
             }
           }
-          console.log('still going, this.selectedKeywords:', this.selectedKeywords, 'row.tags:', row.tags, 'description:', description);
+          // console.log('still going, this.selectedKeywords:', this.selectedKeywords, 'row.tags:', row.tags, 'description:', description);
 
           const options = {
     			  // isCaseSensitive: false,
@@ -843,8 +854,8 @@ export default {
     			  // includeMatches: false,
     			  // findAllMatches: false,
     			  minMatchCharLength: 3,
-    			  // location: 0,
-    			  // threshold: 0.6,
+    			  location: 0,
+    			  threshold: 0.2,
     			  // distance: 100,
     			  // useExtendedSearch: false,
     			  // ignoreLocation: false,
@@ -858,7 +869,7 @@ export default {
 
           const fuse = new Fuse(description, options);
     			const result = fuse.search(this.selectedKeywords[0]);
-          // console.log('result:', result);
+          // console.log('this.selectedKeywords[0]:', this.selectedKeywords[0], 'result:', result);
           if (result.length > 0) {
             booleanKeywords = true;
           }

@@ -16,7 +16,7 @@
 
       <textbox
         id="map-textbox"
-        :placeholder="this.$props.placeholder || 'Search by address or keyword'"
+        :placeholder="$props.placeholder || 'Search by address or keyword'"
         v-model="addressEntered"
         :style="inputStyle"
       />
