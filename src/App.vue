@@ -1,7 +1,7 @@
 <template>
   <div
     id="app"
-    class="grid-y small-grid-frame medium-grid-frame"
+    class="app"
   >
     <PhilaModal
       v-show="isModalOpen"
@@ -34,124 +34,171 @@
       />
     </PhilaModal>
 
-    <PhilaHeader
-      :app-title="this.$config.app.title"
-      :app-tag-line="this.$config.app.tagLine"
-      :app-logo="`${publicPath}logo.png`"
-      :app-logo-alt="this.$config.app.logoAlt"
-      :app-link="this.appLink"
+    <div
+      class="header-holder"
     >
-
-      <AlertBanner
-        slot="alert-banner"
-        v-if="shouldShowHeaderAlert"
+      <app-header
+        :app-title="appTitle"
+        :app-subtitle="appSubTitle"
+        :is-sticky="false"
+        :branding-image="brandingImage"
+        :branding-link="brandingLink"
+        :isFluid="true"
       >
-      <!-- v-if="this.$config.alerts && this.$config.alerts.header && this.$config.alerts.header.enabled" -->
-      </AlertBanner>
-
-      <div slot="mobile-menu">
-        <PhilaFooter
-          :feedbackLink="feedbackLink"
-          @howToUseLink="toggleModal()"
-        />
-      </div>
-
-      <RefinePanel
-        slot="after-stripe"
-        v-if="this.$config.refine"
-      />
-
-      <!-- <component
-        :is="this.$config.alerts.header"
-      /> -->
-      <!-- v-if="this.$config.alerts && this.$config.alerts.header != null" -->
-
-    </PhilaHeader>
-
-    <!-- <div class="cell medium-auto medium-cell-block-container main-content"> -->
-    <div class="cell medium-auto medium-cell-block-container">
-      <div
-        v-show="!refineOpen"
-        class="grid-x middle-panel"
-      >
-        <LocationsPanel
-          v-show="!isMapVisible || isLarge"
-          :is-map-visible="this.$data.isMapVisible"
-        />
-        <MapPanel
-          v-show="isMapVisible || isLarge"
-          @toggleMap="toggleMap"
+        <mobile-nav
+          slot="mobile-nav"
+          :links="footerLinks"
         >
-          <cyclomedia-widget
-            v-if="this.shouldLoadCyclomediaWidget"
-            v-show="cyclomediaActive"
-            slot="cycloWidget"
-            screen-percent="2"
+        </mobile-nav>
+
+        <!-- <template slot="search-bar">
+          <search-bar
+            v-model="myValue"
+            v-on:dropdownSelect="handleSearchbarChange"
+            v-on:search="handleSubmit"
+            v-on:clear-search="clearSearchTriggered"
+            :searchString="searchString"
+            :dropdownOptions="searchBarOptions"
+            :dropdownDefault="searchBarType"
+            :textboxPlaceholder="searchBarPlaceholderText"
+            :textboxLabel="searchBarLabelText"
           />
-        </MapPanel>
-      </div>
+        </template> -->
+
+        <lang-selector
+          slot="lang-selector-nav"
+          v-show="i18nEnabled && isMobile"
+          :languages="i18nLanguages"
+        >
+        </lang-selector>
+
+      </app-header>
     </div>
 
-    <PhilaButton
-      v-if="!i18nEnabled"
-      class="button toggle-map hide-for-medium"
-      @click.native="toggleMap"
-    >
-      {{ buttonText }}
-    </PhilaButton>
-
-    <PhilaButton
+    <div
       v-if="i18nEnabled"
-      class="button toggle-map hide-for-medium"
-      @click.native="toggleMap"
-      v-html="$t(buttonText)"
-    />
+      class="i18n-banner-holder"
+    >
+      <i18n-banner />
+    </div>
 
-    <PhilaFooter
-      v-show="isLarge"
-      :feedbackLink="feedbackLink"
-      @howToUseLink="toggleModal()"
-    />
+    <div
+      v-show="isMobile"
+      class="search-bar-container-class"
+    >
+    <!-- :class="refinePanelClass" -->
+      <phila-ui-address-input
+        :placeholder="addressInputPlaceholder"
+        @clear-search="clearSearchTriggered"
+        @handle-search-form-submit="handleSubmit"
+      />
+      <!-- :width-from-config="addressInputWidth" -->
+    </div>
+
+    <div
+      v-if="refineEnabled"
+      :class="refinePanelClass"
+    >
+      <refine-panel />
+    </div>
+
+    <div
+      v-show="!isMobile || isMobile && !refineOpen"
+      class="locations-and-map-panels-holder columns"
+    >
+      <div
+        v-show="locationsPanelVisible"
+        class="locations-panel-holder column"
+      >
+        <locations-panel />
+      </div>
+
+
+      <div
+        v-show="mapPanelVisible"
+        class="map-panel-holder column"
+      >
+        <map-panel
+          @handle-search-form-submit="handleSubmit"
+          @clear-search="clearSearchTriggered"
+        />
+      </div>
+
+    </div>
+
+    <div
+      v-show="toggleButtonVisible"
+      @click="toggleMap"
+    >
+      <button class="button capitalized is-primary is-fullwidth">
+        {{ $t(this.$data.buttonText) }}
+      </button>
+    </div>
+
+    <div
+      class="footer-holder"
+    >
+      <app-footer
+        id="app-footer"
+        :is-sticky="false"
+        :is-hidden-mobile="true"
+        :links="footerLinks"
+      >
+      </app-footer>
+    </div>
+
   </div>
+
 </template>
+
 <script>
 
-// import Mapbox from 'mapbox-gl';
-import 'mapbox-gl/dist/mapbox-gl.css';
+import 'maplibre-gl/dist/maplibre-gl.css';
 
 import Fuse from 'fuse.js'
 
 import { point } from '@turf/helpers';
 import buffer from '@turf/buffer';
 import booleanPointInPolygon from '@turf/boolean-point-in-polygon';
-
-import PhilaButton from './components/PhilaButton.vue';
-import PhilaHeader from './components/PhilaHeader.vue';
 import AlertBanner from './components/AlertBanner.vue';
 import i18nBanner from './components/i18nBanner.vue';
-import PhilaFooter from './components/PhilaFooter.vue';
 import PhilaModal from './components/PhilaModal.vue';
 import RefinePanel from './components/RefinePanel.vue';
 import LocationsPanel from './components/LocationsPanel.vue';
 import MapPanel from './components/MapPanel.vue';
+import PhilaUiAddressInput from './components/PhilaUiAddressInput.vue';
 
-// import TopicComponent from '@phila/vue-comps/src/components/TopicComponent.vue';
+import {
+  AppHeader,
+  MobileNav,
+  AppFooter,
+  InputForm,
+  Textbox,
+  Checkbox,
+  LangSelector,
+  // SearchBar,
+} from '@phila/phila-ui';
 
 export default {
   name: 'App',
   components: {
-    PhilaButton,
-    PhilaHeader,
+    AppHeader,
+    MobileNav,
+    AppFooter,
+    InputForm,
+    Textbox,
+    Checkbox,
+    LangSelector,
+    // SearchBar,
     AlertBanner,
     i18nBanner,
-    PhilaFooter,
     PhilaModal,
     RefinePanel,
     LocationsPanel,
     MapPanel,
+    PhilaUiAddressInput,
     CyclomediaWidget: () => import(/* webpackChunkName: "mbmb_pvm_CyclomediaWidget" */'@phila/vue-mapping/src/cyclomedia/Widget.vue'),
   },
-  // mixins: [ TopicComponent ],
   data() {
     return {
       publicPath: process.env.BASE_URL,
@@ -162,9 +209,123 @@ export default {
       buffer: null,
       buttonText: 'Toggle to map',
       appLink: '/',
+      myValue: '',
+      brandingImage: null,
+      brandingLink: {
+        href: 'https://www.phila.gov/',
+        target: '_blank',
+      },
+      searchString: null,
+      refineEnabled: true,
+      searchBarType: 'address',
+      // footerLinks: [],
     };
   },
   computed: {
+    addressInputPlaceholder() {
+      if (this.$config.addressInput) {
+        return this.$config.addressInput.placeholder;
+      }
+      return null;
+    },
+    footerLinks() {
+      if (this.$config.footer) {
+        let newValues = []
+        for (let i of this.$config.footer) {
+          let value = {}
+          for (let j of Object.keys(i)) {
+            if (j !== "text") {
+              value[j] = i[j];
+            } else {
+              value[j] = this.$i18n.messages[this.i18nLocale].app[i[j]];
+            }
+          }
+          newValues.push(value)
+        }
+        return newValues;
+      }
+    },
+    appTitle() {
+      let value;
+      if (this.$config.app.title) {
+        value = this.$config.app.title;
+      } else if (this.i18nEnabled) {
+        value = this.$i18n.messages[this.i18nLocale].app.title;
+      }
+      return value;
+    },
+    appSubTitle() {
+      let value;
+      if (this.$config.app.subtitle) {
+        value = this.$config.app.subtitle;
+      } else if (this.i18nEnabled) {
+        value = this.$i18n.messages[this.i18nLocale].app.subtitle;
+      }
+      return value;
+    },
+    i18nLocale() {
+      return this.$i18n.locale;
+    },
+    searchBarPlaceholderText() {
+      if (this.i18nEnabled) {
+        return this.$i18n.messages[this.i18nLocale].app.searchPlaceholders[this.searchBarType];
+      } else if (this.$config.searchBar && this.$config.searchBar.placeholderText) {
+        if (typeof this.$config.searchBar.placeholderText === 'string') {
+          return this.$config.searchBar.placeholderText;
+        } else {
+          return this.$config.searchBar.placeholderText[this.searchBarType];
+        }
+      } else {
+        return 'Search';
+      }
+    },
+    searchBarLabelText() {
+      if (this.i18nEnabled) {
+        return this.$i18n.messages[this.i18nLocale].app.searchPlaceholders[this.searchBarType];
+      } else if (this.$config.searchBar && this.$config.searchBar.labelText) {
+        if (typeof this.$config.searchBar.labelText === 'string') {
+          return this.$config.searchBar.labelText;
+        } else {
+          return this.$config.searchBar.labelText[this.searchBarType];
+        }
+      } else {
+        return 'Search';
+      }
+    },
+    searchBarOptions() {
+      let final;
+      if (this.i18nEnabled) {
+        final = {};
+        if (this.$config.searchBar.dropdown) {
+          for (let value of this.$config.searchBar.dropdown) {
+            final[value] = this.$i18n.messages[this.i18nLocale][value];
+          }
+        }
+      } else {
+        if (this.$config.searchBar.dropdown) {
+          final = this.$config.searchBar.dropdown;
+        }
+      }
+      return final;
+    },
+    // searchBarType() {
+    //   return this.$store.state.searchType;
+    // },
+    i18nLanguages() {
+      let values = [];
+      if (this.$config.i18n.languagues) {
+        values = this.$config.i18n.languages;
+      } else {
+        for (let key of Object.keys(this.$i18n.messages)) {
+          let value = {};
+          // console.log('in loop, key:', key, 'this.$i18n.locale:', this.$i18n.locale, 'this.$i18n.messages[key]:', this.$i18n.messages[key]);
+          value.language = key;
+          value.title = this.$i18n.messages[key].language;
+          values.push(value);
+        }
+      }
+      return values;
+    },
     feedbackLink() {
       let value;
       if (this.$config.footer && this.$config.footer.feedback && this.$config.footer.feedback.link) {
@@ -205,9 +366,6 @@ export default {
       } else {
         return false;
       }
-    },
-    refineOpen() {
-      return this.$store.state.refineOpen;
     },
     geocodeStatus() {
       return this.$store.state.geocode.status;
@@ -302,6 +460,42 @@ export default {
         return null
       }
     },
+    layoutDescription() {
+      let value;
+      if (this.isMobile && !this.refineEnabled) {
+        value = 'mobileNoRefine';
+      } else if (this.isMobile && this.refineEnabled && this.refineOpen) {
+        value = 'mobileRefineOpen';
+      } else if (this.isMobile && this.refineEnabled && !this.refineOpen) {
+        value = 'mobileRefineClosed';
+      } else if (!this.refineEnabled) {
+        value = 'nonMobileNoRefine';
+      } else {
+        value = 'nonMobileRefine';
+      }
+      return value;
+    },
+    refinePanelClass() {
+      let value;
+      if (this.refineOpen) {
+        value = 'refine-panel-holder-open';
+      } else {
+        value = 'refine-panel-holder';
+      }
+      return value;
+    },
+    locationsPanelVisible() {
+      return !this.isMobile || this.layoutDescription !== 'mobileRefineOpen' && !this.isMapVisible;
+    },
+    mapPanelVisible() {
+      return !this.isMobile || this.layoutDescription !== 'mobileRefineOpen' && this.isMapVisible;
+    },
+    toggleButtonVisible() {
+      return this.isMobile && this.layoutDescription !== 'mobileRefineOpen';
+    },
+    refineOpen() {
+      return this.$store.state.refineOpen;
+    },
   },
   watch: {
     sourcesWatched(nextSourcesWatched) {
@@ -337,8 +531,51 @@ export default {
     },
   },
   mounted() {
-    console.log('in App.vue mounted, this.$store.state:', this.$store.state, 'this.$config:', this.$config, 'window.location.href:', window.location.href);
+    console.log('in App.vue mounted 210818, this.$store.state:', this.$store.state, 'this.$config:', this.$config, 'window.location.href:', window.location.href);
     // this.track();
+
+    this.$config.searchBar.dropdown.forEach(item => {
+      if (this.$route.query[item]) {
+      // if (item == 'address' && this.$route.query[item]) {
+        console.log('App.vue mounted item:', item, 'this.searchBarType:', this.searchBarType);
+        // if (this.item !== this.searchBarType) {
+        //   console.log('App.vue mounted, this.item !== this.searchBarType');
+        //   this.$store.commit('setSearchType', this.item);
+        // }
+        this.$controller.handleSearchFormSubmit(this.$route.query[item], item);
+        // console.log('philaHeader created item:', item)
+        this.searchString = this.$route.query[item];
+        // this.comboSearchDropdownData[item].selected = true;
+        // this.$store.commit('setSearchType', item);
+      }
+    });
+
+    if (this.$config.searchBar) {
+      // if (this.$config.searchBar.dropdown) { //&& this.$config.searchBar.dropdown.length === 1) {
+      let routeQuery = Object.keys(this.$route.query);
+      console.log('App.vue mounted in dropdown section, this.$route:', this.$route, 'routeQuery:', routeQuery, 'Object.keys(this.$route.query)[0]', Object.keys(this.$route.query)[0]);
+      let value;
+      for (let query of routeQuery) {
+        if (query === 'address' || query === 'keyword') {
+          value = this.$route.query[query];
+        }
+      }
+      this.$store.commit('setCurrentSearch', value);
+      // let queryValue;
+      // if (routeQuery.includes('keyword')) {
+      //   queryValue = 'keyword';
+      // } else if (routeQuery.includes('address')) {
+      //   queryValue = 'address';
+      // }
+      // if (queryValue) {
+      //   console.log('setting searchType to queryValue:', queryValue);
+      //   this.$store.commit('setSearchType', queryValue);
+      // } else {
+      //   console.log('setting searchType to this.$config.searchBar.dropdown[0]:', this.$config.searchBar.dropdown[0]);
+      //   this.$store.commit('setSearchType', this.$config.searchBar.dropdown[0]);
+      // }
+      // }
+    }
 
     if (this.$config.appLink) {
       this.appLink = this.$config.appLink;
@@ -348,7 +585,6 @@ export default {
     if (this.$config.dataSources) {
       this.$controller.dataManager.fetchData();
     }
-    // this.setUpData(this.$store.state.sources);
 
     if (!this.i18nEnabled) {
       this.$data.buttonText = this.$data.isMapVisible ? 'Toggle to resource list' : 'Toggle to map';
@@ -360,19 +596,12 @@ export default {
       this.isAlertModalOpen = true;
     }
 
-    if (this.$config.comboSearch) {
-      if (this.$config.comboSearch.dropdown) { //&& this.$config.comboSearch.dropdown.length === 1) {
-        this.$store.commit('setSearchType', this.$config.comboSearch.dropdown[0]);
-      }
-    }
-
     if (this.$config.gtag && this.$config.gtag.category) {
       this.$store.commit('setGtagCategory', this.$config.gtag.category);
     }
-
-    this.onResize();
   },
   created() {
+    console.log('App.vue created, this.$config:', this.$config);
     if (this.$config.map) {
       if (this.$config.map.shouldInitialize === false) {
         this.$store.commit('setShouldInitializeMap', false);
@@ -381,25 +610,85 @@ export default {
         this.$store.commit('setMapType', this.$config.map.type);
       }
     }
-    window.addEventListener('resize', this.onResize);
+
+    if (this.$config.app.logoSrc) {
+      this.brandingImage = {
+        src: this.$config.app.logoSrc,
+        alt: this.$config.app.logoAlt,
+        width: "200px",
+      }
+    }
   },
 
-  beforeDestroy() {
-    window.removeEventListener('resize', this.onResize);
-  },
   methods: {
-    // track () {
-    //   console.log('track is running');
-    //   this.$gtag.pageview({
-    //     page_path: '/',
-    //   });
-    //
-    //   this.$gtag.event('page view', {
-    //     'event_category': 'rf-voting',
-    //     'event_label': 'page-view-label',
-    //     // 'value': 'page-view',
-    //   })
-    // },
+    handleSearchbarChange(value) {
+      console.log('App.vue handleSearchbarChange is running, value:', value);
+      this.$store.commit('setSearchType', value);
+
+      this.$store.commit('setSelectedKeywords', []);
+      let startQuery = { ...this.$route.query };
+      let overlap = this.compareArrays(Object.keys(startQuery), this.$config.searchBar.dropdown);
+      if (overlap.length) {
+        for (let item of overlap) {
+          delete startQuery[item];
+        }
+        this.$router.push({ query: startQuery });
+      }
+      this.searchString = '';
+      this.$controller.resetGeocode();
+    },
+    compareArrays(arr1, arr2) {
+      const finalArray = [];
+      arr1.forEach((e1) => arr2.forEach((e2) =>
+        {
+          if (e1 === e2) {
+            finalArray.push(e1);
+          }
+        }
+      ));
+      return finalArray;
+    },
+    handleSubmit(val) {
+      let query;
+      let searchBarType;
+      let val2 = parseFloat(val.substring(0));
+      if (isNaN(val2)) {
+        query = { 'keyword': val };
+        this.searchBarType = 'keyword';
+        searchBarType = 'keyword';
+      } else {
+        query = { 'address': val };
+        this.searchBarType = 'address';
+        searchBarType = 'address';
+      }
+      let startQuery = { ...this.$route.query };
+      delete startQuery['address'];
+      delete startQuery['keyword'];
+      console.log('handleSubmit is running, val2:', val2, 'startQuery:', startQuery, 'this.$route.query:', this.$route.query, 'query:', query, 'val:', val, 'val.substring(0, 1):', val.substring(0, 1));
+      this.$router.push({ query: { ...startQuery, ...query }});
+      this.searchString = query[this.searchBarType];
+      const searchCategory = Object.keys(query)[0];
+      const value = query[searchCategory];
+      this.$gtag.event(this.searchBarType + '-search', {
+        'event_category': this.$store.state.gtag.category,
+        'event_label': value,
+      })
+      this.$store.commit('setCurrentSearch', val);
+      this.$controller.handleSearchFormSubmit(val, searchBarType);
+    },
+    clearSearchTriggered() {
+      let startQuery = { ...this.$route.query };
+      console.log('in clearSearchTriggered1, this.$route.query:', this.$route.query, 'startQuery:', startQuery);
+      delete startQuery['address'];
+      delete startQuery['keyword'];
+      // delete startQuery[this.searchBarType];
+      console.log('in clearSearchTriggered2, this.$route.query:', this.$route.query, 'startQuery:', startQuery);
+      this.$router.push({ query: startQuery });
+      this.searchString = '';
+      this.$store.commit('setSelectedKeywords', []);
+      this.$controller.resetGeocode();
+      this.$store.commit('setCurrentSearch', null);
+    },
     setUpData(theSources) {
       // console.log('Pinboard App.vue setUpData is running, theSources:', theSources);
       let compiled = {
@@ -422,8 +711,8 @@ export default {
     },
     runBuffer() {
       let searchDistance = 1;
-      if (this.$config.comboSearch.searchDistance) {
-        searchDistance = this.$config.comboSearch.searchDistance;
+      if (this.$config.searchBar.searchDistance) {
+        searchDistance = this.$config.searchBar.searchDistance;
       }
       // console.log('runBuffer is running, searchDistance:', searchDistance);
       const geocodePoint = point(this.geocodeGeom.coordinates);
@@ -431,7 +720,7 @@ export default {
       this.$data.buffer = pointBuffer;
     },
     filterPoints() {
-      // console.log('App.vue filterPoints is running, this.database:', this.database);
+      console.log('App.vue filterPoints is running, this.database:', this.database);
       const filteredRows = [];
 
       for (const row of this.database) {
@@ -517,6 +806,7 @@ export default {
             // booleanServices = servicesFiltered.length > 0;
             booleanServices = servicesFiltered.length == selectedServices.length;
           }
+          // console.log('else is running, booleanServices:', booleanServices);
         }
 
         let booleanBuffer = false;
@@ -524,12 +814,16 @@ export default {
           // console.log('!this.$data.buffer');
           booleanBuffer = true;
         } else if (row.latlng) {
+          // console.log('row.latlng:', row.latlng);
           if (typeof row.latlng[0] === 'number' && row.latlng[0] !== null) {
             const rowPoint = point([ row.latlng[1], row.latlng[0] ]);
             if (booleanPointInPolygon(rowPoint, this.$data.buffer)) {
               booleanBuffer = true;
             }
           }
+        } else {
+          console.log('neither ran');
+          // booleanBuffer = true;
         }
 
         let booleanKeywords = true;
@@ -551,7 +845,7 @@ export default {
               }
             }
           }
-          console.log('still going, this.selectedKeywords:', this.selectedKeywords, 'row.tags:', row.tags, 'description:', description);
+          // console.log('still going, this.selectedKeywords:', this.selectedKeywords, 'row.tags:', row.tags, 'description:', description);
 
           const options = {
     			  // isCaseSensitive: false,
@@ -560,8 +854,8 @@ export default {
     			  // includeMatches: false,
     			  // findAllMatches: false,
     			  minMatchCharLength: 3,
-    			  // location: 0,
-    			  // threshold: 0.6,
+    			  location: 0,
+    			  threshold: 0.2,
     			  // distance: 100,
     			  // useExtendedSearch: false,
     			  // ignoreLocation: false,
@@ -575,7 +869,7 @@ export default {
 
           const fuse = new Fuse(description, options);
     			const result = fuse.search(this.selectedKeywords[0]);
-          // console.log('result:', result);
+          // console.log('this.selectedKeywords[0]:', this.selectedKeywords[0], 'result:', result);
           if (result.length > 0) {
             booleanKeywords = true;
           }
@@ -594,6 +888,8 @@ export default {
           // }
         }
 
+        // console.log('booleanServices:', booleanServices, 'booleanBuffer:', booleanBuffer, 'booleanKeywords:', booleanKeywords);
+
         if (booleanServices && booleanBuffer && booleanKeywords) {
           filteredRows.push(row);
         }
@@ -602,26 +898,26 @@ export default {
       this.$store.commit('setCurrentData', filteredRows);
     },
     toggleMap() {
-      if (window.innerWidth > 749) {
-        this.$data.isMapVisible = true;
-      } else {
-        this.$data.isMapVisible = !this.$data.isMapVisible;
-        console.log('toggleMap is running');
-        if (this.$data.isMapVisible === true) {
-          console.log('toggleMap is running, this.$data.isMapVisible === true');
-            console.log('setTimeout function is running');
-            if (this.mapType === 'leaflet') {
-              this.$store.state.map.map.invalidateSize();
-            } else if (this.mapType === 'mapbox') {
-              let themap = this.$store.map;
-              setTimeout(function() {
-                console.log('mapbox running map resize now');
-                themap.resize();
-                console.log('mapbox ran map resize');
-              }, 250);
-            }
-        }
+      // if (window.innerWidth > 749) {
+      //   this.$data.isMapVisible = true;
+      // } else {
+      this.$data.isMapVisible = !this.$data.isMapVisible;
+      console.log('toggleMap is running');
+      if (this.$data.isMapVisible === true) {
+        console.log('toggleMap is running, this.$data.isMapVisible === true');
+        // console.log('setTimeout function is running');
+        // if (this.mapType === 'leaflet') {
+        //   this.$store.state.map.map.invalidateSize();
+        // } else if (this.mapType === 'mapbox') {
+        let themap = this.$store.map;
+        setTimeout(function() {
+          console.log('mapbox running map resize now');
+          themap.resize();
+          console.log('mapbox ran map resize');
+        }, 250);
+        // }
       }
+      // }
       if (!this.i18nEnabled) {
         this.$data.buttonText = this.$data.isMapVisible ? 'Toggle to resource list' : 'Toggle to map';
       } else {
@@ -645,66 +941,152 @@ export default {
       const el = document.body;
       return this.isOpen ? el.classList.add(className) : el.classList.remove(className);
     },
-    onResize() {
-      if (window.innerWidth > 749) {
-        this.$data.isMapVisible = true;
-
-        if (!this.i18nEnabled) {
-          this.$data.buttonText = this.$data.isMapVisible ? 'Toggle to resource list' : 'Toggle to map';
-        } else {
-          this.$data.buttonText = this.$data.isMapVisible ? 'app.viewList': 'app.viewMap';
-        }
-        this.$data.isLarge = true;
-      } else {
-        this.$data.isLarge = false;
-      }
-    },
   },
 };
 </script>
 
 <style lang="scss">
-@import "@/scss/global.scss";
+@import "./assets/scss/main.scss";
 
-.toggle-map{
-  margin:0 !important;
-}
-.main-content{
-  margin-top:.5rem;
-}
-
-.middle-panel {
+html, body {
+  box-sizing: border-box;
   height: 100%;
 }
 
-a {
-  font-weight: bold;
-  text-decoration: underline;
+#app {
+  height: 100%;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: #000000;
+  display: flex;
+  display: -ms-flexbox;
+  flex-direction: column;
+
+  // #nav-wrap {
+  //   .container {
+  //     padding-right: 0px;
+  //     margin-right: 10px;
+  //   }
+  // }
+
 }
 
-//TODO, move to standards
-@each $value in $colors {
-  //sass-lint:disable-block no-important
-  .#{nth($value, 1)} {
-    color: nth($value, 2) !important;
-  }
-  .bg-#{nth($value, 1)} {
-    background-color: nth($value, 2) !important;
-  }
-  .bdr-#{nth($value, 1)} {
-    border-color: nth($value, 2) !important;
+.title-col {
+  width: 60% !important;
+}
+
+// #tb-app-search {
+//   padding: inherit 0;
+// }
+
+// #app-search-icon {
+//   height: 3.5rem;
+//   border: 0;
+//   background-color: $electric-blue;
+//   color: $grey-dark;
+//   svg {
+//     color: $grey-dark;
+//   }
+// }
+
+.search-bar-container-class {
+  // flex-grow: 1;
+  min-height: 4.5rem;
+}
+
+.capitalized {
+  text-transform: uppercase;
+}
+
+.header-holder {
+  background-color: blue;
+}
+
+.footer-holder {
+  background-color: blue;
+  margin-top: auto;
+}
+
+@media screen and (max-width: 767px) {
+  .i18n-banner-holder {
+    display: none;
   }
 }
-@media screen and (max-width: 749px) {
-  .main-content{
-    margin-top:9rem;
-    margin-bottom:2rem;
-  }
+
+.refine-panel-holder-open {
+  flex-grow: 1;
+  background: $ghost-grey;
 }
+
+.locations-and-map-panels-holder {
+  overflow-y: scroll;
+  min-height: 0px;
+  flex-grow: 1;
+  // display: flex;
+  // display: -ms-flexbox;
+  // flex-direction: row;
+  margin: 0px !important;
+  // background-color: yellow;
+}
+
+.locations-panel-holder {
+  min-height: 0px;
+  padding: 0px;
+  overflow-y: scroll;
+  // background-color: #88d8b0;
+}
+
+@media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
+  /* IE10+ CSS styles go here */
+
+  @media (min-width: 768px) {
+    .locations-and-map-panels-holder {
+      overflow-y: hidden;
+      height: 100px;
+    }
+  }
+  @media (max-width: 767px) {
+    .locations-and-map-panels-holder {
+      height: 100px;
+    }
+    .locations-panel-holder {
+      overflow-y: hidden;
+    }
+  }
+
+}
+
+.locations-panel {
+  overflow-y: hidden;
+}
+
+.map-panel-holder {
+  height: 100%;
+  padding: 0px;
+}
+
+.toggle-button {
+  background-color: #d2d2d2;
+}
+
+.overflows {
+  overflow-y: scroll;
+}
+
+a {
+  // font-weight: bold;
+  // text-decoration: underline;
+}
+
 .no-scroll{
   overflow: hidden;
   height: 100vh;
 }
+
+::-webkit-scrollbar {
+  display: none;
+}
+
 .toggle-map{
   position: fixed;
   bottom:0;
@@ -712,37 +1094,4 @@ a {
   z-index: 1002;
 }
 
-.step-group{
-  margin-left:$spacing-medium;
-
-  .step-label {
-    @include secondary-font(400);
-    display: inline-block;
-    margin-left: -$spacing-medium;
-    background: black;
-    border-radius: $spacing-extra-large;
-    color:white;
-    padding: 0 $spacing-small;
-    width:$spacing-large;
-    height:$spacing-large;
-    line-height: $spacing-large;
-    text-align: center;
-  }
-  .step{
-    margin-top: -$spacing-large;
-    padding-left: $spacing-large;
-    padding-bottom: $spacing-large;
-    border-left:1px solid black;
-
-    &:last-of-type {
-      border:none;
-    }
-
-    .step-title{
-      @include secondary-font(400);
-      font-size:1.2rem;
-      margin-bottom: $spacing-small;
-    }
-  }
-}
 </style>

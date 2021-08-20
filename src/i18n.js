@@ -6,14 +6,18 @@ export default {
       messages: {
         'en-US': {
           language: 'English',
-          cityOfPhiladelphia: 'City of Philadelphia',
           app: {
+            cityOfPhiladelphia: 'City of Philadelphia',
             about: 'About this finder',
             betaTag: 'Beta',
             feedback: 'Feedback',
-            searchPlaceholder: 'Search by address',
+            searchPlaceholders: {
+              address: 'Search by address',
+              keyword: 'Search by keyword',
+            },
             viewMap: 'View map',
             viewList: 'View list',
+            viewAccessible: 'View accessible list of site locations',
           },
           refinePanel: {
             refine: 'Refine',
@@ -23,14 +27,18 @@ export default {
         },
         'es': {
           language: 'Español',
-          cityOfPhiladelphia: 'La Ciudad de Filadelfia',
           app: {
+            cityOfPhiladelphia: 'La Ciudad de Filadelfia',
             about: 'Sobre este buscador',
             betaTag: 'Beta',
             feedback: 'Comentarios',
-            searchPlaceholder: 'Buscar por dirección',
+            searchPlaceholders: {
+              address: 'Buscar por dirección',
+              keyword: 'spanish Search by keyword',
+            },
             viewMap: 'Ver mapa',
             viewList: 'Ver lista',
+            viewAccessible: 'spanish View accessible list of site locations',
           },
           refinePanel: {
             refine: 'Ajustar',
@@ -40,14 +48,18 @@ export default {
         },
         'ch': {
           language: '中文',
-          cityOfPhiladelphia: '费城市',
           app: {
+            cityOfPhiladelphia: '费城市',
             about: '有关这个搜索工具',
             betaTag: '贝塔',
             feedback: '反馈',
-            searchPlaceholder: '按地址搜索',
+            searchPlaceholders: {
+              address: '按地址搜索',
+              keyword: 'chinese Search by keyword',
+            },
             viewMap: '看地图',
             viewList: '看列单',
+            viewAccessible: 'chinese View accessible list of site locations',
           },
           refinePanel: {
             refine: '细化',
@@ -57,14 +69,18 @@ export default {
         },
         'vi': {
           language: 'Tiếng Việt',
-          cityOfPhiladelphia: 'Thành Phố Philadelphia',
           app: {
+            cityOfPhiladelphia: 'Thành Phố Philadelphia',
             about: 'Giới thiệu công cụ tìm kiếm này',
             betaTag: 'Bản Beta',
             feedback: 'Ý kiến phản hồi',
-            searchPlaceholder: 'Tìm kiểm theo địa chỉ',
+            searchPlaceholders: {
+              address: 'Tìm kiểm theo địa chỉ',
+              keyword: 'vietnamese Search by keyword',
+            },
             viewMap: 'Xem bản đồ',
             viewList: 'Xem danh sách',
+            viewAccessible: 'vietnamese View accessible list of site locations',
           },
           refinePanel: {
             refine: 'Tinh chỉnh',
@@ -74,14 +90,18 @@ export default {
         },
         'ru': {
           language: 'Pусский',
-          cityOfPhiladelphia: 'Городская администрация Филадельфии',
           app: {
+            cityOfPhiladelphia: 'Городская администрация Филадельфии',
             about: 'Об этом средстве поиска ',
             betaTag: 'Бета-версия',
             feedback: 'Обратная связь',
-            searchPlaceholder: 'Поиск по адресу',
+            searchPlaceholders: {
+              address: 'Поиск по адресу',
+              keyword: 'russian Search by keyword',
+            },
             viewMap: 'Посмотреть на карте',
             viewList: 'Посмотреть список',
+            viewAccessible: 'russian View accessible list of site locations',
           },
           refinePanel: {
             refine: 'Уточнить параметры поиска',
@@ -91,14 +111,18 @@ export default {
         },
         'fr': {
           language: 'Français',
-          cityOfPhiladelphia: 'Ville de Philadelphie',
           app: {
+            cityOfPhiladelphia: 'Ville de Philadelphie',
             about: 'À propos de cet outil de recherche',
             betaTag: 'Bêta',
             feedback: 'Commentaires',
-            searchPlaceholder: 'Recherche à partir de l’adresse',
+            searchPlaceholders: {
+              address: 'Recherche à partir de l’adresse',
+              keyword: 'french Search by keyword',
+            },
             viewMap: 'Voir la carte',
             viewList: 'Voir la liste',
+            viewAccessible: 'french View accessible list of site locations',
           },
           refinePanel: {
             refine: 'Raffiner',

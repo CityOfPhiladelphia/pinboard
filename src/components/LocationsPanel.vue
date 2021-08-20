@@ -1,17 +1,10 @@
 <template>
-  <div class="cell medium-12 medium-cell-block-y locations-panel">
+  <div class="locations-panel">
 
     <div
       v-if="shouldShowGreeting"
       class="topics-container cell medium-cell-block-y"
     >
-      <greeting
-        v-if="shouldShowGreeting && !hasCustomGreeting"
-        :message="greetingText"
-        :options="greetingOptions"
-        @view-list="clickedViewList"
-      />
-
       <custom-greeting
         v-if="shouldShowGreeting && hasCustomGreeting"
         @view-list="clickedViewList"
@@ -42,21 +35,22 @@
         v-for="item in currentData"
         :key="item.cartodb_id"
       >
-        <ExpandCollapse
+        <expand-collapse
           :item="item"
           :is-map-visible="isMapVisible"
         >
 
           <component
-            is="expandCollapseContent"
+            :is="'expandCollapseContent'"
             v-if="$config.customComps && Object.keys($config.customComps).includes('expandCollapseContent')"
             :item="item"
             :is-map-visible="isMapVisible"
           />
 
           <div v-if="!$config.customComps || !Object.keys($config.customComps).includes('expandCollapseContent')">
-            <div class="grid-x grid-padding-x">
-              <div class="cell medium-12">
+            <div class="columns is-marginless">
+
+              <div class="column">
                 <div
                   v-if="item.street_address"
                   class="detail"
@@ -67,7 +61,8 @@
                   </span>
                 </div>
               </div>
-              <div class="cell medium-12">
+
+              <div class="column">
                 <div
                   v-if="item.phone_number"
                   class="detail"
@@ -105,41 +100,38 @@
                 </div>
               </div>
             </div>
-            <div v-if="item.services_offered">
-              <section class="services grid-x grid-padding-x">
-                <div class="cell">
-                  <h3 class="h4">
-                    Services offered
-                  </h3>
-                  <div class="grid-x">
-                    <div
-                      v-for="i in parseServiceList(item.services_offered)"
-                      :key="i"
-                      class="cell medium-12 service-item"
-                    >
-                      {{ i }}
-                    </div>
-                  </div>
+
+            <div
+              v-if="item.services_offered"
+            >
+            <!-- class="columns" -->
+              <h3 class="title is-3">
+                Services offered
+              </h3>
+              <div class="columns is-multiline is-gapless">
+                <div
+                  v-for="i in parseServiceList(item.services_offered)"
+                  :key="i"
+                  class="column is-half"
+                >
+                  {{ i }}
                 </div>
-              </section>
+              </div>
             </div>
-            <div v-if="item.tags && item.tags.length">
-              <section class="tags grid-x grid-padding-x mtm">
-                <div class="cell">
-                  <h3 class="h4">
-                    Tags
-                  </h3>
-                  <div class="grid-x">
-                    <div>
-                      {{ parseTagsList(item.tags) }}
-                    </div>
-                  </div>
-                </div>
-              </section>
+
+            <div
+              v-if="item.tags && item.tags.length"
+            >
+              <h3 class="title is-3 pt-2">
+                Tags
+              </h3>
+              <div>
+                {{ parseTagsList(item.tags) }}
+              </div>
             </div>
           </div>
 
-        </ExpandCollapse>
+        </expand-collapse>
       </div>
     </div>
   </div>
@@ -153,7 +145,6 @@ import transforms from '../util/transforms.js';
 export default {
   components: {
     ExpandCollapse,
-    Greeting: () => import(/* webpackChunkName: "pb_Greeting" */'./Greeting.vue'),
   },
   props: {
     isMapVisible: {
@@ -164,7 +155,7 @@ export default {
   data() {
     const data = {
       'shouldShowGreeting': true,
-    }
+    };
     return data;
   },
   mounted() {
@@ -175,11 +166,13 @@ export default {
   },
   computed: {
     i18nEnabled() {
+      let value;
       if (this.$config.i18n && this.$config.i18n.enabled) {
-        return true;
+        value = true;
       } else {
-        return false;
+        value = false;
       }
+      return value;
     },
     hasCustomGreeting() {
       let value = false;
@@ -189,18 +182,22 @@ export default {
       return value;
     },
     greetingText() {
+      let value;
       if (this.$config.greeting) {
-        return this.$config.greeting.message;
+        value = this.$config.greeting.message;
       } else {
-        return null;
+        value = null;
       }
+      return value;
     },
     greetingOptions() {
+      let value;
       if (this.$config.greeting) {
-        return this.$config.greeting.options;
+        value = this.$config.greeting.options;
       } else {
-        return {};
+        value = {};
       }
+      return value;
     },
     geocode() {
       return this.$store.state.geocode.data;
@@ -274,7 +271,9 @@ export default {
     },
     selectedServices(nextSelectedServices) {
       // console.log('watch, nextSelectedServices:', nextSelectedServices);
-      this.shouldShowGreeting = false;
+      if (nextSelectedServices.length) {
+        this.shouldShowGreeting = false;
+      }
     },
     selectedResources(nextSelectedResources) {
       // console.log('watch, nextSelectedResources:', nextSelectedResources);
@@ -288,7 +287,7 @@ export default {
       this.$gtag.event('click', {
         'event_category': this.$store.state.gtag.category,
         'event_label': 'view list',
-      })
+      });
     },
     getLocationsList() {
       const locations = this.sources[this.$appType].data.rows;
@@ -328,8 +327,8 @@ export default {
 <style lang="scss">
 
 .locations-panel{
-  overflow-y: auto;
-  height: calc(100vh - 192px);
+  overflow-y: visible !important;
+
   .detail{
     margin-bottom: 1rem;
     svg {
@@ -343,17 +342,22 @@ export default {
       padding-left: 2rem;
     }
   }
-  .services{
-    margin-top: 1rem;
-  }
-  .service-item{
-    margin-bottom: .5rem;
-  }
-  .tags {
-    margin-top: 2rem;
-  }
+  // .services{
+  //   margin-top: 1rem;
+  // }
+  // .service-item{
+  //   margin-bottom: 0px;
+  //   padding-bottom: 0px;
+  //   padding-top: 0px;
+  // }
+  // .tags {
+  //   margin-top: 2rem;
+  // }
 }
+
 .location-container{
   padding: 1rem;
+  overflow-y: visible;
 }
+
 </style>

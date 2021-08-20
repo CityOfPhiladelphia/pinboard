@@ -5,7 +5,7 @@
       <th
         v-for="(lang, key) in this.i18nMessages"
         @click="handleTableHeaderClick(key)"
-        :class="{ selected: isSelected === key, 'bottom-padding': true }"
+        :class="{ selected: isSelected === key, 'bottom-padding': true, 'centered-text': true }"
       >
       <!-- :class="key + ' underlined'" -->
         <a
@@ -52,6 +52,11 @@ export default {
         values = Object.keys(this.$i18n.messages);
       }
       return values;
+    },
+  },
+  watch: {
+    i18nLocale(nexti18nLocale) {
+      this.$data.isSelected = nexti18nLocale;
     },
   },
   methods: {
@@ -101,6 +106,10 @@ export default {
 .centered {
   width: 85%;
   margin: 0 auto;
+}
+
+.centered-text {
+  text-align: center !important;
 }
 
 .underlined {

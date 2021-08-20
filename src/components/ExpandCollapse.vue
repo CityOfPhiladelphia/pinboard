@@ -1,6 +1,7 @@
 <template>
+  <!-- class="cell medium-cell-block-container location-item" -->
   <div
-    class="cell medium-cell-block-container location-item"
+    class="location-item"
     :class="{ 'open': locationOpen }"
   >
     <h2
@@ -48,7 +49,7 @@ export default {
     },
     item: {
       type: Object,
-    }
+    },
   },
   data() {
     return {
@@ -65,11 +66,13 @@ export default {
       return value;
     },
     i18nEnabled() {
+      let value;
       if (this.$config.i18n && this.$config.i18n.enabled) {
-        return true;
+        value = true;
       } else {
-        return false;
+        value = false;
       }
+      return value;
     },
     subsections() {
       return this.$config.subsections || {};
@@ -195,7 +198,7 @@ export default {
         this.$gtag.event('list-click', {
           'event_category': this.$store.state.gtag.category,
           'event_label': siteName,
-        })
+        });
       } else {
         selectedResources.splice(selectedResources.indexOf(selectedResource), 1);
       }
@@ -207,16 +210,19 @@ export default {
     },
     makeID( itemTitle ){
       // console.log('itemTitle:', itemTitle);
+      let value;
       if (itemTitle) {
-        return itemTitle.replace(/\s+/g, '-').toLowerCase();
+        value = itemTitle.replace(/\s+/g, '-').toLowerCase();
       } else {
-        return '';
+        value = '';
       }
+      return value;
     },
   },
 };
 </script>
 <style lang="scss">
+@import "../assets/scss/main.scss";
 
 .location-item {
   position: relative;
@@ -230,6 +236,7 @@ export default {
   .location-title {
     cursor: pointer;
     padding: 1rem;
+    padding-right: 2rem;
     margin-bottom: 0;
     &:hover{
       background: #2176d2;
@@ -252,18 +259,19 @@ export default {
 
   &::after{
     position: absolute;
-    right:1rem;
-    top: 0;
+    right: 1rem;
+    top: 1rem;
     content: '+';
     font-weight: 900;
     font-size:1.5rem;
     z-index: 100;
-    color: color(dark-ben-franklin)
+    color: $ben-franklin-blue-dark;
   }
   &.open{
     h2{
       color:white;
-      background-color: color(ben-franklin-blue);
+      background-color: $ben-franklin-blue-dark;
+      // background-color: color(ben-franklin-blue);
       font-weight: 900;
     }
     &::after{

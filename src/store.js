@@ -7,7 +7,6 @@ import Vuex from 'vuex';
 import isMobileDevice from './util/is-mobile-device';
 import pvdStore from '@phila/vue-datafetch/src/store';
 import pvmStore from '@phila/vue-mapping/src/store';
-import pvcStore from '@phila/vue-comps/src/store';
 import mergeDeep from './util/merge-deep';
 import { format } from 'date-fns';
 
@@ -17,6 +16,7 @@ function createStore(config) {
   const sources = pvdStore.createSources(config);
   const rfStore = {
     state: {
+      currentSearch: null,
       isMobileOrTablet: isMobileDevice(),
       sources,
       map: {
@@ -44,6 +44,9 @@ function createStore(config) {
       // setSelectedServices(state, payload) {
       //   state.selectedServices = payload;
       // },
+      setCurrentSearch(state, payload) {
+        state.currentSearch = payload;
+      },
       setGtagCategory(state, payload) {
         state.gtag.category = payload;
       },
@@ -179,8 +182,8 @@ function createStore(config) {
     },
   };
 
-  let mergeStore = mergeDeep(pvcStore, pvdStore.store);
-  mergeStore = mergeDeep(mergeStore, pvmStore);
+  // let mergeStore = mergeDeep(pvcStore, pvdStore.store);
+  let mergeStore = mergeDeep(pvdStore.store, pvmStore);
   mergeStore = mergeDeep(mergeStore, rfStore);
 
   return new Vuex.Store({
