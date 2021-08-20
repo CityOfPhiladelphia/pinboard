@@ -29,6 +29,10 @@ Create pull request for changes and merge into `master` branch for travis-ci bui
 
 ## Release Notes
 
+### 1.0.0 - 8/20/2021
+
+* uses @phila/phila-ui, stops using @phila/vue-comps
+
 ### 0.6.0 - 6/10/2021
 
 * fixes refine for Multiple Field Groups apps
