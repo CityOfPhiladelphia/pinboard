@@ -232,9 +232,10 @@ export default {
       if (this.$config.footer) {
         let newValues = []
         for (let i of this.$config.footer) {
+          console.log('i:', i);
           let value = {}
           for (let j of Object.keys(i)) {
-            if (j !== "text") {
+            if (!this.i18nEnabled || j !== "text") {
               value[j] = i[j];
             } else {
               value[j] = this.$i18n.messages[this.i18nLocale].app[i[j]];
@@ -797,11 +798,19 @@ export default {
           } else if (row.services_offered) {
             servicesSplit = row.services_offered;
           }
+          // console.log('1 servicesSplit:', servicesSplit, 'typeof servicesSplit:', typeof servicesSplit);
+          if (typeof servicesSplit === 'string') {
+            servicesSplit = servicesSplit.split(',');
+          }
+          // console.log('2 servicesSplit:', servicesSplit, 'typeof servicesSplit:', typeof servicesSplit);
 
           if (selectedServices.length === 0) {
             booleanServices = true;
           } else {
-            const servicesFiltered = servicesSplit.filter(f => selectedServices.includes(f));
+            let servicesFiltered = [];
+            if (servicesSplit) {
+              servicesFiltered = servicesSplit.filter(f => selectedServices.includes(f));
+            }
             // console.log('servicesFiltered:', servicesFiltered, 'selectedServices:', selectedServices);
             // booleanServices = servicesFiltered.length > 0;
             booleanServices = servicesFiltered.length == selectedServices.length;
