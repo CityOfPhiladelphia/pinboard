@@ -384,17 +384,25 @@ export default {
           }
         });
 
-        // console.log('service:', service);
+        // console.log('RefinePanel.vue, service:', service);
         let serviceArray = service.split(/(,|;)/);
         serviceArray = serviceArray.map(s => s.trim());
+        // console.log('RefinePanel.vue, serviceArray:', serviceArray);
 
         const uniqArray = [ ...new Set(serviceArray) ];
+        // console.log('RefinePanel.vue, uniqArray:', uniqArray);
+
+
         // clean up any dangling , or ;
         uniq = uniqArray.filter(a => a.length > 2);
         uniq.filter(Boolean); // remove empties
         let undef = uniq.indexOf('undefined');
         if (undef > -1) {
           uniq.splice(undef, 1);
+        }
+        let nullVal = uniq.indexOf('null');
+        if (nullVal > -1) {
+          uniq.splice(nullVal, 1);
         }
         uniq.sort();
 
