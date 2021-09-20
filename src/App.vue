@@ -792,12 +792,20 @@ export default {
 
         } else {
           // the original default version, or refine.type = 'categoryField_array'
+
+          // console.log('in else, row:', row, 'row.services_offered:', row.services_offered);
           let servicesSplit;
           if (this.$config.refine) {
             servicesSplit = this.$config.refine.value(row);
           } else if (row.services_offered) {
             servicesSplit = row.services_offered;
           }
+
+          // if (row.attributes) {
+          //   row.attributes._featureId = row._featureId;
+          //   row = row.attributes;
+          // }
+
           // console.log('1 servicesSplit:', servicesSplit, 'typeof servicesSplit:', typeof servicesSplit);
           if (typeof servicesSplit === 'string') {
             servicesSplit = servicesSplit.split(',');
@@ -836,7 +844,7 @@ export default {
         }
 
         let booleanKeywords = true;
-        // console.log('this.selectedKeywords:', this.selectedKeywords, 'this.selectedKeywords.length:', this.selectedKeywords.length);
+        console.log('row:', row, 'this.selectedKeywords:', this.selectedKeywords, 'this.selectedKeywords.length:', this.selectedKeywords.length);
         if (this.selectedKeywords.length > 0) {
           booleanKeywords = false;
           let description = [];
@@ -844,6 +852,12 @@ export default {
             description = row.tags;
           } else if (row.tags) {
             description = row.tags.split(', ');
+          } else if (this.$config.tags && this.$config.tags.type == 'tagLocation') {
+            if (Array.isArray(this.$config.tags.location(row))) {
+              description = this.$config.tags.location(row);
+            } else if (this.$config.tags.location(row)) {
+              description = this.$config.tags.location(row).split(', ');
+            }
           } else if (this.$config.tags && this.$config.tags.type == 'fieldValues') {
             for (let tag of this.$config.tags.tags) {
               // console.log('tag:', tag, 'tag.field:', tag.field, 'row.attributes[tag.field]:', row.attributes[tag.field]);
