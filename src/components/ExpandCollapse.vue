@@ -266,6 +266,7 @@ export default {
     font-size:1.5rem;
     z-index: 100;
     color: $ben-franklin-blue-dark;
+    pointer-events: none;
   }
   &.open{
     h2{
