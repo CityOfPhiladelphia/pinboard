@@ -29,6 +29,10 @@ Create pull request for changes and merge into `master` branch for travis-ci bui
 
 ## Release Notes
 
+### 1.0.1 - 9/20/2021
+
+* fixes tag searching
+
 ### 1.0.0 - 8/20/2021
 
 * uses @phila/phila-ui, stops using @phila/vue-comps
