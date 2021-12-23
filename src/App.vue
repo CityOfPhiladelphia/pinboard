@@ -153,7 +153,8 @@
 
 <script>
 
-import 'maplibre-gl/dist/maplibre-gl.css';
+// import 'maplibre-gl/dist/maplibre-gl.css';
+import 'mapbox-gl/dist/mapbox-gl.css';
 
 import Fuse from 'fuse.js'
 
