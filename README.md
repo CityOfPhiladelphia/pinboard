@@ -29,6 +29,11 @@ Create pull request for changes and merge into `master` branch for travis-ci bui
 
 ## Release Notes
 
+### 1.0.2 - 1/18/2021
+
+* uses new commits of pvd and pvm
+* fixes scrollbar issues
+
 ### 1.0.1 - 9/20/2021
 
 * fixes tag searching
