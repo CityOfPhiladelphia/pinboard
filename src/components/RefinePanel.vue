@@ -226,12 +226,12 @@ export default {
       let value;
       if (this.isMobile) {
         if (this.refineOpen) {
-          value = 'refine-panel refine-panel-open';
+          value = 'refine-panel refine-panel-open invisible-scrollbar';
         } else {
-          value = 'refine-panel refine-panel-closed';
+          value = 'refine-panel refine-panel-closed invisible-scrollbar';
         }
       } else {
-        value = 'refine-panel refine-panel-non-mobile';
+        value = 'refine-panel refine-panel-non-mobile invisible-scrollbar';
       }
       return value;
     },

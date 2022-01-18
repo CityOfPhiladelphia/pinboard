@@ -152,19 +152,16 @@ export default {
       default: true,
     },
   },
-  data() {
-    const data = {
-      'shouldShowGreeting': true,
-    };
-    return data;
-  },
   mounted() {
     // console.log('LocationsPanel.vue mounted, this.$config:', this.$config);
     if (!this.$config.greeting && (!this.$config.customComps || !this.$config.customComps.customGreeting)) {
-      this.shouldShowGreeting = false;
+      this.$store.commit(setShouldShowGreeting, false);
     }
   },
   computed: {
+    shouldShowGreeting() {
+      return this.$store.state.shouldShowGreeting;
+    },
     i18nEnabled() {
       let value;
       if (this.$config.i18n && this.$config.i18n.enabled) {
@@ -263,27 +260,27 @@ export default {
   watch: {
     geocode(nextGeocode) {
       // console.log('watch, nextGeocode:', nextGeocode);
-      this.shouldShowGreeting = false;
+      this.$store.commit('setShouldShowGreeting', false);
     },
     selectedKeywords(nextSelectedKeywords) {
       // console.log('watch, nextSelectedKeywords:', nextSelectedKeywords);
-      this.shouldShowGreeting = false;
+      this.$store.commit('setShouldShowGreeting', false);
     },
     selectedServices(nextSelectedServices) {
       // console.log('watch, nextSelectedServices:', nextSelectedServices);
       if (nextSelectedServices.length) {
-        this.shouldShowGreeting = false;
+        this.$store.commit('setShouldShowGreeting', false);
       }
     },
     selectedResources(nextSelectedResources) {
       // console.log('watch, nextSelectedResources:', nextSelectedResources);
-      this.shouldShowGreeting = false;
+      this.$store.commit('setShouldShowGreeting', false);
     },
   },
   methods: {
     clickedViewList() {
       // console.log('clickedViewList is running');
-      this.shouldShowGreeting = false;
+      this.$store.commit('setShouldShowGreeting', false);
       this.$gtag.event('click', {
         'event_category': this.$store.state.gtag.category,
         'event_label': 'view list',

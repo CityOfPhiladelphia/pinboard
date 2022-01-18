@@ -16,6 +16,7 @@ function createStore(config) {
   const sources = pvdStore.createSources(config);
   const rfStore = {
     state: {
+      shouldShowGreeting: true,
       currentSearch: null,
       isMobileOrTablet: isMobileDevice(),
       sources,
@@ -44,6 +45,9 @@ function createStore(config) {
       // setSelectedServices(state, payload) {
       //   state.selectedServices = payload;
       // },
+      setShouldShowGreeting(state, payload) {
+        state.shouldShowGreeting = payload;
+      },
       setCurrentSearch(state, payload) {
         state.currentSearch = payload;
       },
