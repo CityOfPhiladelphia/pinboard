@@ -104,11 +104,11 @@
 
     <div
       v-show="!isMobile || isMobile && !refineOpen"
-      class="locations-and-map-panels-holder columns"
+      :class="locationsAndMapsPanelClass + ' locations-and-map-panels-holder columns'"
     >
       <div
         v-show="locationsPanelVisible"
-        class="locations-panel-holder column"
+        :class="locationsPanelClass + ' locations-panel-holder column'"
       >
         <locations-panel />
       </div>
@@ -153,7 +153,8 @@
 
 <script>
 
-import 'maplibre-gl/dist/maplibre-gl.css';
+// import 'maplibre-gl/dist/maplibre-gl.css';
+import 'mapbox-gl/dist/mapbox-gl.css';
 
 import Fuse from 'fuse.js'
 
@@ -222,6 +223,28 @@ export default {
     };
   },
   computed: {
+    shouldShowGreeting() {
+      return this.$store.state.shouldShowGreeting;
+    },
+    locationsAndMapsPanelClass() {
+      // let value;
+      // if (!this.isMobile || this.shouldShowGreeting) {
+      //   value = 'invisible-scrollbar';
+      // } else {
+      //   value = '';
+      // }
+      let value = 'invisible-scrollbar';
+      return value;
+    },
+    locationsPanelClass() {
+      let value;
+      if (this.isMobile) {
+        value = 'invisible-scrollbar';
+      } else {
+        value = '';
+      }
+      return value;
+    },
     addressInputPlaceholder() {
       if (this.$config.addressInput) {
         return this.$config.addressInput.placeholder;
@@ -602,6 +625,10 @@ export default {
     }
   },
   created() {
+
+    let root = document.getElementsByTagName( 'html' )[0]; // '0' to assign the first (and only `HTML` tag)
+    root.setAttribute( 'class', 'invisible-scrollbar' );
+
     console.log('App.vue created, this.$config:', this.$config);
     if (this.$config.map) {
       if (this.$config.map.shouldInitialize === false) {
@@ -1059,6 +1086,15 @@ html, body {
   // background-color: #88d8b0;
 }
 
+.invisible-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.invisible-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
 @media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
   /* IE10+ CSS styles go here */
 
@@ -1104,10 +1140,6 @@ a {
 .no-scroll{
   overflow: hidden;
   height: 100vh;
-}
-
-::-webkit-scrollbar {
-  display: none;
 }
 
 .toggle-map{
