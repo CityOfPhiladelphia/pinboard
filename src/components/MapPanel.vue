@@ -738,6 +738,7 @@ export default {
 .popup-text {
   font-family: "Montserrat", sans-serif;
   font-size: .9rem;
+  padding-right: 20px;
 }
 
 .map-container-no-refine {
