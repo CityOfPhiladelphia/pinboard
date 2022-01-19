@@ -110,7 +110,9 @@
         v-show="locationsPanelVisible"
         :class="locationsPanelClass + ' locations-panel-holder column'"
       >
-        <locations-panel />
+        <locations-panel
+          :is-map-visible="isMapVisible"
+        />
       </div>
 
 
@@ -121,6 +123,7 @@
         <map-panel
           @handle-search-form-submit="handleSubmit"
           @clear-search="clearSearchTriggered"
+          @toggleMap="toggleMap"
         />
       </div>
 

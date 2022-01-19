@@ -335,7 +335,7 @@ export default {
   border-width: 2px; */
   /* width: 405px; */
   /* width: 305px; */
-  /* z-index: 1000; */
+  // z-index: 1000;
 }
 
 /* Form */

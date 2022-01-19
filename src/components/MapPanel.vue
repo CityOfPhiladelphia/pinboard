@@ -715,6 +715,7 @@ export default {
       }
     },
     toggleMap() {
+      console.log('MapPanel.vue toggleMap is running');
       this.$emit('toggleMap');
     },
     onMapLoaded(event) {
@@ -736,7 +737,7 @@ export default {
 
 .popup-text {
   font-family: "Montserrat", sans-serif;
-  font-size: 1.1rem;
+  font-size: .9rem;
 }
 
 .map-container-no-refine {

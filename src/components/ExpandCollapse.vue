@@ -132,6 +132,7 @@ export default {
       }
     },
     isMapVisible(nextIsMapVisible) {
+      // console.log('ExpandCollapse watch isMapVisible');
       if (!nextIsMapVisible) {
         if (this.latestSelectedResourceFromMap) {
           // console.log('ExpandCollapse is reporting map is invisible and there is a this.latestSelectedResourceFromMap:', this.latestSelectedResourceFromMap);

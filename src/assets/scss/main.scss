@@ -2,3 +2,11 @@
 @import "@phila/phila-ui/src/assets/styles/scss/all.scss";
 @import "bulma/bulma.sass";
 @import '~bulma-checkradio';
+
+.content h1 {
+  margin-bottom: 2rem !important;
+}
+
+.content h2 {
+  margin-bottom: 1rem !important;
+}

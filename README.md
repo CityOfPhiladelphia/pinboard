@@ -29,7 +29,12 @@ Create pull request for changes and merge into `master` branch for travis-ci bui
 
 ## Release Notes
 
-### 1.0.2 - 1/18/2021
+### 1.0.3 - 1/19/2022
+
+* uses pvm 3.1.2 which fixes circle markers and popups
+* cleans up old scss and vestigial files
+
+### 1.0.2 - 1/18/2022
 
 * uses new commits of pvd and pvm
 * fixes scrollbar issues
