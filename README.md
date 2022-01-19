@@ -29,6 +29,10 @@ Create pull request for changes and merge into `master` branch for travis-ci bui
 
 ## Release Notes
 
+### 1.0.4 - 1/19/2022
+
+* uses pvm 3.1.3, fixes placement of text in mapbox popups
+
 ### 1.0.3 - 1/19/2022
 
 * uses pvm 3.1.2 which fixes circle markers and popups
