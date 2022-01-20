@@ -156,6 +156,9 @@
 
 <script>
 
+import proj4 from 'proj4';
+import SharedFunctions from './components/mixins/SharedFunctions.vue';
+
 // import 'maplibre-gl/dist/maplibre-gl.css';
 import 'mapbox-gl/dist/mapbox-gl.css';
 
@@ -203,6 +206,9 @@ export default {
     PhilaUiAddressInput,
     CyclomediaWidget: () => import(/* webpackChunkName: "mbmb_pvm_CyclomediaWidget" */'@phila/vue-mapping/src/cyclomedia/Widget.vue'),
   },
+  mixins: [
+    SharedFunctions,
+  ],
   data() {
     return {
       publicPath: process.env.BASE_URL,
@@ -226,6 +232,15 @@ export default {
     };
   },
   computed: {
+    projection4326() {
+      return "+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs";
+    },
+    projection2272() {
+      return "+proj=lcc +lat_1=40.96666666666667 +lat_2=39.93333333333333 +lat_0=39.33333333333334 +lon_0=-77.75 +x_0=600000 +y_0=0 +ellps=GRS80 +datum=NAD83 +to_meter=0.3048006096012192 +no_defs";
+    },
+    projection3857() {
+      return "+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +wktext  +no_defs";
+    },
     shouldShowGreeting() {
       return this.$store.state.shouldShowGreeting;
     },
@@ -755,7 +770,7 @@ export default {
       const filteredRows = [];
 
       for (const [index, row] of this.database.entries()) {
-        // console.log('row:', row, 'index:', index);
+        console.log('row:', row, 'index:', index);
         let booleanServices;
         const { selectedServices } = this.$store.state;
         // console.log('row.services_offered:', row.services_offered);
@@ -874,11 +889,38 @@ export default {
         } else if (row.lat && row.lon) {
           // console.log('buffer else if 2 is running, row:', row, 'booleanBuffer:', booleanBuffer);
           if (typeof row.lat === 'number' && typeof row.lon === 'number') {
-            const rowPoint = point([ row.lon, row.lat ]);
+            let projection = this.getProjection(row);
+            let lnglat;
+            if (projection === '3857') {
+              lnglat = proj4(this.projection3857, this.projection4326, [ row.lon, row.lat ]);
+            } else if (projection === '2272') {
+              lnglat = proj4(this.projection2272, this.projection4326, [ row.lon, row.lat ]);
+            } else {
+              lnglat = [ row.lon, row.lat ];
+            }
+            const rowPoint = point(lnglat);
             if (booleanPointInPolygon(rowPoint, this.$data.buffer)) {
               booleanBuffer = true;
             }
             // console.log('buffer else if 2 IF is running, row:', row, 'rowPoint:', rowPoint, 'booleanBuffer:', booleanBuffer);
+          }
+        } else if (row.geometry && row.geometry.x) {
+          // console.log('buffer else if 3 is running, row:', row, 'booleanBuffer:', booleanBuffer);
+          if (typeof row.geometry.x === 'number' && typeof row.geometry.y === 'number') {
+            let projection = this.getProjection(row);
+            let lnglat;
+            if (projection === '3857') {
+              lnglat = proj4(this.projection3857, this.projection4326, [ row.geometry.x, row.geometry.y ]);
+            } else if (projection === '2272') {
+              lnglat = proj4(this.projection2272, this.projection4326, [ row.geometry.x, row.geometry.y ]);
+            } else {
+              lnglat = [ row.geometry.x, row.geometry.y ];
+            }
+            const rowPoint = point(lnglat);
+            if (booleanPointInPolygon(rowPoint, this.$data.buffer)) {
+              booleanBuffer = true;
+            }
+            // console.log('buffer else if 3 IF is running, row:', row, 'rowPoint:', rowPoint, 'booleanBuffer:', booleanBuffer);
           }
         } else {
           // console.log('neither ran');

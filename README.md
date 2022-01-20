@@ -29,6 +29,10 @@ Create pull request for changes and merge into `master` branch for travis-ci bui
 
 ## Release Notes
 
+### 1.0.6 - 1/20/2022
+
+* fixes bug with loading app filtered when coordinates are projected
+
 ### 1.0.5 - 1/20/2022
 
 * uses pvm 3.1.4, fixing z-index issues
