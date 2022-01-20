@@ -754,8 +754,8 @@ export default {
       console.log('App.vue filterPoints is running, this.database:', this.database);
       const filteredRows = [];
 
-      for (const row of this.database) {
-        // console.log('row:', row);
+      for (const [index, row] of this.database.entries()) {
+        // console.log('row:', row, 'index:', index);
         let booleanServices;
         const { selectedServices } = this.$store.state;
         // console.log('row.services_offered:', row.services_offered);
@@ -853,28 +853,40 @@ export default {
             // booleanServices = servicesFiltered.length > 0;
             booleanServices = servicesFiltered.length == selectedServices.length;
           }
-          // console.log('else is running, booleanServices:', booleanServices);
+          // console.log('services else is running, row:', row, 'selectedServices:', selectedServices, 'booleanServices:', booleanServices);
         }
 
+        // console.log('about to do buffer stuff, row:', row);
         let booleanBuffer = false;
         if (!this.$data.buffer) {
           // console.log('!this.$data.buffer');
           booleanBuffer = true;
         } else if (row.latlng) {
           // console.log('row.latlng:', row.latlng);
+          // console.log('buffer else if 1 is running, row:', row, 'booleanBuffer:', booleanBuffer);
           if (typeof row.latlng[0] === 'number' && row.latlng[0] !== null) {
             const rowPoint = point([ row.latlng[1], row.latlng[0] ]);
             if (booleanPointInPolygon(rowPoint, this.$data.buffer)) {
               booleanBuffer = true;
             }
+            // console.log('buffer else if 1 IF is running, row:', row, 'rowPoint:', rowPoint, 'booleanBuffer:', booleanBuffer);
+          }
+        } else if (row.lat && row.lon) {
+          // console.log('buffer else if 2 is running, row:', row, 'booleanBuffer:', booleanBuffer);
+          if (typeof row.lat === 'number' && typeof row.lon === 'number') {
+            const rowPoint = point([ row.lon, row.lat ]);
+            if (booleanPointInPolygon(rowPoint, this.$data.buffer)) {
+              booleanBuffer = true;
+            }
+            // console.log('buffer else if 2 IF is running, row:', row, 'rowPoint:', rowPoint, 'booleanBuffer:', booleanBuffer);
           }
         } else {
-          console.log('neither ran');
+          // console.log('neither ran');
           // booleanBuffer = true;
         }
 
         let booleanKeywords = true;
-        console.log('row:', row, 'this.selectedKeywords:', this.selectedKeywords, 'this.selectedKeywords.length:', this.selectedKeywords.length);
+        // console.log('row:', row, 'this.selectedKeywords:', this.selectedKeywords, 'this.selectedKeywords.length:', this.selectedKeywords.length);
         if (this.selectedKeywords.length > 0) {
           booleanKeywords = false;
           let description = [];

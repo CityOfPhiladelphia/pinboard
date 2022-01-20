@@ -29,6 +29,11 @@ Create pull request for changes and merge into `master` branch for travis-ci bui
 
 ## Release Notes
 
+### 1.0.5 - 1/20/2022
+
+* uses pvm 3.1.4, fixing z-index issues
+* fixes longstanding bug with loading the app filtered and then unfiltering
+
 ### 1.0.4 - 1/19/2022
 
 * uses pvm 3.1.3, fixes placement of text in mapbox popups
