@@ -16,10 +16,11 @@
 
       <textbox
         id="map-textbox"
-        :placeholder="$props.placeholder || 'Search by address or keyword'"
+        :placeholder="this.$props.placeholder || 'wawa Search by address or keyword'"
         v-model="addressEntered"
         :style="inputStyle"
       />
+      <!-- :placeholder="this.$props.placeholder" -->
       <!-- :value="addressEntered" -->
 
     </form>
@@ -64,12 +65,15 @@ export default {
   components: {
     Textbox,
   },
-  props: [
-    'position',
-    'widthFromConfig',
-    'placeholder',
-    'static',
-  ],
+  props: {
+    placeholder: {
+      type: String,
+      default: 'address',
+    },
+    // 'position',
+    // 'widthFromConfig',
+    // 'static',
+  },
   data() {
     const data = {
       inputID: generateUniqueId(),

@@ -87,8 +87,8 @@
       class="search-bar-container-class"
     >
     <!-- :class="refinePanelClass" -->
+    <!-- :placeholder="addressInputPlaceholder" -->
       <phila-ui-address-input
-        :placeholder="addressInputPlaceholder"
         @clear-search="clearSearchTriggered"
         @handle-search-form-submit="handleSubmit"
       />
@@ -264,8 +264,8 @@ export default {
       return value;
     },
     addressInputPlaceholder() {
-      if (this.$config.addressInput) {
-        return this.$config.addressInput.placeholder;
+      if (this.$config.searchBar) {
+        return this.$config.searchBar.placeholder;
       }
       return null;
     },
@@ -338,14 +338,14 @@ export default {
       let final;
       if (this.i18nEnabled) {
         final = {};
-        if (this.$config.searchBar.dropdown) {
-          for (let value of this.$config.searchBar.dropdown) {
+        if (this.$config.searchBar.searchTypes) {
+          for (let value of this.$config.searchBar.searchTypes) {
             final[value] = this.$i18n.messages[this.i18nLocale][value];
           }
         }
       } else {
-        if (this.$config.searchBar.dropdown) {
-          final = this.$config.searchBar.dropdown;
+        if (this.$config.searchBar.searchTypes) {
+          final = this.$config.searchBar.searchTypes;
         }
       }
       return final;
@@ -576,7 +576,7 @@ export default {
     console.log('in App.vue mounted 210818, this.$store.state:', this.$store.state, 'this.$config:', this.$config, 'window.location.href:', window.location.href);
     // this.track();
 
-    this.$config.searchBar.dropdown.forEach(item => {
+    this.$config.searchBar.searchTypes.forEach(item => {
       if (this.$route.query[item]) {
       // if (item == 'address' && this.$route.query[item]) {
         console.log('App.vue mounted item:', item, 'this.searchBarType:', this.searchBarType);
@@ -595,7 +595,7 @@ export default {
     if (this.$config.searchBar) {
       // if (this.$config.searchBar.dropdown) { //&& this.$config.searchBar.dropdown.length === 1) {
       let routeQuery = Object.keys(this.$route.query);
-      console.log('App.vue mounted in dropdown section, this.$route:', this.$route, 'routeQuery:', routeQuery, 'Object.keys(this.$route.query)[0]', Object.keys(this.$route.query)[0]);
+      console.log('App.vue mounted in searchTypes section, this.$route:', this.$route, 'routeQuery:', routeQuery, 'Object.keys(this.$route.query)[0]', Object.keys(this.$route.query)[0]);
       let value;
       for (let query of routeQuery) {
         if (query === 'address' || query === 'keyword') {
@@ -667,22 +667,22 @@ export default {
   },
 
   methods: {
-    handleSearchbarChange(value) {
-      console.log('App.vue handleSearchbarChange is running, value:', value);
-      this.$store.commit('setSearchType', value);
-
-      this.$store.commit('setSelectedKeywords', []);
-      let startQuery = { ...this.$route.query };
-      let overlap = this.compareArrays(Object.keys(startQuery), this.$config.searchBar.dropdown);
-      if (overlap.length) {
-        for (let item of overlap) {
-          delete startQuery[item];
-        }
-        this.$router.push({ query: startQuery });
-      }
-      this.searchString = '';
-      this.$controller.resetGeocode();
-    },
+    // handleSearchbarChange(value) {
+    //   console.log('App.vue handleSearchbarChange is running, value:', value);
+    //   this.$store.commit('setSearchType', value);
+    //
+    //   this.$store.commit('setSelectedKeywords', []);
+    //   let startQuery = { ...this.$route.query };
+    //   let overlap = this.compareArrays(Object.keys(startQuery), this.$config.searchBar.dropdown);
+    //   if (overlap.length) {
+    //     for (let item of overlap) {
+    //       delete startQuery[item];
+    //     }
+    //     this.$router.push({ query: startQuery });
+    //   }
+    //   this.searchString = '';
+    //   this.$controller.resetGeocode();
+    // },
     compareArrays(arr1, arr2) {
       const finalArray = [];
       arr1.forEach((e1) => arr2.forEach((e2) =>
