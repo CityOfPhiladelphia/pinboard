@@ -86,13 +86,11 @@
       v-show="isMobile"
       class="search-bar-container-class"
     >
-    <!-- :class="refinePanelClass" -->
-    <!-- :placeholder="addressInputPlaceholder" -->
       <phila-ui-address-input
+        :placeholder="addressInputPlaceholder"
         @clear-search="clearSearchTriggered"
         @handle-search-form-submit="handleSubmit"
       />
-      <!-- :width-from-config="addressInputWidth" -->
     </div>
 
     <div
@@ -228,6 +226,7 @@ export default {
       searchString: null,
       refineEnabled: true,
       searchBarType: 'address',
+      addressInputPlaceholder: null,
       // footerLinks: [],
     };
   },
@@ -262,12 +261,6 @@ export default {
         value = '';
       }
       return value;
-    },
-    addressInputPlaceholder() {
-      if (this.$config.searchBar) {
-        return this.$config.searchBar.placeholder;
-      }
-      return null;
     },
     footerLinks() {
       if (this.$config.footer) {
@@ -603,6 +596,8 @@ export default {
         }
       }
       this.$store.commit('setCurrentSearch', value);
+
+      this.addressInputPlaceholder = this.$config.searchBar.placeholder;
       // let queryValue;
       // if (routeQuery.includes('keyword')) {
       //   queryValue = 'keyword';
@@ -1076,6 +1071,11 @@ html, body {
   //   }
   // }
 
+}
+
+#app-header .container {
+  padding-left: 16px !important;
+  padding-right: 16px !important;
 }
 
 .title-col {
