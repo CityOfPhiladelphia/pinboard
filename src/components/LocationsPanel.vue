@@ -104,8 +104,7 @@
             <div
               v-if="item.services_offered"
             >
-            <!-- class="columns" -->
-              <h3 class="title section-title is-3">
+              <h3 class="title section-title is-4">
                 Services offered
               </h3>
               <div class="columns is-multiline is-gapless">
@@ -122,7 +121,7 @@
             <div
               v-if="item.tags && item.tags.length"
             >
-              <h3 class="title section-title is-3 pt-2">
+              <h3 class="title section-title is-4 pt-2">
                 Tags
               </h3>
               <div>
