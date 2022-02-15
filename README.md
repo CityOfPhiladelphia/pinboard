@@ -29,6 +29,10 @@ Create pull request for changes and merge into `master` branch for travis-ci bui
 
 ## Release Notes
 
+### 1.0.7 - 2/15/2022
+
+* makes it so that the address/keyword input can be for addresses only
+
 ### 1.0.6 - 1/20/2022
 
 * fixes bug with loading app filtered when coordinates are projected
