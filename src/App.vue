@@ -91,6 +91,7 @@
         @clear-search="clearSearchTriggered"
         @handle-search-form-submit="handleSubmit"
       />
+      <!-- :input-validation="inputValidation" -->
     </div>
 
     <div
@@ -123,6 +124,7 @@
           @clear-search="clearSearchTriggered"
           @toggleMap="toggleMap"
         />
+        <!-- :input-validation="inputValidation" -->
       </div>
 
     </div>
@@ -227,6 +229,7 @@ export default {
       refineEnabled: true,
       searchBarType: 'address',
       addressInputPlaceholder: null,
+      // inputValidation: true,
       // footerLinks: [],
     };
   },
@@ -693,11 +696,26 @@ export default {
       let query;
       let searchBarType;
       let val2 = parseFloat(val.substring(0));
+      console.log('handleSubmit 1, this.$config.searchBar.searchTypes:', this.$config.searchBar.searchTypes);
       if (isNaN(val2)) {
-        query = { 'keyword': val };
-        this.searchBarType = 'keyword';
-        searchBarType = 'keyword';
+        if (!this.$config.searchBar.searchTypes.includes('keyword')) {
+          console.log('cannot search keywords');
+          this.$warning(`Please search an address`, {
+            duration: 4000,
+            closeOnClick: true,
+          });
+          // this.inputValidation = false;
+          return;
+        } else {
+          // this.inputValidation = true;
+          // this.$success(`Success!`, { duration: 1000 });
+          query = { 'keyword': val };
+          this.searchBarType = 'keyword';
+          searchBarType = 'keyword';
+        }
       } else {
+        // this.inputValidation = true;
+        // this.$success(`Success!`, { duration: 1000 });
         query = { 'address': val };
         this.searchBarType = 'address';
         searchBarType = 'address';
@@ -765,7 +783,7 @@ export default {
       const filteredRows = [];
 
       for (const [index, row] of this.database.entries()) {
-        console.log('row:', row, 'index:', index);
+        // console.log('row:', row, 'index:', index);
         let booleanServices;
         const { selectedServices } = this.$store.state;
         // console.log('row.services_offered:', row.services_offered);

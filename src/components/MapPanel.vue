@@ -107,6 +107,7 @@
         @clear-search="handleClearSearch"
         @handle-search-form-submit="handleSearchFormSubmit"
       />
+      <!-- :input-validation="inputValidation" -->
 
       <MglNavigationControl position="bottom-right"/>
 
@@ -156,6 +157,12 @@ export default {
     MglFontAwesomeMarker,
     OverlayLegend: () => import(/* webpackChunkName: "pvm_OverlayLegend" */'@phila/vue-mapping/src/mapbox/OverlayLegend'),
   },
+  // props: {
+  //   inputValidation: {
+  //     type: Boolean,
+  //     default: true,
+  //   },
+  // },
   mixins: [
     SharedFunctions,
     cyclomediaMixin,

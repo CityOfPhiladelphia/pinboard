@@ -1,4 +1,5 @@
 import "./assets/scss/main.scss";
+import 'animate.css/animate.min.css';
 
 import Vue from 'vue';
 import VueI18n from 'vue-i18n'
@@ -22,6 +23,8 @@ import VueGtag from 'vue-gtag';
 // and making it available to all components as "this.$config"
 import mergeDeep from './util/merge-deep';
 import configMixin from './util/config-mixin';
+
+import notifications from './components/notifications';
 
 
 // baseConfig is right now coming in from within the project
@@ -93,6 +96,8 @@ function finishInit(config) {
 
   // create store
   const store = createStore(config);
+
+  Vue.use(notifications, { store });
 
   // mix in controller
   Vue.use(controllerMixin, { config, store });

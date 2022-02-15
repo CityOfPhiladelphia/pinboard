@@ -3,23 +3,49 @@
     :style="containerStyle"
     class="pvm-search-control-container"
   >
+    <!-- <ValidationObserver
+      v-slot="validation"
+      tag="div"
+    > -->
+      <form
+        id="search-form"
+        autocomplete="off"
+        :class="formClass"
+        alt="test test"
+        aria-label="button"
+        title="addressform"
+        @submit.prevent="handleSearchFormSubmit"
+      >
+        <textbox
+          id="map-textbox"
+          v-model="addressEntered"
+          name="Submit Box"
+          :placeholder="placeholder || 'Search by address or keyword'"
+          rules="address"
+          :style="inputStyle"
+        />
 
-    <form
-      id="search-form"
-      autocomplete="off"
-      :class="formClass"
-      alt="test test"
-      aria-label="button"
-      title="addressform"
-      @submit.prevent="handleSearchFormSubmit"
-    >
-      <textbox
-        id="map-textbox"
-        :placeholder="placeholder || 'Search by address or keyword'"
-        v-model="addressEntered"
-        :style="inputStyle"
-      />
-    </form>
+        <!-- <div
+          v-if="addressEntered != '' && addressEntered != null"
+          :class="'pvm-search-control-button ' + buttonClass"
+          aria-label="delete button"
+          title="delete button"
+          @click.prevent="handleFormX"
+        >
+          <font-awesome-icon icon="times" size="2x" />
+        </div>
+
+        <div
+          :class="'pvm-search-control-button ' + buttonClass"
+          aria-label="search button"
+          title="search button"
+          @click.prevent="handleSearchFormSubmit(validation)"
+        >
+          <font-awesome-icon icon="search" size="2x" aria-hidden="true" />
+        </div> -->
+
+      </form>
+    <!-- </ValidationObserver> -->
 
     <div
       v-if="addressEntered != '' && addressEntered != null"
@@ -52,16 +78,33 @@ import {
   Textbox,
 } from '@phila/phila-ui';
 
+// import {
+//   extend,
+//   withValidation,
+//   ValidationObserver,
+//   setInteractionMode,
+//   validate,
+// } from 'vee-validate';
+
+// import { required, email } from 'vee-validate/dist/rules';
+// const VeeTextbox = withValidation(Textbox);
+
 export default {
   name: 'PhilaUiAddressInput',
   components: {
     Textbox,
+    // VeeTextbox,
+    // ValidationObserver,
   },
   props: {
     placeholder: {
       type: String,
       default: 'address',
     },
+    // inputValidation: {
+    //   type: Boolean,
+    //   default: true,
+    // },
   },
   data() {
     const data = {
@@ -161,6 +204,15 @@ export default {
     if (this.$config.defaultAddress) {
       this.addressEntered = this.$config.defaultAddress;
     }
+
+    setInteractionMode('aggressive');
+    let self = this;
+    extend('address', value => {
+      let newValue;
+      newValue = self.inputValidation;
+      // console.log('extend address, value:', value, 'self.inputValidation:', self.inputValidation, 'newValue:', newValue);
+      return newValue;
+    });
   },
   mounted() {
     // console.log('PhilaUiAddressInput mounted is running, this.currentSearch:', this.currentSearch);
@@ -174,6 +226,14 @@ export default {
       console.log('watch currentSearch, nextCurrentSearch:', nextCurrentSearch);
       this.addressEntered = this.currentSearch;
     },
+    // inputValidation(nextInputValidation) {
+    //   console.log('PhilaUiAddressInput watch inputValidation, nextInputValidation:', nextInputValidation);
+    //   if (nextInputValidation === false) {
+    //     this.$warning(`Oops wawa`, { duration: 2000 });
+    //   } else {
+    //     this.$success(`Success!`, { duration: 1000 });
+    //   }
+    // },
   },
   methods: {
     handleFormX() {
@@ -181,8 +241,8 @@ export default {
       this.$data.addressEntered = '';
       this.$emit('clear-search');
     },
-    handleSearchFormSubmit() {
-      console.log('MapAddressInput handleSearchFormSubmit is running');
+    async handleSearchFormSubmit() {
+      // console.log('MapAddressInput handleSearchFormSubmit is running, isValid:', isValid);
       let value = this.$data.addressEntered;
       if (value) {
         this.$emit('handle-search-form-submit', value);
@@ -206,11 +266,6 @@ export default {
   position: absolute;
   display: flex;
   border-radius: 2px;
-  /* border-style: solid;
-  border-color: #2176d2;
-  border-width: 2px; */
-  /* width: 405px; */
-  /* width: 305px; */
   z-index: 1000;
 }
 
@@ -223,12 +278,6 @@ export default {
 /* Input */
 
 .pvm-search-control-input {
-  /* display: inline-block; */
-  /* border: 0; */
-  /* padding: 15px; */
-  /* font-family: 'Montserrat', 'Tahoma', sans-serif; */
-  /* font-size: 16px; */
-  /* width: 250px; */
   border-style: solid;
   border-color: #2176d2;
   border-width: 2px;
