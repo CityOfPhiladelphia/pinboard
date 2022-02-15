@@ -107,6 +107,7 @@
         @clear-search="handleClearSearch"
         @handle-search-form-submit="handleSearchFormSubmit"
       />
+      <!-- :input-validation="inputValidation" -->
 
       <MglNavigationControl position="bottom-right"/>
 
@@ -156,6 +157,12 @@ export default {
     MglFontAwesomeMarker,
     OverlayLegend: () => import(/* webpackChunkName: "pvm_OverlayLegend" */'@phila/vue-mapping/src/mapbox/OverlayLegend'),
   },
+  // props: {
+  //   inputValidation: {
+  //     type: Boolean,
+  //     default: true,
+  //   },
+  // },
   mixins: [
     SharedFunctions,
     cyclomediaMixin,
@@ -164,16 +171,17 @@ export default {
     const data = {
       rows: [],
       accessToken: process.env.VUE_APP_MAPBOX_ACCESSTOKEN,
+      addressInputPlaceholder: null,
     };
     return data;
   },
   computed: {
-    addressInputPlaceholder() {
-      if (this.$config.addressInput) {
-        return this.$config.addressInput.placeholder;
-      }
-      return null;
-    },
+    // addressInputPlaceholder() {
+    //   if (this.$config.addressInput) {
+    //     return this.$config.addressInput.placeholder;
+    //   }
+    //   return null;
+    // },
     addressInputWidth() {
       if (this.$config.addressInput) {
         return this.$config.addressInput.mapWidth;
@@ -632,6 +640,10 @@ export default {
       this.$store.commit('setMapCenter', this.$config.map.center);
     }
     window.addEventListener('resize', this.handleResize);
+
+    if (this.$config.searchBar) {
+      this.addressInputPlaceholder = this.$config.searchBar.placeholder;
+    }
   },
   beforeDestroy() {
     window.removeEventListener('resize', this.handleResize);
