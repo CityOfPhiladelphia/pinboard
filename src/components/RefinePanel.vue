@@ -38,8 +38,9 @@
     </div>
 
     <!-- if using categoryField_value, categoryField_array, or multipleFields options -->
+    <!-- v-if="dataStatus === 'success' && refineType !== 'multipleFieldGroups'" -->
     <div
-      v-if="dataStatus === 'success' && refineType !== 'multipleFieldGroups'"
+      v-if="dataStatus === 'success' && ['categoryField_array', 'multipleFields'].includes(refineType)"
       id="field-div"
     >
       <checkbox
@@ -49,6 +50,19 @@
         v-model="selected"
       >
       </checkbox>
+    </div>
+
+    <div
+      v-if="dataStatus === 'success' && refineType == 'categoryField_value'"
+      id="field-div"
+    >
+      <radio
+        :options="getRefineSearchList()"
+        :numOfColumns="NumRefineColumns"
+        :small="true"
+        v-model="selected"
+      >
+    </radio>
     </div>
 
 
@@ -161,12 +175,13 @@ import Vue from 'vue';
 
 import { mapState } from 'vuex';
 import IconToolTip from './IconToolTip.vue';
-import { Checkbox } from '@phila/phila-ui';
+import { Checkbox, Radio } from '@phila/phila-ui';
 
 export default {
   components: {
     IconToolTip,
-    Checkbox
+    Checkbox,
+    Radio,
   },
   props: {
     legendTitle: {
@@ -298,7 +313,12 @@ export default {
     selected(nextSelected) {
       console.log('watch selected is firing, nextSelected:', nextSelected);
       this.$store.commit('setSelectedServices', nextSelected);
-      this.$router.push({ query: { ...this.$route.query, ...{ services: nextSelected.join(',') }}});
+
+      if (this.refineType !== 'categoryField_value') {
+        this.$router.push({ query: { ...this.$route.query, ...{ services: nextSelected.join(',') }}});
+      } else {
+        this.$router.push({ query: { ...this.$route.query, ...{ services: nextSelected }}});
+      }
     },
     // selectedList(nextSelectedList) {
     //   console.log('watch selectedList is firing');
@@ -321,7 +341,11 @@ export default {
   beforeMount() {
     if (this.$route.query.services) {
       console.log('RefinePanel.vue beforeMount is running, this.selectedList:', this.selectedList, 'this.$route.query:', this.$route.query, 'this.$route.query.services.split(','):', this.$route.query.services.split(','));
-      this.$data.selected = this.$route.query.services.split(',');
+      if (this.refineType !== 'categoryField_value') {
+        this.$data.selected = this.$route.query.services.split(',');
+      } else {
+        this.$data.selected = this.$route.query.services;
+      }
     }
   },
   // mounted() {

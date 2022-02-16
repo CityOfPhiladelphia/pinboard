@@ -205,14 +205,14 @@ export default {
       this.addressEntered = this.$config.defaultAddress;
     }
 
-    setInteractionMode('aggressive');
-    let self = this;
-    extend('address', value => {
-      let newValue;
-      newValue = self.inputValidation;
-      // console.log('extend address, value:', value, 'self.inputValidation:', self.inputValidation, 'newValue:', newValue);
-      return newValue;
-    });
+    // setInteractionMode('aggressive');
+    // let self = this;
+    // extend('address', value => {
+    //   let newValue;
+    //   newValue = self.inputValidation;
+    //   // console.log('extend address, value:', value, 'self.inputValidation:', self.inputValidation, 'newValue:', newValue);
+    //   return newValue;
+    // });
   },
   mounted() {
     // console.log('PhilaUiAddressInput mounted is running, this.currentSearch:', this.currentSearch);
