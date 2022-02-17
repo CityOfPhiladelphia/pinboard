@@ -20,7 +20,7 @@
           id="map-textbox"
           v-model="addressEntered"
           name="Submit Box"
-          :placeholder="placeholder || 'Search by address or keyword'"
+          :placeholder="placeholderComputed || 'Search by address or keyword'"
           rules="address"
           :style="inputStyle"
         />
@@ -114,6 +114,39 @@ export default {
     return data;
   },
   computed: {
+    i18nEnabled() {
+      if (this.$config.i18n && this.$config.i18n.enabled) {
+        return true;
+      } else {
+        return false;
+      }
+    },
+    i18nLocale() {
+      return this.$i18n.locale;
+    },
+    searchBarType() {
+      let value;
+      let searchTypes = this.$config.searchBar.searchTypes;
+      if (searchTypes.length == 1 && searchTypes.includes('address')) {
+        value = 'address';
+      } else if (searchTypes.length == 1 && searchTypes.includes('keyword')) {
+        value = 'keyword';
+      }
+      return value;
+    },
+    placeholderComputed() {
+      if (this.i18nEnabled) {
+        return this.$i18n.messages[this.i18nLocale].app.searchPlaceholders[this.searchBarType];
+      } else if (this.$config.searchBar && this.$config.searchBar.labelText) {
+        if (typeof this.$config.searchBar.labelText === 'string') {
+          return this.$config.searchBar.labelText;
+        } else {
+          return this.$config.searchBar.labelText[this.searchBarType];
+        }
+      } else {
+        return 'Search';
+      }
+    },
     containerStyle() {
       let value = {};
       if (this.isMobile) {
