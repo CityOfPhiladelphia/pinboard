@@ -29,6 +29,10 @@ Create pull request for changes and merge into `master` branch for travis-ci bui
 
 ## Release Notes
 
+### 1.0.8 - 2/17/2022
+
+* allows @phila/phila-ui radio buttons in refine panel that work with i18n
+
 ### 1.0.7 - 2/15/2022
 
 * makes it so that the address/keyword input can be for addresses only

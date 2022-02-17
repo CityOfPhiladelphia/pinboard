@@ -18,8 +18,8 @@
   "dependencies": {
     "@fortawesome/free-brands-svg-icons": "^5.11.2",
     "@phila/phila-ui": "2.1.13",
-    "@phila/vue-datafetch": "2.2.4",
-    "@phila/vue-mapping": "3.1.4",
+    "@phila/vue-datafetch": "2.2.6",
+    "@phila/vue-mapping": "3.1.5",
     "animate.css": "^3.7.2",
     "axios": "^0.19.0",
     "bulma-toast": "github:CityOfPhiladelphia/bulma-toast#master",
