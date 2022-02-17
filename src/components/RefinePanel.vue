@@ -56,8 +56,9 @@
       v-if="dataStatus === 'success' && refineType == 'categoryField_value'"
       id="field-div"
     >
+    <!-- :options="getRefineSearchList()" -->
       <radio
-        :options="getRefineSearchList()"
+        :options="refineListTranslated"
         :numOfColumns="NumRefineColumns"
         :small="true"
         v-model="selected"
@@ -223,19 +224,28 @@ export default {
     },
     refineListTranslated() {
       let mainObject = {};
-      for (let category of Object.keys(this.$data.refineList)) {
-        mainObject[category] = [];
-        for (let box of Object.keys(this.$data.refineList[category])) {
-          let data = this.$data.refineList[category][box].unique_key;
-          let textLabel = this.$t(this.$data.refineList[category][box].box_label);
-          let keyPairs = {
-            data: data,
-            textLabel: textLabel,
-          };
-          mainObject[category].push(keyPairs)
+      let mainArray = [];
+      if (this.refineType !== 'multipleFieldGroups') {
+        for (let category of this.$data.refineList) {
+          mainArray.push(this.$t(category));
+          console.log('refineListTranslated computed, category:', category, 'this.$t(category):', this.$t(category), 'mainArray:', mainArray);
         }
+        return mainArray;
+      } else {
+        for (let category of Object.keys(this.$data.refineList)) {
+          mainObject[category] = [];
+          for (let box of Object.keys(this.$data.refineList[category])) {
+            let data = this.$data.refineList[category][box].unique_key;
+            let textLabel = this.$t(this.$data.refineList[category][box].box_label);
+            let keyPairs = {
+              data: data,
+              textLabel: textLabel,
+            };
+            mainObject[category].push(keyPairs)
+          }
+        }
+        return mainObject;
       }
-      return mainObject;
     },
     refinePanelClass() {
       let value;
@@ -414,7 +424,7 @@ export default {
         // console.log('RefinePanel.vue, serviceArray:', serviceArray);
 
         const uniqArray = [ ...new Set(serviceArray) ];
-        // console.log('RefinePanel.vue, uniqArray:', uniqArray);
+        console.log('RefinePanel.vue, uniqArray:', uniqArray);
 
 
         // clean up any dangling , or ;
@@ -444,6 +454,8 @@ export default {
         // this.selected = selected;
       }
 
+      console.log('getRefineSearchList is still running');
+
 
       if (this.$config.refine && this.$config.refine.type === 'multipleFieldGroups') {
         uniq = {};
@@ -471,7 +483,7 @@ export default {
         }
 
         console.log('RefinePanel end of getRefineSearchList, uniq:', uniq, 'selected:', selected, 'this.selected:', this.selected);
-        this.$data.refineList = uniq;
+        // this.$data.refineList = uniq;
 
         if (this.selected.length) {
           for (let group of Object.keys(uniq)) {
@@ -489,6 +501,7 @@ export default {
         console.log('RefinePanel end of getRefineSearchList, selected:', selected);
         this.$data.selectedList = selected;
       }
+      this.$data.refineList = uniq;
 
       return uniq;
     },
