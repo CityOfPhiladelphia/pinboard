@@ -58,10 +58,12 @@
     >
     <!-- :options="getRefineSearchList()" -->
       <radio
+        v-model="selected"
         :options="refineListTranslated"
+        text-key="text"
+        value-key="value"
         :numOfColumns="NumRefineColumns"
         :small="true"
-        v-model="selected"
       >
     </radio>
     </div>
@@ -227,7 +229,10 @@ export default {
       let mainArray = [];
       if (this.refineType !== 'multipleFieldGroups') {
         for (let category of this.$data.refineList) {
-          mainArray.push(this.$t(category));
+          mainArray.push({
+            value: category,
+            text: this.$t(category),
+          });
           console.log('refineListTranslated computed, category:', category, 'this.$t(category):', this.$t(category), 'mainArray:', mainArray);
         }
         return mainArray;

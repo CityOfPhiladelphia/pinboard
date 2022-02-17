@@ -299,7 +299,7 @@ export default {
   position: absolute;
   display: flex;
   border-radius: 2px;
-  z-index: 1000;
+  // z-index: 1000;
 }
 
 /* Form */
