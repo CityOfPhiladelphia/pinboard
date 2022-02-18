@@ -51,20 +51,6 @@
         >
         </mobile-nav>
 
-        <!-- <template slot="search-bar">
-          <search-bar
-            v-model="myValue"
-            v-on:dropdownSelect="handleSearchbarChange"
-            v-on:search="handleSubmit"
-            v-on:clear-search="clearSearchTriggered"
-            :searchString="searchString"
-            :dropdownOptions="searchBarOptions"
-            :dropdownDefault="searchBarType"
-            :textboxPlaceholder="searchBarPlaceholderText"
-            :textboxLabel="searchBarLabelText"
-          />
-        </template> -->
-
         <lang-selector
           slot="lang-selector-nav"
           v-show="i18nEnabled && isMobile"
@@ -87,6 +73,7 @@
       class="search-bar-container-class"
     >
       <phila-ui-address-input
+        :over-map="false"
         :placeholder="addressInputPlaceholder"
         @clear-search="clearSearchTriggered"
         @handle-search-form-submit="handleSubmit"
@@ -1081,14 +1068,6 @@ html, body {
   display: flex;
   display: -ms-flexbox;
   flex-direction: column;
-
-  // #nav-wrap {
-  //   .container {
-  //     padding-right: 0px;
-  //     margin-right: 10px;
-  //   }
-  // }
-
 }
 
 #app-header .container {
@@ -1096,26 +1075,7 @@ html, body {
   padding-right: 16px !important;
 }
 
-.title-col {
-  width: 60% !important;
-}
-
-// #tb-app-search {
-//   padding: inherit 0;
-// }
-
-// #app-search-icon {
-//   height: 3.5rem;
-//   border: 0;
-//   background-color: $electric-blue;
-//   color: $grey-dark;
-//   svg {
-//     color: $grey-dark;
-//   }
-// }
-
 .search-bar-container-class {
-  // flex-grow: 1;
   min-height: 4.5rem;
 }
 

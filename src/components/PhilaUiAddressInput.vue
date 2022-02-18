@@ -1,7 +1,7 @@
 <template>
   <div
     :style="containerStyle"
-    class="pvm-search-control-container"
+    :class="{ 'over-map': overMap, 'pvm-search-control-container': true }"
   >
     <!-- <ValidationObserver
       v-slot="validation"
@@ -100,6 +100,10 @@ export default {
     placeholder: {
       type: String,
       default: 'address',
+    },
+    overMap: {
+      type: Boolean,
+      default: true,
     },
     // inputValidation: {
     //   type: Boolean,
@@ -299,7 +303,10 @@ export default {
   position: absolute;
   display: flex;
   border-radius: 2px;
-  // z-index: 1000;
+}
+
+.over-map {
+  z-index: 1000;
 }
 
 /* Form */

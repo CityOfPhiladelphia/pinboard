@@ -102,6 +102,7 @@
 
       <phila-ui-address-input
         v-show="!isMobile"
+        :over-map="true"
         :placeholder="addressInputPlaceholder"
         :width-from-config="addressInputWidth"
         @clear-search="handleClearSearch"
