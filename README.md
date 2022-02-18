@@ -29,6 +29,10 @@ Create pull request for changes and merge into `master` branch for travis-ci bui
 
 ## Release Notes
 
+### 1.0.9 - 2/18/2022
+
+* fixes issues with z-index of input over map, placement of i18n globe
+
 ### 1.0.8 - 2/17/2022
 
 * allows @phila/phila-ui radio buttons in refine panel that work with i18n
