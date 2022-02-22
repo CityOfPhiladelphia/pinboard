@@ -29,6 +29,10 @@ Create pull request for changes and merge into `master` branch for travis-ci bui
 
 ## Release Notes
 
+### 1.0.10 - 2/22/2022
+
+* fixes small issues with accessibility
+
 ### 1.0.9 - 2/18/2022
 
 * fixes issues with z-index of input over map, placement of i18n globe

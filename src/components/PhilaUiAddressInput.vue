@@ -11,19 +11,19 @@
         id="search-form"
         autocomplete="off"
         :class="formClass"
-        alt="test test"
-        aria-label="button"
         title="addressform"
         @submit.prevent="handleSearchFormSubmit"
       >
+      <!-- alt="test test" -->
+      <!-- aria-label="button" -->
         <textbox
           id="map-textbox"
           v-model="addressEntered"
-          name="Submit Box"
           :placeholder="placeholderComputed || 'Search by address or keyword'"
-          rules="address"
           :style="inputStyle"
         />
+        <!-- name="Submit Box" -->
+        <!-- rules="address" -->
 
         <!-- <div
           v-if="addressEntered != '' && addressEntered != null"

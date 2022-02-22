@@ -591,6 +591,7 @@ export default {
     .clear-all{
       font-weight: normal;
       font-size: .8rem;
+      color: #0f4d90 !important;
     }
 
     .clear-button{
