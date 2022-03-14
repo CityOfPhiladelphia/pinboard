@@ -32,7 +32,7 @@
           title="delete button"
           @click.prevent="handleFormX"
         >
-          <font-awesome-icon icon="times" size="2x" />
+          <font-awesome-icon icon="xmark" size="2x" />
         </div>
 
         <div
@@ -41,7 +41,7 @@
           title="search button"
           @click.prevent="handleSearchFormSubmit(validation)"
         >
-          <font-awesome-icon icon="search" size="2x" aria-hidden="true" />
+          <font-awesome-icon icon="magnifying-glass" size="2x" aria-hidden="true" />
         </div> -->
 
       </form>
@@ -54,7 +54,7 @@
       title="delete button"
       @click="handleFormX"
     >
-      <font-awesome-icon icon="times" size="2x" />
+      <font-awesome-icon icon="xmark" size="2x" />
     </div>
 
     <div
@@ -63,7 +63,7 @@
       title="search button"
       @click="handleSearchFormSubmit"
     >
-      <font-awesome-icon icon="search" size="2x" aria-hidden="true" />
+      <font-awesome-icon icon="magnifying-glass" size="2x" aria-hidden="true" />
     </div>
 
   </div>

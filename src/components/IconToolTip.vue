@@ -5,8 +5,8 @@
     <font-awesome-icon
       v-if="circleType === 'hover'"
       :id="item + '-icon'"
-      icon="info-circle"
-      class="fa-infoCircle"
+      icon="circle-info"
+      class="fa-circleInfo"
       @mouseover="infoOn"
       @mouseout="infoOff"
     />
@@ -14,8 +14,8 @@
     <font-awesome-icon
       v-if="circleType === 'click'"
       :id="item + '-icon'"
-      icon="info-circle"
-      class="fa-infoCircle"
+      icon="circle-info"
+      class="fa-circleInfo"
       @click="infoClick"
     />
     <!-- @click="infoClick" -->

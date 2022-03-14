@@ -55,7 +55,7 @@
                   v-if="item.street_address"
                   class="detail"
                 >
-                  <font-awesome-icon icon="map-marker-alt" />
+                  <font-awesome-icon icon="location-dot" />
                   <span v-html="parseAddress(item.street_address)">
                     {{ parseAddress(item.street_address) }}
                   </span>

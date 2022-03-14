@@ -8,15 +8,15 @@ import { faFilter } from '@fortawesome/free-solid-svg-icons/faFilter';
 import { faGlobe } from '@fortawesome/free-solid-svg-icons/faGlobe';
 import { faPhone } from '@fortawesome/free-solid-svg-icons/faPhone';
 import { faUser } from '@fortawesome/free-solid-svg-icons/faUser';
-import { faTimes } from '@fortawesome/free-solid-svg-icons/faTimes';
+import { faXmark } from '@fortawesome/free-solid-svg-icons/faXmark';
 import { faTwitter } from '@fortawesome/free-brands-svg-icons/faTwitter';
-import { faCheckSquare } from '@fortawesome/free-solid-svg-icons/faCheckSquare';
+import { faSquareCheck } from '@fortawesome/free-solid-svg-icons/faSquareCheck';
 import { faSquare } from '@fortawesome/free-regular-svg-icons/faSquare';
-import { faInfoCircle } from '@fortawesome/free-solid-svg-icons/faInfoCircle';
+import { faCircleInfo } from '@fortawesome/free-solid-svg-icons/faCircleInfo';
 import { faExclamation } from '@fortawesome/free-solid-svg-icons/faExclamation';
-import { faSearch } from '@fortawesome/free-solid-svg-icons/faSearch';
+import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons/faMagnifyingGlass';
 
 
-library.add(faSpinner, faBars, faEnvelope, faFacebook, faFilter, faGlobe, faPhone, faUser, faTimes, faTwitter, faCheckSquare, faSquare, faInfoCircle, faExclamation, faSearch);
+library.add(faSpinner, faBars, faEnvelope, faFacebook, faFilter, faGlobe, faPhone, faUser, faXmark, faTwitter, faSquareCheck, faSquare, faCircleInfo, faExclamation, faMagnifyingGlass);
 
 export default library;

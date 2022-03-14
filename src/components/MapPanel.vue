@@ -389,7 +389,7 @@ export default {
         row.weight = weight;
         row.icon = {
           prefix: 'fas',
-          icon: 'map-marker-alt',
+          icon: 'location-dot',
           shadow: false,
           size: faSize,
         };
@@ -429,7 +429,7 @@ export default {
         const markerType = 'geocode';
         const icon = {
           prefix: 'fas',
-          icon: 'map-marker-alt',
+          icon: 'location-dot',
           shadow: false,
           size: 30,
         };

@@ -10,7 +10,7 @@
               aria-label="Close modal"
               @click="close"
             >
-              <font-awesome-icon icon="times" />
+              <font-awesome-icon icon="xmark" />
             </button>
             <slot name="header" />
           </div>

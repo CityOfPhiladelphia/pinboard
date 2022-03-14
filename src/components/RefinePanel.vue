@@ -717,7 +717,7 @@ input[type=checkbox] {
   bottom: 1px;
 }
 
-.fa-infoCircle {
+.fa-circleInfo {
   color: $ben-franklin-blue-dark;
   cursor: pointer;
 }

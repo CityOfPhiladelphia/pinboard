@@ -53,7 +53,7 @@
 
         <lang-selector
           slot="lang-selector-nav"
-          v-show="i18nEnabled && isMobile"
+          v-if="i18nEnabled && isMobile"
           :languages="i18nLanguages"
         >
         </lang-selector>
