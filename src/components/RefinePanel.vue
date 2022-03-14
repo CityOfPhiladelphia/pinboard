@@ -99,17 +99,17 @@
               slot="label"
             >
               {{ $t(ind + '.category') }}
-              <!-- <icon-tool-tip
+              <icon-tool-tip
                 v-if="Object.keys(infoCircles).includes(ind)"
                 :item="ind"
                 :circleData="infoCircles[ind]"
                 :circleType="'click'"
               >
-              </icon-tool-tip> -->
-              <tooltip
+              </icon-tool-tip>
+              <!-- <tooltip
                 v-if="Object.keys(infoCircles).includes(ind)"
                 message="test"
-              />
+              /> -->
             </div>
           </checkbox>
         </div>
@@ -181,15 +181,15 @@
 import Vue from 'vue';
 
 import { mapState } from 'vuex';
-// import IconToolTip from './IconToolTip.vue';
+import IconToolTip from './IconToolTip.vue';
 import { Checkbox, Radio, Tooltip } from '@phila/phila-ui';
 
 export default {
   components: {
-    // IconToolTip,
+    IconToolTip,
     Checkbox,
     Radio,
-    Tooltip,
+    // Tooltip,
   },
   props: {
     legendTitle: {
