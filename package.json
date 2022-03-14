@@ -16,10 +16,10 @@
     "lintFix": "vue-cli-service lint --fix"
   },
   "dependencies": {
-    "@fortawesome/free-brands-svg-icons": "^5.11.2",
+    "@fortawesome/free-brands-svg-icons": "^6.0.0",
     "@phila/phila-ui": "2.1.13",
-    "@phila/vue-datafetch": "2.2.6",
-    "@phila/vue-mapping": "3.1.5",
+    "@phila/vue-datafetch": "2.2.7",
+    "@phila/vue-mapping": "3.1.7",
     "animate.css": "^3.7.2",
     "axios": "^0.19.0",
     "bulma-toast": "github:CityOfPhiladelphia/bulma-toast#master",
