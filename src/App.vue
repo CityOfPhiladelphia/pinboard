@@ -801,15 +801,23 @@ export default {
                   selectedGroups.push(valueGroup)
                 }
               }
-              // console.log('selectedServices:', selectedServices, 'selectedGroups:', selectedGroups);
+              console.log('App.vue filterPoints is running on multipleFieldGroups, selectedServices:', selectedServices, 'selectedGroups:', selectedGroups);
               let groupValues = [];
               for (let group of selectedGroups) {
                 let groupBooleanConditions = [];
                 for (let service of selectedServices) {
                   if (service.split('_', 1)[0] === group) {
-                    // console.log('service.split("_", 1)[0]:', service.split('_', 1)[0], 'service.split("_")[1]:', service.split('_')[1], 'group', group, 'this.$config.refine.multipleFieldGroups[group]', this.$config.refine.multipleFieldGroups[group], 'this.$config.refine.multipleFieldGroups[group][service.split("_")[1]]:', this.$config.refine.multipleFieldGroups[group][service.split('_')[1]]);
+                    let dependentGroups = this.$config.refine.multipleFieldGroups[group][service.split('_')[1]]['dependentGroups'] || [];
+                    // console.log('dependentGroup:', dependentGroup, 'service.split("_", 1)[0]:', service.split('_', 1)[0], 'service.split("_")[1]:', service.split('_')[1], 'group', group, 'this.$config.refine.multipleFieldGroups[group]', this.$config.refine.multipleFieldGroups[group], 'this.$config.refine.multipleFieldGroups[group][service.split("_")[1]]:', this.$config.refine.multipleFieldGroups[group][service.split('_')[1]]);
                     let getter = this.$config.refine.multipleFieldGroups[group][service.split('_')[1]]['value'];
-                    let val = getter(row);
+                    let dependentServices = [];
+                    for (let service of selectedServices) {
+                      if (dependentGroups.length && dependentGroups.includes(service.split('_')[0])) {
+                        dependentServices.push(service.split('_')[1]);
+                      }
+                    }
+                    console.log('getter:', getter, 'dependentGroups:', dependentGroups, 'selectedServices:', selectedServices, 'dependentServices:', dependentServices);
+                    let val = getter(row, dependentServices);
                     groupBooleanConditions.push(val);
                   }
                 }
