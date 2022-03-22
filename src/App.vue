@@ -418,8 +418,8 @@ export default {
       return value;
     },
     database() {
-      let database = this.$store.state.sources[this.$appType].data.rows || this.$store.state.sources[this.$appType].data.features || this.$store.state.sources[this.$appType].data;
-      // console.log('computed database is running, database:', database);
+      let database = this.$store.state.sources[this.$appType].data.rows || this.$store.state.sources[this.$appType].data.features || this.$store.state.sources[this.$appType].data.records;
+      console.log('computed database is running, database:', database);
 
       for (let [key, value] of Object.entries(database)) {
 
