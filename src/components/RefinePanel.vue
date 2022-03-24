@@ -472,7 +472,7 @@ export default {
           for (let field of Object.keys(this.$config.refine.multipleFieldGroups[group])){
             uniq[group][field] = {};
             // selected[group][field] = [];
-            console.log('field:', field, 'selected:', selected, 'this.$config.refine.multipleFieldGroups[group][field].unique_key:', this.$config.refine.multipleFieldGroups[group][field].unique_key);
+            // console.log('field:', field, 'selected:', selected, 'this.$config.refine.multipleFieldGroups[group][field].unique_key:', this.$config.refine.multipleFieldGroups[group][field].unique_key);
             if (this.$config.refine.multipleFieldGroups[group][field].i18n_key) {
               uniq[group][field].box_label = this.$config.refine.multipleFieldGroups[group][field].i18n_key;
               // uniq[group][field].box_label = this.$t(this.$config.refine.multipleFieldGroups[group][field].i18n_key);
