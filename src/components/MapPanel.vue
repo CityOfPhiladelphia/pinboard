@@ -271,11 +271,11 @@ export default {
     //   return finalDB;
     // },
     currentMapData() {
-      console.log('MapPanel.vue currentMapData computed is starting recalculating');//, this.currentData:', this.currentData);
+      // console.log('MapPanel.vue currentMapData computed is starting recalculating');//, this.currentData:', this.currentData);
       const newRows = [];
       for (const row of [ ...this.currentData ]) {
       // for (const row of this.database) {
-        console.log('MapPanel in loop, row:', row);
+        // console.log('MapPanel in loop, row:', row);
 
         let color, // all markers
           size, // circleMarkers only
@@ -323,7 +323,7 @@ export default {
         // selected = false;
         } else {
           // multiple circle colors defined
-          console.log('MapPanel.vue else is running');
+          // console.log('MapPanel.vue else is running');
           if (this.$config.circleMarkers && this.$config.circleMarkers.circleColors) {
             if (row.attributes) {
               color = this.$config.circleMarkers.circleColors[row.attributes.category_type];
@@ -362,7 +362,7 @@ export default {
         }
 
         if (row.lat) {
-          console.log('MapPanel if row.lat is running, row.lat:', row.lat, 'row.lon:', row.lon, 'color:', color, 'size:', size);
+          // console.log('MapPanel if row.lat is running, row.lat:', row.lat, 'row.lon:', row.lon, 'color:', color, 'size:', size);
           // console.log('if row.lat is running, color:', color, 'markerSize:', markerSize);
           let projection = this.getProjection(row);
           if (projection === '3857') {

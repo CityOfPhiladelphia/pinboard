@@ -65,11 +65,11 @@
         :numOfColumns="NumRefineColumns"
         :small="true"
       >
-    </radio>
+      </radio>
     </div>
 
 
-    <!-- if using multipleFieldsGroups option -->
+    <!-- if using multipleFieldGroups option -->
     <div
       v-if="dataStatus === 'success' && refineType === 'multipleFieldGroups'"
       id="multiple-field-groups-div"
@@ -108,6 +108,76 @@
               </icon-tool-tip>
             </div>
           </checkbox>
+        </div>
+      </div>
+    </div>
+
+    <!-- if using multipleDependentFieldGroups option -->
+    <div
+      v-if="dataStatus === 'success' && refineType === 'multipleDependentFieldGroups'"
+      id="multiple-field-groups-div"
+      class="columns is-multiline"
+    >
+      <div
+        v-for="(ind) in Object.keys(refineListTranslated)"
+        :id="'refine-list-'+ind"
+        :key="ind"
+        class="column is-narrow service-group-holder-x"
+      >
+
+        <div
+          id="columns-div-for-checkboxes"
+          class="columns"
+        >
+          <div class="column">
+            <radio
+              v-model="selectedList['radio_'+ind]"
+              v-if="refineListTranslated[ind]['independent']"
+              :options="refineListTranslated[ind]['independent']"
+              text-key="textLabel"
+              value-key="data"
+              :num-of-columns="1"
+              :small="true"
+            >
+              <div
+                slot="label"
+              >
+                {{ $t(ind + '.category') }}
+                <icon-tool-tip
+                  v-if="Object.keys(infoCircles).includes(ind)"
+                  :item="ind"
+                  :circleData="infoCircles[ind]"
+                  :circleType="'click'"
+                >
+                </icon-tool-tip>
+              </div>
+            </radio>
+            <!-- <hr> -->
+
+            <checkbox
+              :options="refineListTranslated[ind]['dependent']"
+              :num-of-columns="1"
+              :small="true"
+              v-model="selectedList[ind]"
+              text-key="textLabel"
+              value-key="data"
+              shrinkToFit="true"
+            >
+              <div
+                v-if="!refineListTranslated[ind]['independent']"
+                slot="label"
+              >
+                {{ $t(ind + '.category') }}
+                <icon-tool-tip
+                  v-if="Object.keys(infoCircles).includes(ind)"
+                  :item="ind"
+                  :circleData="infoCircles[ind]"
+                  :circleType="'click'"
+                >
+                </icon-tool-tip>
+              </div>
+            </checkbox>
+          </div>
         </div>
       </div>
     </div>
@@ -217,9 +287,14 @@ export default {
     selectedListCompiled() {
       let compiled = [];
       for (let value of Object.keys(this.$data.selectedList)) {
-        console.log('in selectedListCompiled, value:', value);
-        for (let selected of this.$data.selectedList[value]) {
-          compiled.push(selected);
+        console.log('in selectedListCompiled, value:', value, value.split('_')[0]);
+        if (value.split('_')[0] == 'radio') {
+          console.log('radio button clicked!');
+            compiled.push(this.$data.selectedList[value]);
+        } else {
+          for (let selected of this.$data.selectedList[value]) {
+            compiled.push(selected);
+          }
         }
       }
       return compiled;
@@ -227,7 +302,7 @@ export default {
     refineListTranslated() {
       let mainObject = {};
       let mainArray = [];
-      if (this.refineType !== 'multipleFieldGroups') {
+      if (this.refineType !== 'multipleFieldGroups' && this.refineType !== 'multipleDependentFieldGroups') {
         for (let category of this.$data.refineList) {
           mainArray.push({
             value: category,
@@ -236,7 +311,7 @@ export default {
           console.log('refineListTranslated computed, category:', category, 'this.$t(category):', this.$t(category), 'mainArray:', mainArray);
         }
         return mainArray;
-      } else {
+      } else if (this.refineType == 'multipleFieldGroups') {
         for (let category of Object.keys(this.$data.refineList)) {
           mainObject[category] = [];
           for (let box of Object.keys(this.$data.refineList[category])) {
@@ -247,6 +322,29 @@ export default {
               textLabel: textLabel,
             };
             mainObject[category].push(keyPairs)
+          }
+        }
+        return mainObject;
+      } else {
+        for (let category of Object.keys(this.$data.refineList)) {
+          mainObject[category] = {};
+          // mainObject[category] = {
+          //   independent: [],
+          //   dependent: [],
+          // };
+          for (let dep of Object.keys(this.$data.refineList[category])) {
+            // console.log('in loop, dep', dep);
+            mainObject[category][dep] = [];
+            for (let box of Object.keys(this.$data.refineList[category][dep])) {
+              // console.log('in inner loop, box:', box, 'dep:', dep);
+              let data = this.$data.refineList[category][dep][box].unique_key;
+              let textLabel = this.$t(this.$data.refineList[category][dep][box].box_label);
+              let keyPairs = {
+                data: data,
+                textLabel: textLabel,
+              };
+              mainObject[category][dep].push(keyPairs)
+            }
           }
         }
         return mainObject;
@@ -396,7 +494,7 @@ export default {
     },
     clearAll() {
       console.log('RefinePanel clearAll is running');
-      if (this.refineType === 'multipleFieldGroups') {
+      if (this.refineType === 'multipleFieldGroups' || this.refineType === 'multipleDependentFieldGroups') {
         for (let checkbox of Object.keys(this.$data.selectedList)) {
           this.$data.selectedList[checkbox].splice(0);
         }
@@ -506,6 +604,58 @@ export default {
         console.log('RefinePanel end of getRefineSearchList, selected:', selected);
         this.$data.selectedList = selected;
       }
+
+      if (this.$config.refine && this.$config.refine.type === 'multipleDependentFieldGroups') {
+        uniq = {};
+        selected = {};
+        for (let group of Object.keys(this.$config.refine.multipleDependentFieldGroups)){
+          console.log('outer loop, group:', group);
+          uniq[group] = {};
+          for (let dep of Object.keys(this.$config.refine.multipleDependentFieldGroups[group])){
+            console.log('middle loop, dep:', dep, 'group:', group);
+            // selected[group] = {};
+            uniq[group][dep] = {};
+            for (let field of Object.keys(this.$config.refine.multipleDependentFieldGroups[group][dep])){
+              uniq[group][dep][field] = {};
+              // selected[group][field] = [];
+              // console.log('inner loop field:', field, 'selected:', selected, 'this.$config.refine.multipleDependentFieldGroups[group][field].unique_key:', this.$config.refine.multipleDependentFieldGroups[group][field].unique_key);
+              if (this.$config.refine.multipleDependentFieldGroups[group][dep][field].i18n_key) {
+                uniq[group][dep][field].box_label = this.$config.refine.multipleDependentFieldGroups[group][dep][field].i18n_key;
+                // uniq[group][field].box_label = this.$t(this.$config.refine.multipleDependentFieldGroups[group][field].i18n_key);
+              } else {
+                uniq[group][dep][field].box_label = field;
+              }
+              uniq[group][dep][field].unique_key = this.$config.refine.multipleDependentFieldGroups[group][dep][field].unique_key;
+              // if (this.$config.refine.multipleDependentFieldGroups[group][field].unique_key == 'year18') {
+              // console.log('pushing, selected:', selected, 'this.$config.refine.multipleDependentFieldGroups[group][field].unique_key:', this.$config.refine.multipleDependentFieldGroups[group][field].unique_key);
+              // selected[group][field].push(this.$config.refine.multipleDependentFieldGroups[group][field].unique_key);
+              // }
+            }
+          }
+        }
+
+        console.log('RefinePanel end of getRefineSearchList, uniq:', uniq, 'selected:', selected, 'this.selected:', this.selected);
+        // this.$data.refineList = uniq;
+
+        if (this.selected.length) {
+          for (let group of Object.keys(uniq)) {
+            for (let dep of Object.keys(uniq[group])) {
+              for (let field of Object.keys(uniq[group][dep])) {
+                if (this.selected.includes(uniq[group][dep][field].unique_key)) {
+                  // console.log('RefinePanel end of getRefineSearchList, group:', group, 'field:', field, 'uniq[group][field].unique_key', uniq[group][field].unique_key, 'this.selected:', this.selected);
+                  if (!selected[group]) {
+                    selected[group] = [];
+                  }
+                  selected[group].push(uniq[group][dep][field].unique_key);
+                }
+              }
+            }
+          }
+        }
+        console.log('RefinePanel end of getRefineSearchList, selected:', selected);
+        this.$data.selectedList = selected;
+      }
+
       this.$data.refineList = uniq;
 
       return uniq;
