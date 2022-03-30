@@ -623,7 +623,7 @@ export default {
 
         if (this.selected.length) {
           for (let group of Object.keys(uniq)) {
-            for (let field of Object.keys(uniq[group])) {
+            for (let dep of Object.keys(uniq[group])) {
               for (let field of Object.keys(uniq[group][dep])) {
                 if (this.selected.includes(uniq[group][dep][field].unique_key)) {
                   // console.log('RefinePanel end of getRefineSearchList, group:', group, 'field:', field, 'uniq[group][field].unique_key', uniq[group][field].unique_key, 'this.selected:', this.selected);
