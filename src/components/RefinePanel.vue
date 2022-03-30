@@ -86,8 +86,31 @@
           id="columns-div-for-checkboxes"
           class="columns"
         >
+          <radio
+            v-model="selectedList['radio_'+ind]"
+            v-if="refineListTranslated[ind]['independent']"
+            :options="refineListTranslated[ind]['independent']"
+            text-key="textLabel"
+            value-key="data"
+            :num-of-columns="1"
+            :small="true"
+          >
+            <div
+              slot="label"
+            >
+              {{ $t(ind + '.category') }}
+              <icon-tool-tip
+                v-if="Object.keys(infoCircles).includes(ind)"
+                :item="ind"
+                :circleData="infoCircles[ind]"
+                :circleType="'click'"
+              >
+              </icon-tool-tip>
+            </div>
+          </radio>
           <checkbox
-            :options="refineListTranslated[ind]"
+            v-if="refineListTranslated[ind]['dependent']"
+            :options="refineListTranslated[ind]['dependent']"
             :num-of-columns="1"
             :small="true"
             v-model="selectedList[ind]"
@@ -313,15 +336,20 @@ export default {
         return mainArray;
       } else if (this.refineType == 'multipleFieldGroups') {
         for (let category of Object.keys(this.$data.refineList)) {
-          mainObject[category] = [];
-          for (let box of Object.keys(this.$data.refineList[category])) {
-            let data = this.$data.refineList[category][box].unique_key;
-            let textLabel = this.$t(this.$data.refineList[category][box].box_label);
-            let keyPairs = {
-              data: data,
-              textLabel: textLabel,
-            };
-            mainObject[category].push(keyPairs)
+          mainObject[category] = {};
+          for (let dep of Object.keys(this.$data.refineList[category])) {
+
+            mainObject[category][dep] = [];
+            for (let box of Object.keys(this.$data.refineList[category][dep])) {
+
+              let data = this.$data.refineList[category][dep][box].unique_key;
+              let textLabel = this.$t(this.$data.refineList[category][dep][box].box_label);
+              let keyPairs = {
+                data: data,
+                textLabel: textLabel,
+              };
+              mainObject[category][dep].push(keyPairs)
+            }
           }
         }
         return mainObject;
@@ -567,21 +595,26 @@ export default {
           // console.log('group:', group);
           uniq[group] = {};
           // selected[group] = {};
-          for (let field of Object.keys(this.$config.refine.multipleFieldGroups[group])){
-            uniq[group][field] = {};
-            // selected[group][field] = [];
-            // console.log('field:', field, 'selected:', selected, 'this.$config.refine.multipleFieldGroups[group][field].unique_key:', this.$config.refine.multipleFieldGroups[group][field].unique_key);
-            if (this.$config.refine.multipleFieldGroups[group][field].i18n_key) {
-              uniq[group][field].box_label = this.$config.refine.multipleFieldGroups[group][field].i18n_key;
-              // uniq[group][field].box_label = this.$t(this.$config.refine.multipleFieldGroups[group][field].i18n_key);
-            } else {
-              uniq[group][field].box_label = field;
+          for (let dep of Object.keys(this.$config.refine.multipleFieldGroups[group])){
+            console.log('middle loop, dep:', dep, 'group:', group);
+            // selected[group] = {};
+            uniq[group][dep] = {};
+            for (let field of Object.keys(this.$config.refine.multipleFieldGroups[group][dep])){
+              uniq[group][dep][field] = {};
+              // selected[group][field] = [];
+              // console.log('field:', field, 'selected:', selected, 'this.$config.refine.multipleFieldGroups[group][field].unique_key:', this.$config.refine.multipleFieldGroups[group][field].unique_key);
+              if (this.$config.refine.multipleFieldGroups[group][dep][field].i18n_key) {
+                uniq[group][dep][field].box_label = this.$config.refine.multipleFieldGroups[group][dep][field].i18n_key;
+                // uniq[group][field].box_label = this.$t(this.$config.refine.multipleFieldGroups[group][field].i18n_key);
+              } else {
+                uniq[group][dep][field].box_label = field;
+              }
+              uniq[group][dep][field].unique_key = this.$config.refine.multipleFieldGroups[group][dep][field].unique_key;
+              // if (this.$config.refine.multipleFieldGroups[group][field].unique_key == 'year18') {
+              // console.log('pushing, selected:', selected, 'this.$config.refine.multipleFieldGroups[group][field].unique_key:', this.$config.refine.multipleFieldGroups[group][field].unique_key);
+              // selected[group][field].push(this.$config.refine.multipleFieldGroups[group][field].unique_key);
+              // }
             }
-            uniq[group][field].unique_key = this.$config.refine.multipleFieldGroups[group][field].unique_key;
-            // if (this.$config.refine.multipleFieldGroups[group][field].unique_key == 'year18') {
-            // console.log('pushing, selected:', selected, 'this.$config.refine.multipleFieldGroups[group][field].unique_key:', this.$config.refine.multipleFieldGroups[group][field].unique_key);
-            // selected[group][field].push(this.$config.refine.multipleFieldGroups[group][field].unique_key);
-            // }
           }
         }
 
@@ -591,12 +624,14 @@ export default {
         if (this.selected.length) {
           for (let group of Object.keys(uniq)) {
             for (let field of Object.keys(uniq[group])) {
-              if (this.selected.includes(uniq[group][field].unique_key)) {
-                console.log('RefinePanel end of getRefineSearchList, group:', group, 'field:', field, 'uniq[group][field].unique_key', uniq[group][field].unique_key, 'this.selected:', this.selected);
-                if (!selected[group]) {
-                  selected[group] = [];
+              for (let field of Object.keys(uniq[group][dep])) {
+                if (this.selected.includes(uniq[group][dep][field].unique_key)) {
+                  // console.log('RefinePanel end of getRefineSearchList, group:', group, 'field:', field, 'uniq[group][field].unique_key', uniq[group][field].unique_key, 'this.selected:', this.selected);
+                  if (!selected[group]) {
+                    selected[group] = [];
+                  }
+                  selected[group].push(uniq[group][dep][field].unique_key);
                 }
-                selected[group].push(uniq[group][field].unique_key);
               }
             }
           }
