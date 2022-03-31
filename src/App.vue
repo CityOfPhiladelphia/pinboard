@@ -796,18 +796,23 @@ export default {
               // if refine.type = multipleFieldGroups
               let selectedGroups = [];
               for (let value of selectedServices) {
-                let valueGroup = value.split('_', 1)[0]
-                if (!selectedGroups.includes(valueGroup)) {
+                // console.log('App.vue filterPoints value:', value);
+                let valueGroup;
+                if (value) {
+                  valueGroup = value.split('_', 1)[0];
+                }
+                if (valueGroup && !selectedGroups.includes(valueGroup)) {
                   selectedGroups.push(valueGroup)
                 }
               }
-              console.log('App.vue filterPoints is running on multipleFieldGroups, selectedServices:', selectedServices, 'selectedGroups:', selectedGroups);
+              // console.log('App.vue filterPoints is running on multipleFieldGroups, selectedServices:', selectedServices, 'selectedGroups:', selectedGroups);
               let groupValues = [];
               for (let group of selectedGroups) {
                 let groupBooleanConditions = [];
                 for (let service of selectedServices) {
+                  // console.log('App.vue filterPoints loop, service:', service);
                   if (service.split('_', 1)[0] === group && this.$config.refine.multipleFieldGroups[group]['dependent']) {
-                    console.log('group:', group, 'this.$config.refine.multipleFieldGroups[group]["dependent"]:', this.$config.refine.multipleFieldGroups[group]['dependent']);
+                    // console.log('group:', group, 'this.$config.refine.multipleFieldGroups[group]["dependent"]:', this.$config.refine.multipleFieldGroups[group]['dependent']);
                     let dependentGroups = this.$config.refine.multipleFieldGroups[group]['dependent'][service.split('_')[1]]['dependentGroups'] || [];
                     // console.log('dependentGroup:', dependentGroup, 'service.split("_", 1)[0]:', service.split('_', 1)[0], 'service.split("_")[1]:', service.split('_')[1], 'group', group, 'this.$config.refine.multipleFieldsGroups[group]', this.$config.refine.multipleFieldsGroups[group], 'this.$config.refine.multipleFieldsGroups[group][service.split("_")[1]]:', this.$config.refine.multipleFieldsGroups[group][service.split('_')[1]]);
                     let getter = this.$config.refine.multipleFieldGroups[group]['dependent'][service.split('_')[1]]['value'];
@@ -817,7 +822,7 @@ export default {
                         dependentServices.push(service.split('_')[1]);
                       }
                     }
-                    console.log('getter:', getter, 'dependentGroups:', dependentGroups, 'selectedServices:', selectedServices, 'dependentServices:', dependentServices);
+                    // console.log('getter:', getter, 'dependentGroups:', dependentGroups, 'selectedServices:', selectedServices, 'dependentServices:', dependentServices);
                     let val = getter(row, dependentServices);
                     groupBooleanConditions.push(val);
                   }
@@ -825,7 +830,7 @@ export default {
                   //   groupBooleanConditions.push(true);
                   // }
                 }
-                console.log('group:', group, 'groupBooleanConditions:', groupBooleanConditions);
+                // console.log('group:', group, 'groupBooleanConditions:', groupBooleanConditions);
                 if (groupBooleanConditions.includes(true)) {
                   booleanConditions.push(true);
                 } else if (groupBooleanConditions.length) {

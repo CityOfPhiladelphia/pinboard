@@ -524,7 +524,12 @@ export default {
       console.log('RefinePanel clearAll is running');
       if (this.refineType === 'multipleFieldGroups' || this.refineType === 'multipleDependentFieldGroups') {
         for (let checkbox of Object.keys(this.$data.selectedList)) {
-          this.$data.selectedList[checkbox].splice(0);
+          console.log('this.$data.selectedList[checkbox]:', this.$data.selectedList[checkbox]);
+          if (Array.isArray(this.$data.selectedList[checkbox])) {
+            this.$data.selectedList[checkbox].splice(0);
+          } else {
+            this.$data.selectedList[checkbox] = undefined;
+          }
         }
       } else {
         this.selected = [];
@@ -625,12 +630,18 @@ export default {
           for (let group of Object.keys(uniq)) {
             for (let dep of Object.keys(uniq[group])) {
               for (let field of Object.keys(uniq[group][dep])) {
-                if (this.selected.includes(uniq[group][dep][field].unique_key)) {
-                  // console.log('RefinePanel end of getRefineSearchList, group:', group, 'field:', field, 'uniq[group][field].unique_key', uniq[group][field].unique_key, 'this.selected:', this.selected);
+                if (dep == 'dependent' && this.selected.includes(uniq[group][dep][field].unique_key)) {
+                  console.log('RefinePanel end of getRefineSearchList, dependent, group:', group, 'dep:', dep, 'field:', field, 'uniq[group][dep][field].unique_key', uniq[group][dep][field].unique_key, 'this.selected:', this.selected);
                   if (!selected[group]) {
                     selected[group] = [];
                   }
                   selected[group].push(uniq[group][dep][field].unique_key);
+                } else if (dep == 'independent' && this.selected.includes(uniq[group][dep][field].unique_key)) {
+                  console.log('RefinePanel end of getRefineSearchList, independent, selected:', selected, 'group:', group, 'dep:', dep, 'field:', field, 'uniq[group][dep][field].unique_key', uniq[group][dep][field].unique_key, 'this.selected:', this.selected);
+                  if (!selected['radio_'+group]) {
+                    selected['radio_'+group] = undefined;
+                  }
+                  selected['radio_'+group] = uniq[group][dep][field].unique_key;
                 }
               }
             }
