@@ -387,10 +387,12 @@ export default {
           value = 'refine-panel refine-panel-closed invisible-scrollbar';
         }
       } else {
-        if (this.refineOpen) {
-          value = 'refine-panel refine-panel-non-mobile invisible-scrollbar';
+        if (this.$config.retractableRefine && !this.refineOpen) {
+          value = 'refine-panel refine-retractable-closed refine-panel-non-mobile-closed invisible-scrollbar';
+        } else if (this.$config.retractableRefine && this.refineOpen) {
+          value = 'refine-panel refine-retractable-open refine-panel-non-mobile invisible-scrollbar';
         } else {
-          value = 'refine-panel refine-panel-non-mobile-closed invisible-scrollbar';
+          value = 'refine-panel refine-panel-non-mobile invisible-scrollbar';
         }
       }
       return value;
@@ -757,6 +759,32 @@ export default {
   }
 }
 
+.refine-retractable-closed {
+  height: 3rem;
+
+  .refine-title {
+    &::after{
+      content: '+';
+      font-weight: 900;
+      position: absolute;
+      font-size: 1.6rem;
+      right: 5px;
+      top: 110px;
+    }
+  }
+}
+
+.refine-retractable-open .refine-title{
+  &::after {
+    content: '-';
+    font-weight: 900;
+    position: absolute;
+    font-size: 1.6rem;
+    right: 5px;
+    top: 110px;
+  }
+}
+
 .refine-panel {
   overflow-y: hidden;
   padding: 1rem;
@@ -802,14 +830,6 @@ export default {
       margin-right: 10px;
     }
 
-    &::after{
-      content: '+';
-      font-weight: 900;
-      position: absolute;
-      font-size: 1.6rem;
-      right: 5px;
-      top: 110px;
-    }
   }
 
   label {
@@ -858,25 +878,12 @@ export default {
     }
   }
 
-  &.refine-panel-open{
+  &.refine-panel-open {
     overflow-y: scroll;
     height: calc(100vh - 190px);
     max-height: 100vh;
-    // z-index: 1002;
     .refine-title{
-      &::after{
-        content: '-';
-      }
-    }
-  }
-
-  &.refine-panel-non-mobile-closed {
-    height: 3rem;
-  }
-
-  &.refine-panel-non-mobile {
-    .refine-title{
-      &::after{
+      &::after {
         content: '-';
       }
     }
