@@ -291,10 +291,10 @@ export default {
       refineList: null,
       selected: [],
       selectedList: {},
-      pushValue: [],
-      pushValue2: {
-        pushValue2Child: [],
-      },
+      // pushValue: [],
+      // pushValue2: {
+      //   pushValue2Child: [],
+      // },
     };
   },
   computed: {
@@ -356,10 +356,6 @@ export default {
       } else {
         for (let category of Object.keys(this.$data.refineList)) {
           mainObject[category] = {};
-          // mainObject[category] = {
-          //   independent: [],
-          //   dependent: [],
-          // };
           for (let dep of Object.keys(this.$data.refineList[category])) {
             // console.log('in loop, dep', dep);
             mainObject[category][dep] = [];
@@ -411,13 +407,6 @@ export default {
     },
     ...mapState([ 'sources', 'geocode', 'selectedServices' ]),
     refineOpen() {
-      // let value;
-      // if (this.isMobile) {
-      //   value = false;
-      // } else {
-      //   value = true;
-      // }
-      // return value;
       return this.$store.state.refineOpen;
     },
     i18nEnabled() {
@@ -454,11 +443,11 @@ export default {
   },
   watch: {
     database(nextDatabase) {
-      console.log('watch database is running, nextDatabase:', nextDatabase);
+      // console.log('watch database is running, nextDatabase:', nextDatabase);
       this.getRefineSearchList();
     },
     selected(nextSelected) {
-      console.log('watch selected is firing, nextSelected:', nextSelected);
+      // console.log('watch selected is firing, nextSelected:', nextSelected);
       this.$store.commit('setSelectedServices', nextSelected);
 
       if (this.refineType !== 'categoryField_value') {
@@ -467,21 +456,17 @@ export default {
         this.$router.push({ query: { ...this.$route.query, ...{ services: nextSelected }}});
       }
     },
-    // selectedList(nextSelectedList) {
-    //   console.log('watch selectedList is firing');
-    // },
     selectedListCompiled(nextSelected) {
       window.theRouter = this.$router;
-      console.log('RefinePanel watch selectedListCompiled is firing, nextSelected', nextSelected);
+      // console.log('RefinePanel watch selectedListCompiled is firing, nextSelected', nextSelected);
       this.$store.commit('setSelectedServices', nextSelected);
       if (typeof nextSelected === 'string') {
         nextSelected = [nextSelected];
       }
       this.$router.push({ query: { ...this.$route.query, ...{ services: nextSelected.join(',') }}});
-      // }
     },
     selectedServices(nextSelectedServices) {
-      console.log('RefinePanel watch selectedServices is firing:', nextSelectedServices);
+      // console.log('RefinePanel watch selectedServices is firing:', nextSelectedServices);
       this.$data.selected = nextSelectedServices;
     },
   },
@@ -495,12 +480,6 @@ export default {
       }
     }
   },
-  // mounted() {
-  //   if (this.refineType === 'multipleFieldGroups') {
-  //     console.log('RefinePanel.vue mounted is running, this.selectedList:', this.selectedList, 'this.$route.query:', this.$route.query, 'this.$route.query.services.split(','):', this.$route.query.services.split(','));
-  //
-  //   }
-  // },
   methods: {
     clickedRefineBox(item) {
       // console.log('clickedRefineBox, item:', item, 'typeof item:', typeof item, 'this.$data.selected:', this.$data.selected);
@@ -566,8 +545,7 @@ export default {
         // console.log('RefinePanel.vue, serviceArray:', serviceArray);
 
         const uniqArray = [ ...new Set(serviceArray) ];
-        console.log('RefinePanel.vue, uniqArray:', uniqArray);
-
+        // console.log('RefinePanel.vue, uniqArray:', uniqArray);
 
         // clean up any dangling , or ;
         uniq = uniqArray.filter(a => a.length > 2);
@@ -585,7 +563,6 @@ export default {
         selected = uniqArray.filter(a => a.length > 2);
         selected.filter(Boolean); // remove empties
         selected.sort();
-        // this.selected = selected;
 
       } else if (this.$config.refine && this.$config.refine.type === 'multipleFields') {
         uniq = Object.keys(this.$config.refine.multipleFields);
@@ -593,57 +570,44 @@ export default {
 
         selected = Object.keys(this.$config.refine.multipleFields);
         selected.sort();
-        // this.selected = selected;
       }
 
-      console.log('getRefineSearchList is still running');
-
-
+      // console.log('getRefineSearchList is still running');
       if (this.$config.refine && this.$config.refine.type === 'multipleFieldGroups') {
         uniq = {};
         selected = {};
         for (let group of Object.keys(this.$config.refine.multipleFieldGroups)){
           // console.log('group:', group);
           uniq[group] = {};
-          // selected[group] = {};
           for (let dep of Object.keys(this.$config.refine.multipleFieldGroups[group])){
-            console.log('middle loop, dep:', dep, 'group:', group);
-            // selected[group] = {};
+            // console.log('middle loop, dep:', dep, 'group:', group);
             uniq[group][dep] = {};
             for (let field of Object.keys(this.$config.refine.multipleFieldGroups[group][dep])){
               uniq[group][dep][field] = {};
-              // selected[group][field] = [];
               // console.log('field:', field, 'selected:', selected, 'this.$config.refine.multipleFieldGroups[group][field].unique_key:', this.$config.refine.multipleFieldGroups[group][field].unique_key);
               if (this.$config.refine.multipleFieldGroups[group][dep][field].i18n_key) {
                 uniq[group][dep][field].box_label = this.$config.refine.multipleFieldGroups[group][dep][field].i18n_key;
-                // uniq[group][field].box_label = this.$t(this.$config.refine.multipleFieldGroups[group][field].i18n_key);
               } else {
                 uniq[group][dep][field].box_label = field;
               }
               uniq[group][dep][field].unique_key = this.$config.refine.multipleFieldGroups[group][dep][field].unique_key;
-              // if (this.$config.refine.multipleFieldGroups[group][field].unique_key == 'year18') {
-              // console.log('pushing, selected:', selected, 'this.$config.refine.multipleFieldGroups[group][field].unique_key:', this.$config.refine.multipleFieldGroups[group][field].unique_key);
-              // selected[group][field].push(this.$config.refine.multipleFieldGroups[group][field].unique_key);
-              // }
             }
           }
         }
 
-        console.log('RefinePanel end of getRefineSearchList, uniq:', uniq, 'selected:', selected, 'this.selected:', this.selected);
-        // this.$data.refineList = uniq;
-
+        // console.log('RefinePanel end of getRefineSearchList, uniq:', uniq, 'selected:', selected, 'this.selected:', this.selected);
         if (this.selected.length) {
           for (let group of Object.keys(uniq)) {
             for (let dep of Object.keys(uniq[group])) {
               for (let field of Object.keys(uniq[group][dep])) {
                 if (dep == 'dependent' && this.selected.includes(uniq[group][dep][field].unique_key)) {
-                  console.log('RefinePanel end of getRefineSearchList, dependent, group:', group, 'dep:', dep, 'field:', field, 'uniq[group][dep][field].unique_key', uniq[group][dep][field].unique_key, 'this.selected:', this.selected);
+                  // console.log('RefinePanel end of getRefineSearchList, dependent, group:', group, 'dep:', dep, 'field:', field, 'uniq[group][dep][field].unique_key', uniq[group][dep][field].unique_key, 'this.selected:', this.selected);
                   if (!selected[group]) {
                     selected[group] = [];
                   }
                   selected[group].push(uniq[group][dep][field].unique_key);
                 } else if (dep == 'independent' && this.selected.includes(uniq[group][dep][field].unique_key)) {
-                  console.log('RefinePanel end of getRefineSearchList, independent, selected:', selected, 'group:', group, 'dep:', dep, 'field:', field, 'uniq[group][dep][field].unique_key', uniq[group][dep][field].unique_key, 'this.selected:', this.selected);
+                  // console.log('RefinePanel end of getRefineSearchList, independent, selected:', selected, 'group:', group, 'dep:', dep, 'field:', field, 'uniq[group][dep][field].unique_key', uniq[group][dep][field].unique_key, 'this.selected:', this.selected);
                   if (!selected['radio_'+group]) {
                     selected['radio_'+group] = undefined;
                   }
@@ -653,7 +617,7 @@ export default {
             }
           }
         }
-        console.log('RefinePanel end of getRefineSearchList, selected:', selected);
+        // console.log('RefinePanel end of getRefineSearchList, selected:', selected);
         this.$data.selectedList = selected;
       }
 
@@ -661,34 +625,25 @@ export default {
         uniq = {};
         selected = {};
         for (let group of Object.keys(this.$config.refine.multipleDependentFieldGroups)){
-          console.log('outer loop, group:', group);
+          // console.log('outer loop, group:', group);
           uniq[group] = {};
           for (let dep of Object.keys(this.$config.refine.multipleDependentFieldGroups[group])){
-            console.log('middle loop, dep:', dep, 'group:', group);
-            // selected[group] = {};
+            // console.log('middle loop, dep:', dep, 'group:', group);
             uniq[group][dep] = {};
             for (let field of Object.keys(this.$config.refine.multipleDependentFieldGroups[group][dep])){
               uniq[group][dep][field] = {};
-              // selected[group][field] = [];
               // console.log('inner loop field:', field, 'selected:', selected, 'this.$config.refine.multipleDependentFieldGroups[group][field].unique_key:', this.$config.refine.multipleDependentFieldGroups[group][field].unique_key);
               if (this.$config.refine.multipleDependentFieldGroups[group][dep][field].i18n_key) {
                 uniq[group][dep][field].box_label = this.$config.refine.multipleDependentFieldGroups[group][dep][field].i18n_key;
-                // uniq[group][field].box_label = this.$t(this.$config.refine.multipleDependentFieldGroups[group][field].i18n_key);
               } else {
                 uniq[group][dep][field].box_label = field;
               }
               uniq[group][dep][field].unique_key = this.$config.refine.multipleDependentFieldGroups[group][dep][field].unique_key;
-              // if (this.$config.refine.multipleDependentFieldGroups[group][field].unique_key == 'year18') {
-              // console.log('pushing, selected:', selected, 'this.$config.refine.multipleDependentFieldGroups[group][field].unique_key:', this.$config.refine.multipleDependentFieldGroups[group][field].unique_key);
-              // selected[group][field].push(this.$config.refine.multipleDependentFieldGroups[group][field].unique_key);
-              // }
             }
           }
         }
 
         console.log('RefinePanel end of getRefineSearchList, uniq:', uniq, 'selected:', selected, 'this.selected:', this.selected);
-        // this.$data.refineList = uniq;
-
         if (this.selected.length) {
           for (let group of Object.keys(uniq)) {
             for (let dep of Object.keys(uniq[group])) {

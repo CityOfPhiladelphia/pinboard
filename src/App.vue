@@ -557,28 +557,17 @@ export default {
   },
   mounted() {
     console.log('in App.vue mounted 210818, this.$store.state:', this.$store.state, 'this.$config:', this.$config, 'window.location.href:', window.location.href);
-    // this.track();
-
     this.$config.searchBar.searchTypes.forEach(item => {
       if (this.$route.query[item]) {
-      // if (item == 'address' && this.$route.query[item]) {
-        console.log('App.vue mounted item:', item, 'this.searchBarType:', this.searchBarType);
-        // if (this.item !== this.searchBarType) {
-        //   console.log('App.vue mounted, this.item !== this.searchBarType');
-        //   this.$store.commit('setSearchType', this.item);
-        // }
+        // console.log('App.vue mounted item:', item, 'this.searchBarType:', this.searchBarType);
         this.$controller.handleSearchFormSubmit(this.$route.query[item], item);
-        // console.log('philaHeader created item:', item)
         this.searchString = this.$route.query[item];
-        // this.comboSearchDropdownData[item].selected = true;
-        // this.$store.commit('setSearchType', item);
       }
     });
 
     if (this.$config.searchBar) {
-      // if (this.$config.searchBar.dropdown) { //&& this.$config.searchBar.dropdown.length === 1) {
       let routeQuery = Object.keys(this.$route.query);
-      console.log('App.vue mounted in searchTypes section, this.$route:', this.$route, 'routeQuery:', routeQuery, 'Object.keys(this.$route.query)[0]', Object.keys(this.$route.query)[0]);
+      // console.log('App.vue mounted in searchTypes section, this.$route:', this.$route, 'routeQuery:', routeQuery, 'Object.keys(this.$route.query)[0]', Object.keys(this.$route.query)[0]);
       let value;
       for (let query of routeQuery) {
         if (query === 'address' || query === 'keyword') {
@@ -588,20 +577,6 @@ export default {
       this.$store.commit('setCurrentSearch', value);
 
       this.addressInputPlaceholder = this.$config.searchBar.placeholder;
-      // let queryValue;
-      // if (routeQuery.includes('keyword')) {
-      //   queryValue = 'keyword';
-      // } else if (routeQuery.includes('address')) {
-      //   queryValue = 'address';
-      // }
-      // if (queryValue) {
-      //   console.log('setting searchType to queryValue:', queryValue);
-      //   this.$store.commit('setSearchType', queryValue);
-      // } else {
-      //   console.log('setting searchType to this.$config.searchBar.dropdown[0]:', this.$config.searchBar.dropdown[0]);
-      //   this.$store.commit('setSearchType', this.$config.searchBar.dropdown[0]);
-      // }
-      // }
     }
 
     if (this.$config.appLink) {
@@ -628,11 +603,10 @@ export default {
     }
   },
   created() {
-
     let root = document.getElementsByTagName( 'html' )[0]; // '0' to assign the first (and only `HTML` tag)
     root.setAttribute( 'class', 'invisible-scrollbar' );
 
-    console.log('App.vue created, this.$config:', this.$config);
+    // console.log('App.vue created, this.$config:', this.$config);
     if (this.$config.map) {
       if (this.$config.map.shouldInitialize === false) {
         this.$store.commit('setShouldInitializeMap', false);
@@ -949,23 +923,28 @@ export default {
           // console.log('services else is running, row:', row, 'selectedServices:', selectedServices, 'booleanServices:', booleanServices);
         }
 
-        // console.log('about to do buffer stuff, row:', row);
+        console.log('about to do buffer stuff, row:', row);
         let booleanBuffer = false;
         if (!this.$data.buffer) {
-          // console.log('!this.$data.buffer');
+          // console.log('!this.$data.buffer');:
           booleanBuffer = true;
         } else if (row.latlng) {
           // console.log('row.latlng:', row.latlng);
-          // console.log('buffer else if 1 is running, row:', row, 'booleanBuffer:', booleanBuffer);
+          console.log('buffer else if 1 is running, row:', row, 'booleanBuffer:', booleanBuffer, 'typeof row.latlng[0]:', typeof row.latlng[0]);
           if (typeof row.latlng[0] === 'number' && row.latlng[0] !== null) {
             const rowPoint = point([ row.latlng[1], row.latlng[0] ]);
             if (booleanPointInPolygon(rowPoint, this.$data.buffer)) {
               booleanBuffer = true;
             }
-            // console.log('buffer else if 1 IF is running, row:', row, 'rowPoint:', rowPoint, 'booleanBuffer:', booleanBuffer);
+            console.log('buffer else if 1 IF is running, row:', row, 'rowPoint:', rowPoint, 'booleanBuffer:', booleanBuffer);
+          } else if (typeof row.latlng[0] === 'string' && row.latlng[0] !== null) {
+            const rowPoint = point([ parseFloat(row.latlng[1]), parseFloat(row.latlng[0]) ]);
+            if (booleanPointInPolygon(rowPoint, this.$data.buffer)) {
+              booleanBuffer = true;
+            }
           }
         } else if (row.lat && row.lon) {
-          // console.log('buffer else if 2 is running, row:', row, 'booleanBuffer:', booleanBuffer);
+          console.log('buffer else if 2 is running, row:', row, 'booleanBuffer:', booleanBuffer);
           if (typeof row.lat === 'number' && typeof row.lon === 'number') {
             let projection = this.getProjection(row);
             let lnglat;
@@ -980,7 +959,7 @@ export default {
             if (booleanPointInPolygon(rowPoint, this.$data.buffer)) {
               booleanBuffer = true;
             }
-            // console.log('buffer else if 2 IF is running, row:', row, 'rowPoint:', rowPoint, 'booleanBuffer:', booleanBuffer);
+            console.log('buffer else if 2 IF is running, row:', row, 'rowPoint:', rowPoint, 'booleanBuffer:', booleanBuffer);
           }
         } else if (row.geometry && row.geometry.x) {
           // console.log('buffer else if 3 is running, row:', row, 'booleanBuffer:', booleanBuffer);
