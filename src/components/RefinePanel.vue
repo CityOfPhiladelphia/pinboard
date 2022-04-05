@@ -482,7 +482,7 @@ export default {
   },
   methods: {
     calculateColumns(ind) {
-      console.log('calculateColumns is running, ind:', ind, 'this.$config.refine.columns', this.$config.refine.columns);
+      // console.log('calculateColumns is running, ind:', ind, 'this.$config.refine.columns', this.$config.refine.columns);
       let value;
       if (this.$config.refine.columns) {
         value = 1;

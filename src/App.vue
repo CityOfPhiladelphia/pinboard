@@ -90,8 +90,9 @@
 
     <div
       v-show="!isMobile || isMobile && !refineOpen"
-      :class="locationsAndMapsPanelClass + ' locations-and-map-panels-holder columns'"
+      class="invisible-scrollbar locations-and-map-panels-holder columns"
     >
+    <!-- :class="locationsAndMapsPanelClass + ' locations-and-map-panels-holder columns'" -->
       <div
         v-show="locationsPanelVisible"
         :class="locationsPanelClass + ' locations-panel-holder column'"
@@ -170,7 +171,6 @@ import {
   Textbox,
   Checkbox,
   LangSelector,
-  // SearchBar,
 } from '@phila/phila-ui';
 
 export default {
@@ -183,7 +183,6 @@ export default {
     Textbox,
     Checkbox,
     LangSelector,
-    // SearchBar,
     AlertBanner,
     i18nBanner,
     PhilaModal,
@@ -233,16 +232,10 @@ export default {
     shouldShowGreeting() {
       return this.$store.state.shouldShowGreeting;
     },
-    locationsAndMapsPanelClass() {
-      // let value;
-      // if (!this.isMobile || this.shouldShowGreeting) {
-      //   value = 'invisible-scrollbar';
-      // } else {
-      //   value = '';
-      // }
-      let value = 'invisible-scrollbar';
-      return value;
-    },
+    // locationsAndMapsPanelClass() {
+    //   let value = 'invisible-scrollbar';
+    //   return value;
+    // },
     locationsPanelClass() {
       let value;
       if (this.isMobile) {
@@ -333,9 +326,6 @@ export default {
       }
       return final;
     },
-    // searchBarType() {
-    //   return this.$store.state.searchType;
-    // },
     i18nLanguages() {
       let values = [];
       if (this.$config.i18n.languagues) {
@@ -860,11 +850,6 @@ export default {
             servicesSplit = row.services_offered;
           }
 
-          // if (row.attributes) {
-          //   row.attributes._featureId = row._featureId;
-          //   row = row.attributes;
-          // }
-
           // console.log('1 servicesSplit:', servicesSplit, 'typeof servicesSplit:', typeof servicesSplit);
           if (typeof servicesSplit === 'string') {
             servicesSplit = servicesSplit.split(',');
@@ -879,7 +864,6 @@ export default {
               servicesFiltered = servicesSplit.filter(f => selectedServices.includes(f));
             }
             // console.log('servicesFiltered:', servicesFiltered, 'selectedServices:', selectedServices);
-            // booleanServices = servicesFiltered.length > 0;
             booleanServices = servicesFiltered.length == selectedServices.length;
           }
           // console.log('services else is running, row:', row, 'selectedServices:', selectedServices, 'booleanServices:', booleanServices);
@@ -892,13 +876,13 @@ export default {
           booleanBuffer = true;
         } else if (row.latlng) {
           // console.log('row.latlng:', row.latlng);
-          console.log('buffer else if 1 is running, row:', row, 'booleanBuffer:', booleanBuffer, 'typeof row.latlng[0]:', typeof row.latlng[0]);
+          // console.log('buffer else if 1 is running, row:', row, 'booleanBuffer:', booleanBuffer, 'typeof row.latlng[0]:', typeof row.latlng[0]);
           if (typeof row.latlng[0] === 'number' && row.latlng[0] !== null) {
             const rowPoint = point([ row.latlng[1], row.latlng[0] ]);
             if (booleanPointInPolygon(rowPoint, this.$data.buffer)) {
               booleanBuffer = true;
             }
-            console.log('buffer else if 1 IF is running, row:', row, 'rowPoint:', rowPoint, 'booleanBuffer:', booleanBuffer);
+            // console.log('buffer else if 1 IF is running, row:', row, 'rowPoint:', rowPoint, 'booleanBuffer:', booleanBuffer);
           } else if (typeof row.latlng[0] === 'string' && row.latlng[0] !== null) {
             const rowPoint = point([ parseFloat(row.latlng[1]), parseFloat(row.latlng[0]) ]);
             if (booleanPointInPolygon(rowPoint, this.$data.buffer)) {
@@ -906,7 +890,7 @@ export default {
             }
           }
         } else if (row.lat && row.lon) {
-          console.log('buffer else if 2 is running, row:', row, 'booleanBuffer:', booleanBuffer);
+          // console.log('buffer else if 2 is running, row:', row, 'booleanBuffer:', booleanBuffer);
           if (typeof row.lat === 'number' && typeof row.lon === 'number') {
             let projection = this.getProjection(row);
             let lnglat;
@@ -921,7 +905,7 @@ export default {
             if (booleanPointInPolygon(rowPoint, this.$data.buffer)) {
               booleanBuffer = true;
             }
-            console.log('buffer else if 2 IF is running, row:', row, 'rowPoint:', rowPoint, 'booleanBuffer:', booleanBuffer);
+            // console.log('buffer else if 2 IF is running, row:', row, 'rowPoint:', rowPoint, 'booleanBuffer:', booleanBuffer);
           }
         } else if (row.geometry && row.geometry.x) {
           // console.log('buffer else if 3 is running, row:', row, 'booleanBuffer:', booleanBuffer);
@@ -999,19 +983,6 @@ export default {
           if (result.length > 0) {
             booleanKeywords = true;
           }
-
-          // let lowerCaseDescription = [];
-          // for (let tag of description) {
-          //   lowerCaseDescription.push(tag.toLowerCase());
-          // }
-          // const keywordsFiltered = this.selectedKeywords.filter(function(f) {
-          //   // console.log('filter, f:', f, 'f.toLowerCase():', f.toLowerCase(), 'lowerCaseDescription:', lowerCaseDescription, 'lowerCaseDescription.includes(f.toLowerCase()):', lowerCaseDescription.includes(f.toLowerCase()));
-          //   return lowerCaseDescription.includes(f.toLowerCase())
-          // });
-          // // console.log('description:', description, 'lowerCaseDescription:', lowerCaseDescription, 'keywordsFiltered:', keywordsFiltered);
-          // if (keywordsFiltered.length > 0) {
-          //   booleanKeywords = true;
-          // }
         }
 
         // console.log('booleanServices:', booleanServices, 'booleanBuffer:', booleanBuffer, 'booleanKeywords:', booleanKeywords);
@@ -1024,26 +995,18 @@ export default {
       this.$store.commit('setCurrentData', filteredRows);
     },
     toggleMap() {
-      // if (window.innerWidth > 749) {
-      //   this.$data.isMapVisible = true;
-      // } else {
       this.$data.isMapVisible = !this.$data.isMapVisible;
       console.log('toggleMap is running');
       if (this.$data.isMapVisible === true) {
         console.log('toggleMap is running, this.$data.isMapVisible === true');
         // console.log('setTimeout function is running');
-        // if (this.mapType === 'leaflet') {
-        //   this.$store.state.map.map.invalidateSize();
-        // } else if (this.mapType === 'mapbox') {
         let themap = this.$store.map;
         setTimeout(function() {
           console.log('mapbox running map resize now');
           themap.resize();
           console.log('mapbox ran map resize');
         }, 250);
-        // }
       }
-      // }
       if (!this.i18nEnabled) {
         this.$data.buttonText = this.$data.isMapVisible ? 'Toggle to resource list' : 'Toggle to map';
       } else {
