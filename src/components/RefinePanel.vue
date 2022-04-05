@@ -92,8 +92,8 @@
             :options="refineListTranslated[ind]['independent']"
             text-key="textLabel"
             value-key="data"
-            :num-of-columns="1"
             :small="true"
+            :num-of-columns="calculateColumns(refineList[ind]['independent'])"
           >
             <div
               slot="label"
@@ -111,12 +111,12 @@
           <checkbox
             v-if="refineListTranslated[ind]['dependent']"
             :options="refineListTranslated[ind]['dependent']"
-            :num-of-columns="1"
             :small="true"
             v-model="selectedList[ind]"
             text-key="textLabel"
             value-key="data"
             shrinkToFit="true"
+            :num-of-columns="calculateColumns(refineList[ind]['dependent'])"
           >
             <div
               slot="label"
@@ -481,6 +481,16 @@ export default {
     }
   },
   methods: {
+    calculateColumns(ind) {
+      console.log('calculateColumns is running, ind:', ind, 'this.$config.refine.columns', this.$config.refine.columns);
+      let value;
+      if (this.$config.refine.columns) {
+        value = 1;
+      } else {
+        value = Object.keys(ind).length;
+      }
+      return value;
+    },
     clickedRefineBox(item) {
       // console.log('clickedRefineBox, item:', item, 'typeof item:', typeof item, 'this.$data.selected:', this.$data.selected);
       let data = this.$data;

@@ -923,7 +923,7 @@ export default {
           // console.log('services else is running, row:', row, 'selectedServices:', selectedServices, 'booleanServices:', booleanServices);
         }
 
-        console.log('about to do buffer stuff, row:', row);
+        // console.log('about to do buffer stuff, row:', row);
         let booleanBuffer = false;
         if (!this.$data.buffer) {
           // console.log('!this.$data.buffer');:
