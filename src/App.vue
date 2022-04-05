@@ -626,22 +626,6 @@ export default {
   },
 
   methods: {
-    // handleSearchbarChange(value) {
-    //   console.log('App.vue handleSearchbarChange is running, value:', value);
-    //   this.$store.commit('setSearchType', value);
-    //
-    //   this.$store.commit('setSelectedKeywords', []);
-    //   let startQuery = { ...this.$route.query };
-    //   let overlap = this.compareArrays(Object.keys(startQuery), this.$config.searchBar.dropdown);
-    //   if (overlap.length) {
-    //     for (let item of overlap) {
-    //       delete startQuery[item];
-    //     }
-    //     this.$router.push({ query: startQuery });
-    //   }
-    //   this.searchString = '';
-    //   this.$controller.resetGeocode();
-    // },
     compareArrays(arr1, arr2) {
       const finalArray = [];
       arr1.forEach((e1) => arr2.forEach((e2) =>
@@ -698,11 +682,11 @@ export default {
     },
     clearSearchTriggered() {
       let startQuery = { ...this.$route.query };
-      console.log('in clearSearchTriggered1, this.$route.query:', this.$route.query, 'startQuery:', startQuery);
+      // console.log('in clearSearchTriggered1, this.$route.query:', this.$route.query, 'startQuery:', startQuery);
       delete startQuery['address'];
       delete startQuery['keyword'];
       // delete startQuery[this.searchBarType];
-      console.log('in clearSearchTriggered2, this.$route.query:', this.$route.query, 'startQuery:', startQuery);
+      // console.log('in clearSearchTriggered2, this.$route.query:', this.$route.query, 'startQuery:', startQuery);
       this.$router.push({ query: startQuery });
       this.searchString = '';
       this.$store.commit('setSelectedKeywords', []);
@@ -800,9 +784,6 @@ export default {
                     let val = getter(row, dependentServices);
                     groupBooleanConditions.push(val);
                   }
-                  // else {
-                  //   groupBooleanConditions.push(true);
-                  // }
                 }
                 // console.log('group:', group, 'groupBooleanConditions:', groupBooleanConditions);
                 if (groupBooleanConditions.includes(true)) {
@@ -820,7 +801,7 @@ export default {
                   selectedGroups.push(valueGroup)
                 }
               }
-              console.log('App.vue filterPoints is running on multipleDependentFieldGroups, selectedServices:', selectedServices, 'selectedGroups:', selectedGroups);
+              // console.log('App.vue filterPoints is running on multipleDependentFieldGroups, selectedServices:', selectedServices, 'selectedGroups:', selectedGroups);
               let groupValues = [];
               for (let group of selectedGroups) {
                 let groupBooleanConditions = [];
@@ -828,12 +809,9 @@ export default {
                   if (service.split('_', 1)[0] === group) {
                     let ind = this.$config.refine.multipleDependentFieldGroups[group]['independent'];
                     let serviceEnd = service.split('_')[1];
-                    console.log('ind:', ind, 'serviceEnd:', serviceEnd, 'selectedServices:', selectedServices);
-                    // let dependentGroups = this.$config.refine.multipleDependentFieldGroups[group]['dependent'][service.split('_')[1]]['dependentGroups'] || [];
-                    // // console.log('dependentGroup:', dependentGroup, 'service.split("_", 1)[0]:', service.split('_', 1)[0], 'service.split("_")[1]:', service.split('_')[1], 'group', group, 'this.$config.refine.multipleDependentFieldGroups[group]', this.$config.refine.multipleDependentFieldGroups[group], 'this.$config.refine.multipleDependentFieldGroups[group][service.split("_")[1]]:', this.$config.refine.multipleDependentFieldGroups[group][service.split('_')[1]]);
+                    // console.log('ind:', ind, 'serviceEnd:', serviceEnd, 'selectedServices:', selectedServices);
                     let getter;
                     if (this.$config.refine.multipleDependentFieldGroups[group]['dependent'][service.split('_')[1]]) {
-                      console.log('setting getter to function');
                       getter = this.$config.refine.multipleDependentFieldGroups[group]['dependent'][service.split('_')[1]]['value'];
                       let dependentServices = [];
                       if (ind) {
@@ -844,27 +822,12 @@ export default {
                         }
                       }
                       let val = getter(row, dependentServices);
-                      console.log('getter:', getter, 'selectedServices:', selectedServices, 'dependentServices:', dependentServices, 'val:', val);
-                      console.log('groupBooleanConditions pushing val');
+                      // console.log('getter:', getter, 'selectedServices:', selectedServices, 'dependentServices:', dependentServices, 'val:', val);
                       groupBooleanConditions.push(val);
-                    }
-                    else {
-                      // let deps = Object.keys(this.$config.refine.multipleDependentFieldGroups[group]['dependent']);
-                      // // if selected
-                      // for (let newService of selectedServices) {
-                      //   console.log('not setting getter, group:', group, 'deps:', deps, 'newService:', newService.split('_')[1]);
-                      //   if (!deps.includes(newService.split('_')[1])) {
-                      //     console.log('groupBooleanConditions pushing true')
-                      //     groupBooleanConditions.push(true);
-                      //   } else {
-                      //     console.log('groupBooleanConditions pushing false')
-                      //     groupBooleanConditions.push(false);
-                      //   }
-                      // }
                     }
                   }
                 }
-                console.log('groupBooleanConditions:', groupBooleanConditions);
+                // console.log('groupBooleanConditions:', groupBooleanConditions);
                 if (groupBooleanConditions.includes(true) || !groupBooleanConditions.length) {
                   booleanConditions.push(true);
                 } else {
@@ -889,7 +852,6 @@ export default {
 
         } else {
           // the original default version, or refine.type = 'categoryField_array'
-
           // console.log('in else, row:', row, 'row.services_offered:', row.services_offered);
           let servicesSplit;
           if (this.$config.refine) {
