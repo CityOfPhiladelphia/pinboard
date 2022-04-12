@@ -69,9 +69,9 @@
     </div>
 
 
-    <!-- if using multipleFieldGroups option -->
+    <!-- if using multipleFieldGroups option and NOT dropdownRefine -->
     <div
-      v-if="dataStatus === 'success' && refineType === 'multipleFieldGroups'"
+      v-if="dataStatus === 'success' && refineType === 'multipleFieldGroups' && !dropdownRefine"
       id="multiple-field-groups-div"
       class="columns is-multiline"
     >
@@ -131,6 +131,135 @@
               </icon-tool-tip>
             </div>
           </checkbox>
+        </div>
+      </div>
+    </div>
+
+    <!-- if using multipleFieldGroups option and NOT dropdownRefine -->
+    <div
+      v-if="dataStatus === 'success' && refineType === 'multipleFieldGroups' && dropdownRefine"
+      id="multiple-field-groups-div"
+      class="columns is-multiline"
+    >
+      <div
+        v-for="(ind) in Object.keys(refineListTranslated)"
+        :id="'refine-list-'+ind"
+        :key="ind"
+        class="column"
+      >
+      <!-- class="column service-group-holder-x" -->
+
+        <div
+          id="columns-div-for-checkboxes"
+          class="columns"
+        >
+          <div
+            class="column dropdown-checkbox-div"
+            :style="{ 'width': 100/Object.keys(refineListTranslated).length+'%' }"
+          >
+            <div
+              class="dropdown-checkbox-header"
+              @click="expandCheckbox(ind)"
+            >
+              {{ $t(ind + '.category') }}
+              <!-- {{ ind }} -->
+            </div>
+            <div
+              v-if="refineList[ind].expanded"
+              class="refine-dropdown"
+            >
+              <radio
+                v-model="selectedList['radio_'+ind]"
+                v-if="refineListTranslated[ind]['independent']"
+                :options="refineListTranslated[ind]['independent']"
+                text-key="textLabel"
+                value-key="data"
+                :small="true"
+                :num-of-columns="calculateColumns(refineList[ind]['independent'])"
+              >
+                <div
+                  slot="label"
+                >
+                  <!-- {{ $t(ind + '.category') }} -->
+                  <icon-tool-tip
+                    v-if="Object.keys(infoCircles).includes(ind)"
+                    :item="ind"
+                    :circleData="infoCircles[ind]"
+                    :circleType="'click'"
+                  >
+                  </icon-tool-tip>
+                </div>
+              </radio>
+              <checkbox
+                v-if="refineListTranslated[ind]['dependent']"
+                :options="refineListTranslated[ind]['dependent']"
+                :small="true"
+                v-model="selectedList[ind]"
+                text-key="textLabel"
+                value-key="data"
+                shrinkToFit="true"
+                :num-of-columns="calculateColumns(refineList[ind]['dependent'])"
+              >
+                <div
+                  slot="label"
+                >
+                  <!-- {{ $t(ind + '.category') }} -->
+                  <icon-tool-tip
+                    v-if="Object.keys(infoCircles).includes(ind)"
+                    :item="ind"
+                    :circleData="infoCircles[ind]"
+                    :circleType="'click'"
+                  >
+                  </icon-tool-tip>
+                </div>
+              </checkbox>
+            </div>
+          </div>
+          <!-- <radio
+            v-model="selectedList['radio_'+ind]"
+            v-if="refineListTranslated[ind]['independent']"
+            :options="refineListTranslated[ind]['independent']"
+            text-key="textLabel"
+            value-key="data"
+            :small="true"
+            :num-of-columns="calculateColumns(refineList[ind]['independent'])"
+          >
+            <div
+              slot="label"
+            >
+              {{ $t(ind + '.category') }}
+              <icon-tool-tip
+                v-if="Object.keys(infoCircles).includes(ind)"
+                :item="ind"
+                :circleData="infoCircles[ind]"
+                :circleType="'click'"
+              >
+              </icon-tool-tip>
+            </div>
+          </radio>
+          <checkbox
+            v-if="refineListTranslated[ind]['dependent']"
+            :options="refineListTranslated[ind]['dependent']"
+            :small="true"
+            v-model="selectedList[ind]"
+            text-key="textLabel"
+            value-key="data"
+            shrinkToFit="true"
+            :num-of-columns="calculateColumns(refineList[ind]['dependent'])"
+          >
+            <div
+              slot="label"
+            >
+              {{ $t(ind + '.category') }}
+              <icon-tool-tip
+                v-if="Object.keys(infoCircles).includes(ind)"
+                :item="ind"
+                :circleData="infoCircles[ind]"
+                :circleType="'click'"
+              >
+              </icon-tool-tip>
+            </div>
+          </checkbox> -->
         </div>
       </div>
     </div>
@@ -298,6 +427,15 @@ export default {
     };
   },
   computed: {
+    dropdownRefine() {
+      let value;
+      if (this.$config.dropdownRefine) {
+        value = true;
+      } else {
+        value = false;
+      }
+      return value;
+    },
     NumRefineColumns() {
       let value;
       if (this.isMobile) {
@@ -382,14 +520,18 @@ export default {
         } else {
           value = 'refine-panel refine-panel-closed invisible-scrollbar';
         }
-      } else {
-        if (this.$config.retractableRefine && !this.refineOpen) {
+      } else if (this.$config.retractableRefine) {
+        if (!this.refineOpen) {
           value = 'refine-panel refine-retractable-closed refine-panel-non-mobile-closed invisible-scrollbar';
-        } else if (this.$config.retractableRefine && this.refineOpen) {
+        } else if (this.refineOpen) {
           value = 'refine-panel refine-retractable-open refine-panel-non-mobile invisible-scrollbar';
-        } else {
-          value = 'refine-panel refine-panel-non-mobile invisible-scrollbar';
         }
+      } else if (this.$config.dropdownRefine) {
+        console.log('dropdownRefine is used');
+        value = 'refine-panel refine-dropdown-closed refine-panel-non-mobile-closed invisible-scrollbar';
+        // value = 'refine-panel refine-panel-non-mobile invisible-scrollbar';
+      } else {
+        value = 'refine-panel refine-panel-non-mobile invisible-scrollbar';
       }
       return value;
     },
@@ -588,7 +730,7 @@ export default {
         selected = {};
         for (let group of Object.keys(this.$config.refine.multipleFieldGroups)){
           // console.log('group:', group);
-          uniq[group] = {};
+          uniq[group] = { expanded: false };
           for (let dep of Object.keys(this.$config.refine.multipleFieldGroups[group])){
             // console.log('middle loop, dep:', dep, 'group:', group);
             uniq[group][dep] = {};
@@ -681,6 +823,10 @@ export default {
       const container = document.querySelector('.refine-panel');
       container.scrollTo(0, 0);
     },
+    expandCheckbox(ind) {
+      console.log('expandCheckbox is running');
+      this.refineList[ind].expanded = !this.refineList[ind].expanded;
+    },
     expandRefine() {
       console.log('expandRefine is running');
       // if (window.innerWidth <= 767) { // converted from rems
@@ -722,6 +868,10 @@ export default {
       margin-right: 12px;
     }
   }
+}
+
+.refine-dropdown-closed {
+  height: 6rem;
 }
 
 .refine-retractable-closed {
@@ -892,6 +1042,27 @@ input[type=checkbox] {
       }
     }
   }
+}
+
+.dropdown-checkbox-div {
+  // padding-left: 0px;
+  // padding-right: 0px;
+  // padding-top: 0px;
+  // padding-bottom: 0px;
+  padding: 0px !important;
+  position: absolute;
+  z-index: 1001;
+  // width: 20%;
+  border-style: solid;
+  border-width: 1px;
+}
+
+.dropdown-checkbox-header {
+  padding: 0.75rem;
+}
+
+.refine-dropdown {
+  background-color: rgb(240, 240, 240);
 }
 
 .input-label {
