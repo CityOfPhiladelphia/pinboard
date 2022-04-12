@@ -81,6 +81,7 @@
         :key="ind"
         class="column is-narrow service-group-holder-x"
       >
+      <!-- class="column is-narrow service-group-holder-x" -->
 
         <div
           id="columns-div-for-checkboxes"
@@ -624,10 +625,12 @@ export default {
   },
   methods: {
     calculateColumns(ind) {
-      // console.log('calculateColumns is running, ind:', ind, 'this.$config.refine.columns', this.$config.refine.columns);
+      console.log('calculateColumns is running, ind:', ind, 'this.$config.refine.columns', this.$config.refine.columns);
       let value;
-      if (this.$config.refine.columns) {
+      if (this.$config.refine.columns && Object.keys(ind).length < 8) {
         value = 1;
+      } else if (this.$config.refine.columns) {
+        value = 2;
       } else {
         value = Object.keys(ind).length;
       }
