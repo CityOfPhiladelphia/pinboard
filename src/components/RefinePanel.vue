@@ -49,6 +49,14 @@
         :small="true"
         v-model="selected"
       >
+      <!-- v-if="Object.keys(infoCircles).includes(ind)" -->
+      <!-- :item="ind"
+      :circleData="infoCircles[ind]"
+      :circleType="'click'" -->
+        <icon-tool-tip
+        >
+          test
+        </icon-tool-tip>
       </checkbox>
     </div>
 
@@ -105,6 +113,7 @@
                 :circleData="infoCircles[ind]"
                 :circleType="'click'"
               >
+                test
               </icon-tool-tip>
               <!-- <tooltip
                 v-if="Object.keys(infoCircles).includes(ind)"
@@ -182,7 +191,9 @@ import Vue from 'vue';
 
 import { mapState } from 'vuex';
 import IconToolTip from './IconToolTip.vue';
-import { Checkbox, Radio, Tooltip } from '@phila/phila-ui';
+import Checkbox from './Checkbox.vue';
+// import { Checkbox, Radio, Tooltip } from '@phila/phila-ui';
+import { Radio, Tooltip } from '@phila/phila-ui';
 
 export default {
   components: {
@@ -368,12 +379,13 @@ export default {
       }
     }
   },
-  // mounted() {
+  mounted() {
+    console.log('RefinePanel.vue mounted test');
   //   if (this.refineType === 'multipleFieldGroups') {
   //     console.log('RefinePanel.vue mounted is running, this.selectedList:', this.selectedList, 'this.$route.query:', this.$route.query, 'this.$route.query.services.split(','):', this.$route.query.services.split(','));
   //
   //   }
-  // },
+  },
   methods: {
     clickedRefineBox(item) {
       // console.log('clickedRefineBox, item:', item, 'typeof item:', typeof item, 'this.$data.selected:', this.$data.selected);

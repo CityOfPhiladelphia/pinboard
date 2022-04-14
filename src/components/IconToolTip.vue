@@ -1,15 +1,20 @@
 <template>
-  <div class="inline">
+  <!-- <div> -->
+  <div
+    class="inline has-tooltip-top"
+    data-tooltip="Tooltip Text"
+  >
     <!-- :for="item" -->
     <!-- v-show="Object.keys(infoCirclesData).includes(item)" -->
     <font-awesome-icon
       v-if="circleType === 'hover'"
       :id="item + '-icon'"
       icon="info-circle"
-      class="fa-infoCircle"
-      @mouseover="infoOn"
-      @mouseout="infoOff"
+      class="fa-infoCircle has-tooltip-top"
+      data-tooltip="Tooltip Text"
     />
+    <!-- @mouseover="infoOn" -->
+    <!-- @mouseout="infoOff" -->
 
     <font-awesome-icon
       v-if="circleType === 'click'"
@@ -26,9 +31,10 @@
       :style="tooltipStyle"
       v-html="circleData.html"
     >
-    <!-- :style="{'top': '0px'}" -->
+      <!-- :style="{'top': '0px'}" -->
     </div>
   </div>
+  <!-- </div> -->
 </template>
 
 <script>
@@ -116,7 +122,7 @@ export default {
 
 .popup-tip {
   position: absolute;
-  display: inline-block;
+  // display: inline-block;
   margin-left: 5px;
   width: 260px;
   background-color: rgb(15, 77, 144);
