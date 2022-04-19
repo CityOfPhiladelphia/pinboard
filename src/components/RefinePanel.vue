@@ -42,6 +42,7 @@
     <div
       v-if="dataStatus === 'success' && ['categoryField_array', 'multipleFields'].includes(refineType)"
       id="field-div"
+      class="refine-holder"
     >
       <checkbox
         :options="getRefineSearchList()"
@@ -49,6 +50,14 @@
         :small="true"
         v-model="selected"
       >
+      <!-- v-if="Object.keys(infoCircles).includes(ind)" -->
+      <!-- :item="ind"
+      :circleData="infoCircles[ind]"
+      :circleType="'click'" -->
+        <icon-tool-tip
+        >
+          test
+        </icon-tool-tip>
       </checkbox>
     </div>
 
@@ -129,7 +138,12 @@
                 :circleData="infoCircles[ind]"
                 :circleType="'click'"
               >
+                test
               </icon-tool-tip>
+              <!-- <tooltip
+                v-if="Object.keys(infoCircles).includes(ind)"
+                message="test"
+              /> -->
             </div>
           </checkbox>
         </div>
@@ -401,13 +415,16 @@ import Vue from 'vue';
 
 import { mapState } from 'vuex';
 import IconToolTip from './IconToolTip.vue';
-import { Checkbox, Radio } from '@phila/phila-ui';
+import Checkbox from './Checkbox.vue';
+// import { Checkbox, Radio, Tooltip } from '@phila/phila-ui';
+import { Radio, Tooltip } from '@phila/phila-ui';
 
 export default {
   components: {
     IconToolTip,
     Checkbox,
     Radio,
+    // Tooltip,
   },
   props: {
     legendTitle: {
@@ -1104,5 +1121,9 @@ input[type=checkbox] {
 .white-font-link:visited {
   color: white;
 }
+
+// .refine-holder {
+//   margin-top: 20px;
+// }
 
 </style>
