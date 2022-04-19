@@ -37,11 +37,12 @@
       <div
         :id="`cb-group-${id}`"
         :style="`columns: ${numOfColumns} auto`"
+        class="checkbox-margin-top"
       >
         <div
           v-for="(option, key) in options"
           :key="`k-${key}`"
-          class="control"
+          class="control ovvis"
         >
           <input
             :id="`cb-${key}-${id}`"
@@ -209,3 +210,23 @@ export default {
   },
 };
 </script>
+
+<style>
+
+.checkbox-margin-top {
+  overflow: visible;
+  /* height: */
+  /* padding-top: 20px !important; */
+}
+
+.checkbox-margin-top:before, .checkbox-margin-top:after {
+  content: ' ';
+  display: block;
+  height: 5px; /* 5px + 5px = 10px */
+}
+
+.ovvis {
+  overflow: visible;
+}
+
+</style>

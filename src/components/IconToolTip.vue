@@ -1,18 +1,19 @@
 <template>
   <!-- <div> -->
   <div
-    class="inline has-tooltip-top"
+    class="inline has-tooltip-right"
     data-tooltip="Tooltip Text"
   >
+    <!-- <button class="button" data-tooltip="Tooltip Text">top tooltip</button> -->
     <!-- :for="item" -->
     <!-- v-show="Object.keys(infoCirclesData).includes(item)" -->
     <font-awesome-icon
       v-if="circleType === 'hover'"
       :id="item + '-icon'"
       icon="info-circle"
-      class="fa-infoCircle has-tooltip-top"
-      data-tooltip="Tooltip Text"
+      class="fa-infoCircle"
     />
+    <!-- data-tooltip="Tooltip Text" -->
     <!-- @mouseover="infoOn" -->
     <!-- @mouseout="infoOff" -->
 
@@ -38,6 +39,8 @@
 </template>
 
 <script>
+
+// import '@creativebulma/bulma-tooltip'
 
 export default {
   props: {
@@ -118,6 +121,7 @@ export default {
 
 .inline {
   display: inline-block;
+  padding-left: 4px;
 }
 
 .popup-tip {
@@ -169,6 +173,14 @@ ul {
     color: white;
     z-index: 10002;
   }
+}
+
+.has-tooltip-right::before {
+  // position: relative !important;
+  // height: 50px;
+  // overflow: visible;
+  height: 24px;
+  padding-top: 0px !important;
 }
 
 

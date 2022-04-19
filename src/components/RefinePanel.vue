@@ -42,6 +42,7 @@
     <div
       v-if="dataStatus === 'success' && ['categoryField_array', 'multipleFields'].includes(refineType)"
       id="field-div"
+      class="refine-holder"
     >
       <checkbox
         :options="getRefineSearchList()"
@@ -754,5 +755,9 @@ input[type=checkbox] {
 .white-font-link:visited {
   color: white;
 }
+
+// .refine-holder {
+//   margin-top: 20px;
+// }
 
 </style>
