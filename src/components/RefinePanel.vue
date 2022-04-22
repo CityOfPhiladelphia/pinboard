@@ -54,10 +54,10 @@
       <!-- :item="ind"
       :circleData="infoCircles[ind]"
       :circleType="'click'" -->
-        <icon-tool-tip
+        <!-- <icon-tool-tip
         >
           test
-        </icon-tool-tip>
+        </icon-tool-tip> -->
       </checkbox>
     </div>
 
@@ -109,13 +109,13 @@
               slot="label"
             >
               {{ $t(ind + '.category') }}
-              <icon-tool-tip
-                v-if="Object.keys(infoCircles).includes(ind)"
+              <!-- <icon-tool-tip
+                v-if="refineList[ind]['independent'])"
                 :item="ind"
                 :circleData="infoCircles[ind]"
                 :circleType="'click'"
               >
-              </icon-tool-tip>
+              </icon-tool-tip> -->
             </div>
           </radio>
           <checkbox
@@ -763,6 +763,7 @@ export default {
                 uniq[group][dep][field].box_label = field;
               }
               uniq[group][dep][field].unique_key = this.$config.refine.multipleFieldGroups[group][dep][field].unique_key;
+              uniq[group][dep][field].tooltip = this.$config.refine.multipleFieldGroups[group][dep][field].tooltip;
             }
           }
         }
