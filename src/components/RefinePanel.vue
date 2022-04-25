@@ -114,6 +114,7 @@
     <!-- if using multipleFieldGroups option and NOT dropdownRefine -->
     <div
       v-if="dataStatus === 'success' && refineType === 'multipleFieldGroups' && !dropdownRefine"
+      v-show="refineOpen"
       id="multiple-field-groups-div"
       class="columns is-multiline multiple-field-groups"
     >
@@ -956,12 +957,14 @@ export default {
 }
 
 .refine-retractable-closed {
-  height: 3rem;
+  // height: 3rem;
+  // height: 4rem;
 }
 
 .box-value {
   margin-left: 4px;
   margin-right: 4px;
+  margin-bottom: 8px;
   padding: 6px 8px 2px 4px !important;
   // padding: 0px !important;
   height: 30px;
@@ -1002,8 +1005,8 @@ export default {
     }
 
     .refine-title {
-      height:48px;
-      width: 100%;
+      // height:48px;
+      // width: 100%;
       border-style: solid;
       border-width: 2px !important;
       border-color: #f0f0f0;
@@ -1026,6 +1029,7 @@ export default {
 
     .clear-all {
       padding: 10px;
+      height: 20px;
       font-weight: normal;
       font-size: .8rem;
       color: #0f4d90 !important;
@@ -1148,6 +1152,10 @@ input[type=checkbox] {
 }
 
 .selected-boxes {
+  // display: flex;
+  // flex-direction: column;
+  flex-wrap: wrap;
+  max-width: 80%;
   padding-top: 10px;
   margin-left: 0px !important;
   margin-right: 0px !important;
