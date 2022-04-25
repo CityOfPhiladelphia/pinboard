@@ -53,7 +53,7 @@
 
         <lang-selector
           slot="lang-selector-nav"
-          v-show="i18nEnabled && isMobile"
+          v-show="i18nEnabled && isMobile || i18nEnabled && !i18nBanner"
           :languages="i18nLanguages"
         >
         </lang-selector>
@@ -62,7 +62,7 @@
     </div>
 
     <div
-      v-if="i18nEnabled"
+      v-if="i18nEnabled && i18nBanner"
       class="i18n-banner-holder"
     >
       <i18n-banner />
@@ -377,6 +377,13 @@ export default {
     },
     i18nEnabled() {
       if (this.$config.i18n && this.$config.i18n.enabled) {
+        return true;
+      } else {
+        return false;
+      }
+    },
+    i18nBanner() {
+      if (this.$config.i18n.header === 'i18nBanner') {
         return true;
       } else {
         return false;
@@ -1092,7 +1099,10 @@ html, body {
   // display: flex;
   // display: -ms-flexbox;
   // flex-direction: row;
-  margin: 0px !important;
+  margin-left: 0px !important;
+  margin-right: 0px !important;
+  margin-bottom: 0px !important;
+  margin-top: 0px !important;
   // background-color: yellow;
 }
 

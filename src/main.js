@@ -42,9 +42,10 @@ const clientConfig = {
 };
 
 function initPinboard(clientConfig) {
+  console.log('initPinboard is running 1, clientConfig:', clientConfig, 'i18n:', i18n);
   clientConfig = mergeDeep(i18n, clientConfig);
   const baseConfigUrl = clientConfig.baseConfig;
-  console.log('initPinboard is running, clientConfig:', clientConfig, 'baseConfigUrl:', baseConfigUrl);
+  console.log('initPinboard is running 2, clientConfig:', clientConfig, 'baseConfigUrl:', baseConfigUrl);
 
   if (!baseConfigUrl || baseConfigUrl === null) {
     finishInit(clientConfig);

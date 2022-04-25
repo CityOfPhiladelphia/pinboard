@@ -5,36 +5,69 @@
   >
 
     <div
-      class="refine-title columns"
+      :class="refineTitleClass + ' refine-title'"
       @click="expandRefine"
     >
-      <legend
+
+      <div
+        class="slider-icon"
+      >
+        <font-awesome-icon icon="sliders-h" />
+      </div>
+
+      <div
         v-if="!i18nEnabled"
-        class="column is-narrow legend-title h3"
+        class="refine-label-text"
       >
         {{ legendTitle }}
-      </legend>
-      <legend
+      </div>
+      <div
         v-if="i18nEnabled"
-        class="column is-narrow legend-title"
+        class="refine-label-text"
         v-html="$t('refinePanel.refine')"
       />
 
-      <a
-        v-if="!i18nEnabled && isTablet || !i18nEnabled && isDesktop || !i18nEnabled && isWideScreen"
-        href=""
-        class="column is-narrow clear-all"
+      <!-- href="" -->
+      <div
+        v-if="!i18nEnabled && isTablet && selected.length || !i18nEnabled && isDesktop && selected.length || !i18nEnabled && isWideScreen && selected.length"
+        class="clear-all"
         @click.prevent="clearAll"
       >
         Clear all
-      </a>
-      <a
-        v-if="i18nEnabled && isTablet || i18nEnabled && isDesktop || i18nEnabled && isWideScreen"
-        href=""
-        class="column is-narrow clear-all"
+      </div>
+      <!-- href="" -->
+      <div
+        v-if="i18nEnabled && isTablet && selected.length || i18nEnabled && isDesktop && selected.length || i18nEnabled && isWideScreen && selected.length"
+        class="clear-all"
         @click.prevent="clearAll"
         v-html="$t('refinePanel.clearAll')"
       />
+
+      <div
+        id="selected-boxes"
+        v-if="isTablet || isDesktop || isWideScreen"
+        class="selected-boxes columns"
+      >
+        <div
+          v-for="box in selected"
+          class="box-value column is-narrow"
+          @click="clickBox"
+        >
+          <!-- {{ $t('visitType.sports') }} -->
+          {{ $t(box.replace("_", ".")) }}
+          <font-awesome-icon icon="times"
+            @click="closeBox(box)"
+          />
+        </div>
+      </div>
+
+      <div
+        v-if="refineOpen && isTablet || refineOpen && isDesktop || refineOpen && isWideScreen"
+        class="close-button"
+      >
+        <font-awesome-icon icon="times" />
+      </div>
+
     </div>
 
     <!-- if using categoryField_value, categoryField_array, or multipleFields options -->
@@ -82,7 +115,7 @@
     <div
       v-if="dataStatus === 'success' && refineType === 'multipleFieldGroups' && !dropdownRefine"
       id="multiple-field-groups-div"
-      class="columns is-multiline"
+      class="columns is-multiline multiple-field-groups"
     >
       <div
         v-for="(ind) in Object.keys(refineListTranslated)"
@@ -153,8 +186,8 @@
     <!-- if using multipleFieldGroups option and NOT dropdownRefine -->
     <div
       v-if="dataStatus === 'success' && refineType === 'multipleFieldGroups' && dropdownRefine"
-      id="multiple-field-groups-div"
-      class="columns is-multiline"
+      id="multiple-field-groups-dropdown-div"
+      class="columns is-multiline multiple-field-groups"
     >
       <div
         v-for="(ind) in Object.keys(refineListTranslated)"
@@ -282,8 +315,8 @@
     <!-- if using multipleDependentFieldGroups option -->
     <div
       v-if="dataStatus === 'success' && refineType === 'multipleDependentFieldGroups'"
-      id="multiple-field-groups-div"
-      class="columns is-multiline"
+      id="multiple-dependent-field-groups-div"
+      class="columns is-multiline multiple-field-groups"
     >
       <div
         v-for="(ind) in Object.keys(refineListTranslated)"
@@ -530,6 +563,20 @@ export default {
         return mainObject;
       }
     },
+    refineTitleClass() {
+      let value;
+      if (this.$config.retractableRefine) {
+        if (this.refineOpen) {
+          value = 'refine-title-open';
+        }
+        // } else {
+        //   value = 'refine-title';
+        // }
+      // } else {
+      //   value = 'refine-title';
+      }
+      return value;
+    },
     refinePanelClass() {
       let value;
       if (this.isMobile) {
@@ -644,10 +691,12 @@ export default {
     calculateColumns(ind) {
       console.log('calculateColumns is running, ind:', ind, 'this.$config.refine.columns', this.$config.refine.columns);
       let value;
-      if (this.$config.refine.columns && Object.keys(ind).length < 8) {
+      if (this.$config.refine.columns) {
         value = 1;
-      } else if (this.$config.refine.columns) {
-        value = 2;
+      // if (this.$config.refine.columns && Object.keys(ind).length < 8) {
+      //   value = 1;
+      // } else if (this.$config.refine.columns) {
+      //   value = 2;
       } else {
         value = Object.keys(ind).length;
       }
@@ -677,8 +726,19 @@ export default {
         }
       }, 2000);
     },
-    clearAll() {
-      console.log('RefinePanel clearAll is running');
+    clickBox(e) {
+      console.log('clickBox is running, e:', e);
+      e.stopPropagation();
+    },
+    closeBox(box) {
+      let section = box.split('_')[0];
+      let boxIndex = this.$data.selectedList[section].indexOf(box);
+      console.log('closeBox is running, box:', box, 'section:', section, 'boxIndex:', boxIndex);
+      this.$data.selectedList[section].splice(boxIndex, 1);
+    },
+    clearAll(e) {
+      e.stopPropagation();
+      console.log('RefinePanel clearAll is running, e:', e);
       if (this.refineType === 'multipleFieldGroups' || this.refineType === 'multipleDependentFieldGroups') {
         for (let checkbox of Object.keys(this.$data.selectedList)) {
           console.log('this.$data.selectedList[checkbox]:', this.$data.selectedList[checkbox]);
@@ -897,33 +957,26 @@ export default {
 
 .refine-retractable-closed {
   height: 3rem;
-
-  .refine-title {
-    &::after{
-      content: '+';
-      font-weight: 900;
-      position: absolute;
-      font-size: 1.6rem;
-      right: 5px;
-      top: 110px;
-    }
-  }
 }
 
-.refine-retractable-open .refine-title{
-  &::after {
-    content: '-';
-    font-weight: 900;
-    position: absolute;
-    font-size: 1.6rem;
-    right: 5px;
-    top: 110px;
-  }
+.box-value {
+  margin-left: 4px;
+  margin-right: 4px;
+  padding: 6px 8px 2px 4px !important;
+  // padding: 0px !important;
+  height: 30px;
+  border-radius: 4px;
+  background-color: #cfcfcf;
+  box-sizing: border-box;
+  font-family: "ArialMT", "Arial", sans-serif;
+  color: #333333;
+  text-align: left;
+  line-height: normal;
 }
 
 .refine-panel {
   overflow-y: hidden;
-  padding: 1rem;
+  // padding: 1rem;
 
   .legend-title{
     margin-bottom: 0;
@@ -933,7 +986,8 @@ export default {
   }
 
   @media screen and (min-width: 768px) {
-    .service-group-holder-x{
+    .service-group-holder-x {
+      padding-top: 0px;
       padding-bottom: 0px;
       margin-bottom: 10px;
       padding-left: 16px;
@@ -946,26 +1000,46 @@ export default {
         border-right: none;
       }
     }
+
+    .refine-title {
+      height:48px;
+      width: 100%;
+      border-style: solid;
+      border-width: 2px !important;
+      border-color: #f0f0f0;
+    }
+
+    .refine-title:hover {
+      border-color: #2176d2;
+    }
+
+    .refine-title-open:hover {
+      border-color: #f0f0f0;
+    }
   }
 
-  .refine-title{
+  .refine-title {
     color: $ben-franklin-blue-dark;
-    margin-bottom: 0px !important;
+    margin: 0px !important;
+    display: flex;
+    flex-direction: row;
 
-    .clear-all{
+    .clear-all {
+      padding: 10px;
       font-weight: normal;
       font-size: .8rem;
       color: #0f4d90 !important;
+      text-decoration: underline;
+      // pointer-events: none;
     }
 
-    .clear-button{
+    .clear-button {
       background-color: rgb(0, 204, 255);
       height: 30px;
       width: 80px;
       margin-left: 10px;
       margin-right: 10px;
     }
-
   }
 
   label {
@@ -975,7 +1049,7 @@ export default {
 
   @media screen and (max-width: 767px) {
     height: 3rem;
-    padding: .5rem;
+    // padding: .5rem;
     position: relative;
     // z-index: 10000;
 
@@ -983,7 +1057,7 @@ export default {
       margin-bottom: 14px !important;
       cursor: pointer;
       height:7vh;
-      padding: .5rem;
+      // padding: .5rem;
 
       &::after{
         content: '+';
@@ -995,7 +1069,8 @@ export default {
       }
     }
 
-    .service-group-holder-x{
+    .service-group-holder-x {
+      padding-top: 0px;
       padding-bottom: 10px;
       margin-bottom: 10px;
       padding-left: 16px;
@@ -1065,6 +1140,21 @@ input[type=checkbox] {
   }
 }
 
+.multiple-field-groups {
+  margin-left: 0px !important;
+  margin-right: 0px !important;
+  margin-bottom: 0px !important;
+  margin-top: 12px !important;
+}
+
+.selected-boxes {
+  padding-top: 10px;
+  margin-left: 0px !important;
+  margin-right: 0px !important;
+  margin-bottom: 0px !important;
+  margin-top: 0px !important;
+}
+
 .dropdown-checkbox-div {
   // padding-left: 0px;
   // padding-right: 0px;
@@ -1123,8 +1213,26 @@ input[type=checkbox] {
   color: white;
 }
 
-// .refine-holder {
-//   margin-top: 20px;
-// }
+.slider-icon {
+  width: 40px;
+  padding: 10px;
+}
+
+.close-button {
+  position: absolute;
+  right: 10px;
+  padding: 10px;
+}
+
+.refine-label-text {
+  // background-color: rgba(240, 240, 240, 0);
+  box-sizing: border-box;
+  font-family: "Montserrat-Bold", "Montserrat Bold", "Montserrat", sans-serif;
+  font-weight: 700;
+  color: #0f4d90;
+  text-align: left;
+  line-height: normal;
+  padding: 12px;
+}
 
 </style>
