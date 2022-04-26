@@ -732,10 +732,23 @@ export default {
       e.stopPropagation();
     },
     closeBox(box) {
+      console.log('closeBox is running');
       let section = box.split('_')[0];
-      let boxIndex = this.$data.selectedList[section].indexOf(box);
-      console.log('closeBox is running, box:', box, 'section:', section, 'boxIndex:', boxIndex);
-      this.$data.selectedList[section].splice(boxIndex, 1);
+      if (this.$data.selectedList[section]) {
+        console.log('it\'s there in selectedList');
+        let boxIndex = this.$data.selectedList[section].indexOf(box);
+        this.$data.selectedList[section].splice(boxIndex, 1);
+      } else if (this.$data.selectedList['radio_' + section]) {
+        // let boxIndex = this.$data.selectedList['radio_' + section].indexOf(box);
+        console.log('1 it\'s there in selectedList WITH radio, box:', box, 'this.$data.selectedList["radio_" + section]:', this.$data.selectedList['radio_' + section]);
+        let test = 'radio_' + section;
+        const { [test]: removedProperty, ...exceptBoth } = this.$data.selectedList;
+        this.$data.selectedList = exceptBoth;
+        console.log('2 exceptBoth:', exceptBoth, 'it\'s there in selectedList WITH radio, box:', box, 'this.$data.selectedList["radio_" + section]:', this.$data.selectedList['radio_' + section]);
+      } else {
+        console.log('not there in selected list');
+      }
+      // console.log('closeBox is running, box:', box, 'section:', section, 'boxIndex:', boxIndex);
     },
     clearAll(e) {
       e.stopPropagation();
