@@ -54,7 +54,7 @@
           @click="clickBox"
         >
           <!-- {{ $t('visitType.sports') }} -->
-          {{ $t(box.replace("_", ".")) }}
+          {{ $t(getBoxValue(box)) }}
           <font-awesome-icon icon="times"
             @click="closeBox(box)"
           />
@@ -689,6 +689,13 @@ export default {
     }
   },
   methods: {
+    getBoxValue(box) {
+      let value;
+      if (box) {
+        value = box.replace("_", ".");
+      }
+      return value;
+    },
     calculateColumns(ind) {
       console.log('calculateColumns is running, ind:', ind, 'this.$config.refine.columns', this.$config.refine.columns);
       let value;
@@ -759,7 +766,9 @@ export default {
           if (Array.isArray(this.$data.selectedList[checkbox])) {
             this.$data.selectedList[checkbox].splice(0);
           } else {
-            this.$data.selectedList[checkbox] = undefined;
+            const { [checkbox]: removedProperty, ...exceptBoth } = this.$data.selectedList;
+            this.$data.selectedList = exceptBoth;
+            // this.$data.selectedList[checkbox] = undefined;
           }
         }
       } else {
