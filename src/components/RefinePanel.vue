@@ -1119,43 +1119,43 @@ export default {
 }
 
 //add outline to checkboxes
-input[type=checkbox]:focus + svg,
-input[type=checkbox]:focus + svg + svg{
-  outline: rgb(59, 153, 252) auto 5px;
-}
+// input[type=checkbox]:focus + svg,
+// input[type=checkbox]:focus + svg + svg{
+//   outline: rgb(59, 153, 252) auto 5px;
+// }
+//
+// input[type=checkbox] {
+//   display: block;
+//   opacity: 0;
+//   height: 0;
+//   margin: 0;
+// }
 
-input[type=checkbox] {
-  display: block;
-  opacity: 0;
-  height: 0;
-  margin: 0;
-}
 
-
-.checkbox-wrap {
-  label {
-    line-height: 1.2;
-    margin-bottom: 10px;
-    width: 100%;
-    div {
-      display: inline-block;
-      vertical-align: top;
-      padding: 0 0 0 1rem;
-      max-width: calc(100% - 23px);
-    }
-  }
-  @media screen and (max-width: 39.9375em) {
-    margin: 10px 0 0 10px;
-    label {
-      font-size: 18px;
-      width: 100%;
-      margin-right: 0;
-      div {
-        max-width: 280px;
-      }
-    }
-  }
-}
+// .checkbox-wrap {
+//   label {
+//     line-height: 1.2;
+//     margin-bottom: 10px;
+//     width: 100%;
+//     div {
+//       display: inline-block;
+//       vertical-align: top;
+//       padding: 0 0 0 1rem;
+//       max-width: calc(100% - 23px);
+//     }
+//   }
+//   @media screen and (max-width: 39.9375em) {
+//     margin: 10px 0 0 10px;
+//     label {
+//       font-size: 18px;
+//       width: 100%;
+//       margin-right: 0;
+//       div {
+//         max-width: 280px;
+//       }
+//     }
+//   }
+// }
 
 .multiple-field-groups {
   margin-left: 0px !important;
@@ -1205,13 +1205,13 @@ input[type=checkbox] {
   padding-left: 10px;
 }
 
-.fa-checkbox {
-  pointer-events: none;
-  color: $ben-franklin-blue-dark;
-  position: relative;
-  right: -15px;
-  bottom: 1px;
-}
+// .fa-checkbox {
+//   pointer-events: none;
+//   color: $ben-franklin-blue-dark;
+//   position: relative;
+//   right: -15px;
+//   bottom: 1px;
+// }
 
 .fa-infoCircle {
   color: $ben-franklin-blue-dark;
@@ -1222,17 +1222,17 @@ input[type=checkbox] {
   display: inline-block;
 }
 
-.white-font-link {
-  color: white;
-}
-
-.white-font-link:hover {
-  color: #25cef7 !important;
-}
-
-.white-font-link:visited {
-  color: white;
-}
+// .white-font-link {
+//   color: white;
+// }
+//
+// .white-font-link:hover {
+//   color: #25cef7 !important;
+// }
+//
+// .white-font-link:visited {
+//   color: white;
+// }
 
 .slider-icon {
   width: 40px;
