@@ -499,7 +499,9 @@ export default {
     },
     refinePanelClass() {
       let value;
-      if (this.refineOpen) {
+      if (this.isMobile && this.refineOpen) {
+        value = 'mobile-refine-panel-holder-open';
+      } else if (this.refineOpen) {
         value = 'refine-panel-holder-open';
       } else {
         value = 'refine-panel-holder';
@@ -1087,8 +1089,12 @@ html, body {
   }
 }
 
+.mobile-refine-panel-holder-open {
+  flex-grow: 1;
+  background: $ghost-grey;
+}
+
 .refine-panel-holder-open {
-  // flex-grow: 1;
   background: $ghost-grey;
 }
 
