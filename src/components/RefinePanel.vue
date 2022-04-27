@@ -1030,7 +1030,7 @@ export default {
       // height:48px;
       // width: 100%;
       border-style: solid;
-      border-width: 2px !important;
+      // border-width: 2px !important;
       border-color: #f0f0f0;
     }
 
@@ -1176,6 +1176,7 @@ export default {
 .selected-boxes {
   // display: flex;
   // flex-direction: column;
+  height: 44px;
   flex-wrap: wrap;
   max-width: 80%;
   padding-top: 10px;
@@ -1263,6 +1264,10 @@ export default {
   text-align: left;
   line-height: normal;
   padding: 12px;
+}
+
+.input-wrap.input-checkbox .is-checkradio+label:hover::before, .input-wrap.input-radio .is-checkradio+label:hover::before {
+  border-width: 2px !important;
 }
 
 </style>

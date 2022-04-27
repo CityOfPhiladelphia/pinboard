@@ -1088,7 +1088,7 @@ html, body {
 }
 
 .refine-panel-holder-open {
-  flex-grow: 1;
+  // flex-grow: 1;
   background: $ghost-grey;
 }
 
