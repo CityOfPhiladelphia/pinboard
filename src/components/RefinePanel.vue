@@ -144,7 +144,7 @@
             >
               {{ $t(ind + '.category') }}
               <!-- <icon-tool-tip
-                v-if="refineList[ind]['independent'])"
+                v-if="refineList[ind]['independent']"
                 :item="ind"
                 :circleData="infoCircles[ind]"
                 :circleType="'click'"
@@ -166,14 +166,14 @@
               slot="label"
             >
               {{ $t(ind + '.category') }}
-              <icon-tool-tip
+              <!-- <icon-tool-tip
                 v-if="Object.keys(infoCircles).includes(ind)"
                 :item="ind"
                 :circleData="infoCircles[ind]"
                 :circleType="'click'"
               >
                 test
-              </icon-tool-tip>
+              </icon-tool-tip> -->
               <!-- <tooltip
                 v-if="Object.keys(infoCircles).includes(ind)"
                 message="test"
@@ -264,51 +264,6 @@
               </checkbox>
             </div>
           </div>
-          <!-- <radio
-            v-model="selectedList['radio_'+ind]"
-            v-if="refineListTranslated[ind]['independent']"
-            :options="refineListTranslated[ind]['independent']"
-            text-key="textLabel"
-            value-key="data"
-            :small="true"
-            :num-of-columns="calculateColumns(refineList[ind]['independent'])"
-          >
-            <div
-              slot="label"
-            >
-              {{ $t(ind + '.category') }}
-              <icon-tool-tip
-                v-if="Object.keys(infoCircles).includes(ind)"
-                :item="ind"
-                :circleData="infoCircles[ind]"
-                :circleType="'click'"
-              >
-              </icon-tool-tip>
-            </div>
-          </radio>
-          <checkbox
-            v-if="refineListTranslated[ind]['dependent']"
-            :options="refineListTranslated[ind]['dependent']"
-            :small="true"
-            v-model="selectedList[ind]"
-            text-key="textLabel"
-            value-key="data"
-            shrinkToFit="true"
-            :num-of-columns="calculateColumns(refineList[ind]['dependent'])"
-          >
-            <div
-              slot="label"
-            >
-              {{ $t(ind + '.category') }}
-              <icon-tool-tip
-                v-if="Object.keys(infoCircles).includes(ind)"
-                :item="ind"
-                :circleData="infoCircles[ind]"
-                :circleType="'click'"
-              >
-              </icon-tool-tip>
-            </div>
-          </checkbox> -->
         </div>
       </div>
     </div>
@@ -1015,9 +970,9 @@ export default {
       padding-top: 0px;
       padding-bottom: 0px;
       margin-bottom: 10px;
-      padding-left: 16px;
-      padding-right: 10px;
-      border-right: 1px solid black;
+      padding-left: 24px;
+      padding-right: 24px;
+      border-right: 2px solid #cfcfcf;
       &:first-of-type{
         // padding-left: 0px;
       }
@@ -1176,10 +1131,10 @@ export default {
 .selected-boxes {
   // display: flex;
   // flex-direction: column;
-  height: 44px;
+  // height: 44px;
   flex-wrap: wrap;
   max-width: 80%;
-  padding-top: 10px;
+  padding-top: 6px;
   margin-left: 0px !important;
   margin-right: 0px !important;
   margin-bottom: 0px !important;
