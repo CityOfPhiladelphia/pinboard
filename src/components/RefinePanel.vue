@@ -489,9 +489,11 @@ export default {
 
               let data = this.$data.refineList[category][dep][box].unique_key;
               let textLabel = this.$t(this.$data.refineList[category][dep][box].box_label);
+              let tooltip = this.$t(this.$data.refineList[category][dep][box].tooltip);
               let keyPairs = {
                 data: data,
                 textLabel: textLabel,
+                tooltip: tooltip,
               };
               mainObject[category][dep].push(keyPairs)
             }

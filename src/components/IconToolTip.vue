@@ -2,7 +2,7 @@
   <!-- <div> -->
   <div
     class="inline has-tooltip-right"
-    data-tooltip="Tooltip Text"
+    :data-tooltip="tip"
   >
     <!-- <button class="button" data-tooltip="Tooltip Text">top tooltip</button> -->
     <!-- :for="item" -->
@@ -32,7 +32,6 @@
       :style="tooltipStyle"
       v-html="circleData.html"
     >
-      <!-- :style="{'top': '0px'}" -->
     </div>
   </div>
   <!-- </div> -->
@@ -45,6 +44,9 @@
 export default {
   props: {
     item: {
+
+    },
+    tip: {
 
     },
     circleData: {

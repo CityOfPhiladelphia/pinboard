@@ -63,11 +63,11 @@
             {{ !textKey ? option : option[textKey] }}
           </label>
           <icon-tool-tip
-            v-if="Object.keys(infoCircles).includes(optionValue(option, key))"
-            :circleData="infoCircles[optionValue(option, key)]"
-          >
-            test
-          </icon-tool-tip>
+            v-if="option.tooltip"
+            :tip="option.tooltip"
+          />
+            <!-- test
+          </icon-tool-tip> -->
 
         </div>
       </div>
@@ -170,13 +170,6 @@ export default {
     };
   },
   computed: {
-    infoCircles() {
-      let value = {};
-      if (this.$config.infoCircles) {
-        value = this.$config.infoCircles;
-      }
-      return value;
-    },
     inputListeners: function () {
 
       delete this.$listeners['input'];
@@ -207,6 +200,11 @@ export default {
   watch: {
     value (newValue) {
       this.localValue = newValue;
+    },
+  },
+  methods: {
+    testFunc(option) {
+      console.log('testFunc, option:', option);
     },
   },
 };
