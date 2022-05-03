@@ -1165,6 +1165,10 @@ html, body {
   overflow-y: scroll;
 }
 
+.footer-holder a {
+  text-decoration: underline;
+}
+
 a {
   // font-weight: bold;
   // text-decoration: underline;
