@@ -607,6 +607,12 @@ export default {
     },
   },
   watch: {
+    refineOpen(nextRefineOpen) {
+      // console.log('RefinePanel.vue watch refineOpen is firing');
+      this.$nextTick(() => {
+        this.$store.map.resize();
+      });
+    },
     database(nextDatabase) {
       // console.log('watch database is running, nextDatabase:', nextDatabase);
       this.getRefineSearchList();
