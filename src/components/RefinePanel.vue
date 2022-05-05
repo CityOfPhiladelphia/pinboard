@@ -660,7 +660,7 @@ export default {
       return value;
     },
     calculateColumns(ind) {
-      console.log('calculateColumns is running, ind:', ind, 'this.$config.refine.columns', this.$config.refine.columns);
+      // console.log('calculateColumns is running, ind:', ind, 'this.$config.refine.columns', this.$config.refine.columns);
       let value;
       if (this.$config.refine.columns) {
         value = 1;
@@ -674,7 +674,7 @@ export default {
       return value;
     },
     clickedRefineBox(item) {
-      // console.log('clickedRefineBox, item:', item, 'typeof item:', typeof item, 'this.$data.selected:', this.$data.selected);
+      console.log('clickedRefineBox, item:', item, 'typeof item:', typeof item, 'this.$data.selected:', this.$data.selected);
       let data = this.$data;
       let gtag = this.$gtag
       let category = this.$store.state.gtag.category;
@@ -895,10 +895,17 @@ export default {
       this.refineList[ind].expanded = !this.refineList[ind].expanded;
     },
     expandRefine() {
-      console.log('expandRefine is running');
+      let tagValue;
+      if (this.refineOpen) {
+        tagValue = 'retract refine panel';
+      } else {
+        tagValue = 'expand refine panel';
+      }
+      console.log('expandRefine is running, tagValue:', tagValue);
       // if (window.innerWidth <= 767) { // converted from rems
       this.$gtag.event('refine-panel-open', {
         'event_category': this.$store.state.gtag.category,
+        'event_label': tagValue,
       })
       this.$store.commit('setRefineOpen', !this.refineOpen);
       // }
