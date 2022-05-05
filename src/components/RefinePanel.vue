@@ -83,14 +83,6 @@
         :small="true"
         v-model="selected"
       >
-      <!-- v-if="Object.keys(infoCircles).includes(ind)" -->
-      <!-- :item="ind"
-      :circleData="infoCircles[ind]"
-      :circleType="'click'" -->
-        <!-- <icon-tool-tip
-        >
-          test
-        </icon-tool-tip> -->
       </checkbox>
     </div>
 
@@ -110,7 +102,6 @@
       </radio>
     </div>
 
-
     <!-- if using multipleFieldGroups option and NOT dropdownRefine -->
     <div
       v-if="dataStatus === 'success' && refineType === 'multipleFieldGroups' && !dropdownRefine"
@@ -124,8 +115,6 @@
         :key="ind"
         class="column is-narrow service-group-holder-x"
       >
-      <!-- class="column is-narrow service-group-holder-x" -->
-
         <div
           id="columns-div-for-checkboxes"
           class="columns"
@@ -143,13 +132,6 @@
               slot="label"
             >
               {{ $t(ind + '.category') }}
-              <!-- <icon-tool-tip
-                v-if="refineList[ind]['independent']"
-                :item="ind"
-                :circleData="infoCircles[ind]"
-                :circleType="'click'"
-              >
-              </icon-tool-tip> -->
             </div>
           </radio>
           <checkbox
@@ -162,22 +144,11 @@
             shrinkToFit="true"
             :num-of-columns="calculateColumns(refineList[ind]['dependent'])"
           >
+          <!-- @click="checkboxClick" -->
             <div
               slot="label"
             >
               {{ $t(ind + '.category') }}
-              <!-- <icon-tool-tip
-                v-if="Object.keys(infoCircles).includes(ind)"
-                :item="ind"
-                :circleData="infoCircles[ind]"
-                :circleType="'click'"
-              >
-                test
-              </icon-tool-tip> -->
-              <!-- <tooltip
-                v-if="Object.keys(infoCircles).includes(ind)"
-                message="test"
-              /> -->
             </div>
           </checkbox>
         </div>
@@ -230,13 +201,13 @@
                   slot="label"
                 >
                   <!-- {{ $t(ind + '.category') }} -->
-                  <icon-tool-tip
+                  <!-- <icon-tool-tip
                     v-if="Object.keys(infoCircles).includes(ind)"
                     :item="ind"
                     :circleData="infoCircles[ind]"
                     :circleType="'click'"
                   >
-                  </icon-tool-tip>
+                  </icon-tool-tip> -->
                 </div>
               </radio>
               <checkbox
@@ -253,13 +224,13 @@
                   slot="label"
                 >
                   <!-- {{ $t(ind + '.category') }} -->
-                  <icon-tool-tip
+                  <!-- <icon-tool-tip
                     v-if="Object.keys(infoCircles).includes(ind)"
                     :item="ind"
                     :circleData="infoCircles[ind]"
                     :circleType="'click'"
                   >
-                  </icon-tool-tip>
+                  </icon-tool-tip> -->
                 </div>
               </checkbox>
             </div>
@@ -401,19 +372,14 @@
 <script>
 
 import Vue from 'vue';
-
 import { mapState } from 'vuex';
-import IconToolTip from './IconToolTip.vue';
 import Checkbox from './Checkbox.vue';
-// import { Checkbox, Radio, Tooltip } from '@phila/phila-ui';
-import { Radio, Tooltip } from '@phila/phila-ui';
+import { Radio } from '@phila/phila-ui';
 
 export default {
   components: {
-    IconToolTip,
     Checkbox,
     Radio,
-    // Tooltip,
   },
   props: {
     legendTitle: {
@@ -455,10 +421,10 @@ export default {
     selectedListCompiled() {
       let compiled = [];
       for (let value of Object.keys(this.$data.selectedList)) {
-        console.log('in selectedListCompiled, value:', value, value.split('_')[0]);
+        console.log('in selectedListCompiled computed, value:', value, value.split('_')[0]);
         if (value.split('_')[0] == 'radio') {
-          console.log('radio button clicked!');
-            compiled.push(this.$data.selectedList[value]);
+          // console.log('radio button clicked!');
+          compiled.push(this.$data.selectedList[value]);
         } else {
           for (let selected of this.$data.selectedList[value]) {
             compiled.push(selected);
@@ -617,8 +583,16 @@ export default {
       // console.log('watch database is running, nextDatabase:', nextDatabase);
       this.getRefineSearchList();
     },
-    selected(nextSelected) {
-      // console.log('watch selected is firing, nextSelected:', nextSelected);
+    selected(nextSelected, oldSelected) {
+      let newSelection = nextSelected.filter(x => !oldSelected.includes(x));
+      console.log('watch selected is firing, nextSelected:', nextSelected, 'oldSelected:', oldSelected, 'newSelection:', newSelection);
+      if (newSelection.length) {
+        this.$gtag.event('refine-checkbox-click', {
+          'event_category': this.$store.state.gtag.category,
+          'event_label': newSelection[0],
+        });
+      }
+
       this.$store.commit('setSelectedServices', nextSelected);
 
       if (this.refineType !== 'categoryField_value') {
@@ -652,6 +626,9 @@ export default {
     }
   },
   methods: {
+    // checkboxClick(e) {
+    //   console.log('refinePanel checkboxClick is running, e:', e);
+    // },
     getBoxValue(box) {
       let value;
       if (box) {
