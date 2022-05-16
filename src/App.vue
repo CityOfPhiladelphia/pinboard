@@ -1055,15 +1055,42 @@ html, body {
   height: 100%;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  // color: #000000;
   display: flex;
   display: -ms-flexbox;
   flex-direction: column;
 }
 
-#app-header .container {
-  padding-left: 16px !important;
-  padding-right: 16px !important;
+#app-header {
+  #nav-wrap {
+    height: 80px;
+    line-height: 80px;
+  }
+  .container {
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+  }
+  .title-col {
+    padding-bottom: 0.5rem !important;
+  }
+  h2 {
+    font-weight: 100;
+  }
+}
+
+#app-footer {
+  height: 33px !important;
+
+  a {
+    font-family: "Open Sans Semibold", "Open Sans", sans-serif !important;
+    font-weight: 600 !important;
+    font-size: 14px;
+    // height: 33px !important;
+    line-height: 33px !important;
+  }
+
+  ul li:after {
+    font-weight: lighter !important;
+  }
 }
 
 .search-bar-container-class {
@@ -1102,21 +1129,16 @@ html, body {
   overflow-y: scroll;
   min-height: 0px;
   flex-grow: 1;
-  // display: flex;
-  // display: -ms-flexbox;
-  // flex-direction: row;
   margin-left: 0px !important;
   margin-right: 0px !important;
   margin-bottom: 0px !important;
   margin-top: 0px !important;
-  // background-color: yellow;
 }
 
 .locations-panel-holder {
   min-height: 0px;
   padding: 0px;
   overflow-y: scroll;
-  // background-color: #88d8b0;
 }
 
 .invisible-scrollbar {
@@ -1167,11 +1189,6 @@ html, body {
 
 .footer-holder a {
   text-decoration: underline;
-}
-
-a {
-  // font-weight: bold;
-  // text-decoration: underline;
 }
 
 .no-scroll{

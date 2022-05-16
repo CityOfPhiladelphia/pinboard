@@ -1074,45 +1074,6 @@ export default {
   }
 }
 
-//add outline to checkboxes
-// input[type=checkbox]:focus + svg,
-// input[type=checkbox]:focus + svg + svg{
-//   outline: rgb(59, 153, 252) auto 5px;
-// }
-//
-// input[type=checkbox] {
-//   display: block;
-//   opacity: 0;
-//   height: 0;
-//   margin: 0;
-// }
-
-
-// .checkbox-wrap {
-//   label {
-//     line-height: 1.2;
-//     margin-bottom: 10px;
-//     width: 100%;
-//     div {
-//       display: inline-block;
-//       vertical-align: top;
-//       padding: 0 0 0 1rem;
-//       max-width: calc(100% - 23px);
-//     }
-//   }
-//   @media screen and (max-width: 39.9375em) {
-//     margin: 10px 0 0 10px;
-//     label {
-//       font-size: 18px;
-//       width: 100%;
-//       margin-right: 0;
-//       div {
-//         max-width: 280px;
-//       }
-//     }
-//   }
-// }
-
 .multiple-field-groups {
   margin-left: 0px !important;
   margin-right: 0px !important;
@@ -1121,9 +1082,6 @@ export default {
 }
 
 .selected-boxes {
-  // display: flex;
-  // flex-direction: column;
-  // height: 44px;
   flex-wrap: wrap;
   max-width: 80%;
   padding-top: 6px;
@@ -1134,14 +1092,9 @@ export default {
 }
 
 .dropdown-checkbox-div {
-  // padding-left: 0px;
-  // padding-right: 0px;
-  // padding-top: 0px;
-  // padding-bottom: 0px;
   padding: 0px !important;
   position: absolute;
   z-index: 1001;
-  // width: 20%;
   border-style: solid;
   border-width: 1px;
 }
@@ -1162,14 +1115,6 @@ export default {
   padding-left: 10px;
 }
 
-// .fa-checkbox {
-//   pointer-events: none;
-//   color: $ben-franklin-blue-dark;
-//   position: relative;
-//   right: -15px;
-//   bottom: 1px;
-// }
-
 .fa-infoCircle {
   color: $ben-franklin-blue-dark;
   cursor: pointer;
@@ -1179,21 +1124,11 @@ export default {
   display: inline-block;
 }
 
-// .white-font-link {
-//   color: white;
-// }
-//
-// .white-font-link:hover {
-//   color: #25cef7 !important;
-// }
-//
-// .white-font-link:visited {
-//   color: white;
-// }
-
 .slider-icon {
-  width: 40px;
-  padding: 10px;
+  // width: 40px;
+  padding-top: 10px;
+  padding-left: 10px;
+  padding-bottom: 10px;
 }
 
 .close-button {
@@ -1210,7 +1145,9 @@ export default {
   color: #0f4d90;
   text-align: left;
   line-height: normal;
-  padding: 12px;
+  padding-left: 5px;
+  padding-top: 12px;
+  padding-bottom: 12px;
 }
 
 .input-wrap.input-checkbox .is-checkradio+label:hover::before, .input-wrap.input-radio .is-checkradio+label:hover::before {

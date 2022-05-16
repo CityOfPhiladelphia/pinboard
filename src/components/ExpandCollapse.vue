@@ -263,7 +263,7 @@ export default {
     right: 1rem;
     top: 1rem;
     content: '+';
-    font-weight: 900;
+    font-weight: 300;
     font-size:1.5rem;
     z-index: 100;
     color: $ben-franklin-blue-dark;
@@ -277,7 +277,7 @@ export default {
       font-weight: 900;
     }
     &::after{
-      content: '-';
+      content: '–';
       color:white;
     }
   }
