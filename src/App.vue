@@ -1055,7 +1055,7 @@ html, body {
   height: 100%;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  color: #000000;
+  // color: #000000;
   display: flex;
   display: -ms-flexbox;
   flex-direction: column;
