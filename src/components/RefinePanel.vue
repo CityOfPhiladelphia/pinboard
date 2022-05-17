@@ -59,9 +59,14 @@
         >
           <!-- {{ $t('visitType.sports') }} -->
           {{ $t(getBoxValue(box)) }}
-          <font-awesome-icon icon="times"
+          <button
+            class="inline-icon"
+            tabindex="0"
             @click="closeBox(box)"
-          />
+          >
+            <font-awesome-icon icon="times"
+            />
+          </button>
         </div>
       </div>
       <!-- </button> -->
@@ -634,10 +639,20 @@ export default {
     let divButton = document.querySelector('#refine-top');
     divButton.addEventListener('keypress', activate.bind(this));
     function activate(e) {
-      if (e.type === 'keypress' && e.keyCode == 32) {
+      console.log('activate, e:', e, 'e.path[0]:', e.path[0]);
+      if (e.type === 'keypress' && e.keyCode == 32 && e.srcElement.id == 'refine-top') {
         this.expandRefine();
       }
     };
+    // let closeButton = document.querySelectorAll('.fa-times');
+    // console.log('closeButton:', closeButton);
+    // closeButton.addEventListener('keypress', activate2.bind(this));
+    // function activate2(e) {
+    //   console.log('activate2, e:', e, 'e.path[0]:', e.path[0]);
+    //   // if (e.type === 'keypress' && e.keyCode == 32 && e.srcElement.id == 'refine-top') {
+    //   //   this.expandRefine();
+    //   // }
+    // };
   },
   methods: {
     // checkboxClick(e) {
@@ -948,7 +963,7 @@ export default {
   margin-left: 4px;
   margin-right: 4px;
   margin-bottom: 8px;
-  padding: 6px 8px 2px 4px !important;
+  padding: 6px 4px 2px 4px !important;
   // padding: 0px !important;
   height: 30px;
   border-radius: 4px;
@@ -1172,6 +1187,12 @@ export default {
   border-width: 2px !important;
   // border-color: rgb(33, 118, 210) !important;
   border-color: #2176d2 !important;
+}
+
+.inline-icon {
+  // display: inline-block;
+  border-style: none;
+  background-color: #cfcfcf;
 }
 
 
