@@ -4,8 +4,12 @@
     :class="refinePanelClass"
   >
 
+    <!-- <button -->
     <div
+      id="refine-top"
       :class="refineTitleClass + ' refine-title'"
+      tabindex="0"
+      role="button"
       @click="expandRefine"
     >
 
@@ -60,6 +64,7 @@
           />
         </div>
       </div>
+      <!-- </button> -->
 
       <div
         v-if="refineOpen && isTablet || refineOpen && isDesktop || refineOpen && isWideScreen"
@@ -624,6 +629,15 @@ export default {
         this.$data.selected = this.$route.query.services;
       }
     }
+  },
+  mounted() {
+    let divButton = document.querySelector('#refine-top');
+    divButton.addEventListener('keypress', activate.bind(this));
+    function activate(e) {
+      if (e.type === 'keypress' && e.keyCode == 32) {
+        this.expandRefine();
+      }
+    };
   },
   methods: {
     // checkboxClick(e) {
