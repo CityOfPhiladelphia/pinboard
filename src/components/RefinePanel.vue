@@ -1154,4 +1154,12 @@ export default {
   border-width: 2px !important;
 }
 
+.is-checkradio[type=checkbox]:focus:not([disabled])+label::before, .is-checkradio[type=checkbox]:focus:not([disabled])+label:before, .is-checkradio[type=radio]:focus:not([disabled])+label::before, .is-checkradio[type=radio]:focus:not([disabled])+label:before {
+  border-width: 2px !important;
+  // border-color: rgb(33, 118, 210) !important;
+  border-color: #2176d2 !important;
+}
+
+
+
 </style>
