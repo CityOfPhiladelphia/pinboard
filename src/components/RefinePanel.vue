@@ -31,16 +31,15 @@
         v-html="$t('refinePanel.refine')"
       />
 
-      <!-- href="" -->
-      <div
+      <button
         v-if="!i18nEnabled && isTablet && selected.length || !i18nEnabled && isDesktop && selected.length || !i18nEnabled && isWideScreen && selected.length"
         class="clear-all"
         @click.prevent="clearAll"
       >
         Clear all
-      </div>
+      </button>
       <!-- href="" -->
-      <div
+      <button
         v-if="i18nEnabled && isTablet && selected.length || i18nEnabled && isDesktop && selected.length || i18nEnabled && isWideScreen && selected.length"
         class="clear-all"
         @click.prevent="clearAll"
@@ -60,7 +59,7 @@
           <!-- {{ $t('visitType.sports') }} -->
           {{ $t(getBoxValue(box)) }}
           <button
-            class="inline-icon"
+            class="invisible-x-button"
             tabindex="0"
             @click="closeBox(box)"
           >
@@ -368,11 +367,12 @@
         class="column is-narrow"
         v-if="i18nEnabled"
       >
-        <div
+        <button
           class="button is-primary"
           @click="closeRefinePanel"
           v-html="$t('refinePanel.clearAll')"
-        />
+        >
+        </button>
       </div>
 
     </div>
@@ -1026,13 +1026,15 @@ export default {
     flex-direction: row;
 
     .clear-all {
-      padding: 10px;
+      margin-top: 10px;
+      border-style: none;
+      background-color: rgb(240, 240, 240);
       height: 20px;
       font-weight: normal;
       font-size: .8rem;
       color: #0f4d90 !important;
       text-decoration: underline;
-      // pointer-events: none;
+      padding-right: 16px;
     }
 
     .clear-button {
@@ -1177,6 +1179,7 @@ export default {
   padding-left: 5px;
   padding-top: 12px;
   padding-bottom: 12px;
+  padding-right: 10px;
 }
 
 .input-wrap.input-checkbox .is-checkradio+label:hover::before, .input-wrap.input-radio .is-checkradio+label:hover::before {
@@ -1189,11 +1192,16 @@ export default {
   border-color: #2176d2 !important;
 }
 
-.inline-icon {
-  // display: inline-block;
+.invisible-x-button {
   border-style: none;
   background-color: #cfcfcf;
 }
+
+// .invisible-clear-button {
+//   margin-top: 10px;
+//   border-style: none;
+//   background-color: rgb(240, 240, 240);
+// }
 
 
 
