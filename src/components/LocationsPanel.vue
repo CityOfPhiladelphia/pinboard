@@ -42,12 +42,12 @@
 
           <component
             :is="'expandCollapseContent'"
-            v-if="$config.customComps && Object.keys($config.customComps).includes('expandCollapseContent')"
+            v-if="$config.customComps && Object.keys($config.customComps).includes('expandCollapseContent') && selectedResources.includes(item._featureId)"
             :item="item"
             :is-map-visible="isMapVisible"
           />
 
-          <div v-if="!$config.customComps || !Object.keys($config.customComps).includes('expandCollapseContent')">
+          <div v-if="!$config.customComps || !Object.keys($config.customComps).includes('expandCollapseContent') && selectedResources.includes(item._featureId)">
             <div class="columns is-marginless">
 
               <div class="column">
