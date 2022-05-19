@@ -60,9 +60,9 @@
           {{ $t(getBoxValue(box)) }}
           <button
             class="invisible-x-button"
-            tabindex="0"
             @click="closeBox(box)"
           >
+          <!-- tabindex="0" -->
             <font-awesome-icon icon="times"
             />
           </button>
@@ -70,12 +70,12 @@
       </div>
       <!-- </button> -->
 
-      <div
+      <!-- <button
         v-if="refineOpen && isTablet || refineOpen && isDesktop || refineOpen && isWideScreen"
-        class="close-button"
+        class="close-button invisible-clear-button"
       >
         <font-awesome-icon icon="times" />
-      </div>
+      </button> -->
 
     </div>
 
@@ -317,6 +317,14 @@
         </div>
       </div>
     </div>
+
+    <button
+      v-if="refineOpen && isTablet || refineOpen && isDesktop || refineOpen && isWideScreen"
+      class="close-button"
+      @click="expandRefine"
+    >
+      <font-awesome-icon icon="times" />
+    </button>
 
     <div
       v-if="isMobile"
@@ -1164,7 +1172,10 @@ export default {
 
 .close-button {
   position: absolute;
-  right: 10px;
+  top: 110px;
+  right: 0px;
+  border-style: none;
+  background-color: rgb(240, 240, 240);
   padding: 10px;
 }
 
@@ -1198,7 +1209,7 @@ export default {
 }
 
 // .invisible-clear-button {
-//   margin-top: 10px;
+//   // margin-top: 10px;
 //   border-style: none;
 //   background-color: rgb(240, 240, 240);
 // }
