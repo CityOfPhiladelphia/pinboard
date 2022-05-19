@@ -93,14 +93,9 @@
       class="invisible-scrollbar locations-and-map-panels-holder columns"
     >
     <!-- :class="locationsAndMapsPanelClass + ' locations-and-map-panels-holder columns'" -->
-      <div
-        v-show="locationsPanelVisible"
-        :class="locationsPanelClass + ' locations-panel-holder column'"
-      >
-        <locations-panel
-          :is-map-visible="isMapVisible"
-        />
-      </div>
+      <!-- <a href="#map-textbox" /> -->
+
+
 
 
       <div
@@ -113,6 +108,15 @@
           @toggleMap="toggleMap"
         />
         <!-- :input-validation="inputValidation" -->
+      </div>
+
+      <div
+        v-show="locationsPanelVisible"
+        :class="locationsPanelClass + ' locations-panel-holder column'"
+      >
+        <locations-panel
+          :is-map-visible="isMapVisible"
+        />
       </div>
 
     </div>
@@ -1126,6 +1130,7 @@ html, body {
 }
 
 .locations-and-map-panels-holder {
+  flex-direction: row-reverse;
   overflow-y: scroll;
   min-height: 0px;
   flex-grow: 1;
