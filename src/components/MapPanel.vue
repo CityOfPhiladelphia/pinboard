@@ -660,6 +660,7 @@ export default {
     if (this.$config.searchBar) {
       this.addressInputPlaceholder = this.$config.searchBar.placeholder;
     }
+
   },
   beforeDestroy() {
     window.removeEventListener('resize', this.handleResize);
@@ -747,12 +748,27 @@ export default {
       this.$emit('toggleMap');
     },
     onMapLoaded(event) {
-      console.log('onMapLoaded is running, event.map:', event.map, this.$store.state.map);
+      // console.log('onMapLoaded is running, event.map:', event.map, this.$store.state.map);
       this.$store.map = event.map;
+
+      let canvas = document.querySelector(".mapboxgl-canvas");
+      canvas.setAttribute('tabindex', -1);
+      // console.log('canvas:', canvas);
+
+      setTimeout(function() {
+        let zoomIn = document.querySelector(".mapboxgl-ctrl-zoom-in");
+        zoomIn.setAttribute('tabindex', -1);
+        let zoomOut = document.querySelector(".mapboxgl-ctrl-zoom-out");
+        zoomOut.setAttribute('tabindex', -1);
+        let compass = document.querySelector(".mapboxgl-ctrl-compass");
+        compass.setAttribute('tabindex', -1);
+        // console.log('compass:', compass, 'zoomIn:', zoomIn);
+      }, 1000);
+
     },
     onMapPreloaded(event) {
       let logo = document.getElementsByClassName('mapboxgl-ctrl-logo');
-      // console.log('MapPanel onMapPreloaded, logo:', logo, 'logo.length:', logo.length, 'logo.item(0):', logo.item(0));
+      console.log('MapPanel onMapPreloaded, logo:', logo, 'logo.length:', logo.length, 'logo.item(0):', logo.item(0));
       logo[0].remove();
       let attrib = document.getElementsByClassName('mapboxgl-ctrl-attrib');
       attrib[0].remove();
