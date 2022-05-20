@@ -1,5 +1,14 @@
 <template>
-  <!-- <div> -->
+  <div class="map-panel-main-div">
+
+    <phila-ui-address-input
+      v-show="!isMobile"
+      :over-map="true"
+      :placeholder="addressInputPlaceholder"
+      :width-from-config="addressInputWidth"
+      @clear-search="handleClearSearch"
+      @handle-search-form-submit="handleSearchFormSubmit"
+    />
 
     <MglMap
       :map-style.sync="this.$config.mbStyle"
@@ -100,14 +109,14 @@
         :before="firstOverlay"
       />
 
-      <phila-ui-address-input
+      <!-- <phila-ui-address-input
         v-show="!isMobile"
         :over-map="true"
         :placeholder="addressInputPlaceholder"
         :width-from-config="addressInputWidth"
         @clear-search="handleClearSearch"
         @handle-search-form-submit="handleSearchFormSubmit"
-      />
+      /> -->
       <!-- :input-validation="inputValidation" -->
 
       <MglNavigationControl position="bottom-right"/>
@@ -118,7 +127,7 @@
       class="widget-slot"
       name="cycloWidget"
     /> -->
-  <!-- </div> -->
+  </div>
 </template>
 
 <script>
@@ -761,6 +770,10 @@ export default {
 }
 
 .map-container-no-refine {
+  height: 100%;
+}
+
+.map-panel-main-div {
   height: 100%;
 }
 
