@@ -131,10 +131,13 @@ export default {
     searchBarType() {
       let value;
       let searchTypes = this.$config.searchBar.searchTypes;
+      console.log('searchBarType computed, searchTypes:', searchTypes);
       if (searchTypes.length == 1 && searchTypes.includes('address')) {
         value = 'address';
       } else if (searchTypes.length == 1 && searchTypes.includes('keyword')) {
         value = 'keyword';
+      } else {
+        value = 'all';
       }
       return value;
     },

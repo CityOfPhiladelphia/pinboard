@@ -671,7 +671,7 @@ export default {
       let startQuery = { ...this.$route.query };
       delete startQuery['address'];
       delete startQuery['keyword'];
-      console.log('handleSubmit is running, val2:', val2, 'startQuery:', startQuery, 'this.$route.query:', this.$route.query, 'query:', query, 'val:', val, 'val.substring(0, 1):', val.substring(0, 1));
+      console.log('handleSubmit is running, val2:', val2, 'searchBarType:', searchBarType, 'startQuery:', startQuery, 'this.$route.query:', this.$route.query, 'query:', query, 'val:', val, 'val.substring(0, 1):', val.substring(0, 1));
       this.$router.push({ query: { ...startQuery, ...query }});
       this.searchString = query[this.searchBarType];
       const searchCategory = Object.keys(query)[0];
