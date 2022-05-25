@@ -47,7 +47,7 @@
       </form>
     <!-- </ValidationObserver> -->
 
-    <div
+    <button
       v-if="addressEntered != '' && addressEntered != null"
       :class="'pvm-search-control-button ' + buttonClass"
       aria-label="delete button"
@@ -55,16 +55,16 @@
       @click="handleFormX"
     >
       <font-awesome-icon icon="times" size="2x" />
-    </div>
+    </button>
 
-    <div
+    <button
       :class="'pvm-search-control-button ' + buttonClass"
       aria-label="search button"
       title="search button"
       @click="handleSearchFormSubmit"
     >
       <font-awesome-icon icon="search" size="2x" aria-hidden="true" />
-    </div>
+    </button>
 
   </div>
 </template>
@@ -343,12 +343,13 @@ export default {
   color: #fff;
   background: $ben-franklin-blue-dark;
   padding: 10px;
+  padding-bottom: 20px;
   min-width: 55px !important;
   margin-top: 8px;
   border-width: 3px !important;
   border-color: $ben-franklin-blue-dark !important;
   height: 56px;
-  line-height: 50px;
+  line-height: 44px;
 }
 
 .pvm-search-control-button-non-mobile {
