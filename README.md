@@ -29,6 +29,10 @@ Create pull request for changes and merge into `master` branch for travis-ci bui
 
 ## Release Notes
 
+### 1.1.0 - 5/26/2022
+
+* allows retractableRefine option
+
 ### 1.0.10 - 2/22/2022
 
 * fixes small issues with accessibility
