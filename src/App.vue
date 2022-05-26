@@ -53,7 +53,7 @@
 
         <lang-selector
           slot="lang-selector-nav"
-          v-show="i18nEnabled && isMobile"
+          v-show="i18nEnabled && isMobile || i18nEnabled && !i18nBanner"
           :languages="i18nLanguages"
         >
         </lang-selector>
@@ -62,7 +62,7 @@
     </div>
 
     <div
-      v-if="i18nEnabled"
+      v-if="i18nEnabled && i18nBanner"
       class="i18n-banner-holder"
     >
       <i18n-banner />
@@ -90,16 +90,12 @@
 
     <div
       v-show="!isMobile || isMobile && !refineOpen"
-      :class="locationsAndMapsPanelClass + ' locations-and-map-panels-holder columns'"
+      class="invisible-scrollbar locations-and-map-panels-holder columns"
     >
-      <div
-        v-show="locationsPanelVisible"
-        :class="locationsPanelClass + ' locations-panel-holder column'"
-      >
-        <locations-panel
-          :is-map-visible="isMapVisible"
-        />
-      </div>
+    <!-- :class="locationsAndMapsPanelClass + ' locations-and-map-panels-holder columns'" -->
+      <!-- <a href="#map-textbox" /> -->
+
+
 
 
       <div
@@ -112,6 +108,15 @@
           @toggleMap="toggleMap"
         />
         <!-- :input-validation="inputValidation" -->
+      </div>
+
+      <div
+        v-show="locationsPanelVisible"
+        :class="locationsPanelClass + ' locations-panel-holder column'"
+      >
+        <locations-panel
+          :is-map-visible="isMapVisible"
+        />
       </div>
 
     </div>
@@ -170,7 +175,6 @@ import {
   Textbox,
   Checkbox,
   LangSelector,
-  // SearchBar,
 } from '@phila/phila-ui';
 
 export default {
@@ -183,7 +187,6 @@ export default {
     Textbox,
     Checkbox,
     LangSelector,
-    // SearchBar,
     AlertBanner,
     i18nBanner,
     PhilaModal,
@@ -233,16 +236,10 @@ export default {
     shouldShowGreeting() {
       return this.$store.state.shouldShowGreeting;
     },
-    locationsAndMapsPanelClass() {
-      // let value;
-      // if (!this.isMobile || this.shouldShowGreeting) {
-      //   value = 'invisible-scrollbar';
-      // } else {
-      //   value = '';
-      // }
-      let value = 'invisible-scrollbar';
-      return value;
-    },
+    // locationsAndMapsPanelClass() {
+    //   let value = 'invisible-scrollbar';
+    //   return value;
+    // },
     locationsPanelClass() {
       let value;
       if (this.isMobile) {
@@ -256,7 +253,7 @@ export default {
       if (this.$config.footer) {
         let newValues = []
         for (let i of this.$config.footer) {
-          console.log('i:', i);
+          // console.log('i:', i);
           let value = {}
           for (let j of Object.keys(i)) {
             if (!this.i18nEnabled || j !== "text") {
@@ -333,9 +330,6 @@ export default {
       }
       return final;
     },
-    // searchBarType() {
-    //   return this.$store.state.searchType;
-    // },
     i18nLanguages() {
       let values = [];
       if (this.$config.i18n.languagues) {
@@ -392,6 +386,13 @@ export default {
         return false;
       }
     },
+    i18nBanner() {
+      if (this.$config.i18n.header === 'i18nBanner') {
+        return true;
+      } else {
+        return false;
+      }
+    },
     geocodeStatus() {
       return this.$store.state.geocode.status;
     },
@@ -418,8 +419,8 @@ export default {
       return value;
     },
     database() {
-      let database = this.$store.state.sources[this.$appType].data.rows || this.$store.state.sources[this.$appType].data.features || this.$store.state.sources[this.$appType].data;
-      // console.log('computed database is running, database:', database);
+      let database = this.$store.state.sources[this.$appType].data.rows || this.$store.state.sources[this.$appType].data.features || this.$store.state.sources[this.$appType].data.records;
+      console.log('computed database is running, database:', database);
 
       for (let [key, value] of Object.entries(database)) {
 
@@ -502,7 +503,9 @@ export default {
     },
     refinePanelClass() {
       let value;
-      if (this.refineOpen) {
+      if (this.isMobile && this.refineOpen) {
+        value = 'mobile-refine-panel-holder-open';
+      } else if (this.refineOpen) {
         value = 'refine-panel-holder-open';
       } else {
         value = 'refine-panel-holder';
@@ -557,28 +560,17 @@ export default {
   },
   mounted() {
     console.log('in App.vue mounted 210818, this.$store.state:', this.$store.state, 'this.$config:', this.$config, 'window.location.href:', window.location.href);
-    // this.track();
-
     this.$config.searchBar.searchTypes.forEach(item => {
       if (this.$route.query[item]) {
-      // if (item == 'address' && this.$route.query[item]) {
-        console.log('App.vue mounted item:', item, 'this.searchBarType:', this.searchBarType);
-        // if (this.item !== this.searchBarType) {
-        //   console.log('App.vue mounted, this.item !== this.searchBarType');
-        //   this.$store.commit('setSearchType', this.item);
-        // }
+        // console.log('App.vue mounted item:', item, 'this.searchBarType:', this.searchBarType);
         this.$controller.handleSearchFormSubmit(this.$route.query[item], item);
-        // console.log('philaHeader created item:', item)
         this.searchString = this.$route.query[item];
-        // this.comboSearchDropdownData[item].selected = true;
-        // this.$store.commit('setSearchType', item);
       }
     });
 
     if (this.$config.searchBar) {
-      // if (this.$config.searchBar.dropdown) { //&& this.$config.searchBar.dropdown.length === 1) {
       let routeQuery = Object.keys(this.$route.query);
-      console.log('App.vue mounted in searchTypes section, this.$route:', this.$route, 'routeQuery:', routeQuery, 'Object.keys(this.$route.query)[0]', Object.keys(this.$route.query)[0]);
+      // console.log('App.vue mounted in searchTypes section, this.$route:', this.$route, 'routeQuery:', routeQuery, 'Object.keys(this.$route.query)[0]', Object.keys(this.$route.query)[0]);
       let value;
       for (let query of routeQuery) {
         if (query === 'address' || query === 'keyword') {
@@ -588,20 +580,6 @@ export default {
       this.$store.commit('setCurrentSearch', value);
 
       this.addressInputPlaceholder = this.$config.searchBar.placeholder;
-      // let queryValue;
-      // if (routeQuery.includes('keyword')) {
-      //   queryValue = 'keyword';
-      // } else if (routeQuery.includes('address')) {
-      //   queryValue = 'address';
-      // }
-      // if (queryValue) {
-      //   console.log('setting searchType to queryValue:', queryValue);
-      //   this.$store.commit('setSearchType', queryValue);
-      // } else {
-      //   console.log('setting searchType to this.$config.searchBar.dropdown[0]:', this.$config.searchBar.dropdown[0]);
-      //   this.$store.commit('setSearchType', this.$config.searchBar.dropdown[0]);
-      // }
-      // }
     }
 
     if (this.$config.appLink) {
@@ -628,11 +606,10 @@ export default {
     }
   },
   created() {
-
     let root = document.getElementsByTagName( 'html' )[0]; // '0' to assign the first (and only `HTML` tag)
     root.setAttribute( 'class', 'invisible-scrollbar' );
 
-    console.log('App.vue created, this.$config:', this.$config);
+    // console.log('App.vue created, this.$config:', this.$config);
     if (this.$config.map) {
       if (this.$config.map.shouldInitialize === false) {
         this.$store.commit('setShouldInitializeMap', false);
@@ -652,22 +629,6 @@ export default {
   },
 
   methods: {
-    // handleSearchbarChange(value) {
-    //   console.log('App.vue handleSearchbarChange is running, value:', value);
-    //   this.$store.commit('setSearchType', value);
-    //
-    //   this.$store.commit('setSelectedKeywords', []);
-    //   let startQuery = { ...this.$route.query };
-    //   let overlap = this.compareArrays(Object.keys(startQuery), this.$config.searchBar.dropdown);
-    //   if (overlap.length) {
-    //     for (let item of overlap) {
-    //       delete startQuery[item];
-    //     }
-    //     this.$router.push({ query: startQuery });
-    //   }
-    //   this.searchString = '';
-    //   this.$controller.resetGeocode();
-    // },
     compareArrays(arr1, arr2) {
       const finalArray = [];
       arr1.forEach((e1) => arr2.forEach((e2) =>
@@ -710,7 +671,7 @@ export default {
       let startQuery = { ...this.$route.query };
       delete startQuery['address'];
       delete startQuery['keyword'];
-      console.log('handleSubmit is running, val2:', val2, 'startQuery:', startQuery, 'this.$route.query:', this.$route.query, 'query:', query, 'val:', val, 'val.substring(0, 1):', val.substring(0, 1));
+      console.log('handleSubmit is running, val2:', val2, 'searchBarType:', searchBarType, 'startQuery:', startQuery, 'this.$route.query:', this.$route.query, 'query:', query, 'val:', val, 'val.substring(0, 1):', val.substring(0, 1));
       this.$router.push({ query: { ...startQuery, ...query }});
       this.searchString = query[this.searchBarType];
       const searchCategory = Object.keys(query)[0];
@@ -724,11 +685,11 @@ export default {
     },
     clearSearchTriggered() {
       let startQuery = { ...this.$route.query };
-      console.log('in clearSearchTriggered1, this.$route.query:', this.$route.query, 'startQuery:', startQuery);
+      // console.log('in clearSearchTriggered1, this.$route.query:', this.$route.query, 'startQuery:', startQuery);
       delete startQuery['address'];
       delete startQuery['keyword'];
       // delete startQuery[this.searchBarType];
-      console.log('in clearSearchTriggered2, this.$route.query:', this.$route.query, 'startQuery:', startQuery);
+      // console.log('in clearSearchTriggered2, this.$route.query:', this.$route.query, 'startQuery:', startQuery);
       this.$router.push({ query: startQuery });
       this.searchString = '';
       this.$store.commit('setSelectedKeywords', []);
@@ -775,7 +736,7 @@ export default {
         const { selectedServices } = this.$store.state;
         // console.log('row.services_offered:', row.services_offered);
 
-        if (this.$config.refine && this.$config.refine.type && ['multipleFields', 'multipleFieldGroups'].includes(this.$config.refine.type)) {
+        if (this.$config.refine && this.$config.refine.type && ['multipleFields', 'multipleFieldGroups', 'multipleDependentFieldGroups'].includes(this.$config.refine.type)) {
           let booleanConditions = [];
 
           if (selectedServices.length === 0) {
@@ -792,8 +753,50 @@ export default {
                   booleanConditions.push(val);
                 }
               }
+            } else if (this.$config.refine.type === 'multipleFieldGroups') {
+              // if refine.type = multipleFieldGroups
+              let selectedGroups = [];
+              for (let value of selectedServices) {
+                // console.log('App.vue filterPoints value:', value);
+                let valueGroup;
+                if (value) {
+                  valueGroup = value.split('_', 1)[0];
+                }
+                if (valueGroup && !selectedGroups.includes(valueGroup)) {
+                  selectedGroups.push(valueGroup)
+                }
+              }
+              // console.log('App.vue filterPoints is running on multipleFieldGroups, selectedServices:', selectedServices, 'selectedGroups:', selectedGroups);
+              let groupValues = [];
+              for (let group of selectedGroups) {
+                let groupBooleanConditions = [];
+                for (let service of selectedServices) {
+                  // console.log('App.vue filterPoints loop, service:', service);
+                  if (service.split('_', 1)[0] === group && this.$config.refine.multipleFieldGroups[group]['dependent']) {
+                    // console.log('group:', group, 'this.$config.refine.multipleFieldGroups[group]["dependent"]:', this.$config.refine.multipleFieldGroups[group]['dependent']);
+                    let dependentGroups = this.$config.refine.multipleFieldGroups[group]['dependent'][service.split('_')[1]]['dependentGroups'] || [];
+                    // console.log('dependentGroup:', dependentGroup, 'service.split("_", 1)[0]:', service.split('_', 1)[0], 'service.split("_")[1]:', service.split('_')[1], 'group', group, 'this.$config.refine.multipleFieldsGroups[group]', this.$config.refine.multipleFieldsGroups[group], 'this.$config.refine.multipleFieldsGroups[group][service.split("_")[1]]:', this.$config.refine.multipleFieldsGroups[group][service.split('_')[1]]);
+                    let getter = this.$config.refine.multipleFieldGroups[group]['dependent'][service.split('_')[1]]['value'];
+                    let dependentServices = [];
+                    for (let service of selectedServices) {
+                      if (dependentGroups.length && dependentGroups.includes(service.split('_')[0])) {
+                        dependentServices.push(service.split('_')[1]);
+                      }
+                    }
+                    // console.log('getter:', getter, 'dependentGroups:', dependentGroups, 'selectedServices:', selectedServices, 'dependentServices:', dependentServices);
+                    let val = getter(row, dependentServices);
+                    groupBooleanConditions.push(val);
+                  }
+                }
+                // console.log('group:', group, 'groupBooleanConditions:', groupBooleanConditions);
+                if (groupBooleanConditions.includes(true)) {
+                  booleanConditions.push(true);
+                } else if (groupBooleanConditions.length) {
+                  booleanConditions.push(false);
+                }
+              }
             } else {
-              // if refine.type = multipleFieldsGroups
+              // if refine.type = multipleDependentFieldGroups
               let selectedGroups = [];
               for (let value of selectedServices) {
                 let valueGroup = value.split('_', 1)[0]
@@ -801,19 +804,34 @@ export default {
                   selectedGroups.push(valueGroup)
                 }
               }
-              // console.log('selectedServices:', selectedServices, 'selectedGroups:', selectedGroups);
+              // console.log('App.vue filterPoints is running on multipleDependentFieldGroups, selectedServices:', selectedServices, 'selectedGroups:', selectedGroups);
               let groupValues = [];
               for (let group of selectedGroups) {
                 let groupBooleanConditions = [];
                 for (let service of selectedServices) {
                   if (service.split('_', 1)[0] === group) {
-                    // console.log('service.split("_", 1)[0]:', service.split('_', 1)[0], 'service.split("_")[1]:', service.split('_')[1], 'group', group, 'this.$config.refine.multipleFieldGroups[group]', this.$config.refine.multipleFieldGroups[group], 'this.$config.refine.multipleFieldGroups[group][service.split("_")[1]]:', this.$config.refine.multipleFieldGroups[group][service.split('_')[1]]);
-                    let getter = this.$config.refine.multipleFieldGroups[group][service.split('_')[1]]['value'];
-                    let val = getter(row);
-                    groupBooleanConditions.push(val);
+                    let ind = this.$config.refine.multipleDependentFieldGroups[group]['independent'];
+                    let serviceEnd = service.split('_')[1];
+                    // console.log('ind:', ind, 'serviceEnd:', serviceEnd, 'selectedServices:', selectedServices);
+                    let getter;
+                    if (this.$config.refine.multipleDependentFieldGroups[group]['dependent'][service.split('_')[1]]) {
+                      getter = this.$config.refine.multipleDependentFieldGroups[group]['dependent'][service.split('_')[1]]['value'];
+                      let dependentServices = [];
+                      if (ind) {
+                        for (let service of selectedServices) {
+                          if (Object.keys(ind).includes(service.split('_')[1])) {
+                            dependentServices.push(service.split('_')[1]);
+                          }
+                        }
+                      }
+                      let val = getter(row, dependentServices);
+                      // console.log('getter:', getter, 'selectedServices:', selectedServices, 'dependentServices:', dependentServices, 'val:', val);
+                      groupBooleanConditions.push(val);
+                    }
                   }
                 }
-                if (groupBooleanConditions.includes(true)) {
+                // console.log('groupBooleanConditions:', groupBooleanConditions);
+                if (groupBooleanConditions.includes(true) || !groupBooleanConditions.length) {
                   booleanConditions.push(true);
                 } else {
                   booleanConditions.push(false);
@@ -837,7 +855,6 @@ export default {
 
         } else {
           // the original default version, or refine.type = 'categoryField_array'
-
           // console.log('in else, row:', row, 'row.services_offered:', row.services_offered);
           let servicesSplit;
           if (this.$config.refine) {
@@ -845,11 +862,6 @@ export default {
           } else if (row.services_offered) {
             servicesSplit = row.services_offered;
           }
-
-          // if (row.attributes) {
-          //   row.attributes._featureId = row._featureId;
-          //   row = row.attributes;
-          // }
 
           // console.log('1 servicesSplit:', servicesSplit, 'typeof servicesSplit:', typeof servicesSplit);
           if (typeof servicesSplit === 'string') {
@@ -865,7 +877,6 @@ export default {
               servicesFiltered = servicesSplit.filter(f => selectedServices.includes(f));
             }
             // console.log('servicesFiltered:', servicesFiltered, 'selectedServices:', selectedServices);
-            // booleanServices = servicesFiltered.length > 0;
             booleanServices = servicesFiltered.length == selectedServices.length;
           }
           // console.log('services else is running, row:', row, 'selectedServices:', selectedServices, 'booleanServices:', booleanServices);
@@ -874,17 +885,22 @@ export default {
         // console.log('about to do buffer stuff, row:', row);
         let booleanBuffer = false;
         if (!this.$data.buffer) {
-          // console.log('!this.$data.buffer');
+          // console.log('!this.$data.buffer');:
           booleanBuffer = true;
         } else if (row.latlng) {
           // console.log('row.latlng:', row.latlng);
-          // console.log('buffer else if 1 is running, row:', row, 'booleanBuffer:', booleanBuffer);
+          // console.log('buffer else if 1 is running, row:', row, 'booleanBuffer:', booleanBuffer, 'typeof row.latlng[0]:', typeof row.latlng[0]);
           if (typeof row.latlng[0] === 'number' && row.latlng[0] !== null) {
             const rowPoint = point([ row.latlng[1], row.latlng[0] ]);
             if (booleanPointInPolygon(rowPoint, this.$data.buffer)) {
               booleanBuffer = true;
             }
             // console.log('buffer else if 1 IF is running, row:', row, 'rowPoint:', rowPoint, 'booleanBuffer:', booleanBuffer);
+          } else if (typeof row.latlng[0] === 'string' && row.latlng[0] !== null) {
+            const rowPoint = point([ parseFloat(row.latlng[1]), parseFloat(row.latlng[0]) ]);
+            if (booleanPointInPolygon(rowPoint, this.$data.buffer)) {
+              booleanBuffer = true;
+            }
           }
         } else if (row.lat && row.lon) {
           // console.log('buffer else if 2 is running, row:', row, 'booleanBuffer:', booleanBuffer);
@@ -980,19 +996,6 @@ export default {
           if (result.length > 0) {
             booleanKeywords = true;
           }
-
-          // let lowerCaseDescription = [];
-          // for (let tag of description) {
-          //   lowerCaseDescription.push(tag.toLowerCase());
-          // }
-          // const keywordsFiltered = this.selectedKeywords.filter(function(f) {
-          //   // console.log('filter, f:', f, 'f.toLowerCase():', f.toLowerCase(), 'lowerCaseDescription:', lowerCaseDescription, 'lowerCaseDescription.includes(f.toLowerCase()):', lowerCaseDescription.includes(f.toLowerCase()));
-          //   return lowerCaseDescription.includes(f.toLowerCase())
-          // });
-          // // console.log('description:', description, 'lowerCaseDescription:', lowerCaseDescription, 'keywordsFiltered:', keywordsFiltered);
-          // if (keywordsFiltered.length > 0) {
-          //   booleanKeywords = true;
-          // }
         }
 
         // console.log('booleanServices:', booleanServices, 'booleanBuffer:', booleanBuffer, 'booleanKeywords:', booleanKeywords);
@@ -1005,26 +1008,18 @@ export default {
       this.$store.commit('setCurrentData', filteredRows);
     },
     toggleMap() {
-      // if (window.innerWidth > 749) {
-      //   this.$data.isMapVisible = true;
-      // } else {
       this.$data.isMapVisible = !this.$data.isMapVisible;
       console.log('toggleMap is running');
       if (this.$data.isMapVisible === true) {
         console.log('toggleMap is running, this.$data.isMapVisible === true');
         // console.log('setTimeout function is running');
-        // if (this.mapType === 'leaflet') {
-        //   this.$store.state.map.map.invalidateSize();
-        // } else if (this.mapType === 'mapbox') {
         let themap = this.$store.map;
         setTimeout(function() {
           console.log('mapbox running map resize now');
           themap.resize();
           console.log('mapbox ran map resize');
         }, 250);
-        // }
       }
-      // }
       if (!this.i18nEnabled) {
         this.$data.buttonText = this.$data.isMapVisible ? 'Toggle to resource list' : 'Toggle to map';
       } else {
@@ -1064,15 +1059,43 @@ html, body {
   height: 100%;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  color: #000000;
   display: flex;
   display: -ms-flexbox;
   flex-direction: column;
 }
 
-#app-header .container {
-  padding-left: 16px !important;
-  padding-right: 16px !important;
+#app-header {
+  #nav-wrap {
+    height: 80px;
+    line-height: 80px;
+  }
+  .container {
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+  }
+  // .title-col {
+  //   padding-top: 1rem !important;
+  //   padding-bottom: 1rem !important;
+  // }
+  h2 {
+    font-weight: 100;
+  }
+}
+
+#app-footer {
+  height: 33px !important;
+
+  a {
+    font-family: "Open Sans Semibold", "Open Sans", sans-serif !important;
+    font-weight: 600 !important;
+    font-size: 14px;
+    // height: 33px !important;
+    line-height: 33px !important;
+  }
+
+  ul li:after {
+    font-weight: lighter !important;
+  }
 }
 
 .search-bar-container-class {
@@ -1092,33 +1115,48 @@ html, body {
   margin-top: auto;
 }
 
+@media screen and (min-width: 768px) {
+  .title-col {
+    padding-top: 1rem !important;
+    padding-bottom: 1rem !important;
+  }
+}
+
 @media screen and (max-width: 767px) {
   .i18n-banner-holder {
     display: none;
   }
+
+  .title-col {
+    padding-top: 1rem !important;
+    padding-bottom: 2rem !important;
+  }
 }
 
-.refine-panel-holder-open {
+.mobile-refine-panel-holder-open {
   flex-grow: 1;
   background: $ghost-grey;
 }
 
+.refine-panel-holder-open {
+  background: $ghost-grey;
+}
+
 .locations-and-map-panels-holder {
+  flex-direction: row-reverse;
   overflow-y: scroll;
   min-height: 0px;
   flex-grow: 1;
-  // display: flex;
-  // display: -ms-flexbox;
-  // flex-direction: row;
-  margin: 0px !important;
-  // background-color: yellow;
+  margin-left: 0px !important;
+  margin-right: 0px !important;
+  margin-bottom: 0px !important;
+  margin-top: 0px !important;
 }
 
 .locations-panel-holder {
   min-height: 0px;
   padding: 0px;
   overflow-y: scroll;
-  // background-color: #88d8b0;
 }
 
 .invisible-scrollbar {
@@ -1167,9 +1205,8 @@ html, body {
   overflow-y: scroll;
 }
 
-a {
-  // font-weight: bold;
-  // text-decoration: underline;
+.footer-holder a {
+  text-decoration: underline;
 }
 
 .no-scroll{

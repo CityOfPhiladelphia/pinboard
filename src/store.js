@@ -110,12 +110,12 @@ function createStore(config) {
         const day = fullDate.getDay();
         const t = format(fullDate,'k:mm');
 
-        console.log('store.js alertCheck, hc:', hc, 'alertHours:', alertHours, 'fullDate:', fullDate, 'year', year, 'month', month, 'date', date, 'day:', day, 't:', t);
+        // console.log('store.js alertCheck, hc:', hc, 'alertHours:', alertHours, 'fullDate:', fullDate, 'year', year, 'month', month, 'date', date, 'day:', day, 't:', t);
         // console.log('store.js alertCheck, hc:', hc, 'alertHours:', alertHours, 'isalert:', isalert, 'fullDate:', fullDate, 'year', year, 'month', month, 'date', date, 'day:', day, 't:', t);
         let response = {};
 
         if (alertHours.length === 1) {
-          console.log('alertCheck if is running');
+          // console.log('alertCheck if is running');
           for (let period of alertHours[0].condition) {
             // console.log('format(fullDate, "k:mm")', format(fullDate,'k:mm'), 'period.day:', period.day, 'period.startTime:', period.startTime, 'period.endTime:', period.endTime);
             if (day === period.day) {

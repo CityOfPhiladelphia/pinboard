@@ -1,5 +1,14 @@
 <template>
-  <!-- <div> -->
+  <div class="map-panel-main-div">
+
+    <phila-ui-address-input
+      v-show="!isMobile"
+      :over-map="true"
+      :placeholder="addressInputPlaceholder"
+      :width-from-config="addressInputWidth"
+      @clear-search="handleClearSearch"
+      @handle-search-form-submit="handleSearchFormSubmit"
+    />
 
     <MglMap
       :map-style.sync="this.$config.mbStyle"
@@ -100,14 +109,14 @@
         :before="firstOverlay"
       />
 
-      <phila-ui-address-input
+      <!-- <phila-ui-address-input
         v-show="!isMobile"
         :over-map="true"
         :placeholder="addressInputPlaceholder"
         :width-from-config="addressInputWidth"
         @clear-search="handleClearSearch"
         @handle-search-form-submit="handleSearchFormSubmit"
-      />
+      /> -->
       <!-- :input-validation="inputValidation" -->
 
       <MglNavigationControl position="bottom-right"/>
@@ -118,7 +127,7 @@
       class="widget-slot"
       name="cycloWidget"
     /> -->
-  <!-- </div> -->
+  </div>
 </template>
 
 <script>
@@ -271,7 +280,7 @@ export default {
     //   return finalDB;
     // },
     currentMapData() {
-      console.log('MapPanel.vue currentMapData computed is starting recalculating');//, this.currentData:', this.currentData);
+      // console.log('MapPanel.vue currentMapData computed is starting recalculating');//, this.currentData:', this.currentData);
       const newRows = [];
       for (const row of [ ...this.currentData ]) {
       // for (const row of this.database) {
@@ -302,7 +311,7 @@ export default {
 
         // selected = true;
         if (this.selectedResources.includes(row._featureId)) {
-          // console.log('row is selected, row._featureId:', row._featureId);
+          console.log('row is selected, row._featureId:', row._featureId);
           // if (this.$config.circleMarkers.selectedColor) {
           //   color = this.$config.circleMarkers.selectedColor;
           // } else {
@@ -323,6 +332,7 @@ export default {
         // selected = false;
         } else {
           // multiple circle colors defined
+          // console.log('MapPanel.vue else is running');
           if (this.$config.circleMarkers && this.$config.circleMarkers.circleColors) {
             if (row.attributes) {
               color = this.$config.circleMarkers.circleColors[row.attributes.category_type];
@@ -353,6 +363,11 @@ export default {
             weight = 1;
           }
           // console.log('weight:', weight, 'this.$config.circleMarkers.weight:', this.$config.circleMarkers.weight);
+        }
+
+        if (row.fields && row.fields.lat) {
+          row.lat = row.fields.lat;
+          row.lon = row.fields.lon;
         }
 
         if (row.lat) {
@@ -645,6 +660,7 @@ export default {
     if (this.$config.searchBar) {
       this.addressInputPlaceholder = this.$config.searchBar.placeholder;
     }
+
   },
   beforeDestroy() {
     window.removeEventListener('resize', this.handleResize);
@@ -732,12 +748,27 @@ export default {
       this.$emit('toggleMap');
     },
     onMapLoaded(event) {
-      console.log('onMapLoaded is running, event.map:', event.map, this.$store.state.map);
+      // console.log('onMapLoaded is running, event.map:', event.map, this.$store.state.map);
       this.$store.map = event.map;
+
+      let canvas = document.querySelector(".mapboxgl-canvas");
+      canvas.setAttribute('tabindex', -1);
+      // console.log('canvas:', canvas);
+
+      setTimeout(function() {
+        let zoomIn = document.querySelector(".mapboxgl-ctrl-zoom-in");
+        zoomIn.setAttribute('tabindex', -1);
+        let zoomOut = document.querySelector(".mapboxgl-ctrl-zoom-out");
+        zoomOut.setAttribute('tabindex', -1);
+        let compass = document.querySelector(".mapboxgl-ctrl-compass");
+        compass.setAttribute('tabindex', -1);
+        // console.log('compass:', compass, 'zoomIn:', zoomIn);
+      }, 1000);
+
     },
     onMapPreloaded(event) {
       let logo = document.getElementsByClassName('mapboxgl-ctrl-logo');
-      // console.log('MapPanel onMapPreloaded, logo:', logo, 'logo.length:', logo.length, 'logo.item(0):', logo.item(0));
+      console.log('MapPanel onMapPreloaded, logo:', logo, 'logo.length:', logo.length, 'logo.item(0):', logo.item(0));
       logo[0].remove();
       let attrib = document.getElementsByClassName('mapboxgl-ctrl-attrib');
       attrib[0].remove();
@@ -755,6 +786,10 @@ export default {
 }
 
 .map-container-no-refine {
+  height: 100%;
+}
+
+.map-panel-main-div {
   height: 100%;
 }
 
