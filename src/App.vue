@@ -1073,9 +1073,10 @@ html, body {
     padding-left: 16px !important;
     padding-right: 16px !important;
   }
-  .title-col {
-    padding-bottom: 0.5rem !important;
-  }
+  // .title-col {
+  //   padding-top: 1rem !important;
+  //   padding-bottom: 1rem !important;
+  // }
   h2 {
     font-weight: 100;
   }
@@ -1114,9 +1115,21 @@ html, body {
   margin-top: auto;
 }
 
+@media screen and (min-width: 768px) {
+  .title-col {
+    padding-top: 1rem !important;
+    padding-bottom: 1rem !important;
+  }
+}
+
 @media screen and (max-width: 767px) {
   .i18n-banner-holder {
     display: none;
+  }
+
+  .title-col {
+    padding-top: 1rem !important;
+    padding-bottom: 2rem !important;
   }
 }
 
