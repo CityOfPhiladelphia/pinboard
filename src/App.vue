@@ -1068,6 +1068,17 @@ html, body {
   #nav-wrap {
     height: 80px;
     line-height: 80px;
+
+
+    #main-nav {
+      .columns {
+        height: 80px;
+        .column {
+          height: 80px;
+        }
+      }
+    }
+
   }
   .container {
     padding-left: 16px !important;
@@ -1128,7 +1139,7 @@ html, body {
   }
 
   .title-col {
-    padding-top: 1rem !important;
+    padding-top: 2rem !important;
     padding-bottom: 2rem !important;
   }
 }
@@ -1136,6 +1147,17 @@ html, body {
 .mobile-refine-panel-holder-open {
   flex-grow: 1;
   background: $ghost-grey;
+}
+
+#mobile-menu-close-bar {
+  height: 50px;
+  .button {
+    bottom: 0px !important;
+  }
+}
+
+#mobile-menu-wrap {
+  height: calc(100% - 120px) !important;
 }
 
 .refine-panel-holder-open {
