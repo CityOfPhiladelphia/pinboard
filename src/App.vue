@@ -604,6 +604,12 @@ export default {
     if (this.$config.gtag && this.$config.gtag.category) {
       this.$store.commit('setGtagCategory', this.$config.gtag.category);
     }
+
+    if (this.$config.app.trustedSite && this.$config.app.trustedSite === 'hidden') {
+      let trusted = document.getElementById('trusted-site');
+      console.log('trusted:', trusted);
+      trusted.classList.add("trusted-site-hidden");
+    }
   },
   created() {
     let root = document.getElementsByTagName( 'html' )[0]; // '0' to assign the first (and only `HTML` tag)
@@ -1065,6 +1071,10 @@ html, body {
 }
 
 #app-header {
+  .trusted-site-hidden {
+    display: none;
+  }
+
   #nav-wrap {
     height: 80px;
     line-height: 80px;
@@ -1152,12 +1162,12 @@ html, body {
 #mobile-menu-close-bar {
   height: 50px;
   .button {
-    bottom: 0px !important;
+    bottom: 3px !important;
   }
 }
 
 #mobile-menu-wrap {
-  height: calc(100% - 120px) !important;
+  height: calc(100% - 105px) !important;
 }
 
 .refine-panel-holder-open {
