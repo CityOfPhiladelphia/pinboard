@@ -29,6 +29,10 @@ Create pull request for changes and merge into `master` branch for travis-ci bui
 
 ## Release Notes
 
+### 1.1.1 - 5/27/2022
+
+* cleans up mobile screen css
+
 ### 1.1.0 - 5/26/2022
 
 * allows retractableRefine option
