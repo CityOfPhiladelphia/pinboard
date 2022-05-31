@@ -996,6 +996,7 @@ export default {
 
   @media screen and (min-width: 768px) {
     .service-group-holder-x {
+      margin-bottom: 16px !important;
       padding-top: 0px;
       padding-bottom: 0px;
       margin-bottom: 10px;
@@ -1042,7 +1043,8 @@ export default {
       font-size: .8rem;
       color: #0f4d90 !important;
       text-decoration: underline;
-      padding-right: 16px;
+      padding-left: 8px;
+      padding-right: 12px;
     }
 
     .clear-button {
@@ -1166,7 +1168,7 @@ export default {
 .slider-icon {
   // width: 40px;
   padding-top: 10px;
-  padding-left: 10px;
+  padding-left: 14px;
   padding-bottom: 10px;
 }
 
@@ -1190,7 +1192,7 @@ export default {
   padding-left: 5px;
   padding-top: 12px;
   padding-bottom: 12px;
-  padding-right: 10px;
+  padding-right: 16px;
 }
 
 .input-wrap.input-checkbox .is-checkradio+label:hover::before, .input-wrap.input-radio .is-checkradio+label:hover::before {
