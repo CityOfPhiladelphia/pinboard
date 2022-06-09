@@ -331,27 +331,27 @@
       class="columns is-mobile"
     >
       <div
-        class="column is-narrow"
+        class="column is-narrow add-margin-left"
         v-if="!i18nEnabled"
       >
         <button
           class="button is-primary"
           @click="expandRefine(); scrollToTop();"
         >
-          <font-awesome-icon icon="filter" />
+          <!-- <font-awesome-icon icon="filter" /> -->
           Apply filters
         </button>
       </div>
 
       <div
-        class="column is-narrow"
+        class="column is-narrow add-margin-left"
         v-if="i18nEnabled"
       >
         <div
           class="button is-primary"
           @click="expandRefine(); scrollToTop();"
         >
-          <font-awesome-icon icon="filter" />
+          <!-- <font-awesome-icon icon="filter" /> -->
           <div
             v-html="$t('refinePanel.applyFilters')"
             class="apply-filters-text"
@@ -365,7 +365,7 @@
       >
         <button
           class="button is-primary"
-          @click="closeRefinePanel"
+          @click.prevent="clearAll"
         >
           Clear all
         </button>
@@ -377,7 +377,7 @@
       >
         <button
           class="button is-primary"
-          @click="closeRefinePanel"
+          @click.prevent="clearAll"
           v-html="$t('refinePanel.clearAll')"
         >
         </button>
@@ -1087,8 +1087,8 @@ export default {
       padding-top: 0px;
       padding-bottom: 10px;
       margin-bottom: 10px;
-      padding-left: 16px;
-      padding-right: 10px;
+      padding-left: 6px !important;
+      padding-right: 6px !important;
       border-bottom: 1px solid black;
       &:first-of-type{
         // padding-left: 0px;
@@ -1098,8 +1098,14 @@ export default {
       }
     }
 
+    .add-margin-left {
+      margin-left: 16px;
+    }
+
     #multiple-field-groups-div {
-      margin: 5px;
+      // margin: 5px;
+      padding-left: 16px;
+      padding-right: 16px;
     }
   }
 
