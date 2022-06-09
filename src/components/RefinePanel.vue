@@ -1105,7 +1105,7 @@ export default {
 
   &.refine-panel-open {
     overflow-y: scroll;
-    height: calc(100vh - 220px);
+    height: calc(100vh - 230px);
     // max-height: 100vh;
     .refine-title{
       &::after {
