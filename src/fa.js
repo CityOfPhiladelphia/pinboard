@@ -16,8 +16,10 @@ import { faInfoCircle } from '@fortawesome/free-solid-svg-icons/faInfoCircle';
 import { faExclamation } from '@fortawesome/free-solid-svg-icons/faExclamation';
 import { faSearch } from '@fortawesome/free-solid-svg-icons/faSearch';
 import { faSlidersH } from '@fortawesome/free-solid-svg-icons/faSlidersH';
+import { faAngleDown } from '@fortawesome/free-solid-svg-icons/faAngleDown';
+import { faAngleUp } from '@fortawesome/free-solid-svg-icons/faAngleUp';
 
 
-library.add(faSpinner, faBars, faEnvelope, faFacebook, faFilter, faGlobe, faPhone, faUser, faTimes, faTwitter, faCheckSquare, faSquare, faInfoCircle, faExclamation, faSearch, faSlidersH);
+library.add(faSpinner, faBars, faEnvelope, faFacebook, faFilter, faGlobe, faPhone, faUser, faTimes, faTwitter, faCheckSquare, faSquare, faInfoCircle, faExclamation, faSearch, faSlidersH, faAngleDown, faAngleUp);
 
 export default library;

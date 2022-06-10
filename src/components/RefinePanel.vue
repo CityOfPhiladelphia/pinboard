@@ -4,7 +4,6 @@
     :class="refinePanelClass"
   >
 
-    <!-- <button -->
     <div
       id="refine-top"
       :class="refineTitleClass + ' refine-title'"
@@ -68,39 +67,21 @@
           </button>
         </div>
       </div>
-      <!-- </button> -->
-
-      <!-- <button
-        v-if="refineOpen && isTablet || refineOpen && isDesktop || refineOpen && isWideScreen"
-        class="close-button invisible-clear-button"
-      >
-        <font-awesome-icon icon="times" />
-      </button> -->
 
     </div>
 
     <!-- if using categoryField_value, categoryField_array, or multipleFields options -->
-    <!-- v-if="dataStatus === 'success' && refineType !== 'multipleFieldGroups'" -->
     <div
       v-if="dataStatus === 'success' && ['categoryField_array', 'multipleFields'].includes(refineType)"
       id="field-div"
       class="refine-holder"
     >
       <checkbox
-        v-if="!isMobile"
         :options="getRefineSearchList()"
         :numOfColumns="NumRefineColumns"
-        :small="true"
+        :small="!isMobile"
         v-model="selected"
       >
-      </checkbox>
-      <checkbox
-        v-if="isMobile"
-        :options="getRefineSearchList()"
-        :numOfColumns="NumRefineColumns"
-        v-model="selected"
-      >
-      <!-- :small="true" -->
       </checkbox>
     </div>
 
@@ -108,27 +89,14 @@
       v-if="dataStatus === 'success' && refineType == 'categoryField_value'"
       id="field-div"
     >
-    <!-- :options="getRefineSearchList()" -->
       <radio
-        v-if="!isMobile"
         v-model="selected"
         :options="refineListTranslated"
         text-key="text"
         value-key="value"
         :numOfColumns="NumRefineColumns"
-        :small="true"
+        :small="!isMobile"
       >
-      </radio>
-
-      <radio
-        v-if="!isMobile"
-        v-model="selected"
-        :options="refineListTranslated"
-        text-key="text"
-        value-key="value"
-        :numOfColumns="NumRefineColumns"
-      >
-      <!-- :small="true" -->
       </radio>
     </div>
 
@@ -151,11 +119,11 @@
         >
           <radio
             v-model="selectedList['radio_'+ind]"
-            v-if="refineListTranslated[ind]['independent'] && !isMobile"
+            v-if="refineListTranslated[ind]['independent']"
             :options="refineListTranslated[ind]['independent']"
             text-key="textLabel"
             value-key="data"
-            :small="true"
+            :small="!isMobile"
             :num-of-columns="calculateColumns(refineList[ind]['independent'])"
           >
             <div
@@ -164,51 +132,17 @@
               {{ $t(ind + '.category') }}
             </div>
           </radio>
-          <radio
-            v-model="selectedList['radio_'+ind]"
-            v-if="refineListTranslated[ind]['independent'] && isMobile"
-            :options="refineListTranslated[ind]['independent']"
-            text-key="textLabel"
-            value-key="data"
-            :num-of-columns="calculateColumns(refineList[ind]['independent'])"
-          >
-          <!-- :small="true" -->
-            <div
-              slot="label"
-            >
-              {{ $t(ind + '.category') }}
-            </div>
-          </radio>
-
 
           <checkbox
-            v-if="refineListTranslated[ind]['dependent'] && !isMobile"
+            v-if="refineListTranslated[ind]['dependent']"
             :options="refineListTranslated[ind]['dependent']"
-            :small="true"
+            :small="!isMobile"
             v-model="selectedList[ind]"
             text-key="textLabel"
             value-key="data"
             shrinkToFit="true"
             :num-of-columns="calculateColumns(refineList[ind]['dependent'])"
           >
-          <!-- @click="checkboxClick" -->
-            <div
-              slot="label"
-            >
-              {{ $t(ind + '.category') }}
-            </div>
-          </checkbox>
-          <checkbox
-            v-if="refineListTranslated[ind]['dependent'] && isMobile"
-            :options="refineListTranslated[ind]['dependent']"
-            v-model="selectedList[ind]"
-            text-key="textLabel"
-            value-key="data"
-            shrinkToFit="true"
-            :num-of-columns="calculateColumns(refineList[ind]['dependent'])"
-          >
-          <!-- :small="true" -->
-          <!-- @click="checkboxClick" -->
             <div
               slot="label"
             >
@@ -231,7 +165,6 @@
         :key="ind"
         class="column"
       >
-      <!-- class="column service-group-holder-x" -->
 
         <div
           id="columns-div-for-checkboxes"
@@ -246,7 +179,6 @@
               @click="expandCheckbox(ind)"
             >
               {{ $t(ind + '.category') }}
-              <!-- {{ ind }} -->
             </div>
             <div
               v-if="refineList[ind].expanded"
@@ -258,26 +190,19 @@
                 :options="refineListTranslated[ind]['independent']"
                 text-key="textLabel"
                 value-key="data"
-                :small="true"
+                :small="!isMobile"
                 :num-of-columns="calculateColumns(refineList[ind]['independent'])"
               >
                 <div
                   slot="label"
                 >
-                  <!-- {{ $t(ind + '.category') }} -->
-                  <!-- <icon-tool-tip
-                    v-if="Object.keys(infoCircles).includes(ind)"
-                    :item="ind"
-                    :circleData="infoCircles[ind]"
-                    :circleType="'click'"
-                  >
-                  </icon-tool-tip> -->
                 </div>
               </radio>
+
               <checkbox
                 v-if="refineListTranslated[ind]['dependent']"
                 :options="refineListTranslated[ind]['dependent']"
-                :small="true"
+                :small="!isMobile"
                 v-model="selectedList[ind]"
                 text-key="textLabel"
                 value-key="data"
@@ -287,14 +212,6 @@
                 <div
                   slot="label"
                 >
-                  <!-- {{ $t(ind + '.category') }} -->
-                  <!-- <icon-tool-tip
-                    v-if="Object.keys(infoCircles).includes(ind)"
-                    :item="ind"
-                    :circleData="infoCircles[ind]"
-                    :circleType="'click'"
-                  >
-                  </icon-tool-tip> -->
                 </div>
               </checkbox>
             </div>
@@ -328,7 +245,7 @@
               text-key="textLabel"
               value-key="data"
               :num-of-columns="1"
-              :small="true"
+              :small="!isMobile"
             >
               <div
                 slot="label"
@@ -343,12 +260,11 @@
                 </icon-tool-tip>
               </div>
             </radio>
-            <!-- <hr> -->
 
             <checkbox
               :options="refineListTranslated[ind]['dependent']"
               :num-of-columns="1"
-              :small="true"
+              :small="!isMobile"
               v-model="selectedList[ind]"
               text-key="textLabel"
               value-key="data"
@@ -373,12 +289,20 @@
       </div>
     </div>
 
+    <!-- v-if="refineOpen && isTablet || refineOpen && isDesktop || refineOpen && isWideScreen" -->
     <button
-      v-if="refineOpen && isTablet || refineOpen && isDesktop || refineOpen && isWideScreen"
+      v-if="refineOpen"
       class="close-button"
       @click="expandRefine"
     >
-      <font-awesome-icon icon="times" />
+      <font-awesome-icon icon="angle-up" size="2x" />
+    </button>
+    <button
+      v-if="!refineOpen"
+      class="close-button"
+      @click="expandRefine"
+    >
+      <font-awesome-icon icon="angle-down" size="2x" />
     </button>
 
     <div
@@ -393,7 +317,6 @@
           class="button is-primary medium-side-padding"
           @click="expandRefine(); scrollToTop();"
         >
-          <!-- <font-awesome-icon icon="filter" /> -->
           Apply filters
         </button>
       </div>
@@ -406,7 +329,6 @@
           class="button is-primary medium-side-padding"
           @click="expandRefine(); scrollToTop();"
         >
-          <!-- <font-awesome-icon icon="filter" /> -->
           <div
             v-html="$t('refinePanel.applyFilters')"
             class="apply-filters-text"
@@ -1067,10 +989,7 @@ export default {
     }
 
     .refine-title {
-      // height:48px;
-      // width: 100%;
       border-style: solid;
-      // border-width: 2px !important;
       border-color: #f0f0f0;
     }
 
@@ -1080,6 +999,16 @@ export default {
 
     .refine-title-open:hover {
       border-color: #f0f0f0;
+    }
+
+    .close-button {
+      height: 20px;
+      position: absolute;
+      top: 115px;
+      right: 5px;
+      border-style: none;
+      background-color: rgb(240, 240, 240);
+      // padding: 10px;
     }
   }
 
@@ -1118,24 +1047,22 @@ export default {
 
   @media screen and (max-width: 767px) {
     height: 3rem;
-    // padding: .5rem;
     position: relative;
-    // z-index: 10000;
+
+    .close-button {
+      height: 20px;
+      position: absolute;
+      top: 10px;
+      right: 5px;
+      border-style: none;
+      background-color: rgb(240, 240, 240);
+      // padding: 10px;
+    }
 
     .refine-title{
       margin-bottom: 14px !important;
       cursor: pointer;
       height:7vh;
-      // padding: .5rem;
-
-      &::after{
-        content: '+';
-        font-weight: 900;
-        position: absolute;
-        font-size: 1.6rem;
-        right: 5px;
-        top: 10px;
-      }
     }
 
     .service-group-holder-x {
@@ -1178,11 +1105,6 @@ export default {
     overflow-y: scroll;
     height: calc(100vh - 230px);
     max-height: 100vh;
-    .refine-title{
-      &::after {
-        content: '-';
-      }
-    }
   }
 }
 
@@ -1237,23 +1159,12 @@ export default {
 }
 
 .slider-icon {
-  // width: 40px;
   padding-top: 10px;
   padding-left: 14px;
   padding-bottom: 10px;
 }
 
-.close-button {
-  position: absolute;
-  top: 110px;
-  right: 0px;
-  border-style: none;
-  background-color: rgb(240, 240, 240);
-  padding: 10px;
-}
-
 .refine-label-text {
-  // background-color: rgba(240, 240, 240, 0);
   box-sizing: border-box;
   font-family: "Montserrat-Bold", "Montserrat Bold", "Montserrat", sans-serif;
   font-weight: 700;
