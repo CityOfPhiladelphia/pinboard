@@ -65,6 +65,7 @@
           <icon-tool-tip
             v-if="option.tooltip"
             :tip="option.tooltip"
+            :circle-type="tooltipType"
           />
             <!-- test
           </icon-tool-tip> -->
@@ -170,6 +171,15 @@ export default {
     };
   },
   computed: {
+    tooltipType() {
+      let value;
+      if (this.isMobile) {
+        value = 'hover';
+      } else {
+        value = 'hover';
+      }
+      return value;
+    },
     inputListeners: function () {
 
       delete this.$listeners['input'];
