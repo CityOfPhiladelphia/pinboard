@@ -87,11 +87,20 @@
       class="refine-holder"
     >
       <checkbox
+        v-if="!isMobile"
         :options="getRefineSearchList()"
         :numOfColumns="NumRefineColumns"
         :small="true"
         v-model="selected"
       >
+      </checkbox>
+      <checkbox
+        v-if="isMobile"
+        :options="getRefineSearchList()"
+        :numOfColumns="NumRefineColumns"
+        v-model="selected"
+      >
+      <!-- :small="true" -->
       </checkbox>
     </div>
 
@@ -101,6 +110,7 @@
     >
     <!-- :options="getRefineSearchList()" -->
       <radio
+        v-if="!isMobile"
         v-model="selected"
         :options="refineListTranslated"
         text-key="text"
@@ -108,6 +118,17 @@
         :numOfColumns="NumRefineColumns"
         :small="true"
       >
+      </radio>
+
+      <radio
+        v-if="!isMobile"
+        v-model="selected"
+        :options="refineListTranslated"
+        text-key="text"
+        value-key="value"
+        :numOfColumns="NumRefineColumns"
+      >
+      <!-- :small="true" -->
       </radio>
     </div>
 
@@ -130,7 +151,7 @@
         >
           <radio
             v-model="selectedList['radio_'+ind]"
-            v-if="refineListTranslated[ind]['independent']"
+            v-if="refineListTranslated[ind]['independent'] && !isMobile"
             :options="refineListTranslated[ind]['independent']"
             text-key="textLabel"
             value-key="data"
@@ -143,8 +164,25 @@
               {{ $t(ind + '.category') }}
             </div>
           </radio>
+          <radio
+            v-model="selectedList['radio_'+ind]"
+            v-if="refineListTranslated[ind]['independent'] && isMobile"
+            :options="refineListTranslated[ind]['independent']"
+            text-key="textLabel"
+            value-key="data"
+            :num-of-columns="calculateColumns(refineList[ind]['independent'])"
+          >
+          <!-- :small="true" -->
+            <div
+              slot="label"
+            >
+              {{ $t(ind + '.category') }}
+            </div>
+          </radio>
+
+
           <checkbox
-            v-if="refineListTranslated[ind]['dependent']"
+            v-if="refineListTranslated[ind]['dependent'] && !isMobile"
             :options="refineListTranslated[ind]['dependent']"
             :small="true"
             v-model="selectedList[ind]"
@@ -153,6 +191,23 @@
             shrinkToFit="true"
             :num-of-columns="calculateColumns(refineList[ind]['dependent'])"
           >
+          <!-- @click="checkboxClick" -->
+            <div
+              slot="label"
+            >
+              {{ $t(ind + '.category') }}
+            </div>
+          </checkbox>
+          <checkbox
+            v-if="refineListTranslated[ind]['dependent'] && isMobile"
+            :options="refineListTranslated[ind]['dependent']"
+            v-model="selectedList[ind]"
+            text-key="textLabel"
+            value-key="data"
+            shrinkToFit="true"
+            :num-of-columns="calculateColumns(refineList[ind]['dependent'])"
+          >
+          <!-- :small="true" -->
           <!-- @click="checkboxClick" -->
             <div
               slot="label"
@@ -331,11 +386,11 @@
       class="columns is-mobile"
     >
       <div
-        class="column is-narrow add-margin-left"
+        class="column is-narrow add-margin-left small-side-padding"
         v-if="!i18nEnabled"
       >
         <button
-          class="button is-primary"
+          class="button is-primary medium-side-padding"
           @click="expandRefine(); scrollToTop();"
         >
           <!-- <font-awesome-icon icon="filter" /> -->
@@ -344,11 +399,11 @@
       </div>
 
       <div
-        class="column is-narrow add-margin-left"
+        class="column is-narrow add-margin-left small-side-padding"
         v-if="i18nEnabled"
       >
         <div
-          class="button is-primary"
+          class="button is-primary medium-side-padding"
           @click="expandRefine(); scrollToTop();"
         >
           <!-- <font-awesome-icon icon="filter" /> -->
@@ -360,11 +415,11 @@
       </div>
 
       <div
-        class="column is-narrow"
+        class="column is-narrow small-side-padding"
         v-if="!i18nEnabled"
       >
         <button
-          class="button is-primary"
+          class="button is-primary medium-side-padding"
           @click.prevent="clearAll"
         >
           Clear all
@@ -372,11 +427,11 @@
       </div>
 
       <div
-        class="column is-narrow"
+        class="column is-narrow small-side-padding"
         v-if="i18nEnabled"
       >
         <button
-          class="button is-primary"
+          class="button is-primary medium-side-padding"
           @click.prevent="clearAll"
           v-html="$t('refinePanel.clearAll')"
         >
@@ -1099,7 +1154,17 @@ export default {
     }
 
     .add-margin-left {
-      margin-left: 16px;
+      margin-left: 24px;
+    }
+
+    .small-side-padding {
+      padding-left: 6px !important;
+      padding-right: 6px !important;
+    }
+
+    .medium-side-padding {
+      padding-left: 12px !important;
+      padding-right: 12px !important;
     }
 
     #multiple-field-groups-div {
@@ -1112,7 +1177,7 @@ export default {
   &.refine-panel-open {
     overflow-y: scroll;
     height: calc(100vh - 230px);
-    // max-height: 100vh;
+    max-height: 100vh;
     .refine-title{
       &::after {
         content: '-';
