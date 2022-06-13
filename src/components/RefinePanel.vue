@@ -61,8 +61,8 @@
             class="invisible-x-button"
             @click="closeBox(box)"
           >
-          <!-- tabindex="0" -->
-            <font-awesome-icon icon="times"
+            <font-awesome-icon
+              :icon="[timesIconWeight,'times']"
             />
           </button>
         </div>
@@ -296,7 +296,7 @@
       @click="expandRefine"
     >
       <font-awesome-icon
-        :icon="[angleIcon,'angle-up']"
+        :icon="[angleIconWeight,'angle-up']"
         size="2x"
       />
     </button>
@@ -307,7 +307,7 @@
     >
     <!-- :icon="['fas-angle-down']" -->
       <font-awesome-icon
-        :icon="[angleIcon, 'angle-down']"
+        :icon="[angleIconWeight, 'angle-down']"
         size="2x"
       />
     </button>
@@ -405,10 +405,18 @@ export default {
     };
   },
   computed: {
-    angleIcon() {
+    angleIconWeight() {
       let value = 'fas';
       let regularExists = findIconDefinition({ prefix: 'far', iconName: 'angle-down' });
       // console.log('refinePanel.vue computed, library:', library, 'regularExists:', regularExists);
+      if (regularExists) {
+        value = 'far';
+      }
+      return value;
+    },
+    timesIconWeight() {
+      let value = 'fas';
+      let regularExists = findIconDefinition({ prefix: 'far', iconName: 'times' });
       if (regularExists) {
         value = 'far';
       }
@@ -720,8 +728,8 @@ export default {
       e.stopPropagation();
     },
     closeBox(box) {
-      console.log('closeBox is running');
       let section = box.split('_')[0];
+      console.log('closeBox is running, section:', section, 'this.$data.selected:', this.$data.selected, 'this.$data.selected[section]:', this.$data.selected[section]);
       if (this.$data.selectedList[section]) {
         console.log('it\'s there in selectedList');
         let boxIndex = this.$data.selectedList[section].indexOf(box);
@@ -733,6 +741,10 @@ export default {
         const { [test]: removedProperty, ...exceptBoth } = this.$data.selectedList;
         this.$data.selectedList = exceptBoth;
         console.log('2 exceptBoth:', exceptBoth, 'it\'s there in selectedList WITH radio, box:', box, 'this.$data.selectedList["radio_" + section]:', this.$data.selectedList['radio_' + section]);
+      } else if (this.$data.selected.includes(section)) {
+        console.log('its in the array');
+        let boxIndex = this.$data.selected.indexOf(section);
+        this.$data.selected.splice(boxIndex, 1);
       } else {
         console.log('not there in selected list');
       }
@@ -1060,6 +1072,7 @@ export default {
       text-decoration: underline;
       padding-left: 8px;
       padding-right: 12px;
+      cursor: pointer;
     }
 
     .clear-button {
@@ -1222,6 +1235,7 @@ export default {
 .invisible-x-button {
   border-style: none;
   background-color: #cfcfcf;
+  cursor: pointer;
 }
 
 // .invisible-clear-button {
