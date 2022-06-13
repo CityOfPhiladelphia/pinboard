@@ -1028,7 +1028,7 @@ export default {
       height: 20px;
       position: absolute;
       top: 115px;
-      right: 5px;
+      right: 12px;
       border-style: none;
       background-color: rgb(240, 240, 240);
       color: $ben-franklin-blue-dark;
@@ -1080,6 +1080,7 @@ export default {
       right: 5px;
       border-style: none;
       background-color: rgb(240, 240, 240);
+      color: $ben-franklin-blue-dark;
       // padding: 10px;
     }
 
