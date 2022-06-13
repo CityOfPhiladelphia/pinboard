@@ -611,7 +611,11 @@ export default {
       trusted.classList.add("trusted-site-hidden");
     }
 
-    
+    if (this.$config.app.skipGreeting) {
+      this.$store.commit('setShouldShowGreeting', false);
+    }
+
+
   },
   created() {
     let root = document.getElementsByTagName( 'html' )[0]; // '0' to assign the first (and only `HTML` tag)
