@@ -291,7 +291,7 @@
 
     <!-- v-if="refineOpen && isTablet || refineOpen && isDesktop || refineOpen && isWideScreen" -->
     <button
-      v-if="refineOpen"
+      v-if="refineOpen && retractable  || refineOpen && isMobile"
       class="close-button"
       @click="expandRefine"
     >
@@ -301,7 +301,7 @@
       />
     </button>
     <button
-      v-if="!refineOpen"
+      v-if="!refineOpen && retractable  || !refineOpen && isMobile"
       class="close-button"
       @click="expandRefine"
     >
@@ -501,15 +501,22 @@ export default {
         return mainObject;
       }
     },
+    retractable() {
+      let value = false;
+      if (this.$config.retractableRefine) {
+        value = true;
+      }
+      return value;
+    },
     refineTitleClass() {
       let value;
-      if (this.$config.retractableRefine) {
+      if (this.retractable) {
         if (this.refineOpen) {
           value = 'refine-title-open';
-        }
-        // } else {
-        //   value = 'refine-title';
         // }
+        } else {
+          value = 'retractable-refine-title';
+        }
       // } else {
       //   value = 'refine-title';
       }
@@ -523,7 +530,7 @@ export default {
         } else {
           value = 'refine-panel refine-panel-closed invisible-scrollbar';
         }
-      } else if (this.$config.retractableRefine) {
+      } else if (this.retractable) {
         if (!this.refineOpen) {
           value = 'refine-panel refine-retractable-closed refine-panel-non-mobile-closed invisible-scrollbar';
         } else if (this.refineOpen) {
@@ -1016,11 +1023,11 @@ export default {
       border-color: #f0f0f0;
     }
 
-    .refine-title:hover {
+    .retractable-refine-title:hover {
       border-color: #2176d2;
     }
 
-    .refine-title-open:hover {
+    .retractable-refine-title-open:hover {
       border-color: #f0f0f0;
     }
 
