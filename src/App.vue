@@ -610,6 +610,8 @@ export default {
       console.log('trusted:', trusted);
       trusted.classList.add("trusted-site-hidden");
     }
+
+    
   },
   created() {
     let root = document.getElementsByTagName( 'html' )[0]; // '0' to assign the first (and only `HTML` tag)

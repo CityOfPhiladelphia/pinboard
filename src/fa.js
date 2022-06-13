@@ -19,7 +19,29 @@ import { faSlidersH } from '@fortawesome/free-solid-svg-icons/faSlidersH';
 import { faAngleDown } from '@fortawesome/free-solid-svg-icons/faAngleDown';
 import { faAngleUp } from '@fortawesome/free-solid-svg-icons/faAngleUp';
 
+// console.log('pinboard fa.js, faSearch:', faSearch, 'faAngleDown:', faAngleDown);
 
-library.add(faSpinner, faBars, faEnvelope, faFacebook, faFilter, faGlobe, faPhone, faUser, faTimes, faTwitter, faCheckSquare, faSquare, faInfoCircle, faExclamation, faSearch, faSlidersH, faAngleDown, faAngleUp);
+library.add(
+  faSpinner,
+  faBars,
+  faEnvelope,
+  faFacebook,
+  faFilter,
+  faGlobe,
+  faPhone,
+  faUser,
+  faTimes,
+  faTwitter,
+  faCheckSquare,
+  faSquare,
+  faInfoCircle,
+  faExclamation,
+  faSearch,
+  faSlidersH,
+  faAngleDown,
+  faAngleUp
+);
+
+// console.log('pinboard fa.js, library:', library);
 
 export default library;

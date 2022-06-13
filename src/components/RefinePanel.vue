@@ -295,14 +295,21 @@
       class="close-button"
       @click="expandRefine"
     >
-      <font-awesome-icon icon="angle-up" size="2x" />
+      <font-awesome-icon
+        :icon="[angleIcon,'angle-up']"
+        size="2x"
+      />
     </button>
     <button
       v-if="!refineOpen"
       class="close-button"
       @click="expandRefine"
     >
-      <font-awesome-icon icon="angle-down" size="2x" />
+    <!-- :icon="['fas-angle-down']" -->
+      <font-awesome-icon
+        :icon="[angleIcon, 'angle-down']"
+        size="2x"
+      />
     </button>
 
     <div
@@ -366,6 +373,9 @@
 </template>
 <script>
 
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { findIconDefinition } from '@fortawesome/fontawesome-svg-core';
+
 import Vue from 'vue';
 import { mapState } from 'vuex';
 import Checkbox from './Checkbox.vue';
@@ -395,6 +405,15 @@ export default {
     };
   },
   computed: {
+    angleIcon() {
+      let value = 'fas';
+      let regularExists = findIconDefinition({ prefix: 'far', iconName: 'angle-down' });
+      // console.log('refinePanel.vue computed, library:', library, 'regularExists:', regularExists);
+      if (regularExists) {
+        value = 'far';
+      }
+      return value;
+    },
     dropdownRefine() {
       let value;
       if (this.$config.dropdownRefine) {
@@ -621,6 +640,7 @@ export default {
     }
   },
   mounted() {
+    // console.log('refinePanel.vue mounted, library:', library);
     let divButton = document.querySelector('#refine-top');
     divButton.addEventListener('keypress', activate.bind(this));
     function activate(e) {
@@ -731,14 +751,17 @@ export default {
     },
     getRefineSearchList() {
       console.log('getRefineSearchList is running');
-      const refineData = this.database;
+      let refineData = this.database;
+      if (refineData.records) {
+        refineData = refineData.records;
+      }
 
       let service = '';
       let uniq;
       let selected;
 
       if (!this.$config.refine || this.$config.refine && ['categoryField_array', 'categoryField_value'].includes(this.$config.refine.type)) {
-        // console.log('in getRefineSearchList, refineData:', refineData);
+        console.log('in getRefineSearchList, refineData:', refineData);
         refineData.forEach((item) => {
           if (this.$config.refine) {
             let value = this.$config.refine.value(item);
@@ -1008,6 +1031,7 @@ export default {
       right: 5px;
       border-style: none;
       background-color: rgb(240, 240, 240);
+      color: $ben-franklin-blue-dark;
       // padding: 10px;
     }
   }
