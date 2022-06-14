@@ -990,9 +990,11 @@ export default {
   margin-left: 4px;
   margin-right: 4px;
   margin-bottom: 8px;
-  padding: 6px 4px 2px 4px !important;
-  // padding: 0px !important;
+  padding: 4px 4px 2px 4px !important;
   height: 30px;
+  border-width: 2px !important;
+  border-style: solid;
+  border-color: #cfcfcf;
   border-radius: 4px;
   background-color: #cfcfcf;
   box-sizing: border-box;
@@ -1000,6 +1002,16 @@ export default {
   color: #333333;
   text-align: left;
   line-height: normal;
+}
+
+.box-value:hover {
+  border-color: #2176d2 !important;
+}
+
+.invisible-x-button {
+  border-style: none;
+  background-color: #cfcfcf;
+  cursor: pointer;
 }
 
 .refine-panel {
@@ -1035,6 +1047,14 @@ export default {
       border-color: #f0f0f0;
     }
 
+    .refine-title-open {
+      cursor: pointer;
+    }
+
+    .retractable-refine-title {
+      cursor: pointer;
+    }
+
     .retractable-refine-title:hover {
       border-color: #2176d2;
     }
@@ -1051,7 +1071,13 @@ export default {
       border-style: none;
       background-color: rgb(240, 240, 240);
       color: $ben-franklin-blue-dark;
+      cursor: pointer;
       // padding: 10px;
+    }
+
+    .refine-holder {
+      padding-left: 12px;
+      padding-right: 12px;
     }
   }
 
@@ -1231,19 +1257,5 @@ export default {
   // border-color: rgb(33, 118, 210) !important;
   border-color: #2176d2 !important;
 }
-
-.invisible-x-button {
-  border-style: none;
-  background-color: #cfcfcf;
-  cursor: pointer;
-}
-
-// .invisible-clear-button {
-//   // margin-top: 10px;
-//   border-style: none;
-//   background-color: rgb(240, 240, 240);
-// }
-
-
 
 </style>

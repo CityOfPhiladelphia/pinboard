@@ -353,6 +353,7 @@ export default {
   border-color: $ben-franklin-blue-dark !important;
   height: 56px;
   line-height: 44px;
+  cursor: pointer;
 }
 
 .pvm-search-control-button-non-mobile {
