@@ -7,54 +7,57 @@
       v-slot="validation"
       tag="div"
     > -->
-      <form
-        id="search-form"
-        autocomplete="off"
-        :class="formClass"
-        title="addressform"
-        @submit.prevent="handleSearchFormSubmit"
+    <form
+      id="search-form"
+      autocomplete="off"
+      :class="formClass"
+      title="addressform"
+      @submit.prevent="handleSearchFormSubmit"
+    >
+    <!-- alt="test test" -->
+    <!-- aria-label="button" -->
+      <textbox
+        id="map-textbox"
+        v-model="addressEntered"
+        :placeholder="placeholderComputed || 'Search by address or keyword'"
+        :style="inputStyle"
+      />
+      <!-- name="Submit Box" -->
+      <!-- rules="address" -->
+
+      <!-- <div
+        v-if="addressEntered != '' && addressEntered != null"
+        :class="'pvm-search-control-button ' + buttonClass"
+        aria-label="delete button"
+        title="delete button"
+        @click.prevent="handleFormX"
       >
-      <!-- alt="test test" -->
-      <!-- aria-label="button" -->
-        <textbox
-          id="map-textbox"
-          v-model="addressEntered"
-          :placeholder="placeholderComputed || 'Search by address or keyword'"
-          :style="inputStyle"
-        />
-        <!-- name="Submit Box" -->
-        <!-- rules="address" -->
+        <font-awesome-icon icon="times" size="2x" />
+      </div>
 
-        <!-- <div
-          v-if="addressEntered != '' && addressEntered != null"
-          :class="'pvm-search-control-button ' + buttonClass"
-          aria-label="delete button"
-          title="delete button"
-          @click.prevent="handleFormX"
-        >
-          <font-awesome-icon icon="times" size="2x" />
-        </div>
+      <div
+        :class="'pvm-search-control-button ' + buttonClass"
+        aria-label="search button"
+        title="search button"
+        @click.prevent="handleSearchFormSubmit(validation)"
+      >
+        <font-awesome-icon icon="search" size="2x" aria-hidden="true" />
+      </div> -->
 
-        <div
-          :class="'pvm-search-control-button ' + buttonClass"
-          aria-label="search button"
-          title="search button"
-          @click.prevent="handleSearchFormSubmit(validation)"
-        >
-          <font-awesome-icon icon="search" size="2x" aria-hidden="true" />
-        </div> -->
-
-      </form>
+    </form>
     <!-- </ValidationObserver> -->
 
     <button
       v-if="addressEntered != '' && addressEntered != null"
-      :class="'pvm-search-control-button ' + buttonClass"
+      :class="'pvm-search-control-x-button ' + buttonClass"
       aria-label="delete button"
       title="delete button"
       @click="handleFormX"
     >
-      <font-awesome-icon icon="times" size="2x" />
+      <font-awesome-icon
+        icon="times"
+        size="2x"
+      />
     </button>
 
     <button
@@ -255,7 +258,7 @@ export default {
     // });
   },
   mounted() {
-    // console.log('PhilaUiAddressInput mounted is running, this.currentSearch:', this.currentSearch);
+    console.log('PhilaUiAddressInput mounted is running, this.currentSearch:', this.currentSearch);
     if (this.currentSearch) {
       console.log('inside mounted if');
       this.addressEntered = this.currentSearch;
@@ -296,8 +299,10 @@ export default {
 @import "../assets/scss/main.scss";
 
 #tb-map-textbox {
-  border-width: 3px !important;
+  background-color: #FFFFFF;
+  border-width: 2px !important;
   border-color: $ben-franklin-blue-dark !important;
+  border-right-style: none !important;
 }
 
 /* Container */
@@ -349,11 +354,34 @@ export default {
   padding-bottom: 20px;
   min-width: 55px !important;
   margin-top: 8px;
+  border-style: solid;
   border-width: 3px !important;
   border-color: $ben-franklin-blue-dark !important;
   height: 56px;
   line-height: 44px;
   cursor: pointer;
+}
+
+.pvm-search-control-x-button {
+  /* display: inline-block; */
+  color: rgb(60, 60, 60, 0.5);
+  background: #FFFFFF;
+  padding: 10px;
+  padding-bottom: 20px;
+  min-width: 55px !important;
+  margin-top: 8px;
+  border-right-style: none;
+  border-left-style: none;
+  border-top-style: solid;
+  border-bottom-style: solid;
+  border-color: $ben-franklin-blue-dark !important;
+  height: 56px;
+  line-height: 44px;
+  cursor: pointer;
+}
+
+.pvm-search-control-x-button:hover {
+  color: rgb(68, 68, 68);
 }
 
 .pvm-search-control-button-non-mobile {
