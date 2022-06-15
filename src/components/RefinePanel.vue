@@ -128,6 +128,7 @@
             :num-of-columns="calculateColumns(refineList[ind]['independent'])"
           >
             <div
+              :class="isMobile ? 'large-label': 'small-label'"
               slot="label"
             >
               {{ $t(ind + '.category') }}
@@ -145,6 +146,7 @@
             :num-of-columns="calculateColumns(refineList[ind]['dependent'])"
           >
             <div
+              :class="isMobile ? 'large-label': 'small-label'"
               slot="label"
             >
               {{ $t(ind + '.category') }}
@@ -964,7 +966,7 @@ export default {
 #columns-div-for-checkboxes {
 
   .input-checkbox {
-    padding-bottom: 16px;
+    padding-bottom: 8px;
   }
 
   .checkbox-div {
@@ -1028,13 +1030,13 @@ export default {
 
   @media screen and (min-width: 768px) {
     .service-group-holder-x {
-      margin-bottom: 16px !important;
+      margin-bottom: 24px !important;
       padding-top: 0px;
       padding-bottom: 0px;
       margin-bottom: 10px;
       padding-left: 24px;
       padding-right: 24px;
-      border-right: 2px solid #cfcfcf;
+      border-right: 1px solid #cfcfcf;
       &:first-of-type{
         // padding-left: 0px;
       }
@@ -1093,7 +1095,7 @@ export default {
       border-style: none;
       background-color: rgb(240, 240, 240);
       height: 20px;
-      font-weight: normal;
+      font-weight: bold;
       font-size: .8rem;
       color: #0f4d90 !important;
       text-decoration: underline;
@@ -1178,6 +1180,15 @@ export default {
     height: calc(100vh - 230px);
     max-height: 100vh;
   }
+}
+
+.small-label {
+  font-size: 16px;
+}
+
+.large-label {
+  font-size: 20px;
+  margin-bottom: 4px;
 }
 
 .multiple-field-groups {
