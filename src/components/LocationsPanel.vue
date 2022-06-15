@@ -18,7 +18,7 @@
     >
       <div
         v-if="currentData.length === 0"
-        class="h3"
+        class="h3 no-results"
       >
         <p
           v-if="!i18nEnabled"
@@ -354,9 +354,13 @@ export default {
   // }
 }
 
-.location-container{
+.location-container {
   padding: 1rem;
   overflow-y: visible;
+}
+
+.no-results {
+  padding: 1rem;
 }
 
 .section-title {

@@ -88,6 +88,7 @@
     <div
       v-if="dataStatus === 'success' && refineType == 'categoryField_value'"
       id="field-div"
+      class="refine-holder"
     >
       <radio
         v-model="selected"
