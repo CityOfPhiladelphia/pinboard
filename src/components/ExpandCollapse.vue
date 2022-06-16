@@ -57,10 +57,11 @@
       </div> -->
     </div>
     <div
-      :class="{ 'location-open': locationOpen }"
-      class="location-content"
+      :class="locationClass"
       :aria-labelledby="makeID(getSiteName(item))"
     >
+    <!-- :class="{ 'location-open': locationOpen }" -->
+    <!-- :class="isMobile ? 'location-content-mobile' : 'location-content'" -->
       <slot />
     </div>
   </div>
@@ -88,6 +89,19 @@ export default {
   },
   mixins: [ SharedFunctions ],
   computed: {
+    locationClass() {
+      let value;
+      if (this.locationOpen && this.isMobile) {
+        value = 'location-content-mobile location-open';
+      } else if (this.locationOpen) {
+        value = 'location-content location-open';
+      } else if (this.isMobile) {
+        value = 'location-content-mobile';
+      } else {
+        value = 'location-content';
+      }
+      return value;
+    },
     plusIconWeight() {
       let value = 'fas';
       let regularExists = findIconDefinition({ prefix: 'far', iconName: 'plus' });
@@ -359,6 +373,20 @@ export default {
 
     &.location-open{
       padding: 1rem;
+      height: 100%;
+      overflow: initial;
+    }
+  }
+
+  .location-content-mobile{
+    overflow: hidden;
+    height:0;
+
+    &.location-open{
+      padding-top: 1rem;
+      padding-bottom: 1rem;
+      padding-right: 0px;
+      padding-left: 0px;
       height: 100%;
       overflow: initial;
     }
