@@ -125,7 +125,7 @@
       v-show="toggleButtonVisible"
       @click="toggleMap"
     >
-      <button class="button capitalized is-primary is-fullwidth">
+      <button class="button capitalized is-primary toggle-button is-fullwidth">
         {{ $t(this.$data.buttonText) }}
       </button>
     </div>
@@ -1236,7 +1236,9 @@ html, body {
 }
 
 .toggle-button {
-  background-color: #d2d2d2;
+  // background-color: #d2d2d2;
+  // color: white;
+  background-color: $ben-franklin-blue-dark !important;
 }
 
 .overflows {

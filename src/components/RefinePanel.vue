@@ -299,7 +299,7 @@
       @click="expandRefine"
     >
       <font-awesome-icon
-        :icon="[angleIconWeight,'angle-up']"
+        :icon="[angleIconWeight, 'angle-up']"
         size="2x"
       />
     </button>
@@ -663,7 +663,7 @@ export default {
     divButton.addEventListener('keypress', activate.bind(this));
     function activate(e) {
       console.log('activate, e:', e, 'e.path[0]:', e.path[0]);
-      if (e.type === 'keypress' && e.keyCode == 32 && e.srcElement.id == 'refine-top') {
+      if (e.type === 'keypress' && [ 13, 32 ].includes(e.keyCode) && e.srcElement.id == 'refine-top') {
         this.expandRefine();
       }
     };
