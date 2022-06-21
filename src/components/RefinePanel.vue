@@ -961,6 +961,7 @@ export default {
 
 #refine-panel-component {
   background: $ghost-grey;
+  overflow-x: hidden;
 }
 
 #columns-div-for-checkboxes {

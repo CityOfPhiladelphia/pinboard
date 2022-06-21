@@ -1,7 +1,7 @@
 <template>
   <!-- <div> -->
   <div
-    :class="'inline has-tooltip-arrow ' + tooltipPosition"
+    :class="'inline has-tooltip-hidden-mobile has-tooltip-arrow ' + tooltipPosition"
     :data-tooltip="tip"
   >
     <!-- <button class="button" data-tooltip="Tooltip Text">top tooltip</button> -->
@@ -67,11 +67,11 @@ export default {
   computed: {
     tooltipPosition() {
       let value;
-      if (this.isMobile) {
-        value = 'has-tooltip-bottom';
-      } else {
+      // if (this.isMobile) {
+      //   value = 'has-tooltip-bottom';
+      // } else {
         value = 'has-tooltip-right';
-      }
+      // }
       return value;
     }
   },
