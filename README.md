@@ -29,6 +29,11 @@ Create pull request for changes and merge into `master` branch for travis-ci bui
 
 ## Release Notes
 
+### 1.1.2 - 6/21/2022
+
+* uses phila-ui for i18n
+* makes tooltips in mobile permanent
+
 ### 1.1.1 - 5/27/2022
 
 * cleans up mobile screen css
