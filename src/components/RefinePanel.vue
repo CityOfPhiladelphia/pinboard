@@ -47,7 +47,7 @@
 
       <div
         id="selected-boxes"
-        v-if="isTablet || isDesktop || isWideScreen"
+        v-if="refineType !== 'categoryField_value' && isTablet || refineType !== 'categoryField_value' && isDesktop || refineType !== 'categoryField_value' && isWideScreen"
         class="selected-boxes columns"
       >
         <div
@@ -616,14 +616,32 @@ export default {
       this.getRefineSearchList();
     },
     selected(nextSelected, oldSelected) {
-      let newSelection = nextSelected.filter(x => !oldSelected.includes(x));
-      console.log('watch selected is firing, nextSelected:', nextSelected, 'oldSelected:', oldSelected, 'newSelection:', newSelection);
-      if (newSelection.length) {
-        this.$gtag.event('refine-checkbox-click', {
-          'event_category': this.$store.state.gtag.category,
-          'event_label': newSelection[0],
-        });
+      console.log('watch selected is firing, nextSelected:', nextSelected, 'oldSelected:', oldSelected);
+      let newSelection;
+      if (this.refineType !== 'categoryField_value') {
+        newSelection = nextSelected.filter(x => !oldSelected.includes(x));
+        if (newSelection.length) {
+          this.$gtag.event('refine-checkbox-click', {
+            'event_category': this.$store.state.gtag.category,
+            'event_label': newSelection[0],
+          });
+        }
+      } else {
+        newSelection = nextSelected;
+        if (newSelection.length) {
+          this.$gtag.event('refine-checkbox-click', {
+            'event_category': this.$store.state.gtag.category,
+            'event_label': newSelection,
+          });
+        }
       }
+      console.log('watch selected is firing, nextSelected:', nextSelected, 'oldSelected:', oldSelected, 'newSelection:', newSelection);
+      // if (newSelection.length) {
+      //   this.$gtag.event('refine-checkbox-click', {
+      //     'event_category': this.$store.state.gtag.category,
+      //     'event_label': newSelection[0],
+      //   });
+      // }
 
       this.$store.commit('setSelectedServices', nextSelected);
 
