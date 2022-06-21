@@ -125,7 +125,7 @@
       v-show="toggleButtonVisible"
       @click="toggleMap"
     >
-      <button class="button capitalized is-primary is-fullwidth">
+      <button class="button capitalized is-primary toggle-button is-fullwidth">
         {{ $t(this.$data.buttonText) }}
       </button>
     </div>
@@ -610,6 +610,12 @@ export default {
       console.log('trusted:', trusted);
       trusted.classList.add("trusted-site-hidden");
     }
+
+    if (this.$config.app.skipGreeting) {
+      this.$store.commit('setShouldShowGreeting', false);
+    }
+
+
   },
   created() {
     let root = document.getElementsByTagName( 'html' )[0]; // '0' to assign the first (and only `HTML` tag)
@@ -1230,7 +1236,9 @@ html, body {
 }
 
 .toggle-button {
-  background-color: #d2d2d2;
+  // background-color: #d2d2d2;
+  // color: white;
+  background-color: $ben-franklin-blue-dark !important;
 }
 
 .overflows {

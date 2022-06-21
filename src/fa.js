@@ -16,8 +16,36 @@ import { faInfoCircle } from '@fortawesome/free-solid-svg-icons/faInfoCircle';
 import { faExclamation } from '@fortawesome/free-solid-svg-icons/faExclamation';
 import { faSearch } from '@fortawesome/free-solid-svg-icons/faSearch';
 import { faSlidersH } from '@fortawesome/free-solid-svg-icons/faSlidersH';
+import { faAngleDown } from '@fortawesome/free-solid-svg-icons/faAngleDown';
+import { faAngleUp } from '@fortawesome/free-solid-svg-icons/faAngleUp';
+import { faPlus } from '@fortawesome/free-solid-svg-icons/faPlus';
+import { faMinus } from '@fortawesome/free-solid-svg-icons/faMinus';
 
+// console.log('pinboard fa.js, faSearch:', faSearch, 'faAngleDown:', faAngleDown);
 
-library.add(faSpinner, faBars, faEnvelope, faFacebook, faFilter, faGlobe, faPhone, faUser, faTimes, faTwitter, faCheckSquare, faSquare, faInfoCircle, faExclamation, faSearch, faSlidersH);
+library.add(
+  faSpinner,
+  faBars,
+  faEnvelope,
+  faFacebook,
+  faFilter,
+  faGlobe,
+  faPhone,
+  faUser,
+  faTimes,
+  faTwitter,
+  faCheckSquare,
+  faSquare,
+  faInfoCircle,
+  faExclamation,
+  faSearch,
+  faSlidersH,
+  faAngleDown,
+  faAngleUp,
+  faPlus,
+  faMinus,
+);
+
+// console.log('pinboard fa.js, library:', library);
 
 export default library;

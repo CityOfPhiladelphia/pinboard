@@ -4,35 +4,64 @@
     class="location-item"
     :class="{ 'open': locationOpen }"
   >
-    <h2
-      :id="makeID(getSiteName(item))"
-      class="h5 location-title"
-      @click="expandLocation"
-      tabindex="0"
-      @keyup.enter="expandLocation"
-      :aria-expanded="locationOpen"
-    >
-      {{ getSiteName(item) }}
-      <div
-        v-if="section && !i18nEnabled"
-        class="section-name"
-        :style="{ 'background-color': sectionColor }"
-        >
-        {{ sectionTitle }}
-      </div>
-      <div
-        v-if="section && i18nEnabled"
-        class="section-name"
-        :style="{ 'background-color': sectionColor }"
-        v-html="'<b>'+$t(sectionTitle)+'</b>'"
-      />
-
-    </h2>
     <div
-      :class="{ 'location-open': locationOpen }"
-      class="location-content"
+      class="columns location-row is-mobile"
+      tabindex="0"
+      @click="expandLocation"
+      @keypress.space.prevent
+      @keyup.space="expandLocation"
+      @keyup.enter="expandLocation"
+    >
+      <div class="location-title column is-11">
+        <h2
+          :id="makeID(getSiteName(item))"
+          class="h5"
+          :aria-expanded="locationOpen"
+        >
+          {{ getSiteName(item) }}
+          <div
+            v-if="section && !i18nEnabled"
+            class="section-name"
+            :style="{ 'background-color': sectionColor }"
+            >
+            {{ sectionTitle }}
+          </div>
+          <div
+            v-if="section && i18nEnabled"
+            class="section-name"
+            :style="{ 'background-color': sectionColor }"
+            v-html="'<b>'+$t(sectionTitle)+'</b>'"
+          >
+        </div>
+
+        </h2>
+      </div>
+      <div class="location-icon column is-1">
+        <font-awesome-icon
+          v-if="!locationOpen"
+          :icon="[plusIconWeight, 'plus']"
+          class="plus-icon"
+        />
+        <font-awesome-icon
+          v-if="locationOpen"
+          :icon="[plusIconWeight, 'minus']"
+        />
+        <!-- class="plus-icon" -->
+      </div>
+      <!-- <div
+        :class="{ 'location-open': locationOpen }"
+        class="location-content"
+        :aria-labelledby="makeID(getSiteName(item))"
+      >
+        <slot />
+      </div> -->
+    </div>
+    <div
+      :class="locationClass"
       :aria-labelledby="makeID(getSiteName(item))"
     >
+    <!-- :class="{ 'location-open': locationOpen }" -->
+    <!-- :class="isMobile ? 'location-content-mobile' : 'location-content'" -->
       <slot />
     </div>
   </div>
@@ -40,6 +69,8 @@
 <script>
 
 import SharedFunctions from './mixins/SharedFunctions.vue';
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { findIconDefinition } from '@fortawesome/fontawesome-svg-core';
 
 export default {
   props: {
@@ -58,6 +89,28 @@ export default {
   },
   mixins: [ SharedFunctions ],
   computed: {
+    locationClass() {
+      let value;
+      if (this.locationOpen && this.isMobile) {
+        value = 'location-content-mobile location-open';
+      } else if (this.locationOpen) {
+        value = 'location-content location-open';
+      } else if (this.isMobile) {
+        value = 'location-content-mobile';
+      } else {
+        value = 'location-content';
+      }
+      return value;
+    },
+    plusIconWeight() {
+      let value = 'fas';
+      let regularExists = findIconDefinition({ prefix: 'far', iconName: 'plus' });
+      // console.log('expandCollapse.vue computed, library:', library, 'regularExists:', regularExists);
+      if (regularExists) {
+        value = 'far';
+      }
+      return value;
+    },
     showLabels() {
       let value = false;
       if (this.$config.refine.showLabels) {
@@ -152,6 +205,22 @@ export default {
     if (this.selectedResources.includes(this.item._featureId)) {
       this.openLocation();
     }
+
+    // window.addEventListener('keydown', (e) => {
+    //   console.log('keydown is running, e', e);
+    //   if (e.keyCode === 32 && e.target === document.body) {
+    //     e.preventDefault();
+    //   }
+    // });
+
+    // let divButton = document.querySelector('#refine-top');
+    // divButton.addEventListener('keypress', activate.bind(this));
+    // function activate(e) {
+    //   console.log('activate, e:', e, 'e.path[0]:', e.path[0]);
+    //   if (e.type === 'keypress' && [ 13, 32 ].includes(e.keyCode) && e.srcElement.id == 'refine-top') {
+    //     this.expandRefine();
+    //   }
+    // };
   },
   methods: {
     openLocation() {
@@ -234,15 +303,28 @@ export default {
     color: white;
   }
 
-  .location-title {
+  .location-row {
     cursor: pointer;
-    padding: 1rem;
-    padding-right: 2rem;
-    margin-bottom: 0;
+    padding: 0px;
+    margin-top: 0px !important;
+    margin-bottom: 0px !important;
+    margin-left: 0px !important;
+    margin-right: 0px !important;
     &:hover{
       background: #2176d2;
       color: white;
     }
+  }
+
+  .location-title {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+  }
+
+  .location-icon {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    text-align: right;
   }
 
   .section-name {
@@ -258,28 +340,32 @@ export default {
     color: white;
   }
 
-  &::after{
-    position: absolute;
-    right: 1rem;
-    top: 1rem;
-    content: '+';
-    font-weight: 300;
-    font-size:1.5rem;
-    z-index: 100;
-    color: $ben-franklin-blue-dark;
-    pointer-events: none;
-  }
+  // &::after{
+  //   position: absolute;
+  //   right: 1rem;
+  //   top: 1rem;
+  //   content: '+';
+  //   font-weight: 300;
+  //   font-size:1.5rem;
+  //   z-index: 100;
+  //   color: $ben-franklin-blue-dark;
+  //   pointer-events: none;
+  // }
   &.open{
-    h2{
+    .location-row {
       color:white;
       background-color: $ben-franklin-blue-dark;
-      // background-color: color(ben-franklin-blue);
-      font-weight: 900;
+      // font-weight: 900;
     }
-    &::after{
-      content: '–';
-      color:white;
+
+    // .location-title {
+    h2 {
+      font-weight: 900 !important;
     }
+    // &::after{
+    //   content: '–';
+    //   color:white;
+    // }
   }
   .location-content{
     overflow: hidden;
@@ -291,5 +377,23 @@ export default {
       overflow: initial;
     }
   }
+
+  .location-content-mobile{
+    overflow: hidden;
+    height:0;
+
+    &.location-open{
+      padding-top: 1rem;
+      padding-bottom: 1rem;
+      padding-right: 0px;
+      padding-left: 0px;
+      height: 100%;
+      overflow: initial;
+    }
+  }
+}
+
+.plus-icon {
+  color: $ben-franklin-blue-dark;
 }
 </style>

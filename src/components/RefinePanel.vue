@@ -4,7 +4,6 @@
     :class="refinePanelClass"
   >
 
-    <!-- <button -->
     <div
       id="refine-top"
       :class="refineTitleClass + ' refine-title'"
@@ -62,25 +61,16 @@
             class="invisible-x-button"
             @click="closeBox(box)"
           >
-          <!-- tabindex="0" -->
-            <font-awesome-icon icon="times"
+            <font-awesome-icon
+              :icon="[timesIconWeight,'times']"
             />
           </button>
         </div>
       </div>
-      <!-- </button> -->
-
-      <!-- <button
-        v-if="refineOpen && isTablet || refineOpen && isDesktop || refineOpen && isWideScreen"
-        class="close-button invisible-clear-button"
-      >
-        <font-awesome-icon icon="times" />
-      </button> -->
 
     </div>
 
     <!-- if using categoryField_value, categoryField_array, or multipleFields options -->
-    <!-- v-if="dataStatus === 'success' && refineType !== 'multipleFieldGroups'" -->
     <div
       v-if="dataStatus === 'success' && ['categoryField_array', 'multipleFields'].includes(refineType)"
       id="field-div"
@@ -89,7 +79,7 @@
       <checkbox
         :options="getRefineSearchList()"
         :numOfColumns="NumRefineColumns"
-        :small="true"
+        :small="!isMobile"
         v-model="selected"
       >
       </checkbox>
@@ -98,15 +88,15 @@
     <div
       v-if="dataStatus === 'success' && refineType == 'categoryField_value'"
       id="field-div"
+      class="refine-holder"
     >
-    <!-- :options="getRefineSearchList()" -->
       <radio
         v-model="selected"
         :options="refineListTranslated"
         text-key="text"
         value-key="value"
         :numOfColumns="NumRefineColumns"
-        :small="true"
+        :small="!isMobile"
       >
       </radio>
     </div>
@@ -134,27 +124,29 @@
             :options="refineListTranslated[ind]['independent']"
             text-key="textLabel"
             value-key="data"
-            :small="true"
+            :small="!isMobile"
             :num-of-columns="calculateColumns(refineList[ind]['independent'])"
           >
             <div
+              :class="isMobile ? 'large-label': 'small-label'"
               slot="label"
             >
               {{ $t(ind + '.category') }}
             </div>
           </radio>
+
           <checkbox
             v-if="refineListTranslated[ind]['dependent']"
             :options="refineListTranslated[ind]['dependent']"
-            :small="true"
+            :small="!isMobile"
             v-model="selectedList[ind]"
             text-key="textLabel"
             value-key="data"
             shrinkToFit="true"
             :num-of-columns="calculateColumns(refineList[ind]['dependent'])"
           >
-          <!-- @click="checkboxClick" -->
             <div
+              :class="isMobile ? 'large-label': 'small-label'"
               slot="label"
             >
               {{ $t(ind + '.category') }}
@@ -176,7 +168,6 @@
         :key="ind"
         class="column"
       >
-      <!-- class="column service-group-holder-x" -->
 
         <div
           id="columns-div-for-checkboxes"
@@ -191,7 +182,6 @@
               @click="expandCheckbox(ind)"
             >
               {{ $t(ind + '.category') }}
-              <!-- {{ ind }} -->
             </div>
             <div
               v-if="refineList[ind].expanded"
@@ -203,26 +193,19 @@
                 :options="refineListTranslated[ind]['independent']"
                 text-key="textLabel"
                 value-key="data"
-                :small="true"
+                :small="!isMobile"
                 :num-of-columns="calculateColumns(refineList[ind]['independent'])"
               >
                 <div
                   slot="label"
                 >
-                  <!-- {{ $t(ind + '.category') }} -->
-                  <!-- <icon-tool-tip
-                    v-if="Object.keys(infoCircles).includes(ind)"
-                    :item="ind"
-                    :circleData="infoCircles[ind]"
-                    :circleType="'click'"
-                  >
-                  </icon-tool-tip> -->
                 </div>
               </radio>
+
               <checkbox
                 v-if="refineListTranslated[ind]['dependent']"
                 :options="refineListTranslated[ind]['dependent']"
-                :small="true"
+                :small="!isMobile"
                 v-model="selectedList[ind]"
                 text-key="textLabel"
                 value-key="data"
@@ -232,14 +215,6 @@
                 <div
                   slot="label"
                 >
-                  <!-- {{ $t(ind + '.category') }} -->
-                  <!-- <icon-tool-tip
-                    v-if="Object.keys(infoCircles).includes(ind)"
-                    :item="ind"
-                    :circleData="infoCircles[ind]"
-                    :circleType="'click'"
-                  >
-                  </icon-tool-tip> -->
                 </div>
               </checkbox>
             </div>
@@ -273,7 +248,7 @@
               text-key="textLabel"
               value-key="data"
               :num-of-columns="1"
-              :small="true"
+              :small="!isMobile"
             >
               <div
                 slot="label"
@@ -288,12 +263,11 @@
                 </icon-tool-tip>
               </div>
             </radio>
-            <!-- <hr> -->
 
             <checkbox
               :options="refineListTranslated[ind]['dependent']"
               :num-of-columns="1"
-              :small="true"
+              :small="!isMobile"
               v-model="selectedList[ind]"
               text-key="textLabel"
               value-key="data"
@@ -318,12 +292,27 @@
       </div>
     </div>
 
+    <!-- v-if="refineOpen && isTablet || refineOpen && isDesktop || refineOpen && isWideScreen" -->
     <button
-      v-if="refineOpen && isTablet || refineOpen && isDesktop || refineOpen && isWideScreen"
+      v-if="refineOpen && retractable  || refineOpen && isMobile"
       class="close-button"
       @click="expandRefine"
     >
-      <font-awesome-icon icon="times" />
+      <font-awesome-icon
+        :icon="[angleIconWeight, 'angle-up']"
+        size="2x"
+      />
+    </button>
+    <button
+      v-if="!refineOpen && retractable  || !refineOpen && isMobile"
+      class="close-button"
+      @click="expandRefine"
+    >
+    <!-- :icon="['fas-angle-down']" -->
+      <font-awesome-icon
+        :icon="[angleIconWeight, 'angle-down']"
+        size="2x"
+      />
     </button>
 
     <div
@@ -331,27 +320,25 @@
       class="columns is-mobile"
     >
       <div
-        class="column is-narrow"
+        class="column is-narrow add-margin-left small-side-padding"
         v-if="!i18nEnabled"
       >
         <button
-          class="button is-primary"
+          class="button is-primary medium-side-padding"
           @click="expandRefine(); scrollToTop();"
         >
-          <font-awesome-icon icon="filter" />
           Apply filters
         </button>
       </div>
 
       <div
-        class="column is-narrow"
+        class="column is-narrow add-margin-left small-side-padding"
         v-if="i18nEnabled"
       >
         <div
-          class="button is-primary"
+          class="button is-primary medium-side-padding"
           @click="expandRefine(); scrollToTop();"
         >
-          <font-awesome-icon icon="filter" />
           <div
             v-html="$t('refinePanel.applyFilters')"
             class="apply-filters-text"
@@ -360,24 +347,24 @@
       </div>
 
       <div
-        class="column is-narrow"
+        class="column is-narrow small-side-padding"
         v-if="!i18nEnabled"
       >
         <button
-          class="button is-primary"
-          @click="closeRefinePanel"
+          class="button is-primary medium-side-padding"
+          @click.prevent="clearAll"
         >
           Clear all
         </button>
       </div>
 
       <div
-        class="column is-narrow"
+        class="column is-narrow small-side-padding"
         v-if="i18nEnabled"
       >
         <button
-          class="button is-primary"
-          @click="closeRefinePanel"
+          class="button is-primary medium-side-padding"
+          @click.prevent="clearAll"
           v-html="$t('refinePanel.clearAll')"
         >
         </button>
@@ -388,6 +375,9 @@
   </div>
 </template>
 <script>
+
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { findIconDefinition } from '@fortawesome/fontawesome-svg-core';
 
 import Vue from 'vue';
 import { mapState } from 'vuex';
@@ -418,6 +408,23 @@ export default {
     };
   },
   computed: {
+    angleIconWeight() {
+      let value = 'fas';
+      let regularExists = findIconDefinition({ prefix: 'far', iconName: 'angle-down' });
+      // console.log('refinePanel.vue computed, library:', library, 'regularExists:', regularExists);
+      if (regularExists) {
+        value = 'far';
+      }
+      return value;
+    },
+    timesIconWeight() {
+      let value = 'fas';
+      let regularExists = findIconDefinition({ prefix: 'far', iconName: 'times' });
+      if (regularExists) {
+        value = 'far';
+      }
+      return value;
+    },
     dropdownRefine() {
       let value;
       if (this.$config.dropdownRefine) {
@@ -505,15 +512,22 @@ export default {
         return mainObject;
       }
     },
+    retractable() {
+      let value = false;
+      if (this.$config.retractableRefine) {
+        value = true;
+      }
+      return value;
+    },
     refineTitleClass() {
       let value;
-      if (this.$config.retractableRefine) {
+      if (this.retractable) {
         if (this.refineOpen) {
           value = 'refine-title-open';
-        }
-        // } else {
-        //   value = 'refine-title';
         // }
+        } else {
+          value = 'retractable-refine-title';
+        }
       // } else {
       //   value = 'refine-title';
       }
@@ -527,7 +541,7 @@ export default {
         } else {
           value = 'refine-panel refine-panel-closed invisible-scrollbar';
         }
-      } else if (this.$config.retractableRefine) {
+      } else if (this.retractable) {
         if (!this.refineOpen) {
           value = 'refine-panel refine-retractable-closed refine-panel-non-mobile-closed invisible-scrollbar';
         } else if (this.refineOpen) {
@@ -644,11 +658,12 @@ export default {
     }
   },
   mounted() {
+    // console.log('refinePanel.vue mounted, library:', library);
     let divButton = document.querySelector('#refine-top');
     divButton.addEventListener('keypress', activate.bind(this));
     function activate(e) {
       console.log('activate, e:', e, 'e.path[0]:', e.path[0]);
-      if (e.type === 'keypress' && e.keyCode == 32 && e.srcElement.id == 'refine-top') {
+      if (e.type === 'keypress' && [ 13, 32 ].includes(e.keyCode) && e.srcElement.id == 'refine-top') {
         this.expandRefine();
       }
     };
@@ -716,8 +731,8 @@ export default {
       e.stopPropagation();
     },
     closeBox(box) {
-      console.log('closeBox is running');
       let section = box.split('_')[0];
+      console.log('closeBox is running, section:', section, 'this.$data.selected:', this.$data.selected, 'this.$data.selected[section]:', this.$data.selected[section]);
       if (this.$data.selectedList[section]) {
         console.log('it\'s there in selectedList');
         let boxIndex = this.$data.selectedList[section].indexOf(box);
@@ -729,6 +744,10 @@ export default {
         const { [test]: removedProperty, ...exceptBoth } = this.$data.selectedList;
         this.$data.selectedList = exceptBoth;
         console.log('2 exceptBoth:', exceptBoth, 'it\'s there in selectedList WITH radio, box:', box, 'this.$data.selectedList["radio_" + section]:', this.$data.selectedList['radio_' + section]);
+      } else if (this.$data.selected.includes(section)) {
+        console.log('its in the array');
+        let boxIndex = this.$data.selected.indexOf(section);
+        this.$data.selected.splice(boxIndex, 1);
       } else {
         console.log('not there in selected list');
       }
@@ -754,14 +773,17 @@ export default {
     },
     getRefineSearchList() {
       console.log('getRefineSearchList is running');
-      const refineData = this.database;
+      let refineData = this.database;
+      if (refineData.records) {
+        refineData = refineData.records;
+      }
 
       let service = '';
       let uniq;
       let selected;
 
       if (!this.$config.refine || this.$config.refine && ['categoryField_array', 'categoryField_value'].includes(this.$config.refine.type)) {
-        // console.log('in getRefineSearchList, refineData:', refineData);
+        console.log('in getRefineSearchList, refineData:', refineData);
         refineData.forEach((item) => {
           if (this.$config.refine) {
             let value = this.$config.refine.value(item);
@@ -939,12 +961,13 @@ export default {
 
 #refine-panel-component {
   background: $ghost-grey;
+  overflow-x: hidden;
 }
 
 #columns-div-for-checkboxes {
 
   .input-checkbox {
-    padding-bottom: 16px;
+    padding-bottom: 8px;
   }
 
   .checkbox-div {
@@ -971,9 +994,11 @@ export default {
   margin-left: 4px;
   margin-right: 4px;
   margin-bottom: 8px;
-  padding: 6px 4px 2px 4px !important;
-  // padding: 0px !important;
+  padding: 4px 4px 2px 4px !important;
   height: 30px;
+  border-width: 2px !important;
+  border-style: solid;
+  border-color: #cfcfcf;
   border-radius: 4px;
   background-color: #cfcfcf;
   box-sizing: border-box;
@@ -981,6 +1006,16 @@ export default {
   color: #333333;
   text-align: left;
   line-height: normal;
+}
+
+.box-value:hover {
+  border-color: #2176d2 !important;
+}
+
+.invisible-x-button {
+  border-style: none;
+  background-color: #cfcfcf;
+  cursor: pointer;
 }
 
 .refine-panel {
@@ -996,13 +1031,13 @@ export default {
 
   @media screen and (min-width: 768px) {
     .service-group-holder-x {
-      margin-bottom: 16px !important;
+      margin-bottom: 24px !important;
       padding-top: 0px;
       padding-bottom: 0px;
       margin-bottom: 10px;
       padding-left: 24px;
       padding-right: 24px;
-      border-right: 2px solid #cfcfcf;
+      border-right: 1px solid #cfcfcf;
       &:first-of-type{
         // padding-left: 0px;
       }
@@ -1012,19 +1047,41 @@ export default {
     }
 
     .refine-title {
-      // height:48px;
-      // width: 100%;
       border-style: solid;
-      // border-width: 2px !important;
       border-color: #f0f0f0;
     }
 
-    .refine-title:hover {
+    .refine-title-open {
+      cursor: pointer;
+    }
+
+    .retractable-refine-title {
+      cursor: pointer;
+    }
+
+    .retractable-refine-title:hover {
       border-color: #2176d2;
     }
 
-    .refine-title-open:hover {
+    .retractable-refine-title-open:hover {
       border-color: #f0f0f0;
+    }
+
+    .close-button {
+      height: 20px;
+      position: absolute;
+      top: 115px;
+      right: 12px;
+      border-style: none;
+      background-color: rgb(240, 240, 240);
+      color: $ben-franklin-blue-dark;
+      cursor: pointer;
+      // padding: 10px;
+    }
+
+    .refine-holder {
+      padding-left: 12px;
+      padding-right: 12px;
     }
   }
 
@@ -1039,12 +1096,13 @@ export default {
       border-style: none;
       background-color: rgb(240, 240, 240);
       height: 20px;
-      font-weight: normal;
+      font-weight: bold;
       font-size: .8rem;
       color: #0f4d90 !important;
       text-decoration: underline;
       padding-left: 8px;
       padding-right: 12px;
+      cursor: pointer;
     }
 
     .clear-button {
@@ -1063,32 +1121,31 @@ export default {
 
   @media screen and (max-width: 767px) {
     height: 3rem;
-    // padding: .5rem;
     position: relative;
-    // z-index: 10000;
+
+    .close-button {
+      height: 20px;
+      position: absolute;
+      top: 10px;
+      right: 5px;
+      border-style: none;
+      background-color: rgb(240, 240, 240);
+      color: $ben-franklin-blue-dark;
+      // padding: 10px;
+    }
 
     .refine-title{
       margin-bottom: 14px !important;
       cursor: pointer;
       height:7vh;
-      // padding: .5rem;
-
-      &::after{
-        content: '+';
-        font-weight: 900;
-        position: absolute;
-        font-size: 1.6rem;
-        right: 5px;
-        top: 10px;
-      }
     }
 
     .service-group-holder-x {
       padding-top: 0px;
       padding-bottom: 10px;
       margin-bottom: 10px;
-      padding-left: 16px;
-      padding-right: 10px;
+      padding-left: 6px !important;
+      padding-right: 6px !important;
       border-bottom: 1px solid black;
       &:first-of-type{
         // padding-left: 0px;
@@ -1098,21 +1155,41 @@ export default {
       }
     }
 
+    .add-margin-left {
+      margin-left: 24px;
+    }
+
+    .small-side-padding {
+      padding-left: 6px !important;
+      padding-right: 6px !important;
+    }
+
+    .medium-side-padding {
+      padding-left: 12px !important;
+      padding-right: 12px !important;
+    }
+
     #multiple-field-groups-div {
-      margin: 5px;
+      // margin: 5px;
+      padding-left: 16px;
+      padding-right: 16px;
     }
   }
 
   &.refine-panel-open {
     overflow-y: scroll;
-    height: calc(100vh - 190px);
+    height: calc(100vh - 230px);
     max-height: 100vh;
-    .refine-title{
-      &::after {
-        content: '-';
-      }
-    }
   }
+}
+
+.small-label {
+  font-size: 16px;
+}
+
+.large-label {
+  font-size: 20px;
+  margin-bottom: 4px;
 }
 
 .multiple-field-groups {
@@ -1166,23 +1243,12 @@ export default {
 }
 
 .slider-icon {
-  // width: 40px;
   padding-top: 10px;
   padding-left: 14px;
   padding-bottom: 10px;
 }
 
-.close-button {
-  position: absolute;
-  top: 110px;
-  right: 0px;
-  border-style: none;
-  background-color: rgb(240, 240, 240);
-  padding: 10px;
-}
-
 .refine-label-text {
-  // background-color: rgba(240, 240, 240, 0);
   box-sizing: border-box;
   font-family: "Montserrat-Bold", "Montserrat Bold", "Montserrat", sans-serif;
   font-weight: 700;
@@ -1204,18 +1270,5 @@ export default {
   // border-color: rgb(33, 118, 210) !important;
   border-color: #2176d2 !important;
 }
-
-.invisible-x-button {
-  border-style: none;
-  background-color: #cfcfcf;
-}
-
-// .invisible-clear-button {
-//   // margin-top: 10px;
-//   border-style: none;
-//   background-color: rgb(240, 240, 240);
-// }
-
-
 
 </style>

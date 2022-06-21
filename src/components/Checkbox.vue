@@ -61,10 +61,21 @@
             :for="`cb-${key}-${id}`"
           >
             {{ !textKey ? option : option[textKey] }}
+            <div
+              v-if="isMobile && option.tooltip"
+              class="mobile-tooltip"
+            >
+              <font-awesome-icon
+                icon="info-circle"
+                class="fa-infoCircle"
+              />
+              {{ option.tooltip }}
+            </div>
           </label>
           <icon-tool-tip
-            v-if="option.tooltip"
+            v-if="!isMobile && option.tooltip"
             :tip="option.tooltip"
+            :circle-type="tooltipType"
           />
             <!-- test
           </icon-tool-tip> -->
@@ -170,6 +181,15 @@ export default {
     };
   },
   computed: {
+    tooltipType() {
+      let value;
+      if (this.isMobile) {
+        value = 'hover';
+      } else {
+        value = 'hover';
+      }
+      return value;
+    },
     inputListeners: function () {
 
       delete this.$listeners['input'];
@@ -210,22 +230,24 @@ export default {
 };
 </script>
 
-<!-- /* <style>
+<style>
 
-.checkbox-margin-top {
+.mobile-tooltip {
+  font-size: .85rem;
+  line-height: 1rem;
+}
+/* .checkbox-margin-top {
   overflow: visible;
-  /* height: */
-  /* padding-top: 20px !important; */
 }
 
 .checkbox-margin-top:before, .checkbox-margin-top:after {
   content: ' ';
   display: block;
-  height: 5px; /* 5px + 5px = 10px */
+  height: 5px;
 }
 
 .ovvis {
   overflow: visible;
-}
+} */
 
-</style> */ -->
+</style>

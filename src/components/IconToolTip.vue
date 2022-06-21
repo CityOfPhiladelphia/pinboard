@@ -1,7 +1,7 @@
 <template>
   <!-- <div> -->
   <div
-    class="inline has-tooltip-right"
+    :class="'inline has-tooltip-hidden-mobile has-tooltip-arrow ' + tooltipPosition"
     :data-tooltip="tip"
   >
     <!-- <button class="button" data-tooltip="Tooltip Text">top tooltip</button> -->
@@ -63,6 +63,17 @@ export default {
       tipClass: 'popup-tip',
       tooltipStyle: {},
     };
+  },
+  computed: {
+    tooltipPosition() {
+      let value;
+      // if (this.isMobile) {
+      //   value = 'has-tooltip-bottom';
+      // } else {
+        value = 'has-tooltip-right';
+      // }
+      return value;
+    }
   },
   methods: {
     infoClick(e) {
