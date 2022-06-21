@@ -29,6 +29,10 @@ Create pull request for changes and merge into `master` branch for travis-ci bui
 
 ## Release Notes
 
+### 1.1.3 - 6/21/2022
+
+* fixes bug with categoryField_value apps and routing
+
 ### 1.1.2 - 6/21/2022
 
 * uses phila-ui for i18n
