@@ -49,23 +49,19 @@
         id="selected-boxes"
         v-if="refineType !== 'categoryField_value' && isTablet || refineType !== 'categoryField_value' && isDesktop || refineType !== 'categoryField_value' && isWideScreen"
         class="selected-boxes columns"
+        @click="clickBox"
       >
-        <div
+        <button
           v-for="box in selected"
           class="box-value column is-narrow"
-          @click="clickBox"
+          @click="closeBox(box)"
         >
-          <!-- {{ $t('visitType.sports') }} -->
           {{ $t(getBoxValue(box)) }}
-          <button
-            class="invisible-x-button"
-            @click="closeBox(box)"
-          >
-            <font-awesome-icon
-              :icon="[timesIconWeight,'times']"
-            />
-          </button>
-        </div>
+          <font-awesome-icon
+            class="fa-x"
+            :icon="[timesIconWeight,'times']"
+          />
+        </button>
       </div>
 
     </div>
@@ -1021,6 +1017,7 @@ export default {
   background-color: #cfcfcf;
   box-sizing: border-box;
   font-family: "ArialMT", "Arial", sans-serif;
+  font-size: 1em;
   color: #333333;
   text-align: left;
   line-height: normal;
@@ -1034,6 +1031,11 @@ export default {
   border-style: none;
   background-color: #cfcfcf;
   cursor: pointer;
+}
+
+.fa-x {
+  padding-left: 4px;
+  padding-right: 4px;
 }
 
 .refine-panel {
