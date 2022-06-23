@@ -1034,8 +1034,8 @@ export default {
 }
 
 .fa-x {
-  padding-left: 4px;
-  padding-right: 4px;
+  margin-left: 4px;
+  margin-right: 4px;
 }
 
 .refine-panel {
