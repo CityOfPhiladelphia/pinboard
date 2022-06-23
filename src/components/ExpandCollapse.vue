@@ -372,7 +372,11 @@ export default {
     height:0;
 
     &.location-open{
-      padding: 1rem;
+      // padding: 1rem;
+      padding-top: 1rem;
+      padding-bottom: 1rem;
+      padding-right: 0px;
+      padding-left: 0px;
       height: 100%;
       overflow: initial;
     }
