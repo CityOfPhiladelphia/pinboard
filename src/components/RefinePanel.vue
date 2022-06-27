@@ -100,7 +100,7 @@
     <!-- if using multipleFieldGroups option and NOT dropdownRefine -->
     <div
       v-if="dataStatus === 'success' && refineType === 'multipleFieldGroups' && !dropdownRefine"
-      v-show="refineOpen"
+      v-show="!retractable && !isMobile || refineOpen"
       id="multiple-field-groups-div"
       class="columns is-multiline multiple-field-groups"
     >
@@ -146,6 +146,23 @@
               slot="label"
             >
               {{ $t(ind + '.category') }}
+              <icon-tool-tip
+                v-if="!isMobile && refineListTranslated[ind]['tooltip']"
+                :tip="refineListTranslated[ind]['tooltip']"
+                :circle-type="click"
+                :position="'bottom'"
+              />
+              <!-- :tip="`<a href='google.com'>test</a>`" -->
+              <div
+                v-if="isMobile && refineListTranslated[ind]['tooltip']"
+                class="mobile-tooltip"
+              >
+                <font-awesome-icon
+                  icon="info-circle"
+                  class="fa-infoCircle"
+                />
+                {{ $t(refineListTranslated[ind]['tooltip']) }}
+              </div>
             </div>
           </checkbox>
         </div>
@@ -380,10 +397,13 @@ import { mapState } from 'vuex';
 import Checkbox from './Checkbox.vue';
 import { Radio } from '@phila/phila-ui';
 
+import IconToolTip from './IconToolTip.vue';
+
 export default {
   components: {
     Checkbox,
     Radio,
+    IconToolTip,
   },
   props: {
     legendTitle: {
@@ -470,19 +490,24 @@ export default {
         for (let category of Object.keys(this.$data.refineList)) {
           mainObject[category] = {};
           for (let dep of Object.keys(this.$data.refineList[category])) {
+            console.log('dep:', dep);
+            if (dep !== 'tooltip') {
 
-            mainObject[category][dep] = [];
-            for (let box of Object.keys(this.$data.refineList[category][dep])) {
+              mainObject[category][dep] = [];
+              for (let box of Object.keys(this.$data.refineList[category][dep])) {
 
-              let data = this.$data.refineList[category][dep][box].unique_key;
-              let textLabel = this.$t(this.$data.refineList[category][dep][box].box_label);
-              let tooltip = this.$t(this.$data.refineList[category][dep][box].tooltip);
-              let keyPairs = {
-                data: data,
-                textLabel: textLabel,
-                tooltip: tooltip,
-              };
-              mainObject[category][dep].push(keyPairs)
+                let data = this.$data.refineList[category][dep][box].unique_key;
+                let textLabel = this.$t(this.$data.refineList[category][dep][box].box_label);
+                let tooltip = this.$t(this.$data.refineList[category][dep][box].tooltip);
+                let keyPairs = {
+                  data: data,
+                  textLabel: textLabel,
+                  tooltip: tooltip,
+                };
+                mainObject[category][dep].push(keyPairs)
+              }
+            } else {
+              mainObject[category][dep] = this.$t(this.$data.refineList[category][dep]);
             }
           }
         }
@@ -692,6 +717,10 @@ export default {
     // };
   },
   methods: {
+    findTooltip(test) {
+      console.log('findTooltip is running, test:', test);
+      return 'test';
+    },
     // checkboxClick(e) {
     //   console.log('refinePanel checkboxClick is running, e:', e);
     // },
@@ -845,21 +874,25 @@ export default {
         uniq = {};
         selected = {};
         for (let group of Object.keys(this.$config.refine.multipleFieldGroups)){
-          // console.log('group:', group);
+          console.log('group:', group);
           uniq[group] = { expanded: false };
           for (let dep of Object.keys(this.$config.refine.multipleFieldGroups[group])){
-            // console.log('middle loop, dep:', dep, 'group:', group);
-            uniq[group][dep] = {};
-            for (let field of Object.keys(this.$config.refine.multipleFieldGroups[group][dep])){
-              uniq[group][dep][field] = {};
-              // console.log('field:', field, 'selected:', selected, 'this.$config.refine.multipleFieldGroups[group][field].unique_key:', this.$config.refine.multipleFieldGroups[group][field].unique_key);
-              if (this.$config.refine.multipleFieldGroups[group][dep][field].i18n_key) {
-                uniq[group][dep][field].box_label = this.$config.refine.multipleFieldGroups[group][dep][field].i18n_key;
-              } else {
-                uniq[group][dep][field].box_label = field;
+            console.log('middle loop, dep:', dep, 'group:', group);
+            if (dep !== 'tooltip') {
+              uniq[group][dep] = {};
+              for (let field of Object.keys(this.$config.refine.multipleFieldGroups[group][dep])){
+                uniq[group][dep][field] = {};
+                // console.log('field:', field, 'selected:', selected, 'this.$config.refine.multipleFieldGroups[group][field].unique_key:', this.$config.refine.multipleFieldGroups[group][field].unique_key);
+                if (this.$config.refine.multipleFieldGroups[group][dep][field].i18n_key) {
+                  uniq[group][dep][field].box_label = this.$config.refine.multipleFieldGroups[group][dep][field].i18n_key;
+                } else {
+                  uniq[group][dep][field].box_label = field;
+                }
+                uniq[group][dep][field].unique_key = this.$config.refine.multipleFieldGroups[group][dep][field].unique_key;
+                uniq[group][dep][field].tooltip = this.$config.refine.multipleFieldGroups[group][dep][field].tooltip;
               }
-              uniq[group][dep][field].unique_key = this.$config.refine.multipleFieldGroups[group][dep][field].unique_key;
-              uniq[group][dep][field].tooltip = this.$config.refine.multipleFieldGroups[group][dep][field].tooltip;
+            } else {
+              uniq[group][dep] = this.$config.refine.multipleFieldGroups[group][dep];
             }
           }
         }

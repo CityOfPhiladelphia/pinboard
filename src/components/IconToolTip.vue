@@ -56,6 +56,10 @@ export default {
       type: String,
       default: 'hover',
     },
+    position: {
+      type: String,
+      default: 'right',
+    }
   },
   data() {
     return {
@@ -70,7 +74,11 @@ export default {
       // if (this.isMobile) {
       //   value = 'has-tooltip-bottom';
       // } else {
+      if (this.position === 'right') {
         value = 'has-tooltip-right';
+      } else if (this.position === 'bottom') {
+        value = 'has-tooltip-bottom';
+      }
       // }
       return value;
     }
