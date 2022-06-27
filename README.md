@@ -29,6 +29,10 @@ Create pull request for changes and merge into `master` branch for travis-ci bui
 
 ## Release Notes
 
+### 1.1.4 - 6/27/2022
+
+* removes old i18n Banner entirely, fixes bug with header placement on phila-ui lang selector
+
 ### 1.1.3 - 6/21/2022
 
 * fixes bug with categoryField_value apps and routing
