@@ -872,7 +872,7 @@ export default {
 
         for (let value of uniqPrep) {
           let theTooltip;
-          if (Object.keys(this.$config.infoCircles).includes(value)) {
+          if (this.$config.infoCircles && Object.keys(this.$config.infoCircles).includes(value)) {
             theTooltip = this.$config.infoCircles[value];
           }
           uniq.push({

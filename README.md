@@ -29,6 +29,10 @@ Create pull request for changes and merge into `master` branch for travis-ci bui
 
 ## Release Notes
 
+### 1.1.8 - 6/28/2022
+
+* fixes bug with app that has no tooltips
+
 ### 1.1.7 - 6/28/2022
 
 * fixes bug with tooltips for larger checkbox label
