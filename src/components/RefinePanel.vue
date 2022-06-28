@@ -77,6 +77,8 @@
         :numOfColumns="NumRefineColumns"
         :small="!isMobile"
         v-model="selected"
+        text-key="textLabel"
+        value-key="data"
       >
       </checkbox>
     </div>
@@ -152,7 +154,6 @@
                 :circle-type="click"
                 :position="'bottom'"
               />
-              <!-- :tip="`<a href='google.com'>test</a>`" -->
               <div
                 v-if="isMobile && refineListTranslated[ind]['tooltip']"
                 class="mobile-tooltip"
@@ -161,7 +162,7 @@
                   icon="info-circle"
                   class="fa-infoCircle"
                 />
-                {{ $t(refineListTranslated[ind]['tooltip']) }}
+                {{ $t(refineListTranslated[ind]['tooltip']['tip']) }}
               </div>
             </div>
           </checkbox>
@@ -490,7 +491,7 @@ export default {
         for (let category of Object.keys(this.$data.refineList)) {
           mainObject[category] = {};
           for (let dep of Object.keys(this.$data.refineList[category])) {
-            console.log('dep:', dep);
+            // console.log('dep:', dep);
             if (dep !== 'tooltip') {
 
               mainObject[category][dep] = [];
@@ -498,7 +499,13 @@ export default {
 
                 let data = this.$data.refineList[category][dep][box].unique_key;
                 let textLabel = this.$t(this.$data.refineList[category][dep][box].box_label);
-                let tooltip = this.$t(this.$data.refineList[category][dep][box].tooltip);
+                let tooltip;
+                if (this.$data.refineList[category][dep][box].tooltip) {
+                  tooltip = {};
+                  tooltip.tip = this.$t(this.$data.refineList[category][dep][box].tooltip.tip);
+                  tooltip.multiline = this.$data.refineList[category][dep][box].tooltip.multiline
+                  // console.log('tooltip:', tooltip, 'this.$data.refineList[category][dep][box].tooltip.tip:', this.$data.refineList[category][dep][box].tooltip.tip);
+                }
                 let keyPairs = {
                   data: data,
                   textLabel: textLabel,
@@ -522,9 +529,14 @@ export default {
               // console.log('in inner loop, box:', box, 'dep:', dep);
               let data = this.$data.refineList[category][dep][box].unique_key;
               let textLabel = this.$t(this.$data.refineList[category][dep][box].box_label);
+              let tooltip;
+              if (this.$data.refineList[category][dep][box].tooltip) {
+                tooltip = this.$t(this.$data.refineList[category][dep][box].tooltip);
+              }
               let keyPairs = {
                 data: data,
                 textLabel: textLabel,
+                tooltip: tooltip,
               };
               mainObject[category][dep].push(keyPairs)
             }
@@ -637,7 +649,7 @@ export default {
       this.getRefineSearchList();
     },
     selected(nextSelected, oldSelected) {
-      console.log('watch selected is firing, nextSelected:', nextSelected, 'oldSelected:', oldSelected);
+      // console.log('watch selected is firing, nextSelected:', nextSelected, 'oldSelected:', oldSelected);
       let newSelection;
       if (this.refineType !== 'categoryField_value') {
         newSelection = nextSelected.filter(x => !oldSelected.includes(x));
@@ -656,7 +668,7 @@ export default {
           });
         }
       }
-      console.log('watch selected is firing, nextSelected:', nextSelected, 'oldSelected:', oldSelected, 'newSelection:', newSelection);
+      // console.log('watch selected is firing, nextSelected:', nextSelected, 'oldSelected:', oldSelected, 'newSelection:', newSelection);
       // if (newSelection.length) {
       //   this.$gtag.event('refine-checkbox-click', {
       //     'event_category': this.$store.state.gtag.category,
@@ -822,7 +834,8 @@ export default {
       }
 
       let service = '';
-      let uniq;
+      let uniq = [];
+      let uniqPrep;
       let selected;
 
       if (!this.$config.refine || this.$config.refine && ['categoryField_array', 'categoryField_value'].includes(this.$config.refine.type)) {
@@ -845,17 +858,31 @@ export default {
         // console.log('RefinePanel.vue, uniqArray:', uniqArray);
 
         // clean up any dangling , or ;
-        uniq = uniqArray.filter(a => a.length > 2);
-        uniq.filter(Boolean); // remove empties
-        let undef = uniq.indexOf('undefined');
+        uniqPrep = uniqArray.filter(a => a.length > 2);
+        uniqPrep.filter(Boolean); // remove empties
+        let undef = uniqPrep.indexOf('undefined');
         if (undef > -1) {
-          uniq.splice(undef, 1);
+          uniqPrep.splice(undef, 1);
         }
-        let nullVal = uniq.indexOf('null');
+        let nullVal = uniqPrep.indexOf('null');
         if (nullVal > -1) {
-          uniq.splice(nullVal, 1);
+          uniqPrep.splice(nullVal, 1);
         }
-        uniq.sort();
+        uniqPrep.sort();
+
+        for (let value of uniqPrep) {
+          let theTooltip;
+          if (Object.keys(this.$config.infoCircles).includes(value)) {
+            theTooltip = this.$config.infoCircles[value];
+          }
+          uniq.push({
+            data: value,
+            textLabel: value,
+            tooltip: theTooltip,
+          });
+        }
+
+        console.log('uniq:', uniq);
 
         selected = uniqArray.filter(a => a.length > 2);
         selected.filter(Boolean); // remove empties
@@ -874,10 +901,10 @@ export default {
         uniq = {};
         selected = {};
         for (let group of Object.keys(this.$config.refine.multipleFieldGroups)){
-          console.log('group:', group);
+          // console.log('group:', group);
           uniq[group] = { expanded: false };
           for (let dep of Object.keys(this.$config.refine.multipleFieldGroups[group])){
-            console.log('middle loop, dep:', dep, 'group:', group);
+            // console.log('middle loop, dep:', dep, 'group:', group);
             if (dep !== 'tooltip') {
               uniq[group][dep] = {};
               for (let field of Object.keys(this.$config.refine.multipleFieldGroups[group][dep])){
