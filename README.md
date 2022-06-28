@@ -29,6 +29,10 @@ Create pull request for changes and merge into `master` branch for travis-ci bui
 
 ## Release Notes
 
+### 1.1.7 - 6/28/2022
+
+* fixes bug with tooltips for larger checkbox label
+
 ### 1.1.6 - 6/28/2022
 
 * fixes tooltips for multiline option

@@ -162,7 +162,7 @@
                   icon="info-circle"
                   class="fa-infoCircle"
                 />
-                {{ $t(refineListTranslated[ind]['tooltip']['tip']) }}
+                {{ $t(refineListTranslated[ind]['tooltip']) }}
               </div>
             </div>
           </checkbox>
@@ -514,7 +514,7 @@ export default {
                 mainObject[category][dep].push(keyPairs)
               }
             } else {
-              mainObject[category][dep] = this.$t(this.$data.refineList[category][dep]);
+              mainObject[category][dep] = this.$t(this.$data.refineList[category][dep].tip);
             }
           }
         }
