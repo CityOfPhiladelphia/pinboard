@@ -315,7 +315,8 @@ export default {
           // if (this.$config.circleMarkers.selectedColor) {
           //   color = this.$config.circleMarkers.selectedColor;
           // } else {
-          color = '#2176d2';
+          color = '#0f4d90';
+          // color = '#2176d2';
           // color = this.$config.circleMarkers.circleColors[row.category_type];
           // color = 'green';
           // }
