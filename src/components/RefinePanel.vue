@@ -331,7 +331,7 @@
 
     <div
       v-if="isMobile"
-      class="columns is-mobile"
+      class="columns is-mobile mobile-clear-all"
     >
       <div
         class="column is-narrow add-margin-left small-side-padding"
@@ -1222,8 +1222,8 @@ export default {
 
     .service-group-holder-x {
       padding-top: 0px;
-      padding-bottom: 10px;
-      margin-bottom: 10px;
+      padding-bottom: 12px;
+      margin-bottom: 12px;
       padding-left: 6px !important;
       padding-right: 6px !important;
       border-bottom: 1px solid black;
@@ -1265,6 +1265,10 @@ export default {
     // height: calc(100vh - 230px);
     // max-height: 100vh;
   }
+}
+
+.mobile-clear-all {
+  padding-bottom: 1.5rem;
 }
 
 .small-label {
