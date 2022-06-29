@@ -1257,9 +1257,13 @@ export default {
   }
 
   &.refine-panel-open {
-    overflow-y: scroll;
-    height: calc(100vh - 230px);
-    max-height: 100vh;
+    overflow-y: hidden;
+    // overflow-y: scroll;
+    height: 100%;
+    // height: calc(100vh - 400px);
+    // height: calc(100vh);
+    // height: calc(100vh - 230px);
+    // max-height: 100vh;
   }
 }
 
