@@ -330,7 +330,7 @@
     </button>
 
     <div
-      v-if="isMobile"
+      v-if="isMobile && refineOpen"
       class="columns is-mobile mobile-clear-all"
     >
       <div

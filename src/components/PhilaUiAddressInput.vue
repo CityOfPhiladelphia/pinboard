@@ -370,6 +370,7 @@ export default {
   padding-bottom: 20px;
   min-width: 55px !important;
   margin-top: 8px;
+  margin-right: 8px;
   border-right-style: none;
   border-left-style: none;
   border-top-style: solid;
@@ -382,6 +383,13 @@ export default {
 
 .pvm-search-control-x-button:hover {
   color: rgb(68, 68, 68);
+}
+
+.pvm-search-control-x-button:focus {
+  border-right-style: solid;
+  border-left-style: solid;
+  // margin-top: 9px;
+  // height: 54px;
 }
 
 .pvm-search-control-button-non-mobile {
