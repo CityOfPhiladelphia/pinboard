@@ -299,8 +299,14 @@ export default {
   border-bottom: 1px solid black;
   height:100%;
 
-  &:hover::after {
-    color: white;
+  // &:hover::after {
+  //   color: white;
+  // }
+
+  &:hover {
+    .plus-icon {
+      color: white;
+    }
   }
 
   .location-row {
@@ -372,7 +378,11 @@ export default {
     height:0;
 
     &.location-open{
-      padding: 1rem;
+      // padding: 1rem;
+      padding-top: 1rem;
+      padding-bottom: 1rem;
+      padding-right: 0px;
+      padding-left: 0px;
       height: 100%;
       overflow: initial;
     }
@@ -396,4 +406,5 @@ export default {
 .plus-icon {
   color: $ben-franklin-blue-dark;
 }
+
 </style>

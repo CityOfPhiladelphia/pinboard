@@ -53,19 +53,12 @@
 
         <lang-selector
           slot="lang-selector-nav"
-          v-show="i18nEnabled && isMobile || i18nEnabled && !i18nBanner"
+          v-if="i18nEnabled"
           :languages="i18nLanguages"
         >
         </lang-selector>
 
       </app-header>
-    </div>
-
-    <div
-      v-if="i18nEnabled && i18nBanner"
-      class="i18n-banner-holder"
-    >
-      <i18n-banner />
     </div>
 
     <div
@@ -160,7 +153,6 @@ import { point } from '@turf/helpers';
 import buffer from '@turf/buffer';
 import booleanPointInPolygon from '@turf/boolean-point-in-polygon';
 import AlertBanner from './components/AlertBanner.vue';
-import i18nBanner from './components/i18nBanner.vue';
 import PhilaModal from './components/PhilaModal.vue';
 import RefinePanel from './components/RefinePanel.vue';
 import LocationsPanel from './components/LocationsPanel.vue';
@@ -188,7 +180,6 @@ export default {
     Checkbox,
     LangSelector,
     AlertBanner,
-    i18nBanner,
     PhilaModal,
     RefinePanel,
     LocationsPanel,
@@ -381,13 +372,6 @@ export default {
     },
     i18nEnabled() {
       if (this.$config.i18n && this.$config.i18n.enabled) {
-        return true;
-      } else {
-        return false;
-      }
-    },
-    i18nBanner() {
-      if (this.$config.i18n.header === 'i18nBanner') {
         return true;
       } else {
         return false;
@@ -1150,10 +1134,6 @@ html, body {
 }
 
 @media screen and (max-width: 767px) {
-  .i18n-banner-holder {
-    display: none;
-  }
-
   .title-col {
     padding-top: 2rem !important;
     padding-bottom: 2rem !important;

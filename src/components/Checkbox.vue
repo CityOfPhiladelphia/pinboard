@@ -69,16 +69,16 @@
                 icon="info-circle"
                 class="fa-infoCircle"
               />
-              {{ option.tooltip }}
+              {{ option.tooltip.tip }}
             </div>
           </label>
           <icon-tool-tip
             v-if="!isMobile && option.tooltip"
-            :tip="option.tooltip"
+            :tip="option.tooltip.tip"
             :circle-type="tooltipType"
+            :multiline="option.tooltip.multiline"
           />
-            <!-- test
-          </icon-tool-tip> -->
+          <!-- :position="'bottom'" -->
 
         </div>
       </div>

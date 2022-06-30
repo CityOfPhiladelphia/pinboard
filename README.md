@@ -29,6 +29,26 @@ Create pull request for changes and merge into `master` branch for travis-ci bui
 
 ## Release Notes
 
+### 1.1.8 - 6/28/2022
+
+* fixes bug with app that has no tooltips
+
+### 1.1.7 - 6/28/2022
+
+* fixes bug with tooltips for larger checkbox label
+
+### 1.1.6 - 6/28/2022
+
+* fixes tooltips for multiline option
+
+### 1.1.5 - 6/27/2022
+
+* makes tooltips in checkbox category label work
+
+### 1.1.4 - 6/27/2022
+
+* removes old i18n Banner entirely, fixes bug with header placement on phila-ui lang selector
+
 ### 1.1.3 - 6/21/2022
 
 * fixes bug with categoryField_value apps and routing

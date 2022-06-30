@@ -1,7 +1,7 @@
 <template>
   <!-- <div> -->
   <div
-    :class="'inline has-tooltip-hidden-mobile has-tooltip-arrow ' + tooltipPosition"
+    :class="'inline has-tooltip-hidden-mobile has-tooltip-arrow ' + tooltipPosition + ' ' + tooltipMultiline"
     :data-tooltip="tip"
   >
     <!-- <button class="button" data-tooltip="Tooltip Text">top tooltip</button> -->
@@ -56,6 +56,14 @@ export default {
       type: String,
       default: 'hover',
     },
+    position: {
+      type: String,
+      default: 'right',
+    },
+    multiline: {
+      type: Boolean,
+      default: false,
+    },
   },
   data() {
     return {
@@ -70,8 +78,19 @@ export default {
       // if (this.isMobile) {
       //   value = 'has-tooltip-bottom';
       // } else {
+      if (this.position === 'right') {
         value = 'has-tooltip-right';
+      } else if (this.position === 'bottom') {
+        value = 'has-tooltip-bottom';
+      }
       // }
+      return value;
+    },
+    tooltipMultiline() {
+      let value;
+      if (this.multiline) {
+        value = 'has-tooltip-multiline';
+      }
       return value;
     }
   },
