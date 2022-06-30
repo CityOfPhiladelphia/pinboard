@@ -29,6 +29,10 @@ Create pull request for changes and merge into `master` branch for travis-ci bui
 
 ## Release Notes
 
+### 1.1.10 - 6/30/2022
+
+* fixes refine panel issues for categoryField_value app like Food Finder
+
 ### 1.1.9 - 6/30/2022
 
 * cleans up major mobile ux issues

@@ -47,16 +47,30 @@
 
       <div
         id="selected-boxes"
-        v-if="refineType !== 'categoryField_value' && isTablet || refineType !== 'categoryField_value' && isDesktop || refineType !== 'categoryField_value' && isWideScreen"
+        v-if="isTablet || isDesktop || isWideScreen"
         class="selected-boxes columns"
         @click="clickBox"
       >
+      <!-- v-if="refineType !== 'categoryField_value' && isTablet || refineType !== 'categoryField_value' && isDesktop || refineType !== 'categoryField_value' && isWideScreen" -->
         <button
+          v-if="refineType !== 'categoryField_value'"
           v-for="box in selected"
           class="box-value column is-narrow"
           @click="closeBox(box)"
         >
           {{ $t(getBoxValue(box)) }}
+          <font-awesome-icon
+            class="fa-x"
+            :icon="[timesIconWeight,'times']"
+          />
+        </button>
+        <button
+          v-if="refineType == 'categoryField_value' && selected.length"
+          class="box-value column is-narrow"
+          @click="closeBox(selected)"
+        >
+        <!-- v-for="box in selected" -->
+          {{ selected }}
           <font-awesome-icon
             class="fa-x"
             :icon="[timesIconWeight,'times']"
@@ -478,7 +492,17 @@ export default {
     refineListTranslated() {
       let mainObject = {};
       let mainArray = [];
-      if (this.refineType !== 'multipleFieldGroups' && this.refineType !== 'multipleDependentFieldGroups') {
+      if (this.refineType === 'categoryField_value') {
+        // mainArray = this.$data.refineList;
+        for (let category of this.$data.refineList) {
+          mainArray.push({
+            value: category.data,
+            text: this.$t(category.data),
+          });
+          console.log('refineListTranslated computed, category:', category, 'mainArray:', mainArray);
+        }
+        return mainArray;
+      } else if (this.refineType !== 'multipleFieldGroups' && this.refineType !== 'multipleDependentFieldGroups') {
         for (let category of this.$data.refineList) {
           mainArray.push({
             value: category,
@@ -786,6 +810,10 @@ export default {
       e.stopPropagation();
     },
     closeBox(box) {
+      if (this.refineType === 'categoryField_value') {
+        this.$data.selectedList = [];
+        return;
+      }
       let section = box.split('_')[0];
       console.log('closeBox is running, section:', section, 'this.$data.selected:', this.$data.selected, 'this.$data.selected[section]:', this.$data.selected[section]);
       if (this.$data.selectedList[section]) {
@@ -882,11 +910,11 @@ export default {
           });
         }
 
-        console.log('uniq:', uniq);
 
         selected = uniqArray.filter(a => a.length > 2);
         selected.filter(Boolean); // remove empties
         selected.sort();
+        console.log('uniq:', uniq, 'uniqPrep:', uniqPrep, 'uniqArray:', uniqArray, 'selected:', selected);
 
       } else if (this.$config.refine && this.$config.refine.type === 'multipleFields') {
         uniq = Object.keys(this.$config.refine.multipleFields);
