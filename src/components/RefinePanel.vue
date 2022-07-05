@@ -1068,8 +1068,9 @@ export default {
 
 #columns-div-for-checkboxes {
 
-  .input-checkbox {
-    padding-bottom: 8px;
+  .input-checkbox, .input-radio {
+    padding-bottom: 24px;
+    padding-top: 24px;
   }
 
   .checkbox-div {
