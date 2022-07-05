@@ -29,6 +29,10 @@ Create pull request for changes and merge into `master` branch for travis-ci bui
 
 ## Release Notes
 
+### 1.1.1 - 7/5/2022
+
+* fixes padding in mobile refine panel
+
 ### 1.1.10 - 6/30/2022
 
 * fixes refine panel issues for categoryField_value app like Food Finder
