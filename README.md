@@ -29,6 +29,10 @@ Create pull request for changes and merge into `master` branch for travis-ci bui
 
 ## Release Notes
 
+### 1.1.2 - 7/6/2022
+
+* fixes padding in non-mobile refine panel
+
 ### 1.1.1 - 7/5/2022
 
 * fixes padding in mobile refine panel

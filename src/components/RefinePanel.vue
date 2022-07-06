@@ -1069,8 +1069,8 @@ export default {
 #columns-div-for-checkboxes {
 
   .input-checkbox, .input-radio {
-    padding-bottom: 24px;
-    padding-top: 24px;
+    padding-bottom: 8px;
+    // padding-top: 24px;
   }
 
   .checkbox-div {
@@ -1231,6 +1231,14 @@ export default {
   @media screen and (max-width: 767px) {
     height: 3rem;
     position: relative;
+
+    #columns-div-for-checkboxes {
+
+      .input-checkbox, .input-radio {
+        padding-bottom: 24px;
+        padding-top: 24px;
+      }
+    }
 
     .close-button {
       height: 20px;
