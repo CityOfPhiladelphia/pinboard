@@ -224,15 +224,17 @@ export default {
       const valOrGetterType = typeof valOrGetter;
       let val;
 
+      // console.log('LocationsPanel.vue, currentData, valOrGetter:', valOrGetter, 'valOrGetterType:', valOrGetterType);
+
       if (valOrGetterType === 'function') {
         const getter = valOrGetter;
         locations.sort(function(a, b) {
           let valueA = getter(a, transforms);
           let valueB = getter(b, transforms);
-          // console.log('valueA:', valueA, 'valueB:', valueB);
+          // console.log('valueA:', valueA, 'valueB:', valueB, 'value:', value);
           let value;
           if (valueA && valueB) {
-            value = valueA.localeCompare(valueB);
+            value = valueA.localeCompare(valueB, undefined, { numeric: true });
           }
           // return valueA.localeCompare(valueB);
           return value;
