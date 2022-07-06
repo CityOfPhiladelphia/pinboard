@@ -31,7 +31,7 @@ Create pull request for changes and merge into `master` branch for travis-ci bui
 
 ### 1.1.3 - 7/6/2022
 
-* fixes sorting of locations alphabetically and numerically"
+* fixes sorting of locations alphabetically and numerically
 
 ### 1.1.2 - 7/6/2022
 
