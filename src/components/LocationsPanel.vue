@@ -33,8 +33,9 @@
       </div>
       <div
         v-for="item in currentData"
-        :key="item.cartodb_id"
+        :key="item._featureId"
       >
+      <!-- :key="item.cartodb_id" -->
         <expand-collapse
           :item="item"
           :is-map-visible="isMapVisible"

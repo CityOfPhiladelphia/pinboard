@@ -29,6 +29,10 @@ Create pull request for changes and merge into `master` branch for travis-ci bui
 
 ## Release Notes
 
+### 1.1.16 - 7/7/2022
+
+* fixes bug where wrong expandCollapse stays open when you search an address
+
 ### 1.1.15 - 7/7/2022
 
 * allows address marker color to be settable
