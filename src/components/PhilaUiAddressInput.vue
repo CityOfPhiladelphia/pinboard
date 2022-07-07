@@ -190,7 +190,7 @@ export default {
         };
       } else if (this.isTablet && this.addressEntered) {
         value = {
-          'width': '305px',
+          'width': '297px',
         };
       } else if (this.isTablet) {
         value = {
@@ -198,7 +198,7 @@ export default {
         };
       } else if (this.addressEntered) {
         value = {
-          'width': '423px',
+          'width': '415px',
         };
       } else {
         value = {

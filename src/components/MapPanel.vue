@@ -441,7 +441,8 @@ export default {
       if (geocodeGeom) {
         const latlng = [ ...geocodeGeom.coordinates ].reverse();
         const key = this.geocodeResult.properties.street_address;
-        const color = '#2176d2';
+        const color = '#9400c6';
+        // const color = '#2176d2';
         const markerType = 'geocode';
         const icon = {
           prefix: 'fas',
