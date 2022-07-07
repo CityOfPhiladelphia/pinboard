@@ -29,19 +29,23 @@ Create pull request for changes and merge into `master` branch for travis-ci bui
 
 ## Release Notes
 
-### 1.1.4 - 7/7/2022
+### 1.1.15 - 7/7/2022
+
+* allows address marker color to be settable
+
+### 1.1.14 - 7/7/2022
 
 * changes color of address marker to purple, fixes length of address search bar issues
 
-### 1.1.3 - 7/6/2022
+### 1.1.13 - 7/6/2022
 
 * fixes sorting of locations alphabetically and numerically
 
-### 1.1.2 - 7/6/2022
+### 1.1.12 - 7/6/2022
 
 * fixes padding in non-mobile refine panel
 
-### 1.1.1 - 7/5/2022
+### 1.1.11 - 7/5/2022
 
 * fixes padding in mobile refine panel
 
