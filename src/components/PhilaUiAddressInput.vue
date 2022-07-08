@@ -314,7 +314,7 @@ export default {
 }
 
 .over-map {
-  z-index: 1000;
+  z-index: 998;
 }
 
 /* Form */

@@ -29,6 +29,10 @@ Create pull request for changes and merge into `master` branch for travis-ci bui
 
 ## Release Notes
 
+### 1.1.17 - 7/8/2022
+
+* fixes z-index of address search bar to be beneath the language dropdown
+
 ### 1.1.16 - 7/7/2022
 
 * fixes bug where wrong expandCollapse stays open when you search an address
