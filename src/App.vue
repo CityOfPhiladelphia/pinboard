@@ -511,18 +511,17 @@ export default {
   },
   watch: {
     i18nLocale(nexti18nLocale) {
-      console.log('watch i18nLocale, nexti18nLocale:', nexti18nLocale);
+      // console.log('watch i18nLocale, nexti18nLocale:', nexti18nLocale);
       let startQuery = { ...this.$route.query };
 
-      delete startQuery['language'];
+      delete startQuery['lang'];
 
       if (nexti18nLocale !== 'en-US') {
-        let query = { 'language': nexti18nLocale };
+        let query = { 'lang': nexti18nLocale };
         this.$router.push({ query: { ...startQuery, ...query }});
       } else {
         this.$router.push({ query: { ...startQuery }});
       }
-      // this.$controller.setRouteByLanguage(nexti18nLocale);
     },
     sourcesWatched(nextSourcesWatched) {
       console.log('watch sourcesWatched, nextSourcesWatched:', nextSourcesWatched);
@@ -566,9 +565,9 @@ export default {
       }
     });
 
-    if (this.$route.query.language) {
-      console.log('App.vue mounted language:', this.$route.query.language);
-      this.$i18n.locale = this.$route.query.language;
+    if (this.$route.query.lang) {
+      // console.log('App.vue mounted language:', this.$route.query.lang);
+      this.$i18n.locale = this.$route.query.lang;
     }
 
     if (this.$config.searchBar) {
