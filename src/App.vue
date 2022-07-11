@@ -510,6 +510,19 @@ export default {
     },
   },
   watch: {
+    i18nLocale(nexti18nLocale) {
+      // console.log('watch i18nLocale, nexti18nLocale:', nexti18nLocale);
+      let startQuery = { ...this.$route.query };
+
+      delete startQuery['lang'];
+
+      if (nexti18nLocale !== 'en-US') {
+        let query = { 'lang': nexti18nLocale };
+        this.$router.push({ query: { ...startQuery, ...query }});
+      } else {
+        this.$router.push({ query: { ...startQuery }});
+      }
+    },
     sourcesWatched(nextSourcesWatched) {
       console.log('watch sourcesWatched, nextSourcesWatched:', nextSourcesWatched);
       if (!nextSourcesWatched.includes(null)) {
@@ -551,6 +564,11 @@ export default {
         this.searchString = this.$route.query[item];
       }
     });
+
+    if (this.$route.query.lang) {
+      // console.log('App.vue mounted language:', this.$route.query.lang);
+      this.$i18n.locale = this.$route.query.lang;
+    }
 
     if (this.$config.searchBar) {
       let routeQuery = Object.keys(this.$route.query);
