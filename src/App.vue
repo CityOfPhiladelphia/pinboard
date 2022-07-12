@@ -323,7 +323,8 @@ export default {
     },
     i18nLanguages() {
       let values = [];
-      if (this.$config.i18n.languagues) {
+      if (this.$config.i18n.languages) {
+        console.log('in if, this.$config.i18n.languages');
         values = this.$config.i18n.languages;
       } else {
         for (let key of Object.keys(this.$i18n.messages)) {
@@ -334,6 +335,7 @@ export default {
           values.push(value);
         }
       }
+      console.log('end of i18nLanguages, values:', values);
       return values;
     },
     feedbackLink() {

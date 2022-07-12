@@ -29,7 +29,11 @@ Create pull request for changes and merge into `master` branch for travis-ci bui
 
 ## Release Notes
 
-### 1.1.18 - 7/8/2022
+### 1.1.19 - 7/12/2022
+
+* fixes bug with finding languages for i18n
+
+### 1.1.18 - 7/11/2022
 
 * allows routing by language selected
 

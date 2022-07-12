@@ -134,7 +134,6 @@ export default {
     searchBarType() {
       let value;
       let searchTypes = this.$config.searchBar.searchTypes;
-      console.log('searchBarType computed, searchTypes:', searchTypes);
       if (searchTypes.length == 1 && searchTypes.includes('address')) {
         value = 'address';
       } else if (searchTypes.length == 1 && searchTypes.includes('keyword')) {
@@ -142,10 +141,12 @@ export default {
       } else {
         value = 'all';
       }
+      console.log('searchBarType computed, searchTypes:', searchTypes, 'value:', value);
       return value;
     },
     placeholderComputed() {
       if (this.i18nEnabled) {
+        console.log('placeholderComputed and i18nEnabled, this.searchBarType:', this.searchBarType, 'this.$i18n.messages[this.i18nLocale]:', this.$i18n.messages[this.i18nLocale]);
         return this.$i18n.messages[this.i18nLocale].app.searchPlaceholders[this.searchBarType];
       } else if (this.$config.searchBar && this.$config.searchBar.labelText) {
         if (typeof this.$config.searchBar.labelText === 'string') {
