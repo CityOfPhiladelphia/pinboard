@@ -960,7 +960,7 @@ export default {
         }
 
         let booleanKeywords = true;
-        // console.log('row:', row, 'this.selectedKeywords:', this.selectedKeywords, 'this.selectedKeywords.length:', this.selectedKeywords.length);
+        console.log('row:', row, 'this.$config.tags', this.$config.tags, 'this.selectedKeywords:', this.selectedKeywords, 'this.selectedKeywords.length:', this.selectedKeywords.length);
         if (this.selectedKeywords.length > 0) {
           booleanKeywords = false;
           let description = [];
@@ -980,11 +980,12 @@ export default {
               if (tag.type == 'boolean' && row.attributes[tag.field] == 'Yes') {
                 description.push(tag.value);
               } else if (tag.type == 'value' && row.attributes[tag.field] !== null && row.attributes[tag.field] != ' ') {
+                console.log('in else if, row.attributes[tag.field]:', row.attributes[tag.field]);
                 description.push(row.attributes[tag.field].charAt(0) + row.attributes[tag.field].substring(1).toLowerCase());
               }
             }
           }
-          // console.log('still going, this.selectedKeywords:', this.selectedKeywords, 'row.tags:', row.tags, 'description:', description);
+          console.log('still going, this.selectedKeywords[0]:', this.selectedKeywords[0], 'row.tags:', row.tags, 'description:', description);
 
           const options = {
     			  // isCaseSensitive: false,
@@ -1008,13 +1009,13 @@ export default {
 
           const fuse = new Fuse(description, options);
     			const result = fuse.search(this.selectedKeywords[0]);
-          // console.log('this.selectedKeywords[0]:', this.selectedKeywords[0], 'result:', result);
+          console.log('this.selectedKeywords[0]:', this.selectedKeywords[0], 'result:', result);
           if (result.length > 0) {
             booleanKeywords = true;
           }
         }
 
-        // console.log('booleanServices:', booleanServices, 'booleanBuffer:', booleanBuffer, 'booleanKeywords:', booleanKeywords);
+        console.log('booleanServices:', booleanServices, 'booleanBuffer:', booleanBuffer, 'booleanKeywords:', booleanKeywords);
 
         if (booleanServices && booleanBuffer && booleanKeywords) {
           filteredRows.push(row);
