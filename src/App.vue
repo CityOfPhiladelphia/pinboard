@@ -803,8 +803,23 @@ export default {
                     let val = getter(row, dependentServices);
                     groupBooleanConditions.push(val);
                   }
+                  if (service.split('_', 1)[0] === group && this.$config.refine.multipleFieldGroups[group]['independent']) {
+                    // console.log('group:', group, 'this.$config.refine.multipleFieldGroups[group]["dependent"]:', this.$config.refine.multipleFieldGroups[group]['dependent']);
+                    let independentGroups = this.$config.refine.multipleFieldGroups[group]['independent'][service.split('_')[1]]['independentGroups'] || [];
+                    // console.log('dependentGroup:', dependentGroup, 'service.split("_", 1)[0]:', service.split('_', 1)[0], 'service.split("_")[1]:', service.split('_')[1], 'group', group, 'this.$config.refine.multipleFieldsGroups[group]', this.$config.refine.multipleFieldsGroups[group], 'this.$config.refine.multipleFieldsGroups[group][service.split("_")[1]]:', this.$config.refine.multipleFieldsGroups[group][service.split('_')[1]]);
+                    let getter = this.$config.refine.multipleFieldGroups[group]['independent'][service.split('_')[1]]['value'];
+                    let independentServices = [];
+                    for (let service of selectedServices) {
+                      if (independentGroups.length && independentGroups.includes(service.split('_')[0])) {
+                        independentServices.push(service.split('_')[1]);
+                      }
+                    }
+                    // console.log('getter:', getter, 'dependentGroups:', dependentGroups, 'selectedServices:', selectedServices, 'dependentServices:', dependentServices);
+                    let val = getter(row, independentServices);
+                    groupBooleanConditions.push(val);
+                  }
                 }
-                // console.log('group:', group, 'groupBooleanConditions:', groupBooleanConditions);
+                console.log('group:', group, 'groupBooleanConditions:', groupBooleanConditions);
                 if (groupBooleanConditions.includes(true)) {
                   booleanConditions.push(true);
                 } else if (groupBooleanConditions.length) {
