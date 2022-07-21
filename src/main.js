@@ -31,7 +31,7 @@ import notifications from './components/notifications';
 // if we definitely need one, we can move it outside the project
 // and do an axios call to get it
 // import baseConfig from './config';
-import i18n from './i18n';
+import i18n from './i18n/i18n';
 console.log('i18n:', i18n);
 
 
