@@ -29,6 +29,10 @@ Create pull request for changes and merge into `master` branch for travis-ci bui
 
 ## Release Notes
 
+### 1.1.21 - 7/21/2022
+
+* splits i18n file into separate language files
+
 ### 1.1.20 - 7/21/2022
 
 * opens refine panel when view list is clicked if not mobile
