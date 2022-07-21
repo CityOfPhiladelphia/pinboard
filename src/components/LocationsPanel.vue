@@ -285,6 +285,9 @@ export default {
   methods: {
     clickedViewList() {
       // console.log('clickedViewList is running');
+      if (!this.isMobile) {
+        this.$store.commit('setRefineOpen', true);
+      }
       this.$store.commit('setShouldShowGreeting', false);
       this.$gtag.event('click', {
         'event_category': this.$store.state.gtag.category,
