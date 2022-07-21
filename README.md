@@ -29,6 +29,11 @@ Create pull request for changes and merge into `master` branch for travis-ci bui
 
 ## Release Notes
 
+### 1.1.20 - 7/21/2022
+
+* opens refine panel when view list is clicked if not mobile
+* makes independent groups (radio buttons) also affect refine results
+
 ### 1.1.19 - 7/12/2022
 
 * fixes bug with finding languages for i18n
