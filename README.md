@@ -29,6 +29,10 @@ Create pull request for changes and merge into `master` branch for travis-ci bui
 
 ## Release Notes
 
+### 1.1.22 - 7/22/2022
+
+* cleans up searchBar code
+
 ### 1.1.21 - 7/21/2022
 
 * splits i18n file into separate language files

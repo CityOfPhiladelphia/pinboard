@@ -78,19 +78,15 @@
       v-if="refineEnabled"
       :class="refinePanelClass"
     >
-      <refine-panel />
+      <refine-panel
+        :refine-title="refineTitle"
+      />
     </div>
 
     <div
       v-show="!isMobile || isMobile && !refineOpen"
       class="invisible-scrollbar locations-and-map-panels-holder columns"
     >
-    <!-- :class="locationsAndMapsPanelClass + ' locations-and-map-panels-holder columns'" -->
-      <!-- <a href="#map-textbox" /> -->
-
-
-
-
       <div
         v-show="mapPanelVisible"
         class="map-panel-holder column"
@@ -215,6 +211,9 @@ export default {
     };
   },
   computed: {
+    refineTitle() {
+      return this.$config.refine.title;
+    },
     projection4326() {
       return "+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs";
     },
@@ -278,48 +277,6 @@ export default {
     },
     i18nLocale() {
       return this.$i18n.locale;
-    },
-    searchBarPlaceholderText() {
-      if (this.i18nEnabled) {
-        return this.$i18n.messages[this.i18nLocale].app.searchPlaceholders[this.searchBarType];
-      } else if (this.$config.searchBar && this.$config.searchBar.placeholderText) {
-        if (typeof this.$config.searchBar.placeholderText === 'string') {
-          return this.$config.searchBar.placeholderText;
-        } else {
-          return this.$config.searchBar.placeholderText[this.searchBarType];
-        }
-      } else {
-        return 'Search';
-      }
-    },
-    searchBarLabelText() {
-      if (this.i18nEnabled) {
-        return this.$i18n.messages[this.i18nLocale].app.searchPlaceholders[this.searchBarType];
-      } else if (this.$config.searchBar && this.$config.searchBar.labelText) {
-        if (typeof this.$config.searchBar.labelText === 'string') {
-          return this.$config.searchBar.labelText;
-        } else {
-          return this.$config.searchBar.labelText[this.searchBarType];
-        }
-      } else {
-        return 'Search';
-      }
-    },
-    searchBarOptions() {
-      let final;
-      if (this.i18nEnabled) {
-        final = {};
-        if (this.$config.searchBar.searchTypes) {
-          for (let value of this.$config.searchBar.searchTypes) {
-            final[value] = this.$i18n.messages[this.i18nLocale][value];
-          }
-        }
-      } else {
-        if (this.$config.searchBar.searchTypes) {
-          final = this.$config.searchBar.searchTypes;
-        }
-      }
-      return final;
     },
     i18nLanguages() {
       let values = [];

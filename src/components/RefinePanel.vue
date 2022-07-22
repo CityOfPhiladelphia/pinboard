@@ -22,7 +22,7 @@
         v-if="!i18nEnabled"
         class="refine-label-text"
       >
-        {{ legendTitle }}
+        {{ refineTitle }}
       </div>
       <div
         v-if="i18nEnabled"
@@ -421,9 +421,9 @@ export default {
     IconToolTip,
   },
   props: {
-    legendTitle: {
+    refineTitle: {
       type: String,
-      default: 'REFINE',
+      default: 'FILTER LIST',
     },
   },
   data() {
