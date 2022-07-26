@@ -31,6 +31,27 @@
       />
 
       <button
+        v-if="refineOpen && retractable  || refineOpen && isMobile"
+        class="close-button"
+        @click="expandRefine"
+      >
+        <font-awesome-icon
+          :icon="[angleIconWeight, 'angle-up']"
+          size="2x"
+        />
+      </button>
+      <button
+        v-if="!refineOpen && retractable  || !refineOpen && isMobile"
+        class="close-button"
+        @click="expandRefine"
+      >
+        <font-awesome-icon
+          :icon="[angleIconWeight, 'angle-down']"
+          size="2x"
+        />
+      </button>
+
+      <button
         v-if="!i18nEnabled && isTablet && selected.length || !i18nEnabled && isDesktop && selected.length || !i18nEnabled && isWideScreen && selected.length"
         class="clear-all"
         @click.prevent="clearAll"
@@ -321,7 +342,7 @@
     </div>
 
     <!-- v-if="refineOpen && isTablet || refineOpen && isDesktop || refineOpen && isWideScreen" -->
-    <button
+    <!-- <button
       v-if="refineOpen && retractable  || refineOpen && isMobile"
       class="close-button"
       @click="expandRefine"
@@ -336,12 +357,11 @@
       class="close-button"
       @click="expandRefine"
     >
-    <!-- :icon="['fas-angle-down']" -->
       <font-awesome-icon
         :icon="[angleIconWeight, 'angle-down']"
         size="2x"
       />
-    </button>
+    </button> -->
 
     <div
       v-if="isMobile && refineOpen"
@@ -423,7 +443,7 @@ export default {
   props: {
     refineTitle: {
       type: String,
-      default: 'FILTER LIST',
+      default: 'FILTER',
     },
   },
   data() {
@@ -1178,14 +1198,17 @@ export default {
 
     .close-button {
       height: 20px;
-      position: absolute;
-      top: 115px;
-      right: 12px;
+      // position: absolute;
+      // top: 115px;
+      // right: 12px;
       border-style: none;
       background-color: rgb(240, 240, 240);
       color: $ben-franklin-blue-dark;
       cursor: pointer;
-      // padding: 10px;
+      padding-left: 0px;
+      padding-top: 8px;
+      // padding-bottom: 12px;
+      padding-right: 0px;
     }
 
     .refine-holder {
@@ -1209,7 +1232,7 @@ export default {
       font-size: .8rem;
       color: #0f4d90 !important;
       text-decoration: underline;
-      padding-left: 8px;
+      padding-left: 16px;
       padding-right: 12px;
       cursor: pointer;
     }
@@ -1380,10 +1403,10 @@ export default {
   color: #0f4d90;
   text-align: left;
   line-height: normal;
-  padding-left: 5px;
+  padding-left: 4px;
   padding-top: 12px;
   padding-bottom: 12px;
-  padding-right: 16px;
+  padding-right: 8px;
 }
 
 .input-wrap.input-checkbox .is-checkradio+label:hover::before, .input-wrap.input-radio .is-checkradio+label:hover::before {
