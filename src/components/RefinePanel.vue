@@ -1407,6 +1407,7 @@ export default {
   padding-top: 12px;
   padding-bottom: 12px;
   padding-right: 8px;
+  text-transform: uppercase;
 }
 
 .input-wrap.input-checkbox .is-checkradio+label:hover::before, .input-wrap.input-radio .is-checkradio+label:hover::before {
