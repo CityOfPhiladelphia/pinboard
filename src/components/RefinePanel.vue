@@ -1108,9 +1108,28 @@ export default {
   height: 6rem;
 }
 
+.refine-retractable-open {
+  border-style: solid;
+  border-width: 3px;
+  border-color: #f0f0f0;
+}
+
+.refine-retractable-open:hover {
+  // border-style: solid;
+  // border-width: 2px;
+  border-color: #2176d2;
+}
+
 .refine-retractable-closed {
-  // height: 3rem;
-  // height: 4rem;
+  border-style: solid;
+  border-width: 3px;
+  border-color: #f0f0f0;
+}
+
+.refine-retractable-closed:hover {
+  // border-style: solid;
+  // border-width: 2px;
+  border-color: #2176d2;
 }
 
 .box-value {
@@ -1159,6 +1178,18 @@ export default {
   }
 
   @media screen and (min-width: 768px) {
+
+    .slider-icon {
+      padding-top: 7px;
+      padding-left: 11px;
+      padding-bottom: 7px;
+    }
+
+    .refine-label-text {
+      padding-top: 9px;
+      padding-bottom: 9px;
+    }
+
     .service-group-holder-x {
       margin-bottom: 24px !important;
       padding-top: 0px;
@@ -1188,13 +1219,13 @@ export default {
       cursor: pointer;
     }
 
-    .retractable-refine-title:hover {
-      border-color: #2176d2;
-    }
+    // .retractable-refine-title:hover {
+    //   border-color: #2176d2;
+    // }
 
-    .retractable-refine-title-open:hover {
-      border-color: #f0f0f0;
-    }
+    // .retractable-refine-title-open:hover {
+    //   border-color: #f0f0f0;
+    // }
 
     .close-button {
       height: 20px;
@@ -1206,7 +1237,7 @@ export default {
       color: $ben-franklin-blue-dark;
       cursor: pointer;
       padding-left: 0px;
-      padding-top: 8px;
+      padding-top: 5px;
       // padding-bottom: 12px;
       padding-right: 0px;
     }
@@ -1255,6 +1286,17 @@ export default {
     height: 3rem;
     position: relative;
 
+    .slider-icon {
+      padding-top: 11px;
+      padding-left: 14px;
+      padding-bottom: 11px;
+    }
+
+    .refine-label-text {
+      padding-top: 13px;
+      padding-bottom: 13px;
+    }
+
     #columns-div-for-checkboxes {
 
       .input-checkbox, .input-radio {
@@ -1265,13 +1307,16 @@ export default {
 
     .close-button {
       height: 20px;
-      position: absolute;
-      top: 10px;
-      right: 5px;
+      // position: absolute;
+      // top: 10px;
+      // right: 5px;
       border-style: none;
       background-color: rgb(240, 240, 240);
       color: $ben-franklin-blue-dark;
-      // padding: 10px;
+      padding-left: 0px;
+      padding-top: 9px;
+      // padding-bottom: 12px;
+      padding-right: 0px;
     }
 
     .refine-title{
@@ -1390,12 +1435,6 @@ export default {
   display: inline-block;
 }
 
-.slider-icon {
-  padding-top: 10px;
-  padding-left: 14px;
-  padding-bottom: 10px;
-}
-
 .refine-label-text {
   box-sizing: border-box;
   font-family: "Montserrat-Bold", "Montserrat Bold", "Montserrat", sans-serif;
@@ -1404,8 +1443,8 @@ export default {
   text-align: left;
   line-height: normal;
   padding-left: 4px;
-  padding-top: 12px;
-  padding-bottom: 12px;
+  // padding-top: 9px;
+  // padding-bottom: 9px;
   padding-right: 8px;
   text-transform: uppercase;
 }
