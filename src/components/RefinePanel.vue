@@ -1135,7 +1135,7 @@ export default {
 .box-value {
   margin-left: 4px;
   margin-right: 4px;
-  margin-bottom: 8px;
+  margin-bottom: 5px;
   padding: 4px 4px 2px 4px !important;
   height: 30px;
   border-width: 2px !important;
@@ -1255,7 +1255,7 @@ export default {
     flex-direction: row;
 
     .clear-all {
-      margin-top: 10px;
+      margin-top: 8px;
       border-style: none;
       background-color: rgb(240, 240, 240);
       height: 20px;
@@ -1395,7 +1395,7 @@ export default {
 .selected-boxes {
   flex-wrap: wrap;
   max-width: 80%;
-  padding-top: 6px;
+  padding-top: 3px;
   margin-left: 0px !important;
   margin-right: 0px !important;
   margin-bottom: 0px !important;
