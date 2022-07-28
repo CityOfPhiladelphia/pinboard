@@ -603,12 +603,13 @@ export default {
     refineTitleClass() {
       let value;
       if (this.retractable) {
-        if (this.refineOpen) {
-          value = 'refine-title-open';
+        value = 'retractable-refine-title';
+        // if (this.refineOpen) {
+        //   value = 'refine-title-open';
+        // // }
+        // } else {
+        //   value = 'retractable-refine-title';
         // }
-        } else {
-          value = 'retractable-refine-title';
-        }
       // } else {
       //   value = 'refine-title';
       }
@@ -1181,11 +1182,8 @@ export default {
 
     .refine-title {
       border-style: solid;
+      border-width: 2px;
       border-color: #f0f0f0;
-    }
-
-    .refine-title-open {
-      cursor: pointer;
     }
 
     .retractable-refine-title {
@@ -1195,10 +1193,14 @@ export default {
     .retractable-refine-title:hover {
       border-color: #2176d2;
     }
+    
+    // .refine-title-open {
+    //   cursor: pointer;
+    // }
 
-    .retractable-refine-title-open:hover {
-      border-color: #f0f0f0;
-    }
+    // .retractable-refine-title-open:hover {
+    //   border-color: #f0f0f0;
+    // }
 
     .close-button {
       height: 20px;
@@ -1294,13 +1296,16 @@ export default {
 
     .close-button {
       height: 20px;
-      position: absolute;
-      top: 10px;
-      right: 5px;
+      // position: absolute;
+      // top: 10px;
+      // right: 5px;
       border-style: none;
       background-color: rgb(240, 240, 240);
       color: $ben-franklin-blue-dark;
-      // padding: 10px;
+      padding-left: 0px;
+      padding-top: 9px;
+      // padding-bottom: 12px;
+      padding-right: 0px;
     }
 
     .refine-title{
