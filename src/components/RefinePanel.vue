@@ -31,6 +31,27 @@
       />
 
       <button
+        v-if="refineOpen && retractable  || refineOpen && isMobile"
+        class="close-button"
+      >
+      <!-- @click="expandRefine" -->
+        <font-awesome-icon
+          :icon="[angleIconWeight, 'angle-up']"
+          size="2x"
+        />
+      </button>
+      <button
+        v-if="!refineOpen && retractable  || !refineOpen && isMobile"
+        class="close-button"
+      >
+      <!-- @click="expandRefine" -->
+        <font-awesome-icon
+          :icon="[angleIconWeight, 'angle-down']"
+          size="2x"
+        />
+      </button>
+
+      <button
         v-if="!i18nEnabled && isTablet && selected.length || !i18nEnabled && isDesktop && selected.length || !i18nEnabled && isWideScreen && selected.length"
         class="clear-all"
         @click.prevent="clearAll"
@@ -78,6 +99,32 @@
         </button>
       </div>
 
+    </div>
+
+    <!-- Mobile Clear All Button -->
+    <div
+      v-if="isMobile && refineOpen"
+    >
+      <div
+        v-if="!i18nEnabled"
+      >
+        <button
+          class="clear-all"
+          @click.prevent="clearAll"
+        >
+          Clear all
+        </button>
+      </div>
+      <div
+        v-if="i18nEnabled"
+      >
+        <button
+          class="clear-all"
+          @click.prevent="clearAll"
+          v-html="$t('refinePanel.clearAll')"
+        >
+        </button>
+      </div>
     </div>
 
     <!-- if using categoryField_value, categoryField_array, or multipleFields options -->
@@ -320,29 +367,6 @@
       </div>
     </div>
 
-    <!-- v-if="refineOpen && isTablet || refineOpen && isDesktop || refineOpen && isWideScreen" -->
-    <button
-      v-if="refineOpen && retractable  || refineOpen && isMobile"
-      class="close-button"
-      @click="expandRefine"
-    >
-      <font-awesome-icon
-        :icon="[angleIconWeight, 'angle-up']"
-        size="2x"
-      />
-    </button>
-    <button
-      v-if="!refineOpen && retractable  || !refineOpen && isMobile"
-      class="close-button"
-      @click="expandRefine"
-    >
-    <!-- :icon="['fas-angle-down']" -->
-      <font-awesome-icon
-        :icon="[angleIconWeight, 'angle-down']"
-        size="2x"
-      />
-    </button>
-
     <div
       v-if="isMobile && refineOpen"
       class="columns is-mobile mobile-clear-all"
@@ -352,7 +376,7 @@
         v-if="!i18nEnabled"
       >
         <button
-          class="button is-primary medium-side-padding"
+          class="button apply-filters-button medium-side-padding"
           @click="expandRefine(); scrollToTop();"
         >
           Apply filters
@@ -364,7 +388,7 @@
         v-if="i18nEnabled"
       >
         <div
-          class="button is-primary medium-side-padding"
+          class="button apply-filters-button medium-side-padding"
           @click="expandRefine(); scrollToTop();"
         >
           <div
@@ -374,7 +398,7 @@
         </div>
       </div>
 
-      <div
+      <!-- <div
         class="column is-narrow small-side-padding"
         v-if="!i18nEnabled"
       >
@@ -384,9 +408,9 @@
         >
           Clear all
         </button>
-      </div>
+      </div> -->
 
-      <div
+      <!-- <div
         class="column is-narrow small-side-padding"
         v-if="i18nEnabled"
       >
@@ -396,7 +420,7 @@
           v-html="$t('refinePanel.clearAll')"
         >
         </button>
-      </div>
+      </div> -->
 
     </div>
 
@@ -423,7 +447,7 @@ export default {
   props: {
     refineTitle: {
       type: String,
-      default: 'FILTER LIST',
+      default: 'FILTER',
     },
   },
   data() {
@@ -579,12 +603,13 @@ export default {
     refineTitleClass() {
       let value;
       if (this.retractable) {
-        if (this.refineOpen) {
-          value = 'refine-title-open';
+        value = 'retractable-refine-title';
+        // if (this.refineOpen) {
+        //   value = 'refine-title-open';
+        // // }
+        // } else {
+        //   value = 'retractable-refine-title';
         // }
-        } else {
-          value = 'retractable-refine-title';
-        }
       // } else {
       //   value = 'refine-title';
       }
@@ -1157,11 +1182,8 @@ export default {
 
     .refine-title {
       border-style: solid;
+      border-width: 2px;
       border-color: #f0f0f0;
-    }
-
-    .refine-title-open {
-      cursor: pointer;
     }
 
     .retractable-refine-title {
@@ -1172,20 +1194,27 @@ export default {
       border-color: #2176d2;
     }
 
-    .retractable-refine-title-open:hover {
-      border-color: #f0f0f0;
-    }
+    // .refine-title-open {
+    //   cursor: pointer;
+    // }
+
+    // .retractable-refine-title-open:hover {
+    //   border-color: #f0f0f0;
+    // }
 
     .close-button {
       height: 20px;
-      position: absolute;
-      top: 115px;
-      right: 12px;
+      // position: absolute;
+      // top: 115px;
+      // right: 12px;
       border-style: none;
       background-color: rgb(240, 240, 240);
       color: $ben-franklin-blue-dark;
       cursor: pointer;
-      // padding: 10px;
+      padding-left: 0px;
+      padding-top: 8px;
+      // padding-bottom: 12px;
+      padding-right: 0px;
     }
 
     .refine-holder {
@@ -1209,7 +1238,7 @@ export default {
       font-size: .8rem;
       color: #0f4d90 !important;
       text-decoration: underline;
-      padding-left: 8px;
+      padding-left: 16px;
       padding-right: 12px;
       cursor: pointer;
     }
@@ -1232,6 +1261,31 @@ export default {
     height: 3rem;
     position: relative;
 
+    .clear-all {
+      // margin-top: 8px;
+      border-style: none;
+      background-color: rgb(240, 240, 240);
+      height: 30px;
+      font-weight: bold;
+      font-size: 20px;
+      color: #0f4d90 !important;
+      text-decoration: underline;
+      padding-left: 16px;
+      padding-right: 12px;
+      cursor: pointer;
+    }
+
+    .slider-icon {
+      padding-top: 11px;
+      padding-left: 14px;
+      padding-bottom: 11px;
+    }
+
+    .refine-label-text {
+      padding-top: 13px;
+      padding-bottom: 13px;
+    }
+
     #columns-div-for-checkboxes {
 
       .input-checkbox, .input-radio {
@@ -1241,18 +1295,21 @@ export default {
     }
 
     .close-button {
-      height: 20px;
-      position: absolute;
-      top: 10px;
-      right: 5px;
+      height: 30px;
+      // position: absolute;
+      // top: 10px;
+      // right: 5px;
       border-style: none;
       background-color: rgb(240, 240, 240);
       color: $ben-franklin-blue-dark;
-      // padding: 10px;
+      padding-left: 0px;
+      padding-top: 9px;
+      // padding-bottom: 12px;
+      padding-right: 0px;
     }
 
     .refine-title{
-      margin-bottom: 14px !important;
+      // margin-bottom: 14px !important;
       cursor: pointer;
       height:7vh;
     }
@@ -1363,8 +1420,13 @@ export default {
   cursor: pointer;
 }
 
+.apply-filters-button {
+  background-color: #0f4d90 !important;
+}
+
 .apply-filters-text {
   display: inline-block;
+  color: #ffffff;
 }
 
 .slider-icon {
@@ -1380,10 +1442,11 @@ export default {
   color: #0f4d90;
   text-align: left;
   line-height: normal;
-  padding-left: 5px;
+  padding-left: 4px;
   padding-top: 12px;
   padding-bottom: 12px;
-  padding-right: 16px;
+  padding-right: 8px;
+  text-transform: uppercase;
 }
 
 .input-wrap.input-checkbox .is-checkradio+label:hover::before, .input-wrap.input-radio .is-checkradio+label:hover::before {
