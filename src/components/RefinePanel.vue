@@ -1193,7 +1193,7 @@ export default {
     .retractable-refine-title:hover {
       border-color: #2176d2;
     }
-    
+
     // .refine-title-open {
     //   cursor: pointer;
     // }
@@ -1265,7 +1265,7 @@ export default {
       // margin-top: 8px;
       border-style: none;
       background-color: rgb(240, 240, 240);
-      height: 20px;
+      height: 30px;
       font-weight: bold;
       font-size: 20px;
       color: #0f4d90 !important;
@@ -1295,7 +1295,7 @@ export default {
     }
 
     .close-button {
-      height: 20px;
+      height: 30px;
       // position: absolute;
       // top: 10px;
       // right: 5px;
@@ -1309,7 +1309,7 @@ export default {
     }
 
     .refine-title{
-      margin-bottom: 14px !important;
+      // margin-bottom: 14px !important;
       cursor: pointer;
       height:7vh;
     }
