@@ -29,6 +29,10 @@ Create pull request for changes and merge into `master` branch for travis-ci bui
 
 ## Release Notes
 
+### 1.1.23 - 7/28/2022
+
+* ui changes in refine panel
+
 ### 1.1.22 - 7/22/2022
 
 * cleans up searchBar code
