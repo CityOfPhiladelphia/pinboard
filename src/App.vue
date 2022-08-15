@@ -40,6 +40,7 @@
       <app-header
         :app-title="appTitle"
         :app-subtitle="appSubTitle"
+        :app-link="appLink"
         :is-sticky="false"
         :branding-image="brandingImage"
         :branding-link="brandingLink"

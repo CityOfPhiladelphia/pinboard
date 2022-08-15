@@ -29,6 +29,10 @@ Create pull request for changes and merge into `master` branch for travis-ci bui
 
 ## Release Notes
 
+### 1.1.25 - 8/15/2022
+
+* fixes appLink
+
 ### 1.1.24 - 8/15/2022
 
 * fix for initial services routing bug
