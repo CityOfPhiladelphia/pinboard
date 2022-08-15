@@ -29,6 +29,10 @@ Create pull request for changes and merge into `master` branch for travis-ci bui
 
 ## Release Notes
 
+### 1.1.24 - 8/15/2022
+
+* fix for initial services routing bug
+
 ### 1.1.23 - 7/28/2022
 
 * ui changes in refine panel
