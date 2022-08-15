@@ -717,7 +717,7 @@ export default {
           });
         }
       }
-      // console.log('watch selected is firing, nextSelected:', nextSelected, 'oldSelected:', oldSelected, 'newSelection:', newSelection);
+      console.log('watch selected is firing, nextSelected:', nextSelected, 'oldSelected:', oldSelected, 'newSelection:', newSelection);
       // if (newSelection.length) {
       //   this.$gtag.event('refine-checkbox-click', {
       //     'event_category': this.$store.state.gtag.category,
@@ -727,7 +727,7 @@ export default {
 
       this.$store.commit('setSelectedServices', nextSelected);
 
-      if (this.refineType !== 'categoryField_value') {
+      if (this.refineType !== 'categoryField_value' && nextSelected.length) {
         this.$router.push({ query: { ...this.$route.query, ...{ services: nextSelected.join(',') }}});
       } else {
         this.$router.push({ query: { ...this.$route.query, ...{ services: nextSelected }}});
@@ -735,10 +735,13 @@ export default {
     },
     selectedListCompiled(nextSelected) {
       window.theRouter = this.$router;
-      // console.log('RefinePanel watch selectedListCompiled is firing, nextSelected', nextSelected);
       this.$store.commit('setSelectedServices', nextSelected);
       if (typeof nextSelected === 'string') {
         nextSelected = [nextSelected];
+      }
+      console.log('RefinePanel watch selectedListCompiled is firing, nextSelected', nextSelected);
+      if (!nextSelected.length) {
+        return;
       }
       this.$router.push({ query: { ...this.$route.query, ...{ services: nextSelected.join(',') }}});
     },
