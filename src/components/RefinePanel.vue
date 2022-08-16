@@ -30,26 +30,26 @@
         v-html="$t('refinePanel.refine')"
       />
 
-      <button
-        v-if="refineOpen && retractable  || refineOpen && isMobile"
+      <!-- v-if="refineOpen && retractable  || refineOpen && isMobile" -->
+      <!-- <div
         class="close-button"
-      >
-      <!-- @click="expandRefine" -->
+      > -->
         <font-awesome-icon
+          v-if="refineOpen && retractable  || refineOpen && isMobile"
           :icon="[angleIconWeight, 'angle-up']"
           size="2x"
         />
-      </button>
-      <button
-        v-if="!refineOpen && retractable  || !refineOpen && isMobile"
+      <!-- </div> -->
+      <!-- v-if="!refineOpen && retractable  || !refineOpen && isMobile" -->
+      <!-- <div
         class="close-button"
-      >
-      <!-- @click="expandRefine" -->
+      > -->
         <font-awesome-icon
+          v-if="!refineOpen && retractable  || !refineOpen && isMobile"
           :icon="[angleIconWeight, 'angle-down']"
           size="2x"
         />
-      </button>
+      <!-- </div> -->
 
       <button
         v-if="!i18nEnabled && isTablet && selected.length || !i18nEnabled && isDesktop && selected.length || !i18nEnabled && isWideScreen && selected.length"
