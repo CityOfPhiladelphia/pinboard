@@ -379,7 +379,9 @@
           class="button apply-filters-button medium-side-padding"
           @click="expandRefine(); scrollToTop();"
         >
-          Apply filters
+          <div class="apply-filters-text">
+            Apply filters
+          </div>
         </button>
       </div>
 

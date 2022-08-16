@@ -29,6 +29,10 @@ Create pull request for changes and merge into `master` branch for travis-ci bui
 
 ## Release Notes
 
+### 1.1.26 - 8/16/2022
+
+* fixes css of Apply Filters button in Mobile
+
 ### 1.1.25 - 8/15/2022
 
 * fixes appLink
