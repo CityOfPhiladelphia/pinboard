@@ -24,32 +24,25 @@
       >
         {{ refineTitle }}
       </div>
+
       <div
         v-if="i18nEnabled"
         class="refine-label-text"
-        v-html="$t('refinePanel.refine')"
+      >
+        {{ $t('refinePanel.refine') }}
+      </div>
+
+      <font-awesome-icon
+        v-if="refineOpen && retractable  || refineOpen && isMobile"
+        :icon="[angleIconWeight, 'angle-up']"
+        class="open-close-icon"
       />
 
-      <!-- v-if="refineOpen && retractable  || refineOpen && isMobile" -->
-      <!-- <div
-        class="close-button"
-      > -->
-        <font-awesome-icon
-          v-if="refineOpen && retractable  || refineOpen && isMobile"
-          :icon="[angleIconWeight, 'angle-up']"
-          size="2x"
-        />
-      <!-- </div> -->
-      <!-- v-if="!refineOpen && retractable  || !refineOpen && isMobile" -->
-      <!-- <div
-        class="close-button"
-      > -->
-        <font-awesome-icon
-          v-if="!refineOpen && retractable  || !refineOpen && isMobile"
-          :icon="[angleIconWeight, 'angle-down']"
-          size="2x"
-        />
-      <!-- </div> -->
+      <font-awesome-icon
+        v-if="!refineOpen && retractable  || !refineOpen && isMobile"
+        :icon="[angleIconWeight, 'angle-down']"
+        class="open-close-icon"
+      />
 
       <button
         v-if="!i18nEnabled && isTablet && selected.length || !i18nEnabled && isDesktop && selected.length || !i18nEnabled && isWideScreen && selected.length"
@@ -58,7 +51,7 @@
       >
         Clear all
       </button>
-      <!-- href="" -->
+
       <button
         v-if="i18nEnabled && isTablet && selected.length || i18nEnabled && isDesktop && selected.length || i18nEnabled && isWideScreen && selected.length"
         class="clear-all"
@@ -1272,7 +1265,7 @@ export default {
       background-color: rgb(240, 240, 240);
       height: 30px;
       font-weight: bold;
-      font-size: 20px;
+      font-size: 1.063rem;
       color: #0f4d90 !important;
       text-decoration: underline;
       padding-left: 16px;
@@ -1289,6 +1282,11 @@ export default {
     .refine-label-text {
       padding-top: 13px;
       padding-bottom: 13px;
+    }
+
+    .open-close-icon {
+      padding-top: 9px;
+      font-size: 26px;
     }
 
     #columns-div-for-checkboxes {
@@ -1462,6 +1460,11 @@ export default {
   border-width: 2px !important;
   // border-color: rgb(33, 118, 210) !important;
   border-color: #2176d2 !important;
+}
+
+.open-close-icon {
+  padding-top: 8px;
+  font-size: 26px;
 }
 
 </style>
