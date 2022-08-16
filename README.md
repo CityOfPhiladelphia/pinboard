@@ -29,6 +29,10 @@ Create pull request for changes and merge into `master` branch for travis-ci bui
 
 ## Release Notes
 
+### 1.1.28 - 8/16/2022
+
+* bug fix for icon size
+
 ### 1.1.27 - 8/16/2022
 
 * fixes for refine panel css spacing
