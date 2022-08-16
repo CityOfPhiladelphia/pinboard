@@ -32,17 +32,21 @@
         {{ $t('refinePanel.refine') }}
       </div>
 
-      <font-awesome-icon
-        v-if="refineOpen && retractable  || refineOpen && isMobile"
-        :icon="[angleIconWeight, 'angle-up']"
+      <div
         class="open-close-icon"
-      />
+      >
+        <font-awesome-icon
+          v-if="refineOpen && retractable  || refineOpen && isMobile"
+          :icon="[angleIconWeight, 'angle-up']"
+        />
+        <!-- class="open-close-icon" -->
 
-      <font-awesome-icon
-        v-if="!refineOpen && retractable  || !refineOpen && isMobile"
-        :icon="[angleIconWeight, 'angle-down']"
-        class="open-close-icon"
-      />
+        <font-awesome-icon
+          v-if="!refineOpen && retractable  || !refineOpen && isMobile"
+          :icon="[angleIconWeight, 'angle-down']"
+        />
+        <!-- class="open-close-icon" -->
+      </div>
 
       <button
         v-if="!i18nEnabled && isTablet && selected.length || !i18nEnabled && isDesktop && selected.length || !i18nEnabled && isWideScreen && selected.length"
