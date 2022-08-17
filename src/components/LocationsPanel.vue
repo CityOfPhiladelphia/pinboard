@@ -83,7 +83,7 @@
                   class="detail"
                 >
                   <font-awesome-icon icon="globe" />
-                  <span><a :href="makeValidUrl(item.website)">{{ item.website }}</a></span>
+                  <span><a target="_blank" :href="makeValidUrl(item.website)">{{ item.website }}</a></span>
                 </div>
                 <div
                   v-if="item.facebook_name"
