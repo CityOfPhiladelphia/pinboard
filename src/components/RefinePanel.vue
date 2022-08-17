@@ -83,11 +83,21 @@
           />
         </button>
         <button
-          v-if="refineType == 'categoryField_value' && selected.length"
+          v-if="refineType == 'categoryField_value' && selected.length && i18nEnabled"
           class="box-value column is-narrow"
           @click="closeBox(selected)"
         >
-        <!-- v-for="box in selected" -->
+          {{ $t('sections.' + selected + '.header') }}
+          <font-awesome-icon
+            class="fa-x"
+            :icon="[timesIconWeight,'times']"
+          />
+        </button>
+        <button
+          v-if="refineType == 'categoryField_value' && selected.length && !i18nEnabled"
+          class="box-value column is-narrow"
+          @click="closeBox(selected)"
+        >
           {{ selected }}
           <font-awesome-icon
             class="fa-x"
@@ -788,6 +798,7 @@ export default {
     //   console.log('refinePanel checkboxClick is running, e:', e);
     // },
     getBoxValue(box) {
+      console.log('getBoxValue is running, box:', box);
       let value;
       if (box) {
         value = box.replace("_", ".");
