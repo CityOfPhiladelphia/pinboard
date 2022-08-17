@@ -87,7 +87,7 @@
           class="box-value column is-narrow"
           @click="closeBox(selected)"
         >
-          {{ $t('sections.' + selected + '.header') }}
+          {{ $t('sections.' + getCategoryFieldValue(selected) + '.header') }}
           <font-awesome-icon
             class="fa-x"
             :icon="[timesIconWeight,'times']"
@@ -694,6 +694,9 @@ export default {
         }
       }
     },
+    i18nLocale() {
+      return this.$i18n.locale;
+    },
   },
   watch: {
     refineOpen(nextRefineOpen) {
@@ -790,13 +793,22 @@ export default {
     // };
   },
   methods: {
+    getCategoryFieldValue(section) {
+      let sectionLower = section.toLowerCase().replaceAll(' ', '');
+      let i18nCategories = Object.keys(this.$i18n.messages[this.i18nLocale].sections);
+      let selectedCategory;
+      for (let category of i18nCategories) {
+        let categoryLower = category.toLowerCase().replaceAll(' ', '');
+        if (categoryLower === sectionLower || categoryLower === sectionLower + 's') {
+          selectedCategory = category;
+        }
+      }
+      return selectedCategory;
+    },
     findTooltip(test) {
       console.log('findTooltip is running, test:', test);
       return 'test';
     },
-    // checkboxClick(e) {
-    //   console.log('refinePanel checkboxClick is running, e:', e);
-    // },
     getBoxValue(box) {
       console.log('getBoxValue is running, box:', box);
       let value;

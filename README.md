@@ -29,6 +29,10 @@ Create pull request for changes and merge into `master` branch for travis-ci bui
 
 ## Release Notes
 
+### 1.1.31 - 8/17/2022
+
+* further bug fix for translating tags in refine panel
+
 ### 1.1.30 - 8/17/2022
 
 * makes default link behavior to open a new tab
