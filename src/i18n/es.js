@@ -12,11 +12,11 @@ export default {
     },
     viewMap: 'Ver mapa',
     viewList: 'Ver lista',
-    viewAccessible: 'spanish View accessible list of site locations',
+    viewAccessible: "Ver lista accesible de ubicaciones de los sitios",
   },
   refinePanel: {
-    refine: 'Ajustar',
-    clearAll: 'Eliminar todo',
-    applyFilters: 'Aplicar filtros',
+    refine: "filtro",
+    clearAll: "Eliminar todo",
+    applyFilters: "Aplicar filtros",
   },
 };

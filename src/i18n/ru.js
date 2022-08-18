@@ -12,11 +12,11 @@ export default {
     },
     viewMap: 'Посмотреть на карте',
     viewList: 'Посмотреть список',
-    viewAccessible: 'russian View accessible list of site locations',
+    viewAccessible: "Посмотреть список расположения доступных центров",
   },
   refinePanel: {
-    refine: 'Уточнить параметры поиска',
-    clearAll: 'Очистить все',
-    applyFilters: 'Применить фильтры',
+    refine: "фильтр",
+    clearAll: "Очистить все",
+    applyFilters: "Применить фильтр",
   },
 };

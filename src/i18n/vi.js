@@ -12,11 +12,11 @@ export default {
     },
     viewMap: 'Xem bản đồ',
     viewList: 'Xem danh sách',
-    viewAccessible: 'vietnamese View accessible list of site locations',
+    viewAccessible: "Xem danh sách các địa điểm gần tôi",
   },
   refinePanel: {
-    refine: 'Tinh chỉnh',
-    clearAll: 'Xóa hết',
-    applyFilters: 'Áp dụng bộ lọc',
+    refine: "bộ lọc",
+    clearAll: "Xoá tất cả",
+    applyFilters: "Áp dụng bộ lọc",
   },
 };

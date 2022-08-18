@@ -15,7 +15,7 @@ export default {
     viewAccessible: 'View accessible list of site locations',
   },
   refinePanel: {
-    refine: 'REFINE',
+    refine: 'filter',
     clearAll: 'Clear all',
     applyFilters: 'Apply filters',
   },
