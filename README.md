@@ -29,6 +29,10 @@ Create pull request for changes and merge into `master` branch for travis-ci bui
 
 ## Release Notes
 
+### 1.1.32 - 8/18/2022
+
+* fixes refine to filter in default i18n files
+
 ### 1.1.31 - 8/17/2022
 
 * further bug fix for translating tags in refine panel
