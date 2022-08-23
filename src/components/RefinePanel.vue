@@ -710,7 +710,7 @@ export default {
       this.getRefineSearchList();
     },
     selected(nextSelected, oldSelected) {
-      // console.log('watch selected is firing, nextSelected:', nextSelected, 'oldSelected:', oldSelected);
+      console.log('watch selected is firing, nextSelected:', nextSelected, 'oldSelected:', oldSelected);
       let newSelection;
       if (this.refineType !== 'categoryField_value') {
         newSelection = nextSelected.filter(x => !oldSelected.includes(x));
