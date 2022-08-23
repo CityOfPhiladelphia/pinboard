@@ -518,32 +518,33 @@ export default {
   },
   mounted() {
     console.log('in App.vue mounted 210818, this.$store.state:', this.$store.state, 'this.$config:', this.$config, 'window.location.href:', window.location.href);
-    this.$config.searchBar.searchTypes.forEach(item => {
-      if (this.$route.query[item]) {
-        // console.log('App.vue mounted item:', item, 'this.searchBarType:', this.searchBarType);
-        this.$controller.handleSearchFormSubmit(this.$route.query[item], item);
-        this.searchString = this.$route.query[item];
-      }
-    });
-
-    if (this.$route.query.lang) {
-      // console.log('App.vue mounted language:', this.$route.query.lang);
-      this.$i18n.locale = this.$route.query.lang;
-    }
-
-    if (this.$config.searchBar) {
-      let routeQuery = Object.keys(this.$route.query);
-      // console.log('App.vue mounted in searchTypes section, this.$route:', this.$route, 'routeQuery:', routeQuery, 'Object.keys(this.$route.query)[0]', Object.keys(this.$route.query)[0]);
-      let value;
-      for (let query of routeQuery) {
-        if (query === 'address' || query === 'keyword') {
-          value = this.$route.query[query];
-        }
-      }
-      this.$store.commit('setCurrentSearch', value);
-
-      this.addressInputPlaceholder = this.$config.searchBar.placeholder;
-    }
+    // this.$config.searchBar.searchTypes.forEach(item => {
+    //   if (this.$route.query[item]) {
+    //     // console.log('App.vue mounted item:', item, 'this.searchBarType:', this.searchBarType);
+    //     this.$controller.handleSearchFormSubmit(this.$route.query[item], item);
+    //     this.searchString = this.$route.query[item];
+    //   }
+    // });
+    //
+    // if (this.$route.query.lang) {
+    //   // console.log('App.vue mounted language:', this.$route.query.lang);
+    //   this.$i18n.locale = this.$route.query.lang;
+    // }
+    //
+    // if (this.$config.searchBar) {
+    //   let routeQuery = Object.keys(this.$route.query);
+    //   // console.log('App.vue mounted in searchTypes section, this.$route:', this.$route, 'routeQuery:', routeQuery, 'Object.keys(this.$route.query)[0]', Object.keys(this.$route.query)[0]);
+    //   let value;
+    //   for (let query of routeQuery) {
+    //     if (query === 'address' || query === 'keyword') {
+    //       value = this.$route.query[query];
+    //     }
+    //   }
+    //   this.$store.commit('setCurrentSearch', value);
+    //
+    //   this.addressInputPlaceholder = this.$config.searchBar.placeholder;
+    // }
+    this.initialRoute();
 
     if (this.$config.appLink) {
       this.appLink = this.$config.appLink;
@@ -601,9 +602,75 @@ export default {
         width: "200px",
       }
     }
+
+    window.addEventListener("popstate", (event) => {
+      console.log('popstate event:', document.location, event.state);
+      this.handlePopStateChange();
+      // this.filterPoints();
+      // location.reload();
+    });
   },
 
   methods: {
+    handlePopStateChange() {
+      this.initialRoute();
+      let nextSelected = this.$route.query['services'] || [];
+      this.$store.commit('setSelectedServices', nextSelected);
+
+      let searchBarQuery;
+      let searchBarValue;
+      if (this.$config.searchBar) {
+        let routeQuery = Object.keys(this.$route.query);
+        // console.log('App.vue mounted in searchTypes section, this.$route:', this.$route, 'routeQuery:', routeQuery, 'Object.keys(this.$route.query)[0]', Object.keys(this.$route.query)[0]);
+        // let value;
+        for (let query of routeQuery) {
+          if (query === 'address') {
+            searchBarQuery = query;
+            searchBarValue = this.$route.query[query];
+          } else if (query === 'keyword') {
+            searchBarQuery = query;
+            searchBarValue = this.$route.query[query];
+          }
+        }
+      }
+
+      if (!searchBarValue) {
+        this.clearSearchTriggered();
+      }
+
+
+
+      console.log('handlePopStateChange is running, searchBarQuery:', searchBarQuery, 'searchBarValue:', searchBarValue, 'nextSelected:', nextSelected);
+    },
+    initialRoute() {
+      console.log('initialRoute is running');
+      this.$config.searchBar.searchTypes.forEach(item => {
+        if (this.$route.query[item]) {
+          // console.log('App.vue mounted item:', item, 'this.searchBarType:', this.searchBarType);
+          this.$controller.handleSearchFormSubmit(this.$route.query[item], item);
+          this.searchString = this.$route.query[item];
+        }
+      });
+
+      if (this.$route.query.lang) {
+        // console.log('App.vue mounted language:', this.$route.query.lang);
+        this.$i18n.locale = this.$route.query.lang;
+      }
+
+      if (this.$config.searchBar) {
+        let routeQuery = Object.keys(this.$route.query);
+        // console.log('App.vue mounted in searchTypes section, this.$route:', this.$route, 'routeQuery:', routeQuery, 'Object.keys(this.$route.query)[0]', Object.keys(this.$route.query)[0]);
+        let value;
+        for (let query of routeQuery) {
+          if (query === 'address' || query === 'keyword') {
+            value = this.$route.query[query];
+          }
+        }
+        this.$store.commit('setCurrentSearch', value);
+
+        this.addressInputPlaceholder = this.$config.searchBar.placeholder;
+      }
+    },
     compareArrays(arr1, arr2) {
       const finalArray = [];
       arr1.forEach((e1) => arr2.forEach((e2) =>
@@ -660,7 +727,7 @@ export default {
     },
     clearSearchTriggered() {
       let startQuery = { ...this.$route.query };
-      // console.log('in clearSearchTriggered1, this.$route.query:', this.$route.query, 'startQuery:', startQuery);
+      console.log('in clearSearchTriggered1, this.$route.query:', this.$route.query, 'startQuery:', startQuery);
       delete startQuery['address'];
       delete startQuery['keyword'];
       // delete startQuery[this.searchBarType];
