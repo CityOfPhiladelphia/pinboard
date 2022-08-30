@@ -1,0 +1,129 @@
+table {
+  border: 0px none;
+  border-style: none !important;
+}
+
+.table-intro {
+  margin-bottom: 8px;
+}
+
+.vgt-inner-wrap {
+  box-shadow: 0 0 0 0 !important;
+}
+
+.vgt-table th {
+  padding: 0.4em 0.4em 0.4em 0.4em !important;
+  border-bottom-color: #444444 !important;
+  border-bottom-width: 2px !important;
+  background: #ffffff !important;
+  text-align: left;
+}
+
+table td:not([align]), table th:not([align]) {
+  text-align: left !important;
+}
+
+.vgt-table td {
+  border-bottom-color: #444444 !important;
+}
+
+.vgt-table tr:nth-child(odd) {
+  background: #eee;
+}
+
+.center {
+  text-align: center;
+}
+
+.table-text {
+  font-family: "OpenSans-Regular", "Open Sans", sans-serif;
+  font-size: 14px;
+}
+
+.table-header-text {
+  font-family: "OpenSans-SemiBold", "Open Sans SemiBold", "Open Sans", sans-serif;
+  font-size: 14px;
+}
+
+h3 {
+  color: #444444;
+  font-family: "Montserrat-SemiBold", "Montserrat SemiBold", "Montserrat", sans-serif;
+  font-weight: 650 !important;
+  font-size: 24px !important;
+  padding-top: 16px !important;
+  padding-bottom: 8px !important;
+  // margin-top: 0px !important;
+  // margin-bottom: 0px !important;
+  line-height: 30px !important;
+}
+
+.section-heading {
+  margin-top: 14px;
+}
+
+.no-wrap {
+  white-space: nowrap;
+}
+
+.no-margins {
+  margin: 0px;
+  margin-bottom: 0px !important;
+}
+
+.top-margins {
+  margin-top: 10px;
+}
+
+.main-content {
+  padding-left: 1rem;
+  padding-right: 1rem;
+  font-size: 14px;
+
+  a {
+    color: $ben-franklin-blue-dark;
+    font-weight: bold;
+    text-decoration: underline;
+  }
+}
+
+.main-content-mobile {
+  font-size: 14px;
+
+  a {
+    color: $ben-franklin-blue-dark;
+    font-weight: bold;
+    text-decoration: underline;
+  }
+}
+
+.td-style {
+  font-size: 14px !important;
+}
+
+.td-textbox {
+  padding-left: 2rem;
+}
+
+.exceptions-holder {
+  margin-top: 8px;
+}
+
+.th-black-class {
+  color: rgb(68, 68, 68) !important;
+}
+
+.list-holder {
+  margin-left: 16px;
+}
+
+.website-div {
+  word-break: break-all;
+}
+
+.description-paragraph {
+  margin-bottom: 1rem;
+}
+
+tr:last-of-type > td {
+  border-bottom-width: 0px !important;
+}
