@@ -1,4 +1,5 @@
 import "./assets/scss/main.scss";
+import "./assets/scss/expandCollapse.scss";
 import 'animate.css/animate.min.css';
 
 import Vue from 'vue';
