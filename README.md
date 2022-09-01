@@ -29,6 +29,10 @@ Create pull request for changes and merge into `master` branch for travis-ci bui
 
 ## Release Notes
 
+### 1.1.33 - 9/1/2022
+
+* moves css from primary care finder into src/assets/scss/expandCollapse.scss
+
 ### 1.1.32 - 8/18/2022
 
 * fixes refine to filter in default i18n files
