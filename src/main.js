@@ -1,6 +1,8 @@
 import "./assets/scss/main.scss";
 import "./assets/scss/expandCollapse.scss";
+// import "./assets/scss/customGreeting.scss";
 import 'animate.css/animate.min.css';
+import 'vue-good-table/dist/vue-good-table.css';
 
 import Vue from 'vue';
 import VueI18n from 'vue-i18n'
