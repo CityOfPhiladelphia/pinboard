@@ -11,6 +11,10 @@ table {
   box-shadow: 0 0 0 0 !important;
 }
 
+.vgt-table {
+  box-shadow: 0 0 0 0 !important;
+}
+
 .vgt-table th {
   padding: 0.4em 0.4em 0.4em 0.4em !important;
   border-bottom-color: #444444 !important;
@@ -45,20 +49,8 @@ table td:not([align]), table th:not([align]) {
   font-size: 14px;
 }
 
-h3 {
-  color: #444444;
-  font-family: "Montserrat-SemiBold", "Montserrat SemiBold", "Montserrat", sans-serif;
-  font-weight: 650 !important;
-  font-size: 24px !important;
-  padding-top: 16px !important;
-  padding-bottom: 8px !important;
-  // margin-top: 0px !important;
-  // margin-bottom: 0px !important;
-  line-height: 30px !important;
-}
-
 .section-heading {
-  margin-top: 14px;
+  margin-top: 14px !important;
 }
 
 .no-wrap {
