@@ -29,6 +29,11 @@ Create pull request for changes and merge into `master` branch for travis-ci bui
 
 ## Release Notes
 
+### 1.1.34 - 9/6/2022
+
+* moves more css into main project
+* does not conditionally import any @phila/vue-mapping elements
+
 ### 1.1.33 - 9/1/2022
 
 * moves css from primary care finder into src/assets/scss/expandCollapse.scss
