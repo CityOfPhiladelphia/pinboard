@@ -48,64 +48,115 @@
             :is-map-visible="isMapVisible"
           />
 
-          <div v-if="!$config.customComps || !Object.keys($config.customComps).includes('expandCollapseContent') && selectedResources.includes(item._featureId)">
-            <div class="columns is-marginless">
-
-              <div class="column">
+          <div
+            v-if="!$config.customComps || !Object.keys($config.customComps).includes('expandCollapseContent') && selectedResources.includes(item._featureId)"
+            :class="isMobile ? 'main-content-mobile' : 'main-content'"
+          >
+            <div class="columns">
+              <div class="column is-6">
                 <div
                   v-if="item.street_address"
-                  class="detail"
+                  class="columns is-mobile"
                 >
-                  <font-awesome-icon icon="map-marker-alt" />
-                  <span v-html="parseAddress(item.street_address)">
-                    {{ parseAddress(item.street_address) }}
-                  </span>
+                  <div class="column is-1">
+                    <font-awesome-icon icon="map-marker-alt" />
+                  </div>
+                  <div
+                    class="column"
+                    v-html="parseAddress(item.street_address)"
+                  >
+                    <!-- {{ parseAddress(item.street_address) }} -->
+                  </div>
                 </div>
               </div>
 
-              <div class="column">
+              <div class="column is-6">
+
                 <div
                   v-if="item.phone_number"
-                  class="detail"
+                  class="columns is-mobile"
                 >
-                  <font-awesome-icon icon="phone" />
-                  <span>{{ item.phone_number }}</span>
+                  <div
+                    class="column is-1"
+                  >
+                    <font-awesome-icon icon="phone" />
+                  </div>
+                  <div class="column">
+                    {{ item.phone_number }}
+                  </div>
                 </div>
+
                 <div
                   v-if="item.email"
-                  class="detail"
+                  class="columns is-mobile"
                 >
-                  <font-awesome-icon icon="envelope" />
-                  <span><a :href="`mailto:${item.email}`">{{ item.email }}</a></span>
+                  <div
+                    class="column is-1"
+                  >
+                    <font-awesome-icon icon="envelope" />
+                  </div>
+                  <div class="column">
+                    <a :href="`mailto:${item.email}`">{{ item.email }}</a>
+                  </div>
                 </div>
+
                 <div
                   v-if="item.website"
-                  class="detail"
+                  class="columns is-mobile"
                 >
-                  <font-awesome-icon icon="globe" />
-                  <span><a target="_blank" :href="makeValidUrl(item.website)">{{ item.website }}</a></span>
+                  <div
+                    class="column is-1"
+                  >
+                    <font-awesome-icon icon="globe" />
+                  </div>
+                  <div class="column">
+                    <a
+                      target="_blank"
+                      :href="makeValidUrl(item.website)"
+                    >
+                      {{ item.website }}
+                      <font-awesome-icon icon="external-link-alt" />
+                    </a>
+                  </div>
                 </div>
+
                 <div
                   v-if="item.facebook_name"
-                  class="detail"
+                  class="columns is-mobile"
                 >
-                  <font-awesome-icon :icon="['fab', 'facebook']" />
-                  <span><a :href="item.facebook_name">Facebook</a></span>
+                  <div
+                    class="column is-1"
+                  >
+                    <font-awesome-icon :icon="['fab', 'facebook']" />
+                  </div>
+                  <div class="column">
+                    <!-- <span><a :href="item.facebook_name">Facebook</a></span> -->
+                    <a :href="item.facebook_name">Facebook</a>
+                  </div>
                 </div>
+
                 <div
                   v-if="item.twitter"
-                  class="detail"
+                  class="columns is-mobile"
                 >
-                  <font-awesome-icon :icon="['fab', 'twitter']" />
-                  <span><a :href="item.twitter">Twitter</a></span>
+                  <div
+                    class="column is-1"
+                  >
+                    <font-awesome-icon :icon="['fab', 'twitter']" />
+                  </div>
+                  <div>
+                    <a :href="item.twitter">Twitter</a>
+                  </div>
                 </div>
               </div>
+
             </div>
 
             <div
               v-if="item.services_offered"
             >
-              <h3 class="title section-title is-4">
+              <!-- <h3 class="title section-title is-4"> -->
+              <h3>
                 Services offered
               </h3>
               <div class="columns is-multiline is-gapless">
@@ -122,7 +173,8 @@
             <div
               v-if="item.tags && item.tags.length"
             >
-              <h3 class="title section-title is-4 pt-2">
+              <!-- <h3 class="title section-title is-4 pt-2"> -->
+              <h3>
                 Tags
               </h3>
               <div>
@@ -331,33 +383,8 @@ export default {
 
 <style lang="scss">
 
-.locations-panel{
+.locations-panel {
   overflow-y: visible !important;
-
-  .detail{
-    margin-bottom: 1rem;
-    svg {
-      vertical-align: top;
-      margin-top: .5rem;
-    }
-    span {
-      display: inline-block;
-      max-width: calc(100% - 1rem);
-      word-break: break-word;
-      padding-left: 2rem;
-    }
-  }
-  // .services{
-  //   margin-top: 1rem;
-  // }
-  // .service-item{
-  //   margin-bottom: 0px;
-  //   padding-bottom: 0px;
-  //   padding-top: 0px;
-  // }
-  // .tags {
-  //   margin-top: 2rem;
-  // }
 }
 
 .location-container {
