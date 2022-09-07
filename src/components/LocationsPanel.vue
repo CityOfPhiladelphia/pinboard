@@ -62,7 +62,7 @@
                     <font-awesome-icon icon="map-marker-alt" />
                   </div>
                   <div
-                    class="column"
+                    class="column is-11"
                     v-html="parseAddress(item.street_address)"
                   >
                     <!-- {{ parseAddress(item.street_address) }} -->
@@ -81,7 +81,7 @@
                   >
                     <font-awesome-icon icon="phone" />
                   </div>
-                  <div class="column">
+                  <div class="column is-11">
                     {{ item.phone_number }}
                   </div>
                 </div>
@@ -95,21 +95,21 @@
                   >
                     <font-awesome-icon icon="envelope" />
                   </div>
-                  <div class="column">
+                  <div class="column is-11">
                     <a :href="`mailto:${item.email}`">{{ item.email }}</a>
                   </div>
                 </div>
 
                 <div
                   v-if="item.website"
-                  class="columns is-mobile"
+                  class="columns is-mobile website-div"
                 >
                   <div
                     class="column is-1"
                   >
                     <font-awesome-icon icon="globe" />
                   </div>
-                  <div class="column">
+                  <div class="column is-11">
                     <a
                       target="_blank"
                       :href="makeValidUrl(item.website)"
@@ -129,9 +129,13 @@
                   >
                     <font-awesome-icon :icon="['fab', 'facebook']" />
                   </div>
-                  <div class="column">
-                    <!-- <span><a :href="item.facebook_name">Facebook</a></span> -->
-                    <a :href="item.facebook_name">Facebook</a>
+                  <div class="column is-11">
+                    <a
+                      target="_blank"
+                      :href="item.facebook_name"
+                    >
+                      Facebook
+                    </a>
                   </div>
                 </div>
 
@@ -144,8 +148,13 @@
                   >
                     <font-awesome-icon :icon="['fab', 'twitter']" />
                   </div>
-                  <div>
-                    <a :href="item.twitter">Twitter</a>
+                  <div class="column is-11">
+                    <a
+                      target="_blank"
+                      :href="item.twitter"
+                    >
+                      Twitter
+                    </a>
                   </div>
                 </div>
               </div>
@@ -155,7 +164,6 @@
             <div
               v-if="item.services_offered"
             >
-              <!-- <h3 class="title section-title is-4"> -->
               <h3>
                 Services offered
               </h3>
