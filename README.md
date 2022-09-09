@@ -29,6 +29,10 @@ Create pull request for changes and merge into `master` branch for travis-ci bui
 
 ## Release Notes
 
+### 1.1.37 - 9/9/2022
+
+* ran package updates
+
 ### 1.1.36 - 9/7/2022
 
 * allows website text to wrap in default cards
