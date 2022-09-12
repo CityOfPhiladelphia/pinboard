@@ -10,6 +10,7 @@ import { faPhone } from '@fortawesome/free-solid-svg-icons/faPhone';
 import { faUser } from '@fortawesome/free-solid-svg-icons/faUser';
 import { faTimes } from '@fortawesome/free-solid-svg-icons/faTimes';
 import { faTwitter } from '@fortawesome/free-brands-svg-icons/faTwitter';
+import { faInstagram } from '@fortawesome/free-brands-svg-icons/faInstagram';
 import { faCheckSquare } from '@fortawesome/free-solid-svg-icons/faCheckSquare';
 import { faSquare } from '@fortawesome/free-regular-svg-icons/faSquare';
 import { faInfoCircle } from '@fortawesome/free-solid-svg-icons/faInfoCircle';
@@ -34,6 +35,7 @@ library.add(
   faUser,
   faTimes,
   faTwitter,
+  faInstagram,
   faCheckSquare,
   faSquare,
   faInfoCircle,
