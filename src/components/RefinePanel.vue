@@ -186,12 +186,12 @@
         >
           <radio
             v-model="selectedList['radio_'+ind]"
-            v-if="refineListTranslated[ind]['independent']"
-            :options="refineListTranslated[ind]['independent']"
+            v-if="refineListTranslated[ind]['radio']"
+            :options="refineListTranslated[ind]['radio']"
             text-key="textLabel"
             value-key="data"
             :small="!isMobile"
-            :num-of-columns="calculateColumns(refineList[ind]['independent'])"
+            :num-of-columns="calculateColumns(refineList[ind]['radio'])"
           >
             <div
               :class="isMobile ? 'large-label': 'small-label'"
@@ -202,14 +202,14 @@
           </radio>
 
           <checkbox
-            v-if="refineListTranslated[ind]['dependent']"
-            :options="refineListTranslated[ind]['dependent']"
+            v-if="refineListTranslated[ind]['checkbox']"
+            :options="refineListTranslated[ind]['checkbox']"
             :small="!isMobile"
             v-model="selectedList[ind]"
             text-key="textLabel"
             value-key="data"
             shrinkToFit="true"
-            :num-of-columns="calculateColumns(refineList[ind]['dependent'])"
+            :num-of-columns="calculateColumns(refineList[ind]['checkbox'])"
           >
             <div
               :class="isMobile ? 'large-label': 'small-label'"
@@ -271,12 +271,12 @@
             >
               <radio
                 v-model="selectedList['radio_'+ind]"
-                v-if="refineListTranslated[ind]['independent']"
-                :options="refineListTranslated[ind]['independent']"
+                v-if="refineListTranslated[ind]['radio']"
+                :options="refineListTranslated[ind]['radio']"
                 text-key="textLabel"
                 value-key="data"
                 :small="!isMobile"
-                :num-of-columns="calculateColumns(refineList[ind]['independent'])"
+                :num-of-columns="calculateColumns(refineList[ind]['radio'])"
               >
                 <div
                   slot="label"
@@ -285,14 +285,14 @@
               </radio>
 
               <checkbox
-                v-if="refineListTranslated[ind]['dependent']"
-                :options="refineListTranslated[ind]['dependent']"
+                v-if="refineListTranslated[ind]['checkbox']"
+                :options="refineListTranslated[ind]['checkbox']"
                 :small="!isMobile"
                 v-model="selectedList[ind]"
                 text-key="textLabel"
                 value-key="data"
                 shrinkToFit="true"
-                :num-of-columns="calculateColumns(refineList[ind]['dependent'])"
+                :num-of-columns="calculateColumns(refineList[ind]['checkbox'])"
               >
                 <div
                   slot="label"
@@ -325,8 +325,8 @@
           <div class="column">
             <radio
               v-model="selectedList['radio_'+ind]"
-              v-if="refineListTranslated[ind]['independent']"
-              :options="refineListTranslated[ind]['independent']"
+              v-if="refineListTranslated[ind]['radio']"
+              :options="refineListTranslated[ind]['radio']"
               text-key="textLabel"
               value-key="data"
               :num-of-columns="1"
@@ -347,7 +347,7 @@
             </radio>
 
             <checkbox
-              :options="refineListTranslated[ind]['dependent']"
+              :options="refineListTranslated[ind]['checkbox']"
               :num-of-columns="1"
               :small="!isMobile"
               v-model="selectedList[ind]"
@@ -356,7 +356,7 @@
               shrinkToFit="true"
             >
               <div
-                v-if="!refineListTranslated[ind]['independent']"
+                v-if="!refineListTranslated[ind]['radio']"
                 slot="label"
               >
                 {{ $t(ind + '.category') }}
@@ -820,7 +820,7 @@ export default {
     calculateColumns(ind) {
       // console.log('calculateColumns is running, ind:', ind, 'this.$config.refine.columns', this.$config.refine.columns);
       let value;
-      if (this.$config.refine.columns) {
+      if (this.isMobile || this.$config.refine.columns) {
         value = 1;
       // if (this.$config.refine.columns && Object.keys(ind).length < 8) {
       //   value = 1;
@@ -1007,13 +1007,13 @@ export default {
           for (let group of Object.keys(uniq)) {
             for (let dep of Object.keys(uniq[group])) {
               for (let field of Object.keys(uniq[group][dep])) {
-                if (dep == 'dependent' && this.selected.includes(uniq[group][dep][field].unique_key)) {
+                if (dep == 'checkbox' && this.selected.includes(uniq[group][dep][field].unique_key)) {
                   // console.log('RefinePanel end of getRefineSearchList, dependent, group:', group, 'dep:', dep, 'field:', field, 'uniq[group][dep][field].unique_key', uniq[group][dep][field].unique_key, 'this.selected:', this.selected);
                   if (!selected[group]) {
                     selected[group] = [];
                   }
                   selected[group].push(uniq[group][dep][field].unique_key);
-                } else if (dep == 'independent' && this.selected.includes(uniq[group][dep][field].unique_key)) {
+                } else if (dep == 'radio' && this.selected.includes(uniq[group][dep][field].unique_key)) {
                   // console.log('RefinePanel end of getRefineSearchList, independent, selected:', selected, 'group:', group, 'dep:', dep, 'field:', field, 'uniq[group][dep][field].unique_key', uniq[group][dep][field].unique_key, 'this.selected:', this.selected);
                   if (!selected['radio_'+group]) {
                     selected['radio_'+group] = undefined;
