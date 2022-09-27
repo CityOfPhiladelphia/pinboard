@@ -3,6 +3,7 @@
     id="app"
     class="app"
   >
+    <a href="#main-area" class="skip-to-main-content-link">Skip to main content</a>
     <PhilaModal
       v-show="isModalOpen"
       @close="closeModal"
@@ -746,11 +747,11 @@ export default {
                 let groupBooleanConditions = [];
                 for (let service of selectedServices) {
                   // console.log('App.vue filterPoints loop, service:', service);
-                  if (service.split('_', 1)[0] === group && this.$config.refine.multipleFieldGroups[group]['dependent']) {
-                    // console.log('group:', group, 'this.$config.refine.multipleFieldGroups[group]["dependent"]:', this.$config.refine.multipleFieldGroups[group]['dependent']);
-                    let dependentGroups = this.$config.refine.multipleFieldGroups[group]['dependent'][service.split('_')[1]]['dependentGroups'] || [];
+                  if (service.split('_', 1)[0] === group && this.$config.refine.multipleFieldGroups[group]['radio']) {
+                    // console.log('group:', group, 'this.$config.refine.multipleFieldGroups[group]["radio"]:', this.$config.refine.multipleFieldGroups[group]['radio']);
+                    let dependentGroups = this.$config.refine.multipleFieldGroups[group]['radio'][service.split('_')[1]]['dependentGroups'] || [];
                     // console.log('dependentGroup:', dependentGroup, 'service.split("_", 1)[0]:', service.split('_', 1)[0], 'service.split("_")[1]:', service.split('_')[1], 'group', group, 'this.$config.refine.multipleFieldsGroups[group]', this.$config.refine.multipleFieldsGroups[group], 'this.$config.refine.multipleFieldsGroups[group][service.split("_")[1]]:', this.$config.refine.multipleFieldsGroups[group][service.split('_')[1]]);
-                    let getter = this.$config.refine.multipleFieldGroups[group]['dependent'][service.split('_')[1]]['value'];
+                    let getter = this.$config.refine.multipleFieldGroups[group]['radio'][service.split('_')[1]]['value'];
                     let dependentServices = [];
                     for (let service of selectedServices) {
                       if (dependentGroups.length && dependentGroups.includes(service.split('_')[0])) {
@@ -761,11 +762,11 @@ export default {
                     let val = getter(row, dependentServices);
                     groupBooleanConditions.push(val);
                   }
-                  if (service.split('_', 1)[0] === group && this.$config.refine.multipleFieldGroups[group]['independent']) {
+                  if (service.split('_', 1)[0] === group && this.$config.refine.multipleFieldGroups[group]['checkbox']) {
                     // console.log('group:', group, 'this.$config.refine.multipleFieldGroups[group]["dependent"]:', this.$config.refine.multipleFieldGroups[group]['dependent']);
-                    let independentGroups = this.$config.refine.multipleFieldGroups[group]['independent'][service.split('_')[1]]['independentGroups'] || [];
+                    let independentGroups = this.$config.refine.multipleFieldGroups[group]['checkbox'][service.split('_')[1]]['independentGroups'] || [];
                     // console.log('dependentGroup:', dependentGroup, 'service.split("_", 1)[0]:', service.split('_', 1)[0], 'service.split("_")[1]:', service.split('_')[1], 'group', group, 'this.$config.refine.multipleFieldsGroups[group]', this.$config.refine.multipleFieldsGroups[group], 'this.$config.refine.multipleFieldsGroups[group][service.split("_")[1]]:', this.$config.refine.multipleFieldsGroups[group][service.split('_')[1]]);
-                    let getter = this.$config.refine.multipleFieldGroups[group]['independent'][service.split('_')[1]]['value'];
+                    let getter = this.$config.refine.multipleFieldGroups[group]['checkbox'][service.split('_')[1]]['value'];
                     let independentServices = [];
                     for (let service of selectedServices) {
                       if (independentGroups.length && independentGroups.includes(service.split('_')[0])) {
@@ -1050,6 +1051,26 @@ export default {
 html, body {
   box-sizing: border-box;
   height: 100%;
+}
+
+.skip-to-main-content-link {
+  position: absolute;
+  left: -9999px;
+  z-index: 999;
+  padding: .5em;
+  background-color: $ben-franklin-blue-dark;
+  color: white;
+  opacity: 0;
+  text-decoration: underline;
+}
+
+.skip-to-main-content-link:focus {
+  left: 0px;
+  opacity: 1;
+}
+
+.skip-to-main-content-link:hover {
+  color: white;
 }
 
 #app {

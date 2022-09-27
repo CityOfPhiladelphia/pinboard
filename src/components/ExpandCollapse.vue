@@ -13,8 +13,8 @@
       @keyup.enter="expandLocation"
     >
       <div class="location-title column is-11">
+        <!-- :id="makeID(getSiteName(item))" -->
         <h2
-          :id="makeID(getSiteName(item))"
           class="h5"
           :aria-expanded="locationOpen"
         >
@@ -58,8 +58,8 @@
     </div>
     <div
       :class="locationClass"
-      :aria-labelledby="makeID(getSiteName(item))"
     >
+    <!-- :aria-labelledby="makeID(getSiteName(item))" -->
     <!-- :class="{ 'location-open': locationOpen }" -->
     <!-- :class="isMobile ? 'location-content-mobile' : 'location-content'" -->
       <slot />
