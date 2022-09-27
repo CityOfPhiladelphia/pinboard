@@ -29,6 +29,11 @@ Create pull request for changes and merge into `master` branch for travis-ci bui
 
 ## Release Notes
 
+### 1.1.38 - 9/27/2022
+
+* changes terminology from from dependent/independent to checkbox/radio
+* fixes for screen readers
+
 ### 1.1.37 - 9/9/2022
 
 * ran package updates
