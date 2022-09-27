@@ -18,19 +18,19 @@
         <font-awesome-icon icon="sliders-h" />
       </div>
 
-      <div
+      <h2
         v-if="!i18nEnabled"
         class="refine-label-text"
       >
         {{ refineTitle }}
-      </div>
+      </h2>
 
-      <div
+      <h2
         v-if="i18nEnabled"
         class="refine-label-text"
       >
         {{ $t('refinePanel.refine') }}
-      </div>
+      </h2>
 
       <div
         class="open-close-icon"

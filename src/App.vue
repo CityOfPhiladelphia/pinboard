@@ -3,6 +3,7 @@
     id="app"
     class="app"
   >
+    <a href="#main-area" class="skip-to-main-content-link">Skip to main content</a>
     <PhilaModal
       v-show="isModalOpen"
       @close="closeModal"
@@ -1050,6 +1051,22 @@ export default {
 html, body {
   box-sizing: border-box;
   height: 100%;
+}
+
+.skip-to-main-content-link {
+  position: absolute;
+  left: -9999px;
+  z-index: 999;
+  padding: .5em;
+  background-color: $ben-franklin-blue-dark;
+  color: white;
+  opacity: 0;
+}
+
+.skip-to-main-content-link:focus {
+  left: 50%;
+  transform: translateX(-50%);
+  opacity: 1;
 }
 
 #app {
