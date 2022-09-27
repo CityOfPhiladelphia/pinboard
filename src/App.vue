@@ -1061,12 +1061,16 @@ html, body {
   background-color: $ben-franklin-blue-dark;
   color: white;
   opacity: 0;
+  text-decoration: underline;
 }
 
 .skip-to-main-content-link:focus {
-  left: 50%;
-  transform: translateX(-50%);
+  left: 0px;
   opacity: 1;
+}
+
+.skip-to-main-content-link:hover {
+  color: white;
 }
 
 #app {
