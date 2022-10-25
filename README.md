@@ -29,6 +29,10 @@ Create pull request for changes and merge into `master` branch for travis-ci bui
 
 ## Release Notes
 
+### 1.1.39 - 10/25/2022
+
+* fixes gtag for language selector
+
 ### 1.1.38 - 9/27/2022
 
 * changes terminology from from dependent/independent to checkbox/radio
