@@ -483,6 +483,11 @@ export default {
       } else {
         this.$router.push({ query: { ...startQuery }});
       }
+
+      this.$gtag.event('language-click', {
+        'event_category': this.$store.state.gtag.category,
+        'event_label': nexti18nLocale,
+      })
     },
     sourcesWatched(nextSourcesWatched) {
       console.log('watch sourcesWatched, nextSourcesWatched:', nextSourcesWatched);
