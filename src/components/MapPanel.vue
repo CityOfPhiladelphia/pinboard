@@ -711,7 +711,8 @@ export default {
       }
       console.log('handleMarkerClick is running, e:', e, 'siteName:', siteName);
 
-      const selectedResource = [ ...this.selectedResources ];
+      // const selectedResource = [ ...this.selectedResources ];
+      const selectedResource = [];
       if (selectedResource.includes(featureId)) {
         // console.log('markerClick close marker, featureId', featureId);
         selectedResource.splice(selectedResource.indexOf(featureId), 1);

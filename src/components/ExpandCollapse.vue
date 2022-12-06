@@ -260,7 +260,8 @@ export default {
       console.log('ExpandCollapse expandLocation is starting, siteName:', siteName);
       this.locationOpen = !this.locationOpen;
       const selectedResource = this.$props.item._featureId;
-      const selectedResources = [ ...this.selectedResources ];
+      // const selectedResources = [ ...this.selectedResources ];
+      const selectedResources = [];
       let latestSelectedResourceFromExpand = null;
       if (this.locationOpen) {
         selectedResources.push(selectedResource);
