@@ -1287,4 +1287,28 @@ html, body {
   z-index: 1002;
 }
 
+@media print {
+
+  .locations-panel-holder {
+    overflow-y: visible;
+  }
+
+  .locations-panel {
+    overflow-y: visible;
+  }
+
+  .no-scroll {
+    overflow: visible;
+  }
+
+  .locations-and-map-panels-holder {
+    // flex-direction: row-reverse;
+    overflow-y: visible;
+  }
+
+  .overflows {
+    overflow-y: visible;
+  }
+}
+
 </style>

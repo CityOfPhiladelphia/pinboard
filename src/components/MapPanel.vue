@@ -1,5 +1,5 @@
 <template>
-  <div class="map-panel-main-div">
+  <div class="map-panel-main-div print-hide">
 
     <phila-ui-address-input
       v-show="!isMobile"
@@ -711,13 +711,14 @@ export default {
       }
       console.log('handleMarkerClick is running, e:', e, 'siteName:', siteName);
 
-      // const selectedResource = [ ...this.selectedResources ];
-      const selectedResource = [];
+      let selectedResource = [ ...this.selectedResources ];
+      // const selectedResource = [];
       if (selectedResource.includes(featureId)) {
         // console.log('markerClick close marker, featureId', featureId);
         selectedResource.splice(selectedResource.indexOf(featureId), 1);
         this.$store.commit('setLatestSelectedResourceFromMap', null);
       } else {
+        selectedResource = [];
         console.log('markerClick open marker, featureId', featureId);
         this.$gtag.event('map-click', {
           'event_category': this.$store.state.gtag.category,
@@ -854,6 +855,12 @@ export default {
   position: absolute;
   top: 40%;
   left: 40%;
+}
+
+@media print {
+  .print-hide {
+    display: none;
+  }
 }
 
 </style>
