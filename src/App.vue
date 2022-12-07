@@ -510,6 +510,19 @@ export default {
         this.filterPoints();
       }
     },
+    selectedResources(nextSelectedResources) {
+      let startQuery = { ...this.$route.query };
+      console.log('watch selectedResources fired, startQuery:', startQuery, 'nextSelectedResources:', nextSelectedResources, 'nextSelectedResources.length:', nextSelectedResources.length);
+  
+      delete startQuery['resource'];
+  
+      if (nextSelectedResources.length) {
+        let query = { 'resource': nextSelectedResources[0] };
+        this.$router.push({ query: { ...startQuery, ...query }});
+      } else {
+        this.$router.push({ query: { ...startQuery }});
+      }
+    },
     selectedKeywords() {
       if (this.$store.state.sources[this.$appType].data) {
         this.filterPoints();
@@ -531,6 +544,12 @@ export default {
       }
     });
 
+    if (this.$route.query.resource) {
+      console.log('App.vue mounted, this.$route.query.resource:', this.$route.query.resource);
+      let selectedResources = [ this.$route.query.resource ];
+      this.$store.commit('setSelectedResources', selectedResources);
+    }
+    
     if (this.$route.query.lang) {
       // console.log('App.vue mounted language:', this.$route.query.lang);
       this.$i18n.locale = this.$route.query.lang;
