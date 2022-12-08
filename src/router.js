@@ -1,8 +1,8 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 
-import ResourceView from './pages/ResourceView';
-import Main from './pages/Main';
+// import ResourceView from './pages/ResourceView';
+// import Main from './pages/Main';
 
 Vue.use(Router);
 
@@ -12,13 +12,14 @@ export default new Router({
     {
       path: '/',
       name: 'home',
-      component: Main,
+      component: () => import('./pages/Main'),
+      // component: Main,
     },
     {
       path: '/resource-view/:resource?',
       name: 'resourceView',
-      // component: () => import('./components/ResourceView'),
-      component: ResourceView,
+      component: () => import('./pages/ResourceView'),
+      // component: ResourceView,
       // meta: {
       //   layout: 'full-height',
       // },
