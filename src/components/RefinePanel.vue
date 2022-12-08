@@ -545,33 +545,35 @@ export default {
         }
         return mainArray;
       } else if (this.refineType == 'multipleFieldGroups') {
-        for (let category of Object.keys(this.$data.refineList)) {
-          mainObject[category] = {};
-          for (let dep of Object.keys(this.$data.refineList[category])) {
-            // console.log('dep:', dep);
-            if (dep !== 'tooltip') {
+        if (this.$data.refineList) {
+          for (let category of Object.keys(this.$data.refineList)) {
+            mainObject[category] = {};
+            for (let dep of Object.keys(this.$data.refineList[category])) {
+              // console.log('dep:', dep);
+              if (dep !== 'tooltip') {
 
-              mainObject[category][dep] = [];
-              for (let box of Object.keys(this.$data.refineList[category][dep])) {
+                mainObject[category][dep] = [];
+                for (let box of Object.keys(this.$data.refineList[category][dep])) {
 
-                let data = this.$data.refineList[category][dep][box].unique_key;
-                let textLabel = this.$t(this.$data.refineList[category][dep][box].box_label);
-                let tooltip;
-                if (this.$data.refineList[category][dep][box].tooltip) {
-                  tooltip = {};
-                  tooltip.tip = this.$t(this.$data.refineList[category][dep][box].tooltip.tip);
-                  tooltip.multiline = this.$data.refineList[category][dep][box].tooltip.multiline
-                  // console.log('tooltip:', tooltip, 'this.$data.refineList[category][dep][box].tooltip.tip:', this.$data.refineList[category][dep][box].tooltip.tip);
+                  let data = this.$data.refineList[category][dep][box].unique_key;
+                  let textLabel = this.$t(this.$data.refineList[category][dep][box].box_label);
+                  let tooltip;
+                  if (this.$data.refineList[category][dep][box].tooltip) {
+                    tooltip = {};
+                    tooltip.tip = this.$t(this.$data.refineList[category][dep][box].tooltip.tip);
+                    tooltip.multiline = this.$data.refineList[category][dep][box].tooltip.multiline
+                    // console.log('tooltip:', tooltip, 'this.$data.refineList[category][dep][box].tooltip.tip:', this.$data.refineList[category][dep][box].tooltip.tip);
+                  }
+                  let keyPairs = {
+                    data: data,
+                    textLabel: textLabel,
+                    tooltip: tooltip,
+                  };
+                  mainObject[category][dep].push(keyPairs)
                 }
-                let keyPairs = {
-                  data: data,
-                  textLabel: textLabel,
-                  tooltip: tooltip,
-                };
-                mainObject[category][dep].push(keyPairs)
+              } else {
+                mainObject[category][dep] = this.$t(this.$data.refineList[category][dep].tip);
               }
-            } else {
-              mainObject[category][dep] = this.$t(this.$data.refineList[category][dep].tip);
             }
           }
         }

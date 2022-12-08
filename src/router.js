@@ -10,7 +10,7 @@ export default new Router({
   mode: 'history',
   routes: [
     {
-      path: '/',
+      path: '',
       name: 'home',
       component: () => import('./pages/Main'),
       // component: Main,
