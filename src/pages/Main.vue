@@ -1,6 +1,5 @@
 <template>
-  <router-view />
-  <!-- <div
+  <div
     id="app"
     class="app"
   >
@@ -132,7 +131,7 @@
       </app-footer>
     </div>
 
-  </div> -->
+  </div>
 
 </template>
 
@@ -149,13 +148,13 @@ import Fuse from 'fuse.js'
 import { point } from '@turf/helpers';
 import buffer from '@turf/buffer';
 import booleanPointInPolygon from '@turf/boolean-point-in-polygon';
-import AlertBanner from './components/AlertBanner.vue';
-import PhilaModal from './components/PhilaModal.vue';
-import RefinePanel from './components/RefinePanel.vue';
-import LocationsPanel from './components/LocationsPanel.vue';
-import MapPanel from './components/MapPanel.vue';
-import PhilaUiAddressInput from './components/PhilaUiAddressInput.vue';
-// import ResourceView from './components/ResourceView';
+import AlertBanner from '../components/AlertBanner.vue';
+import PhilaModal from '../components/PhilaModal.vue';
+import RefinePanel from '../components/RefinePanel.vue';
+import LocationsPanel from '../components/LocationsPanel.vue';
+import MapPanel from '../components/MapPanel.vue';
+import PhilaUiAddressInput from '../components/PhilaUiAddressInput.vue';
+// import ResourceView from '../components/ResourceView';
 
 import {
   AppHeader,
@@ -168,7 +167,7 @@ import {
 } from '@phila/phila-ui';
 
 export default {
-  name: 'App',
+  name: 'Main',
   components: {
     AppHeader,
     MobileNav,
@@ -511,19 +510,19 @@ export default {
         this.filterPoints();
       }
     },
-    // selectedResources(nextSelectedResources) {
-    //   let startQuery = { ...this.$route.query };
-    //   console.log('watch selectedResources fired, startQuery:', startQuery, 'nextSelectedResources:', nextSelectedResources, 'nextSelectedResources.length:', nextSelectedResources.length);
+    selectedResources(nextSelectedResources) {
+      let startQuery = { ...this.$route.query };
+      console.log('watch selectedResources fired, startQuery:', startQuery, 'nextSelectedResources:', nextSelectedResources, 'nextSelectedResources.length:', nextSelectedResources.length);
   
-    //   delete startQuery['resource'];
+      delete startQuery['resource'];
   
-    //   if (nextSelectedResources.length) {
-    //     let query = { 'resource': nextSelectedResources[0] };
-    //     this.$router.push({ query: { ...startQuery, ...query }});
-    //   } else {
-    //     this.$router.push({ query: { ...startQuery }});
-    //   }
-    // },
+      if (nextSelectedResources.length) {
+        let query = { 'resource': nextSelectedResources[0] };
+        this.$router.push({ query: { ...startQuery, ...query }});
+      } else {
+        this.$router.push({ query: { ...startQuery }});
+      }
+    },
     selectedKeywords() {
       if (this.$store.state.sources[this.$appType].data) {
         this.filterPoints();
@@ -536,45 +535,45 @@ export default {
     },
   },
   mounted() {
-  //   console.log('in App.vue mounted 210818, this.$store.state:', this.$store.state, 'this.$config:', this.$config, 'window.location.href:', window.location.href);
-  //   this.$config.searchBar.searchTypes.forEach(item => {
-  //     if (this.$route.query[item]) {
-  //       // console.log('App.vue mounted item:', item, 'this.searchBarType:', this.searchBarType);
-  //       this.$controller.handleSearchFormSubmit(this.$route.query[item], item);
-  //       this.searchString = this.$route.query[item];
-  //     }
-  //   });
+    console.log('in App.vue mounted 210818, this.$store.state:', this.$store.state, 'this.$config:', this.$config, 'window.location.href:', window.location.href);
+    this.$config.searchBar.searchTypes.forEach(item => {
+      if (this.$route.query[item]) {
+        // console.log('App.vue mounted item:', item, 'this.searchBarType:', this.searchBarType);
+        this.$controller.handleSearchFormSubmit(this.$route.query[item], item);
+        this.searchString = this.$route.query[item];
+      }
+    });
 
-  //   if (this.$route.query.resource) {
-  //     console.log('App.vue mounted, this.$route.query.resource:', this.$route.query.resource);
-  //     let selectedResources = [ this.$route.query.resource ];
-  //     this.$store.commit('setSelectedResources', selectedResources);
-  //   }
+    if (this.$route.query.resource) {
+      console.log('App.vue mounted, this.$route.query.resource:', this.$route.query.resource);
+      let selectedResources = [ this.$route.query.resource ];
+      this.$store.commit('setSelectedResources', selectedResources);
+    }
     
-  //   if (this.$route.query.lang) {
-  //     // console.log('App.vue mounted language:', this.$route.query.lang);
-  //     this.$i18n.locale = this.$route.query.lang;
-  //   }
+    if (this.$route.query.lang) {
+      // console.log('App.vue mounted language:', this.$route.query.lang);
+      this.$i18n.locale = this.$route.query.lang;
+    }
 
-  //   if (this.$config.searchBar) {
-  //     let routeQuery = Object.keys(this.$route.query);
-  //     // console.log('App.vue mounted in searchTypes section, this.$route:', this.$route, 'routeQuery:', routeQuery, 'Object.keys(this.$route.query)[0]', Object.keys(this.$route.query)[0]);
-  //     let value;
-  //     for (let query of routeQuery) {
-  //       if (query === 'address' || query === 'keyword') {
-  //         value = this.$route.query[query];
-  //       }
-  //     }
-  //     this.$store.commit('setCurrentSearch', value);
+    if (this.$config.searchBar) {
+      let routeQuery = Object.keys(this.$route.query);
+      // console.log('App.vue mounted in searchTypes section, this.$route:', this.$route, 'routeQuery:', routeQuery, 'Object.keys(this.$route.query)[0]', Object.keys(this.$route.query)[0]);
+      let value;
+      for (let query of routeQuery) {
+        if (query === 'address' || query === 'keyword') {
+          value = this.$route.query[query];
+        }
+      }
+      this.$store.commit('setCurrentSearch', value);
 
-  //     this.addressInputPlaceholder = this.$config.searchBar.placeholder;
-  //   }
+      this.addressInputPlaceholder = this.$config.searchBar.placeholder;
+    }
 
-  //   if (this.$config.appLink) {
-  //     this.appLink = this.$config.appLink;
-  //   } else {
-  //     this.appLink = '.';
-  //   }
+    if (this.$config.appLink) {
+      this.appLink = this.$config.appLink;
+    } else {
+      this.appLink = '.';
+    }
     if (this.$config.dataSources) {
       this.$controller.dataManager.fetchData();
     }
@@ -585,48 +584,48 @@ export default {
       this.$data.buttonText = this.$data.isMapVisible ? 'app.viewList' : 'app.viewMap';
     }
 
-  //   if (this.$config.alerts && this.$config.alerts.modal && this.$config.alerts.modal.enabled) {
-  //     this.isAlertModalOpen = true;
-  //   }
+    if (this.$config.alerts && this.$config.alerts.modal && this.$config.alerts.modal.enabled) {
+      this.isAlertModalOpen = true;
+    }
 
-  //   if (this.$config.gtag && this.$config.gtag.category) {
-  //     this.$store.commit('setGtagCategory', this.$config.gtag.category);
-  //   }
+    if (this.$config.gtag && this.$config.gtag.category) {
+      this.$store.commit('setGtagCategory', this.$config.gtag.category);
+    }
 
-  //   if (this.$config.app.trustedSite && this.$config.app.trustedSite === 'hidden') {
-  //     let trusted = document.getElementById('trusted-site');
-  //     console.log('trusted:', trusted);
-  //     trusted.classList.add("trusted-site-hidden");
-  //   }
+    if (this.$config.app.trustedSite && this.$config.app.trustedSite === 'hidden') {
+      let trusted = document.getElementById('trusted-site');
+      console.log('trusted:', trusted);
+      trusted.classList.add("trusted-site-hidden");
+    }
 
-  //   if (this.$config.app.skipGreeting) {
-  //     this.$store.commit('setShouldShowGreeting', false);
-  //   }
+    if (this.$config.app.skipGreeting) {
+      this.$store.commit('setShouldShowGreeting', false);
+    }
 
 
   },
-  // created() {
-  //   let root = document.getElementsByTagName( 'html' )[0]; // '0' to assign the first (and only `HTML` tag)
-  //   root.setAttribute( 'class', 'invisible-scrollbar' );
+  created() {
+    let root = document.getElementsByTagName( 'html' )[0]; // '0' to assign the first (and only `HTML` tag)
+    root.setAttribute( 'class', 'invisible-scrollbar' );
 
-  //   // console.log('App.vue created, this.$config:', this.$config);
-  //   if (this.$config.map) {
-  //     if (this.$config.map.shouldInitialize === false) {
-  //       this.$store.commit('setShouldInitializeMap', false);
-  //     }
-  //     if (this.$config.map.type) {
-  //       this.$store.commit('setMapType', this.$config.map.type);
-  //     }
-  //   }
+    // console.log('App.vue created, this.$config:', this.$config);
+    if (this.$config.map) {
+      if (this.$config.map.shouldInitialize === false) {
+        this.$store.commit('setShouldInitializeMap', false);
+      }
+      if (this.$config.map.type) {
+        this.$store.commit('setMapType', this.$config.map.type);
+      }
+    }
 
-  //   if (this.$config.app.logoSrc) {
-  //     this.brandingImage = {
-  //       src: this.$config.app.logoSrc,
-  //       alt: this.$config.app.logoAlt,
-  //       width: "200px",
-  //     }
-  //   }
-  // },
+    if (this.$config.app.logoSrc) {
+      this.brandingImage = {
+        src: this.$config.app.logoSrc,
+        alt: this.$config.app.logoAlt,
+        width: "200px",
+      }
+    }
+  },
 
   methods: {
     compareArrays(arr1, arr2) {
@@ -1071,7 +1070,7 @@ export default {
 </script>
 
 <style lang="scss">
-@import "./assets/scss/main.scss";
+@import "@/assets/scss/main.scss";
 
 html, body {
   box-sizing: border-box;

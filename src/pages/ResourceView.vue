@@ -1,19 +1,17 @@
 <template>
-  <!-- class="cell medium-cell-block-container location-item" -->
   <div
-    class="location-item"
-    :class="{ 'open': locationOpen }"
+    class="location-item open"
   >
+    <!-- :class="{ 'open': locationOpen }" -->
     <div
       class="columns location-row is-mobile"
       tabindex="0"
-      @click="expandLocation"
+    >
+      <!-- @click="expandLocation"
       @keypress.space.prevent
       @keyup.space="expandLocation"
-      @keyup.enter="expandLocation"
-    >
+      @keyup.enter="expandLocation" -->
       <div class="location-title column is-11">
-        <!-- :id="makeID(getSiteName(item))" -->
         <h2
           class="h5"
           :aria-expanded="locationOpen"
@@ -36,7 +34,7 @@
 
         </h2>
       </div>
-      <button
+      <!-- <button
         v-if="locationOpen"
         class="print-view-button"
         @click="openPrintView"
@@ -53,29 +51,34 @@
           v-if="locationOpen"
           :icon="[plusIconWeight, 'minus']"
         />
-        <!-- class="plus-icon" -->
-      </div>
-      <!-- <div
-        :class="{ 'location-open': locationOpen }"
-        class="location-content"
-        :aria-labelledby="makeID(getSiteName(item))"
-      >
-        <slot />
       </div> -->
     </div>
-    <div
+
+    <component
+      :is="'expandCollapseContent'"
+      v-if="$config.customComps && Object.keys($config.customComps).includes('expandCollapseContent') && selectedResources.includes(item._featureId)"
+      :item="item"
+    />
+      <!-- :is-map-visible="isMapVisible" -->
+    <!-- <div
       :class="locationClass"
     >
-    <!-- :aria-labelledby="makeID(getSiteName(item))" -->
-    <!-- :class="{ 'location-open': locationOpen }" -->
-    <!-- :class="isMobile ? 'location-content-mobile' : 'location-content'" -->
       <slot />
-    </div>
+    </div> -->
   </div>
+
+  <!-- <div>
+    Hello
+
+    <router-view
+      :resource="resource"
+    />
+
+  </div> -->
 </template>
 <script>
 
-import SharedFunctions from './mixins/SharedFunctions.vue';
+import SharedFunctions from '@/components/mixins/SharedFunctions.vue';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { findIconDefinition } from '@fortawesome/fontawesome-svg-core';
 
@@ -85,12 +88,14 @@ export default {
       type: Boolean,
       default: true,
     },
-    item: {
-      type: Object,
-    },
+    // item: {
+    //   type: Object,
+    // },
   },
   data() {
     return {
+      resource: null,
+      // item: null,
       locationOpen: false,
     };
   },
@@ -177,20 +182,38 @@ export default {
     latestSelectedResourceFromMap() {
       return this.$store.state.map.latestSelectedResourceFromMap;
     },
+    item() {
+      let test = this.$store.state.sources.primaryCareSites.data;
+      console.log('computed item test:', test, 'this.resource:', this.resource);
+      let value;
+      if (this.$store.state.sources.primaryCareSites.data) {
+        // value = this.$store.state.sources.primaryCareSites.data.features.filter(features => features._featureId = this.resource);
+        value = this.$store.state.sources.primaryCareSites.data.features.filter(features => {
+          // console.log('inside filter function, features:', features, 'this.resource:', this.resource);
+          return features._featureId == this.resource;
+        })[0];
+      }
+      console.log('computed item, value:', value);
+      return value;
+      // return this.$store.state.sources.primaryCareSites.data.features.filter(function(_featureId) {
+      //   console.log('inside filter function, _featureId:', _featureId, 'this.resource:', this.resource);
+      //   return _featureId = this.resource;
+      // });
+    },
   },
   watch: {
-    selectedResources(nextSelectedResources) {
-      // console.log('watch selectedResources is running');
-      if (this.locationOpen || nextSelectedResources.includes(this.$props.item._featureId)) {
-        if (this.locationOpen === false) {
-          this.openLocation();
-        } else if (this.locationOpen && !nextSelectedResources.includes(this.$props.item._featureId)) {
-          this.locationOpen = false;
-        }
-      } else {
-        this.locationOpen = false;
-      }
-    },
+    // selectedResources(nextSelectedResources) {
+    //   // console.log('watch selectedResources is running');
+    //   if (this.locationOpen || nextSelectedResources.includes(this.$props.item._featureId)) {
+    //     if (this.locationOpen === false) {
+    //       this.openLocation();
+    //     } else if (this.locationOpen && !nextSelectedResources.includes(this.$props.item._featureId)) {
+    //       this.locationOpen = false;
+    //     }
+    //   } else {
+    //     this.locationOpen = false;
+    //   }
+    // },
     isMapVisible(nextIsMapVisible) {
       // console.log('ExpandCollapse watch isMapVisible');
       if (!nextIsMapVisible) {
@@ -208,10 +231,18 @@ export default {
     },
   },
   mounted() {
+
+    this.resource = this.$route.params.resource;
+    // let test = this.$store.state.sources.primaryCareSites.data;
+    // console.log('mounted test:', test);
+    // this.item = this.$store.state.sources.primaryCareSites.data.features.filter(_featureId => _featureId = this.resource);
+    let selectedResources = [ this.resource ];
+    this.$store.commit('setSelectedResources', selectedResources);
+
     // console.log('ExpColl mounted:', this.evaluateSlot(this.slots.siteName));
-    if (this.selectedResources.includes(this.item._featureId)) {
-      this.openLocation();
-    }
+    // if (this.selectedResources.includes(this.item._featureId)) {
+    //   this.openLocation();
+    // }
 
     // window.addEventListener('keydown', (e) => {
     //   console.log('keydown is running, e', e);
@@ -233,7 +264,7 @@ export default {
     openPrintView(e) {
       e.stopPropagation();
       console.log('openPrintView is running, e:', e, 'this.$props.item._featureId:', this.$props.item._featureId);
-      window.open('./resource-view/' + this.$props.item._featureId, '_blank');
+      window.open();
     },
     openLocation() {
       this.locationOpen = true;
@@ -267,30 +298,30 @@ export default {
       // return if all sides are visible
       return Object.values(visibility).every(val => val);
     },
-    expandLocation() {
-      let siteName = this.getSiteName(this.$props.item);
-      console.log('ExpandCollapse expandLocation is starting, siteName:', siteName);
-      this.locationOpen = !this.locationOpen;
-      const selectedResource = this.$props.item._featureId;
-      // const selectedResources = [ ...this.selectedResources ];
-      const selectedResources = [];
-      let latestSelectedResourceFromExpand = null;
-      if (this.locationOpen) {
-        selectedResources.push(selectedResource);
-        latestSelectedResourceFromExpand = selectedResource;
-        this.$gtag.event('list-click', {
-          'event_category': this.$store.state.gtag.category,
-          'event_label': siteName,
-        });
-      } else {
-        selectedResources.splice(selectedResources.indexOf(selectedResource), 1);
-      }
-      // this.locationOpen ? selectedResources.push(selectedResource) : selectedResources.splice(selectedResources.indexOf(selectedResource), 1);
-      // console.log('ExpandCollapse expandLocation after selectedResources is defined');
+    // expandLocation() {
+    //   let siteName = this.getSiteName(this.$props.item);
+    //   console.log('ExpandCollapse expandLocation is starting, siteName:', siteName);
+    //   this.locationOpen = !this.locationOpen;
+    //   const selectedResource = this.$props.item._featureId;
+    //   // const selectedResources = [ ...this.selectedResources ];
+    //   const selectedResources = [];
+    //   let latestSelectedResourceFromExpand = null;
+    //   if (this.locationOpen) {
+    //     selectedResources.push(selectedResource);
+    //     latestSelectedResourceFromExpand = selectedResource;
+    //     this.$gtag.event('list-click', {
+    //       'event_category': this.$store.state.gtag.category,
+    //       'event_label': siteName,
+    //     });
+    //   } else {
+    //     selectedResources.splice(selectedResources.indexOf(selectedResource), 1);
+    //   }
+    //   // this.locationOpen ? selectedResources.push(selectedResource) : selectedResources.splice(selectedResources.indexOf(selectedResource), 1);
+    //   // console.log('ExpandCollapse expandLocation after selectedResources is defined');
 
-      this.$store.commit('setSelectedResources', selectedResources);
-      this.$store.commit('setLatestSelectedResourceFromExpand', latestSelectedResourceFromExpand);
-    },
+    //   this.$store.commit('setSelectedResources', selectedResources);
+    //   this.$store.commit('setLatestSelectedResourceFromExpand', latestSelectedResourceFromExpand);
+    // },
     makeID( itemTitle ){
       // console.log('itemTitle:', itemTitle);
       let value;
