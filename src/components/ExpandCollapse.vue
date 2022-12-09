@@ -14,7 +14,7 @@
     >
       <div
         class="location-title column"
-        :class="{ 'is-9': locationOpen, 'is-11': !locationOpen }"
+        :class="{ 'is-8': locationOpen, 'is-11': !locationOpen }"
       >
         <!-- :id="makeID(getSiteName(item))" -->
         <h2
@@ -41,7 +41,7 @@
       </div>
       <div
         v-if="locationOpen"
-        class="column is-2"
+        class="column is-3"
       >
         <button
           class="button is-small print-view-button"
@@ -422,25 +422,25 @@ export default {
   padding-right: 5px !important;
 }
 
-@media (max-width: 599px) {
+@media (max-width: 499px) {
   .print-view-button {
     display: none !important;
   }
 } 
 
-@media (min-width: 600px) and (max-width: 767px) {
+@media (min-width: 500px) and (max-width: 767px) {
   .print-button {
     display: none !important;
   }
 } 
 
-@media (min-width: 768px) and (max-width: 1199px) {
+@media (min-width: 768px) and (max-width: 1049px) {
   .print-view-button {
     display: none !important;
   }
 }
 
-@media (min-width: 1200px) {
+@media (min-width: 1050px) {
   .print-button {
     display: none !important;
   }
