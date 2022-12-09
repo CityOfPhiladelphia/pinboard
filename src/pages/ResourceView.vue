@@ -339,7 +339,7 @@ export default {
 
 .location-item {
   position: relative;
-  border-bottom: 1px solid black;
+  // border-bottom: 1px solid black;
   height:100%;
 
   // &:hover::after {
