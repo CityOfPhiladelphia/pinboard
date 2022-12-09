@@ -1,6 +1,6 @@
 <template>
   <div
-    class="location-item open"
+    class="loc-item open"
   >
     <!-- :class="{ 'open': locationOpen }" -->
     <div
@@ -337,7 +337,7 @@ export default {
 <style lang="scss">
 @import "../assets/scss/main.scss";
 
-.location-item {
+.loc-item {
   position: relative;
   // border-bottom: 1px solid black;
   height:100%;
@@ -383,8 +383,8 @@ export default {
     padding-left: 14px;
     padding-right: 14px;
     font-size: 12px;
-    border-style: solid;
-    border-width: 1px;
+    // border-style: solid;
+    // border-width: 1px;
     display: inline-block;
     color: white;
   }
