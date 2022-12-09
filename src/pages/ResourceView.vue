@@ -54,27 +54,26 @@
       </div> -->
     </div>
 
-    <component
-      :is="'expandCollapseContent'"
-      v-if="$config.customComps && Object.keys($config.customComps).includes('expandCollapseContent') && selectedResources.includes(item._featureId)"
-      :item="item"
-    />
+    <div
+      class="component-holder"
+    >
+
+      <component
+        :is="'expandCollapseContent'"
+        v-if="$config.customComps && Object.keys($config.customComps).includes('expandCollapseContent') && selectedResources.includes(item._featureId)"
+        :item="item"
+      />
+    </div>
+
       <!-- :is-map-visible="isMapVisible" -->
     <!-- <div
       :class="locationClass"
     >
       <slot />
     </div> -->
+
   </div>
 
-  <!-- <div>
-    Hello
-
-    <router-view
-      :resource="resource"
-    />
-
-  </div> -->
 </template>
 <script>
 
@@ -453,6 +452,10 @@ export default {
 
 .print-view-button {
   width: 100px;
+}
+
+.component-holder {
+  margin: 1.5rem;
 }
 
 </style>
