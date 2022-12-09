@@ -12,7 +12,10 @@
       @keyup.space="expandLocation"
       @keyup.enter="expandLocation"
     >
-      <div class="location-title column is-11">
+      <div
+        class="location-title column"
+        :class="{ 'is-9': locationOpen, 'is-11': !locationOpen }"
+      >
         <!-- :id="makeID(getSiteName(item))" -->
         <h2
           class="h5"
@@ -36,13 +39,17 @@
 
         </h2>
       </div>
-      <button
+      <div
         v-if="locationOpen"
-        class="print-view-button"
-        @click="openPrintView"
+        class="column is-2"
       >
-        Print View
-      </button>
+        <button
+          class="button is-small print-view-button"
+          @click="openPrintView"
+        >
+          Print View
+        </button>
+      </div>
       <div class="location-icon column is-1">
         <font-awesome-icon
           v-if="!locationOpen"
@@ -333,6 +340,11 @@ export default {
       background: #2176d2;
       color: white;
     }
+
+    // position: relative;
+    // display: flex;
+    // flex-direction: column;
+    // justify-content: center;
   }
 
   .location-title {
@@ -421,7 +433,10 @@ export default {
 }
 
 .print-view-button {
-  width: 100px;
+  height: 30px !important;
+  // position: absolute;
+  // top: 50%;
+  // margin-top: -50px;
 }
 
 </style>
