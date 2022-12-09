@@ -49,6 +49,12 @@
         >
           Print View
         </button>
+        <button
+          class="button is-small print-button"
+          @click="openPrintView"
+        >
+          Print
+        </button>
       </div>
       <div class="location-icon column is-1">
         <font-awesome-icon
@@ -319,10 +325,6 @@ export default {
   border-bottom: 1px solid black;
   height:100%;
 
-  // &:hover::after {
-  //   color: white;
-  // }
-
   &:hover {
     .plus-icon {
       color: white;
@@ -340,11 +342,6 @@ export default {
       background: #2176d2;
       color: white;
     }
-
-    // position: relative;
-    // display: flex;
-    // flex-direction: column;
-    // justify-content: center;
   }
 
   .location-title {
@@ -371,39 +368,22 @@ export default {
     color: white;
   }
 
-  // &::after{
-  //   position: absolute;
-  //   right: 1rem;
-  //   top: 1rem;
-  //   content: '+';
-  //   font-weight: 300;
-  //   font-size:1.5rem;
-  //   z-index: 100;
-  //   color: $ben-franklin-blue-dark;
-  //   pointer-events: none;
-  // }
   &.open{
     .location-row {
       color:white;
       background-color: $ben-franklin-blue-dark;
-      // font-weight: 900;
     }
 
-    // .location-title {
     h2 {
       font-weight: 900 !important;
     }
-    // &::after{
-    //   content: '–';
-    //   color:white;
-    // }
   }
+
   .location-content{
     overflow: hidden;
     height:0;
 
     &.location-open{
-      // padding: 1rem;
       padding-top: 1rem;
       padding-bottom: 1rem;
       padding-right: 0px;
@@ -433,10 +413,39 @@ export default {
 }
 
 .print-view-button {
-  height: 30px !important;
-  // position: absolute;
-  // top: 50%;
-  // margin-top: -50px;
+  padding-left: 5px !important;
+  padding-right: 5px !important;
 }
+
+.print-button {
+  padding-left: 5px !important;
+  padding-right: 5px !important;
+}
+
+@media (max-width: 599px) {
+  .print-view-button {
+    display: none !important;
+  }
+} 
+
+@media (min-width: 600px) and (max-width: 767px) {
+  .print-button {
+    display: none !important;
+  }
+} 
+
+@media (min-width: 768px) and (max-width: 1199px) {
+  .print-view-button {
+    display: none !important;
+  }
+}
+
+@media (min-width: 1200px) {
+  .print-button {
+    display: none !important;
+  }
+} 
+
+
 
 </style>
