@@ -1,5 +1,4 @@
 <template>
-  <!-- class="cell medium-cell-block-container location-item" -->
   <div
     class="location-item"
     :class="{ 'open': locationOpen }"
@@ -16,7 +15,6 @@
         class="location-title column"
         :class="{ 'is-8': locationOpen, 'is-11': !locationOpen }"
       >
-        <!-- :id="makeID(getSiteName(item))" -->
         <h2
           class="h5"
           :aria-expanded="locationOpen"
@@ -66,22 +64,11 @@
           v-if="locationOpen"
           :icon="[plusIconWeight, 'minus']"
         />
-        <!-- class="plus-icon" -->
       </div>
-      <!-- <div
-        :class="{ 'location-open': locationOpen }"
-        class="location-content"
-        :aria-labelledby="makeID(getSiteName(item))"
-      >
-        <slot />
-      </div> -->
     </div>
     <div
       :class="locationClass"
     >
-    <!-- :aria-labelledby="makeID(getSiteName(item))" -->
-    <!-- :class="{ 'location-open': locationOpen }" -->
-    <!-- :class="isMobile ? 'location-content-mobile' : 'location-content'" -->
       <slot />
     </div>
   </div>

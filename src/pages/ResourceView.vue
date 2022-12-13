@@ -81,6 +81,9 @@ import SharedFunctions from '@/components/mixins/SharedFunctions.vue';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { findIconDefinition } from '@fortawesome/fontawesome-svg-core';
 
+// import all fontawesome icons included in phila-vue-mapping
+import * as faMapping from '@phila/vue-mapping/src/fa';
+
 export default {
   props: {
     isMapVisible: {
@@ -230,6 +233,9 @@ export default {
     },
   },
   mounted() {
+    if (this.$config.dataSources) {
+      this.$controller.dataManager.fetchData();
+    }
 
     this.resource = this.$route.params.resource;
     // let test = this.$store.state.sources.primaryCareSites.data;
