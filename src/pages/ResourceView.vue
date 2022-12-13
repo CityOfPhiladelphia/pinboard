@@ -219,10 +219,6 @@ export default {
           padding-top: 0rem;
         }
 
-        .title-col {
-          padding-top: 1rem !important;
-          padding-bottom: 0rem;
-        }
       }
     }
 
@@ -235,10 +231,21 @@ export default {
     font-weight: 100;
   }
 
-  // .title-col {
-  //   padding-top: 1rem;
-  // }
 
+}
+
+@media screen and (min-width: 768px) {
+  .title-col {
+    padding-top: 1rem !important;
+    padding-bottom: 1rem !important;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .title-col {
+    padding-top: 2rem !important;
+    padding-bottom: 2rem !important;
+  }
 }
 
 .loc-item {
