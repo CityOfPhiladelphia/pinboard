@@ -606,7 +606,7 @@ export default {
       }
     },
     latestSelectedResourceFromExpand(nextLatestSelectedResource) {
-      console.log('watch latestSelectedResourceFromExpand:', nextLatestSelectedResource, 'this.$appType:', this.$appType);
+      console.log('watch latestSelectedResourceFromExpand:', nextLatestSelectedResource, 'this.$appType:', this.$appType, 'this.$store.state.sources[this.$appType].data:', this.$store.state.sources[this.$appType].data);
       if (nextLatestSelectedResource) {
         let rows;
         const map = this.$store.map;
@@ -639,6 +639,13 @@ export default {
             // }
           }
 
+        // data coming in as "records" means it came from airtable
+        } else if (this.$store.state.sources[this.$appType].data.records) {
+          rows = this.$store.state.sources[this.$appType].data.records;
+          const dataValue = rows.filter(row => row._featureId === nextLatestSelectedResource);
+          // console.log('in watch latestSelectedResourceFromExpand, array, nextLatestSelectedResource:', nextLatestSelectedResource, 'rows:', rows, 'dataValue:', dataValue);
+          map.setCenter([ dataValue[0].latlng[1], dataValue[0].latlng[0] ], this.geocodeZoom);
+        
         // data coming in as an array means it came from a compiled datasource or airtable
         } else if (Array.isArray(this.$store.state.sources[this.$appType].data)) {
           rows = this.$store.state.sources[this.$appType].data;

@@ -138,7 +138,7 @@
 <script>
 
 import proj4 from 'proj4';
-import SharedFunctions from '@/components/mixins/SharedFunctions.vue';
+import SharedFunctions from '../components/mixins/SharedFunctions.vue';
 
 import 'maplibre-gl/dist/maplibre-gl.css';
 // import 'mapbox-gl/dist/mapbox-gl.css';

@@ -76,7 +76,7 @@
 
 <script>
 
-import SharedFunctions from '@/components/mixins/SharedFunctions.vue';
+import SharedFunctions from '../components/mixins/SharedFunctions.vue';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { findIconDefinition } from '@fortawesome/fontawesome-svg-core';
 
@@ -164,12 +164,48 @@ export default {
     latestSelectedResourceFromMap() {
       return this.$store.state.map.latestSelectedResourceFromMap;
     },
+    database() {
+      console.log('in ResourceView.vue database computed, this.$appType:', this.$appType, 'this.$store.state.sources[this.$appType].data:', this.$store.state.sources[this.$appType].data);
+      if (this.$store.state.sources[this.$appType].data) {
+
+        let database = this.$store.state.sources[this.$appType].data.rows || this.$store.state.sources[this.$appType].data.features || this.$store.state.sources[this.$appType].data.records;
+        console.log('computed database is running, database:', database);
+  
+        for (let [key, value] of Object.entries(database)) {
+  
+          if (this.$config.hiddenRefine) {
+            for (let field in this.$config.hiddenRefine) {
+              let getter = this.$config.hiddenRefine[field];
+              let val = getter(value);
+              if (val === false) {
+                delete database[key];
+              }
+            }
+          }
+  
+          for (let [rowKey, rowValue] of Object.entries(value)) {
+            if ( rowKey == 'hide_on_finder' && rowValue == true ){
+              //console.log('deleted entry', database[key])
+              delete database[key];
+            }
+          }
+  
+        }
+        //filter empty values from deleted database
+        let finalDB = database.filter(_ => true);
+        return finalDB;
+      }
+    },
     item() {
-      let test = this.$store.state.sources.primaryCareSites.data;
+      let appType = this.$config.app.type;
+      console.log('in ResourceView.vue, item computed, appType:', appType);
+      // let test = this.$store.state.sources[appType].data;
+      let test = this.database;
       console.log('computed item test:', test, 'this.resource:', this.resource);
       let value;
-      if (this.$store.state.sources.primaryCareSites.data) {
-        value = this.$store.state.sources.primaryCareSites.data.features.filter(features => {
+      // if (this.$store.state.sources[appType].data) {
+      if (test) {
+        value = test.filter(features => {
           // console.log('inside filter function, features:', features, 'this.resource:', this.resource);
           return features._featureId == this.resource;
         })[0];
