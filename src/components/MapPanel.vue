@@ -1,8 +1,11 @@
 <template>
-  <div class="map-panel-main-div print-hide">
+  <div
+    :class="printHide"
+    class="map-panel-main-div"
+  >
 
     <phila-ui-address-input
-      v-show="!isMobile"
+      v-show="!isMobile && view=='app'"
       :over-map="true"
       :placeholder="addressInputPlaceholder"
       :width-from-config="addressInputWidth"
@@ -182,12 +185,16 @@ export default {
     MglFontAwesomeMarker,
     // OverlayLegend: () => import(/* webpackChunkName: "pvm_OverlayLegend" */'@phila/vue-mapping/src/mapbox/OverlayLegend'),
   },
-  // props: {
-  //   inputValidation: {
-  //     type: Boolean,
-  //     default: true,
-  //   },
-  // },
+  props: {
+    // inputValidation: {
+    //   type: Boolean,
+    //   default: true,
+    // },
+    view: {
+      type: String,
+      default: 'app',
+    },
+  },
   mixins: [
     SharedFunctions,
     cyclomediaMixin,
@@ -201,6 +208,13 @@ export default {
     return data;
   },
   computed: {
+    printHide() {
+      let value;
+      if (this.view != 'print') {
+        value = 'print-hide';
+      }
+      return value;
+    },
     // addressInputPlaceholder() {
     //   if (this.$config.addressInput) {
     //     return this.$config.addressInput.placeholder;
@@ -629,7 +643,7 @@ export default {
         } else if (this.$store.state.sources[this.$appType].data.features) {
           rows = this.$store.state.sources[this.$appType].data.features;
           const dataValue = rows.filter(row => row._featureId === nextLatestSelectedResource);
-          console.log('in watch latestSelectedResourceFromExpand, features, nextLatestSelectedResource:', nextLatestSelectedResource, 'rows:', rows, 'dataValue:', dataValue);
+          console.log('in watch latestSelectedResourceFromExpand, features, nextLatestSelectedResource:', nextLatestSelectedResource, 'rows:', rows, 'dataValue:', dataValue, 'dataValue[0].latlng:', dataValue[0].latlng);
           if (dataValue[0].latlng[0]) {
             // if (this.mapType === 'leaflet') {
             //   map.setView([ dataValue[0].latlng[0], dataValue[0].latlng[1] ], this.geocodeZoom);
@@ -669,21 +683,34 @@ export default {
         this.$store.map.invalidateSize();
       });
     },
+    currentMapData(nextCurrentMapData) {
+      console.log('MapPanel.vue, watch currentMapData, this.view:', this.view, 'nextCurrentMapData:', nextCurrentMapData, 'nextCurrentMapData[0].latlng:', nextCurrentMapData[0].latlng);
+      if (this.view == 'print') {
+        console.log('watch, its print view');
+        this.$store.commit('setMapCenter', [ nextCurrentMapData[0].latlng[1], nextCurrentMapData[0].latlng[0] ]);
+      }
+    },
   },
   // created() {
   //   this.mapbox = Mapbox;
   // },
   mounted() {
-    console.log('MapPanel mounted, this.$store.map:', this.$store.map, 'this.$config.map.zoom:', this.$config.map.zoom);
+    console.log('MapPanel mounted, this.view:', this.view, 'this.currentData:', this.currentData, 'this.$store.map:', this.$store.map, 'this.$config.map.zoom:', this.$config.map.zoom);
     let logo = document.getElementsByClassName('mapboxgl-ctrl-logo');
     // console.log('MapPanel mounted, logo:', logo, 'logo.length:', logo.length, 'logo.item(0):', logo.item(0));
     // logo[0].remove();
-    if (this.$config.map.zoom) {
+    if (this.view == 'print') {
+      this.$store.commit('setMapZoom', 17);
+    } else if (this.$config.map.zoom) {
       this.$store.commit('setMapZoom', this.$config.map.zoom);
     }
-    if (this.$config.map.center) {
+
+    // if (this.view == 'print') {
+    //   this.$store.commit('setMapCenter', [ this.currentData[0].latlng[1], this.currentData[0].latlng[0] ]);
+    if (this.view != 'print' && this.$config.map.center) {
       this.$store.commit('setMapCenter', this.$config.map.center);
     }
+
     window.addEventListener('resize', this.handleResize);
 
     if (this.$config.searchBar) {
@@ -864,9 +891,15 @@ export default {
   left: 40%;
 }
 
+
 @media print {
   .print-hide {
     display: none;
+  }
+
+  .circle-div {
+    color: red !important;
+    background-color: red !important;
   }
 }
 

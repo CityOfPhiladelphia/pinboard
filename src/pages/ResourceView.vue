@@ -62,12 +62,20 @@
       </div>
 
       <div class="component-holder">
+        <map-panel
+          :view="'print'"
+        />
+        <!-- @handle-search-form-submit="handleSubmit"
+        @clear-search="clearSearchTriggered"
+        @toggleMap="toggleMap" -->
+      </div>
+
+      <div class="component-holder card-content">
         <component
           :is="'expandCollapseContent'"
           v-if="showComponent"
           :item="item"
           />
-          <!-- v-if="$config.customComps && Object.keys($config.customComps).includes('expandCollapseContent')" -->
       </div>
 
     </div>
@@ -85,6 +93,8 @@ import { findIconDefinition } from '@fortawesome/fontawesome-svg-core';
 // import all fontawesome icons included in phila-vue-mapping
 import * as faMapping from '@phila/vue-mapping/src/fa';
 
+import MapPanel from '../components/MapPanel.vue';
+
 import {
   AppHeader,
   MobileNav,
@@ -92,10 +102,12 @@ import {
 } from '@phila/phila-ui';
 
 export default {
+  name: 'ResourceView',
   components: {
     AppHeader,
     MobileNav,
     LangSelector,
+    MapPanel,
   },
   data() {
     return {
@@ -105,6 +117,7 @@ export default {
       brandingLink: null,
       appLink: '/',
       footerLinks: [],
+      currentData: [],
     };
   },
   mixins: [ SharedFunctions ],
@@ -202,12 +215,15 @@ export default {
       }
     },
     item() {
-      let appType = this.$config.app.type;
+      let value;
+
+      // let appType = this.$config.app.type;
+      let appType = this.$appType;
       console.log('in ResourceView.vue, item computed, appType:', appType);
       // let test = this.$store.state.sources[appType].data;
       let test = this.database;
       console.log('computed item test:', test, 'this.resource:', this.resource);
-      let value;
+      // let value;
       // if (this.$store.state.sources[appType].data) {
       if (test) {
         value = test.filter(features => {
@@ -227,6 +243,17 @@ export default {
     this.resource = this.$route.params.resource;
     let selectedResources = [ this.resource ];
     this.$store.commit('setSelectedResources', selectedResources);
+
+  },
+  watch: {
+    item(nextItem) {
+      let currentData = [ nextItem ];
+      console.log('ResourceView.vue, watch item, nextItem:', nextItem, 'nextItem._featureId:', nextItem._featureId, 'nextItem.latlng:', nextItem.latlng, 'currentData:', currentData);
+      this.$store.commit('setCurrentData', currentData);
+      // this.$store.commit('setLatestSelectedResourceFromExpand', nextItem._featureId);
+      // this.$store.commit('setMapCenter', [ nextItem.latlng[1], nextItem.latlng[0] ]);
+      // this.$store.commit('setMapZoom', 17);
+    },
   },
   methods: {
     openPrintView(e) {
@@ -386,7 +413,19 @@ export default {
 }
 
 .component-holder {
-  margin: 1.5rem;
+  // margin-left: 1rem;
+  // margin-right: 1rem;
+  width: 100%;
+}
+
+.card-content {
+  margin: 1rem;
+  position: absolute;
+  top: 340px;
+  z-index: 1001;
+  // width: 100%;
+  padding-left: 0px;
+  background-color: white;
 }
 
 </style>
