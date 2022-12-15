@@ -41,7 +41,8 @@
             :aria-expanded="locationOpen"
           >
             {{ getSiteName(item) }}
-            <div
+
+            <!-- <div
               v-if="section && !i18nEnabled"
               class="section-name"
               :style="{ 'background-color': sectionColor }"
@@ -54,7 +55,7 @@
               :style="{ 'background-color': sectionColor }"
               v-html="'<b>'+$t(sectionTitle)+'</b>'"
             >
-          </div>
+            </div> -->
 
           </h2>
         </div>
@@ -63,9 +64,10 @@
       <div class="component-holder">
         <component
           :is="'expandCollapseContent'"
-          v-if="$config.customComps && Object.keys($config.customComps).includes('expandCollapseContent') && selectedResources.includes(item._featureId)"
+          v-if="showComponent"
           :item="item"
-        />
+          />
+          <!-- v-if="$config.customComps && Object.keys($config.customComps).includes('expandCollapseContent')" -->
       </div>
 
     </div>
@@ -86,10 +88,6 @@ import * as faMapping from '@phila/vue-mapping/src/fa';
 import {
   AppHeader,
   MobileNav,
-  AppFooter,
-  InputForm,
-  Textbox,
-  Checkbox,
   LangSelector,
 } from '@phila/phila-ui';
 
@@ -97,20 +95,27 @@ export default {
   components: {
     AppHeader,
     MobileNav,
-    AppFooter,
-    InputForm,
-    Textbox,
-    Checkbox,
     LangSelector,
   },
   data() {
     return {
       resource: null,
       locationOpen: false,
+      brandingImage: null,
+      brandingLink: null,
+      appLink: '/',
+      footerLinks: [],
     };
   },
   mixins: [ SharedFunctions ],
   computed: {
+    showComponent() {
+      let value = false;
+      if (this.item && this.item.attributes && this.$config.customComps && Object.keys(this.$config.customComps).includes('expandCollapseContent')) {
+        value = true;
+      }
+      return value;
+    },
     appTitle() {
       let value;
       if (this.$config.app.title) {
@@ -123,9 +128,9 @@ export default {
     appSubTitle() {
       let value;
       if (this.$config.app.subtitle) {
-        value = this.$config.app.subtitle;
+        value = this.$config.app.printSubtitle;
       } else if (this.i18nEnabled) {
-        value = this.$i18n.messages[this.i18nLocale].app.subtitle;
+        value = this.$i18n.messages[this.i18nLocale].app.printSubtitle;
       }
       return value;
     },
