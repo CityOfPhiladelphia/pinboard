@@ -15,6 +15,7 @@
 
     <MglMap
       :map-style.sync="this.$config.mbStyle"
+      :bounds="boundsProp"
       :zoom="this.$store.state.map.zoom"
       :center="this.$store.state.map.center"
       @moveend="this.handleMapMove"
@@ -124,6 +125,30 @@
 
       <MglNavigationControl position="bottom-right"/>
 
+      <MglGeojsonLayer
+        v-if="geojsonForTopicBoolean"
+        key="'geojsonForTopicFill'"
+        :source-id="'geojsonForTopic'"
+        :source="geojsonForTopicSource"
+        :layer-id="'geojsonForTopicFill'"
+        :layer="geojsonForTopicFillLayer"
+        :clear-source="false"
+        :replace-source="true"
+        :replace="true"
+      />
+
+      <MglGeojsonLayer
+        v-if="geojsonForTopicBoolean"
+        key="'geojsonForTopicLine'"
+        :source-id="'geojsonForTopic'"
+        :source="geojsonForTopicSource"
+        :layer-id="'geojsonForTopicLine'"
+        :layer="geojsonForTopicLineLayer"
+        :clear-source="true"
+        :replace-source="true"
+        :replace="true"
+      />
+
     </MglMap>
 
     <!-- <slot
@@ -154,6 +179,9 @@ import MglRasterLayer from '@phila/vue-mapping/src/mapbox/layer/RasterLayer.vue'
 import MglPopup from '@phila/vue-mapping/src/mapbox/UI/Popup';
 import OverlayLegend from '@phila/vue-mapping/src/mapbox/OverlayLegend';
 
+import bbox from '@turf/bbox';
+import { point, polygon, convertArea, featureCollection } from '@turf/helpers';
+
 export default {
   name: "MapPanel",
   components: {
@@ -179,7 +207,7 @@ export default {
     // MglImageLayer: () => import(/* webpackChunkName: "pvm_MglImageLayer" */'@phila/vue-mapping/src/mapbox/layer/ImageLayer'),
     // MglVectorLayer: () => import(/* webpackChunkName: "pvm_MglVectorLayer" */'@phila/vue-mapping/src/mapbox/layer/VectorLayer'),
     // MbIcon: () => import(/* webpackChunkName: "pvm_MbIcon" */'@phila/vue-mapping/src/mapbox/UI/MbIcon'),
-    // MglGeojsonLayer: () => import(/* webpackChunkName: "pvm_MglGeojsonLayer" */'@phila/vue-mapping/src/mapbox/layer/GeojsonLayer'),
+    MglGeojsonLayer: () => import(/* webpackChunkName: "pvm_MglGeojsonLayer" */'@phila/vue-mapping/src/mapbox/layer/GeojsonLayer'),
     // MglPopup: () => import(/* webpackChunkName: "pvm_MglPopup" */'@phila/vue-mapping/src/mapbox/UI/Popup'),
     // MglFontAwesomeMarker: () => import(/* webpackChunkName: "pvm_MglFontAwesomeMarker" */'@phila/vue-mapping/src/mapbox/UI/FontAwesomeMarker.vue'),
     MglFontAwesomeMarker,
@@ -204,10 +232,198 @@ export default {
       rows: [],
       accessToken: process.env.VUE_APP_MAPBOX_ACCESSTOKEN,
       addressInputPlaceholder: null,
+
+      geojsonForTopicBoolean: false,
+      geojsonForTopicSource: {
+        'type': 'geojson',
+        'data': {
+          'type': 'Feature',
+          'geometry': {
+            'type': 'Polygon',
+            'coordinates': [],
+          },
+        },
+      },
+      geojsonForTopicFillLayer: {
+        'id': 'geojsonForTopicFill',
+        'type': 'fill',
+        'source': 'geojsonForTopic',
+        'layout': {},
+        'paint': {
+          // 'fill-color': 'rgb(0,102,255)',
+          'fill-color': '#9e9ac8',
+          'fill-opacity': 0.4,
+          'fill-outline-color': 'rgb(0,102,255)',
+        },
+      },
+      geojsonForTopicLineLayer: {
+        'id': 'geojsonForTopicLine',
+        'type': 'line',
+        'source': 'geojsonForTopic',
+        'layout': {},
+        'paint': {
+          'line-color': '#9e9ac8',
+          'line-width': 2,
+        },
+      },
+      zoomToShape: {
+        geojsonParcels: [],
+        geojsonForTopic: [],
+        markersForAddress: [],
+        markersForTopic: [],
+      },
+
     };
     return data;
   },
   computed: {
+    boundsProp() {
+      let bounds = this.$store.state.map.bounds;
+      // console.log('boundsProps, bounds:', bounds);
+      let finalBounds;
+
+      if (this.mapType === 'leaflet') {
+        finalBounds = bounds;
+      } else {
+        if (bounds._northEast && bounds._northEast.lat != null) {
+          finalBounds = [[ bounds._southWest.lng, bounds._southWest.lat ], [ bounds._northEast.lng, bounds._northEast.lat ]];
+        } else if (bounds._northEast && bounds._northEast.lat == null) {
+          // finalBounds = [[ -75.0936906502695, 39.999379013777684 ], [ -75.23325134973207, 39.9072659724458 ]];
+        } else {
+          finalBounds = bounds;
+        }
+      }
+      return finalBounds;
+    },
+    geojsonForTopic() {
+      // const features = [];
+      // const topicGeojson = this.activeTopicConfig.geojsonForTopic;
+      // if (topicGeojson) {
+      //   const state = this.$store.state;
+      //   const topicData = topicGeojson.data(state);
+      //   if (topicData !== null) {
+      //     for (let geojson of topicData) {
+      //       let props = Object.assign({}, topicGeojson.style);
+      //       props.key = geojson[topicGeojson.key];
+      //       props.geojson = geojson;
+      //       features.push(props);
+      //     }
+      //   }
+      // }
+      // return features;
+      // let selectedService = this.$store.state.selectedServices[0];
+      let selectedResource = this.$store.state.selectedResources[0];
+      return [{
+        // [
+          'resource': selectedResource,
+          'color':"#9e9ac8",
+          'fillColor':"#9e9ac8",
+          'fillOpacity':0.3,
+          'key':1384,
+          'opacity':1,
+          'weight':2,
+          'geojson': {
+            "type": "Feature",
+            '_featureId':"feat-divisions-0",
+            "id": 1384,
+            "geometry": {
+              "type": "Polygon",
+              "coordinates": [
+                [
+                  [
+                    -75.1618005703091,
+                    39.9283756729456
+                  ],
+                  [
+                    -75.160235200061,
+                    39.9281680139188
+                  ],
+                  [
+                    -75.1603151305822,
+                    39.927800027751
+                  ],
+                  [
+                    -75.1604026246136,
+                    39.9273905546867
+                  ],
+                  [
+                    -75.1604978503038,
+                    39.9269448190093
+                  ],
+                  [
+                    -75.1605991228837,
+                    39.9265047034187
+                  ],
+                  [
+                    -75.1606927366485,
+                    39.9261020764705
+                  ],
+                  [
+                    -75.1607671038285,
+                    39.9257262454442
+                  ],
+                  [
+                    -75.1623404538027,
+                    39.9259294004418
+                  ],
+                  [
+                    -75.1629026012534,
+                    39.9259991702987
+                  ],
+                  [
+                    -75.1629996189932,
+                    39.9260197398441
+                  ],
+                  [
+                    -75.163357005776,
+                    39.9260653564463
+                  ],
+                  [
+                    -75.1639201998335,
+                    39.9261393210887
+                  ],
+                  [
+                    -75.1638226200541,
+                    39.9265675478857
+                  ],
+                  [
+                    -75.163740928687,
+                    39.9269256346997
+                  ],
+                  [
+                    -75.1636511323861,
+                    39.9273585753631
+                  ],
+                  [
+                    -75.1635528138144,
+                    39.9277795231411
+                  ],
+                  [
+                    -75.1634583932705,
+                    39.9281819329592
+                  ],
+                  [
+                    -75.1633794834593,
+                    39.9285866099504
+                  ],
+                  [
+                    -75.1618005703091,
+                    39.9283756729456
+                  ]
+                ]
+              ]
+            },
+            "properties": {
+              "OBJECTID": 1384,
+              "SHORT_DIV_NUM": "04",
+              "DIVISION_NUM": "0104",
+              "Shape__Area": 127880.61328125,
+              "Shape__Length": 1431.11897239414
+            }
+          }
+        // ]
+      }];
+    },
     printHide() {
       let value;
       if (this.view != 'print') {
@@ -405,8 +621,9 @@ export default {
           // console.log('if row.lat is running, color:', color, 'markerSize:', markerSize);
           let projection = this.getProjection(row);
           if (projection === '3857') {
-            // console.log('if row.lat, and projection is 3857');
-            row.latlng = proj4(this.projection3857, this.projection4326, [ row.lat, row.lon ]);
+            // console.log('if row.lat, and projection is 3857, row.lat:', row.lat, 'row.lon:', row.lon);
+            let lnglat = proj4(this.projection3857, this.projection4326, [ row.lon, row.lat ]);
+            row.latlng = [ lnglat[1], lnglat[0] ];
           } else if (projection === '2272') {
             // console.log('if row.lat, and projection is 2272');
             let lnglat = proj4(this.projection2272, this.projection4326, [ row.geometry.x, row.geometry.y ]);
@@ -417,7 +634,7 @@ export default {
           }
         } else if (row.geometry) {
           let projection = this.getProjection(row);
-          // console.log('else if row.geometry is true, row.geometry:', row.geometry, 'projection:', projection);
+          // console.log('else if row.geometry is true, row.geometry:', row.geometry, 'projection:', projection, 'row.geometry.x:', row.geometry.x, 'row.geometry.y:', row.geometry.y);
           if (projection === '3857') {
             let lnglat = proj4(this.projection3857, this.projection4326, [ row.geometry.x, row.geometry.y ]);
             row.latlng = [ lnglat[1], lnglat[0] ];
@@ -690,6 +907,70 @@ export default {
         this.$store.commit('setMapCenter', [ nextCurrentMapData[0].latlng[1], nextCurrentMapData[0].latlng[0] ]);
       }
     },
+
+    geojsonForTopic(nextGeojson) {
+      console.log('watch geojsonForTopic is firing, nextGeojson[0]:', nextGeojson[0]);
+      if (this.$store.map) {
+        console.log('watch geojsonForTopic is running, map.getStyle():', this.$store.map.getStyle(), 'map.getStyle().layers:', this.$store.map.getStyle().layers, 'nextGeojson:', nextGeojson);
+      }
+      if (nextGeojson[0] && nextGeojson.length > 1) {
+        console.log('watch geojsonForTopic is running, nextGeojson:', nextGeojson, 'nextGeojson[0].geojson:', nextGeojson[0].geojson);
+        this.$data.geojsonCollectionForTopicSource.data.features = [];
+
+        for (let feature of nextGeojson) {
+          this.$data.geojsonCollectionForTopicSource.data.features.push(feature.geojson);
+        }
+
+        const valOrGetter = nextGeojson[0].fillColor;
+        const valOrGetterType = typeof valOrGetter;
+        let val;
+
+        if (valOrGetterType === 'function') {
+          const state = this.$store.state;
+          const getter = valOrGetter;
+          val = getter(state);
+        } else {
+          val = valOrGetter;
+        }
+        this.$data.geojsonCollectionForTopicFillLayer.paint['fill-color'] = val;
+        this.$data.geojsonCollectionForTopicFillLayer.paint['fill-opacity'] = nextGeojson[0].fillOpacity;
+
+        if (nextGeojson[0].labelField) {
+          this.$data.geojsonCollectionForTopicLabelsLayer.layout = {
+            'text-font': [ 'Open Sans Regular' ],
+            'text-field': [ 'get', nextGeojson[0].labelField ],
+            'text-variable-anchor': [ 'top', 'bottom', 'left', 'right' ],
+            'text-radial-offset': 0.5,
+            'text-justify': 'auto',
+            // 'icon-image': ['concat', ['get', 'icon'], '-15']
+          };
+        }
+        if (nextGeojson[0].labelMinZoom) {
+          this.$data.geojsonCollectionForTopicLabelsLayer.minzoom = nextGeojson[0].labelMinZoom;
+        }
+
+        this.$data.geojsonForTopicBoolean = true;
+      } else if (nextGeojson[0]) {
+        console.log('watch geojsonForTopic else if is running');
+        this.$data.geojsonForTopicSource.data.geometry.coordinates = nextGeojson[0].geojson.geometry.coordinates;
+        this.$data.geojsonForTopicBoolean = true;
+      } else {
+        console.log('watch geojsonForTopic else is running');
+        this.$data.geojsonForTopicSource.data.geometry.coordinates = [];
+        this.$data.geojsonForTopicBoolean = false;
+      }
+      // let czts = this.activeTopicConfig.zoomToShape;
+      let czts = [ 'geojsonForTopic' ];
+      let dzts = this.$data.zoomToShape;
+      if (!czts || !czts.includes('geojsonForTopic')) {
+        dzts.geojsonForTopic = [];
+        return;
+      }
+      dzts.geojsonForTopic = nextGeojson;
+      // // console.log('exiting geojsonForTopic');
+      this.checkBoundsChanges();
+
+    },
   },
   // created() {
   //   this.mapbox = Mapbox;
@@ -830,6 +1111,91 @@ export default {
       logo[0].remove();
       let attrib = document.getElementsByClassName('mapboxgl-ctrl-attrib');
       attrib[0].remove();
+    },
+
+    checkBoundsChanges() {
+      console.log('checkBoundsChanges is running');
+      // let czts = this.activeTopicConfig.zoomToShape;
+      let czts = [ 'geojsonForTopic' ];
+      if (!czts) {
+        return;
+      }
+      let dzts = this.$data.zoomToShape;
+      // console.log('dzts:', dzts, 'czts:', czts);
+      let tf = [];
+      for (let shape of czts) {
+        if (dzts[shape] !== false && dzts[shape].length > 0) {
+          tf.push(true);
+        } else {
+          tf.push(false);
+        }
+      }
+      console.log('MapPanel.vue checkBoundsChanges, dzts:', dzts, 'czts:', czts, 'tf:', tf);
+      if (tf.includes(false)) {
+        return;
+      }
+      this.setMapToBounds();
+
+    },
+
+    setMapToBounds() {
+      console.log('setMapToBounds is running');
+      let featureArray = [];
+      // let czts = this.activeTopicConfig.zoomToShape;
+      let czts = [ 'geojsonForTopic' ];
+      if (czts) {
+        // if (czts.includes('geojsonParcels')) {
+        //   for (let geojsonFeature of this.geojsonParcels) {
+        //     // featureArray.push(geoJson(geojsonFeature.geojson))
+        //     // featureArray.push(L.geoJSON(geojsonFeature.geojson))
+        //     console.log('geojsonFeature.geojson:', geojsonFeature.geojson);
+        //     featureArray.push(polygon([ geojsonFeature.geojson.geometry.coordinates ]));
+        //   }
+        // }
+        if (czts.includes('geojsonForTopic')) {
+          console.log('setMapToBounds is still running');
+          for (let geojsonFeature of this.geojsonForTopic) {
+            // featureArray.push(geoJson(geojsonFeature.geojson))
+            // featureArray.push(L.geoJSON(geojsonFeature.geojson))
+            let theCoords = geojsonFeature.geojson.geometry.coordinates;
+            console.log('theCoords:', theCoords);
+            let thePolygon = polygon(theCoords);
+            // let thePolygon = polygon(geojsonFeature.geojson.geometry.coordinates);
+            console.log('setMapToBounds geojsonFeature.geojson:', geojsonFeature.geojson, 'thePolygon:', thePolygon);
+            featureArray.push(thePolygon);
+            // featureArray.push(polygon(geojsonFeature.geojson.geometry.coordinates));
+          }
+        }
+        // if (czts.includes('markersForAddress')) {
+        //   for (let marker of this.markersForAddress) {
+        //     featureArray.push(point([ marker.latlng[1], marker.latlng[0] ]));
+        //     // featureArray.push(L.marker(marker.latlng))
+        //   }
+        // }
+      //   if (czts.includes('markersForTopic')) {
+      //     for (let marker of this.markersForTopic) {
+      //       featureArray.push(point([ marker.latlng[1], marker.latlng[0] ]));
+      //       // featureArray.push(L.marker(marker.latlng))
+      //     }
+      //   }
+      //   // const group = new FeatureGroup(featureArray);
+      //   // const group = new featureGroup(featureArray);
+      //   // const group = new L.featureGroup(featureArray);
+      //   // const bounds = group.getBounds();
+        const theFeatureCollection = featureCollection(featureArray);
+        console.log('featureArray:', featureArray, 'theFeatureCollection:', theFeatureCollection);
+        const bounds = bbox(theFeatureCollection);
+        // const theBbox = theFeatureCollection.bbox;
+        // const bounds = bboxPolygon(theBbox);
+        console.log('bounds:', bounds);
+        if (this.mapType === 'leaflet') {
+          this.$store.commit('setMapBounds', bounds);
+        } else if (this.mapType === 'mapbox') {
+          // let bounds2 = [[ bounds._southWest.lng, bounds._southWest.lat ], [ bounds._northEast.lng, bounds._northEast.lat ]];
+          let bounds2 = [[ bounds[0], bounds[1] ], [ bounds[2], bounds[3] ]];
+          this.$store.commit('setMapBounds', bounds2);
+        }
+      }
     },
   },
 };
