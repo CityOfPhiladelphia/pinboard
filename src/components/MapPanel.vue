@@ -313,116 +313,129 @@ export default {
       // return features;
       // let selectedService = this.$store.state.selectedServices[0];
       let selectedResource = this.$store.state.selectedResources[0];
-      return [{
-        // [
-          'resource': selectedResource,
-          'color':"#9e9ac8",
-          'fillColor':"#9e9ac8",
-          'fillOpacity':0.3,
-          'key':1384,
-          'opacity':1,
-          'weight':2,
-          'geojson': {
-            "type": "Feature",
-            '_featureId':"feat-divisions-0",
-            "id": 1384,
-            "geometry": {
-              "type": "Polygon",
-              "coordinates": [
-                [
-                  [
-                    -75.1618005703091,
-                    39.9283756729456
-                  ],
-                  [
-                    -75.160235200061,
-                    39.9281680139188
-                  ],
-                  [
-                    -75.1603151305822,
-                    39.927800027751
-                  ],
-                  [
-                    -75.1604026246136,
-                    39.9273905546867
-                  ],
-                  [
-                    -75.1604978503038,
-                    39.9269448190093
-                  ],
-                  [
-                    -75.1605991228837,
-                    39.9265047034187
-                  ],
-                  [
-                    -75.1606927366485,
-                    39.9261020764705
-                  ],
-                  [
-                    -75.1607671038285,
-                    39.9257262454442
-                  ],
-                  [
-                    -75.1623404538027,
-                    39.9259294004418
-                  ],
-                  [
-                    -75.1629026012534,
-                    39.9259991702987
-                  ],
-                  [
-                    -75.1629996189932,
-                    39.9260197398441
-                  ],
-                  [
-                    -75.163357005776,
-                    39.9260653564463
-                  ],
-                  [
-                    -75.1639201998335,
-                    39.9261393210887
-                  ],
-                  [
-                    -75.1638226200541,
-                    39.9265675478857
-                  ],
-                  [
-                    -75.163740928687,
-                    39.9269256346997
-                  ],
-                  [
-                    -75.1636511323861,
-                    39.9273585753631
-                  ],
-                  [
-                    -75.1635528138144,
-                    39.9277795231411
-                  ],
-                  [
-                    -75.1634583932705,
-                    39.9281819329592
-                  ],
-                  [
-                    -75.1633794834593,
-                    39.9285866099504
-                  ],
-                  [
-                    -75.1618005703091,
-                    39.9283756729456
-                  ]
-                ]
-              ]
-            },
-            "properties": {
-              "OBJECTID": 1384,
-              "SHORT_DIV_NUM": "04",
-              "DIVISION_NUM": "0104",
-              "Shape__Area": 127880.61328125,
-              "Shape__Length": 1431.11897239414
+      let selectedCurrentMapData = this.currentMapData.filter(test => test._featureId == selectedResource);
+      let coordinates = [];
+      let result = [];
+      if (this.$store.state.sources.injuryPrevention1.data && this.$store.state.sources.injuryPrevention1.data.features && selectedCurrentMapData[0] && selectedCurrentMapData[0].fields && selectedCurrentMapData[0].fields.polygon) {
+        let ip1 = this.$store.state.sources.injuryPrevention1.data.features.filter(test2 => test2.attributes.globalid == selectedCurrentMapData[0].fields.globalid);
+        // coordinates = selectedCurrentMapData[0].fields.polygon.split(",");
+        coordinates = ip1[0].geometry.rings[0];
+        console.log('in computed geojsonForTopic, ip1:', ip1, 'this.$store.state.sources.injuryPrevention1.data.features:', this.$store.state.sources.injuryPrevention1.data.features, 'selectedResource:', selectedResource, 'selectedCurrentMapData:', selectedCurrentMapData, 'selectedCurrentMapData[0].fields:', selectedCurrentMapData[0].fields);
+        console.log('in computed geojsonForTopic, coordinates:', coordinates);
+        result = [{
+          // [
+            'resource': selectedResource,
+            'color':"#9e9ac8",
+            'fillColor':"#9e9ac8",
+            'fillOpacity':0.3,
+            'key':1384,
+            'opacity':1,
+            'weight':2,
+            'geojson': {
+              "type": "Feature",
+              '_featureId':"feat-divisions-0",
+              "id": 1384,
+              "geometry": {
+                "type": "Polygon",
+                "coordinates": [ip1[0].geometry.rings[0]],
+                // "coordinates": coordinates,
+                // "coordinates": [
+                //   [
+                //     [
+                //       -75.1618005703091,
+                //       39.9283756729456
+                //     ],
+                //     [
+                //       -75.160235200061,
+                //       39.9281680139188
+                //     ],
+                //     [
+                //       -75.1603151305822,
+                //       39.927800027751
+                //     ],
+                //     [
+                //       -75.1604026246136,
+                //       39.9273905546867
+                //     ],
+                //     [
+                //       -75.1604978503038,
+                //       39.9269448190093
+                //     ],
+                //     [
+                //       -75.1605991228837,
+                //       39.9265047034187
+                //     ],
+                //     [
+                //       -75.1606927366485,
+                //       39.9261020764705
+                //     ],
+                //     [
+                //       -75.1607671038285,
+                //       39.9257262454442
+                //     ],
+                //     [
+                //       -75.1623404538027,
+                //       39.9259294004418
+                //     ],
+                //     [
+                //       -75.1629026012534,
+                //       39.9259991702987
+                //     ],
+                //     [
+                //       -75.1629996189932,
+                //       39.9260197398441
+                //     ],
+                //     [
+                //       -75.163357005776,
+                //       39.9260653564463
+                //     ],
+                //     [
+                //       -75.1639201998335,
+                //       39.9261393210887
+                //     ],
+                //     [
+                //       -75.1638226200541,
+                //       39.9265675478857
+                //     ],
+                //     [
+                //       -75.163740928687,
+                //       39.9269256346997
+                //     ],
+                //     [
+                //       -75.1636511323861,
+                //       39.9273585753631
+                //     ],
+                //     [
+                //       -75.1635528138144,
+                //       39.9277795231411
+                //     ],
+                //     [
+                //       -75.1634583932705,
+                //       39.9281819329592
+                //     ],
+                //     [
+                //       -75.1633794834593,
+                //       39.9285866099504
+                //     ],
+                //     [
+                //       -75.1618005703091,
+                //       39.9283756729456
+                //     ]
+                //   ]
+                // ]
+              },
+              "properties": {
+                "OBJECTID": 1384,
+                "SHORT_DIV_NUM": "04",
+                "DIVISION_NUM": "0104",
+                "Shape__Area": 127880.61328125,
+                "Shape__Length": 1431.11897239414
+              }
             }
-          }
-        // ]
-      }];
+          // ]
+        }];
+      }
+      return result;
     },
     printHide() {
       let value;
@@ -951,7 +964,7 @@ export default {
 
         this.$data.geojsonForTopicBoolean = true;
       } else if (nextGeojson[0]) {
-        console.log('watch geojsonForTopic else if is running');
+        console.log('watch geojsonForTopic else if is running, nextGeojson[0].geojson.geometry:', nextGeojson[0].geojson.geometry);
         this.$data.geojsonForTopicSource.data.geometry.coordinates = nextGeojson[0].geojson.geometry.coordinates;
         this.$data.geojsonForTopicBoolean = true;
       } else {
@@ -968,7 +981,10 @@ export default {
       }
       dzts.geojsonForTopic = nextGeojson;
       // // console.log('exiting geojsonForTopic');
-      this.checkBoundsChanges();
+      if (nextGeojson[0].geojson.geometry.coordinates.length) {
+        console.log('end of watch geojsonForTopic, calling checkBoundsChanges, nextGeojson[0].geojson.geometry.coordinates.length:', nextGeojson[0].geojson.geometry.coordinates.length);
+        this.checkBoundsChanges();
+      }
 
     },
   },
@@ -1139,7 +1155,7 @@ export default {
     },
 
     setMapToBounds() {
-      console.log('setMapToBounds is running');
+      console.log('setMapToBounds is running, this.geojsonForTopic[0].geojson.geometry.coordinates:', this.geojsonForTopic[0].geojson.geometry.coordinates);
       let featureArray = [];
       // let czts = this.activeTopicConfig.zoomToShape;
       let czts = [ 'geojsonForTopic' ];
