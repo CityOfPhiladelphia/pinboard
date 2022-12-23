@@ -327,14 +327,14 @@ export default {
         // selected = true;
         if (this.selectedResources.includes(row._featureId)) {
           console.log('row is selected, row._featureId:', row._featureId);
-          // if (this.$config.circleMarkers.selectedColor) {
-          //   color = this.$config.circleMarkers.selectedColor;
-          // } else {
-          color = '#0f4d90';
+          if (this.$config.circleMarkers.selectedColor) {
+            color = this.$config.circleMarkers.selectedColor;
+          } else {
+            color = '#0f4d90';
           // color = '#2176d2';
           // color = this.$config.circleMarkers.circleColors[row.category_type];
           // color = 'green';
-          // }
+          }
           size = 30;
           // console.log('color:', color, 'size:', size, 'this.$config.circleMarkers.circleColors[row.category_type]:', this.$config.circleMarkers.circleColors[row.category_type]);
           faSize = '4x';

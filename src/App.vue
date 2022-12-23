@@ -871,10 +871,10 @@ export default {
             if (servicesSplit) {
               servicesFiltered = servicesSplit.filter(f => selectedServices.includes(f));
             }
-            // console.log('servicesFiltered:', servicesFiltered, 'selectedServices:', selectedServices);
-            booleanServices = servicesFiltered.length == selectedServices.length;
+            console.log('servicesFiltered:', servicesFiltered, 'selectedServices:', selectedServices);
+            booleanServices = servicesFiltered.length;// == selectedServices.length;
           }
-          // console.log('services else is running, row:', row, 'selectedServices:', selectedServices, 'booleanServices:', booleanServices);
+          console.log('services else is running, row:', row, 'selectedServices:', selectedServices, 'booleanServices:', booleanServices);
         }
 
         // console.log('about to do buffer stuff, row:', row);
