@@ -2,7 +2,7 @@
   <div class="map-panel-main-div">
 
     <phila-ui-address-input
-      v-show="!isMobile"
+      v-show="!isMobile && !this.$config.searchBar.hide"
       :over-map="true"
       :placeholder="addressInputPlaceholder"
       :width-from-config="addressInputWidth"

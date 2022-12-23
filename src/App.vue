@@ -64,7 +64,7 @@
     </div>
 
     <div
-      v-show="isMobile"
+      v-show="isMobile && !this.$config.searchBar.hide"
       class="search-bar-container-class"
     >
       <phila-ui-address-input
