@@ -29,6 +29,10 @@ Create pull request for changes and merge into `master` branch for travis-ci bui
 
 ## Release Notes
 
+### 1.1.40 - 12/23/2022
+
+* fixes bug with filtering of categoryfield_array apps
+
 ### 1.1.39 - 10/25/2022
 
 * fixes gtag for language selector
