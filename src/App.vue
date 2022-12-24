@@ -416,9 +416,11 @@ export default {
       return this.$store.state.selectedResources;
     },
     sourcesWatched() {
+      // console.log('in sourcesWatched computed');
       let sources = Object.keys(this.$store.state.sources);
       const index = sources.indexOf('compiled');
       if (index > -1) {
+        // console.log('in sourcesWatched computed, in if');
         sources.splice(index, 1);
 
         let sourcesWatched = [];
@@ -680,14 +682,24 @@ export default {
       // console.log('Pinboard App.vue setUpData is running, theSources:', theSources);
       let compiled = {
         key: 'compiled',
-        data: [],
+        data: {
+          'records':[],
+        },
         status: 'success',
       }
       if (theSources.length > 1) {
         for (let source of theSources) {
-          for (let point of source.features) {
-            // console.log('point:', point);
-            compiled.data.push(point);
+          // console.log('in setUpData sources loop, source:', source);
+          if (source.features) {
+            for (let point of source.features) {
+              // console.log('in setUpData features loop, point:', point);
+              compiled.data.records.push(point);
+            }
+          } else if (source.records) {
+            for (let point of source.records) {
+              // console.log('in setUpData records loop, point:', point);
+              compiled.data.records.push(point);
+            }
           }
         }
         // console.log('compiled:', compiled);
