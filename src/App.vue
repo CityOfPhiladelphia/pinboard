@@ -697,7 +697,11 @@ export default {
             }
           } else if (source.records) {
             for (let point of source.records) {
-              // console.log('in setUpData records loop, point:', point);
+              let featureId = point._featureId.split('-')[1];
+              // console.log('in setUpData records loop, point:', point, 'featureId:', featureId);
+              if (this.$config.app.categorizeCompiled) {
+                point.fields.category_type = featureId;
+              }
               compiled.data.records.push(point);
             }
           }
