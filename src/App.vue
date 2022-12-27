@@ -872,7 +872,7 @@ export default {
               servicesFiltered = servicesSplit.filter(f => selectedServices.includes(f));
             }
             console.log('servicesFiltered:', servicesFiltered, 'selectedServices:', selectedServices);
-            booleanServices = servicesFiltered.length;// == selectedServices.length;
+            booleanServices = servicesFiltered.length == selectedServices.length;
           }
           console.log('services else is running, row:', row, 'selectedServices:', selectedServices, 'booleanServices:', booleanServices);
         }
