@@ -137,6 +137,7 @@
     <!-- if using categoryField_value, categoryField_array, or multipleFields options -->
     <div
       v-if="dataStatus === 'success' && ['categoryField_array', 'multipleFields'].includes(refineType)"
+      v-show="!retractable && !isMobile || refineOpen"
       id="field-div"
       class="refine-holder"
     >
@@ -153,6 +154,7 @@
 
     <div
       v-if="dataStatus === 'success' && refineType == 'categoryField_value'"
+      v-show="!retractable && !isMobile || refineOpen"
       id="field-div"
       class="refine-holder"
     >
