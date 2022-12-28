@@ -113,37 +113,27 @@
         :before="firstOverlay"
       />
 
-      <!-- <phila-ui-address-input
-        v-show="!isMobile"
-        :over-map="true"
-        :placeholder="addressInputPlaceholder"
-        :width-from-config="addressInputWidth"
-        @clear-search="handleClearSearch"
-        @handle-search-form-submit="handleSearchFormSubmit"
-      /> -->
-      <!-- :input-validation="inputValidation" -->
-
       <MglNavigationControl position="bottom-right"/>
 
       <MglGeojsonLayer
-        v-if="geojsonForTopicBoolean"
-        key="'geojsonForTopicFill'"
-        :source-id="'geojsonForTopic'"
-        :source="geojsonForTopicSource"
-        :layer-id="'geojsonForTopicFill'"
-        :layer="geojsonForTopicFillLayer"
+        v-if="geojsonForResourceBoolean"
+        key="'geojsonForResourceFill'"
+        :source-id="'geojsonForResource'"
+        :source="geojsonForResourceSource"
+        :layer-id="'geojsonForResourceFill'"
+        :layer="geojsonForResourceFillLayer"
         :clear-source="false"
         :replace-source="true"
         :replace="true"
       />
 
       <MglGeojsonLayer
-        v-if="geojsonForTopicBoolean"
-        key="'geojsonForTopicLine'"
-        :source-id="'geojsonForTopic'"
-        :source="geojsonForTopicSource"
-        :layer-id="'geojsonForTopicLine'"
-        :layer="geojsonForTopicLineLayer"
+        v-if="geojsonForResourceBoolean"
+        key="'geojsonForResourceLine'"
+        :source-id="'geojsonForResource'"
+        :source="geojsonForResourceSource"
+        :layer-id="'geojsonForResourceLine'"
+        :layer="geojsonForResourceLineLayer"
         :clear-source="true"
         :replace-source="true"
         :replace="true"
@@ -233,8 +223,8 @@ export default {
       accessToken: process.env.VUE_APP_MAPBOX_ACCESSTOKEN,
       addressInputPlaceholder: null,
 
-      geojsonForTopicBoolean: false,
-      geojsonForTopicSource: {
+      geojsonForResourceBoolean: false,
+      geojsonForResourceSource: {
         'type': 'geojson',
         'data': {
           'type': 'Feature',
@@ -244,10 +234,10 @@ export default {
           },
         },
       },
-      geojsonForTopicFillLayer: {
-        'id': 'geojsonForTopicFill',
+      geojsonForResourceFillLayer: {
+        'id': 'geojsonForResourceFill',
         'type': 'fill',
-        'source': 'geojsonForTopic',
+        'source': 'geojsonForResource',
         'layout': {},
         'paint': {
           // 'fill-color': 'rgb(0,102,255)',
@@ -256,10 +246,10 @@ export default {
           'fill-outline-color': 'rgb(0,102,255)',
         },
       },
-      geojsonForTopicLineLayer: {
-        'id': 'geojsonForTopicLine',
+      geojsonForResourceLineLayer: {
+        'id': 'geojsonForResourceLine',
         'type': 'line',
-        'source': 'geojsonForTopic',
+        'source': 'geojsonForResource',
         'layout': {},
         'paint': {
           'line-color': '#9e9ac8',
@@ -268,7 +258,7 @@ export default {
       },
       zoomToShape: {
         geojsonParcels: [],
-        geojsonForTopic: [],
+        geojsonForResource: [],
         markersForAddress: [],
         markersForTopic: [],
       },
@@ -295,40 +285,22 @@ export default {
       }
       return finalBounds;
     },
-    geojsonForTopic() {
-      // const features = [];
-      // const topicGeojson = this.activeTopicConfig.geojsonForTopic;
-      // if (topicGeojson) {
-      //   const state = this.$store.state;
-      //   const topicData = topicGeojson.data(state);
-      //   if (topicData !== null) {
-      //     for (let geojson of topicData) {
-      //       let props = Object.assign({}, topicGeojson.style);
-      //       props.key = geojson[topicGeojson.key];
-      //       props.geojson = geojson;
-      //       features.push(props);
-      //     }
-      //   }
-      // }
-      // return features;
-      // let selectedService = this.$store.state.selectedServices[0];
+    geojsonForResource() {
       let selectedResource = this.$store.state.selectedResources[0];
       let selectedCurrentMapData = this.currentMapData.filter(test => test._featureId == selectedResource);
       let coordinates = [];
       let result = [];
-      if (this.$store.state.sources.injuryPrevention1.data && this.$store.state.sources.injuryPrevention1.data.features && selectedCurrentMapData[0] && selectedCurrentMapData[0].fields && selectedCurrentMapData[0].fields.polygon) {
-        let ip1 = this.$store.state.sources.injuryPrevention1.data.features.filter(test2 => test2.attributes.globalid == selectedCurrentMapData[0].fields.globalid);
-        // coordinates = selectedCurrentMapData[0].fields.polygon.split(",");
-        coordinates = ip1[0].geometry.rings[0];
-        console.log('in computed geojsonForTopic, ip1:', ip1, 'this.$store.state.sources.injuryPrevention1.data.features:', this.$store.state.sources.injuryPrevention1.data.features, 'selectedResource:', selectedResource, 'selectedCurrentMapData:', selectedCurrentMapData, 'selectedCurrentMapData[0].fields:', selectedCurrentMapData[0].fields);
-        console.log('in computed geojsonForTopic, coordinates:', coordinates);
-        result = [{
-          // [
+      if (this.$config) {
+        let geojsonData = this.$store.state.sources[this.$config.geojsonForResource.source].data;
+        if (geojsonData && geojsonData.features && selectedCurrentMapData[0] && selectedCurrentMapData[0].fields && selectedCurrentMapData[0].fields.polygon) {
+          let geojsonForResource = geojsonData.features.filter(test2 => test2.attributes.globalid == selectedCurrentMapData[0].fields.globalid);
+          coordinates = geojsonForResource[0].geometry.rings[0];
+          result = [{
             'resource': selectedResource,
             'color':"#9e9ac8",
             'fillColor':"#9e9ac8",
             'fillOpacity':0.3,
-            'key':1384,
+            // 'key':1384,
             'opacity':1,
             'weight':2,
             'geojson': {
@@ -337,103 +309,18 @@ export default {
               "id": 1384,
               "geometry": {
                 "type": "Polygon",
-                "coordinates": [ip1[0].geometry.rings[0]],
-                // "coordinates": coordinates,
-                // "coordinates": [
-                //   [
-                //     [
-                //       -75.1618005703091,
-                //       39.9283756729456
-                //     ],
-                //     [
-                //       -75.160235200061,
-                //       39.9281680139188
-                //     ],
-                //     [
-                //       -75.1603151305822,
-                //       39.927800027751
-                //     ],
-                //     [
-                //       -75.1604026246136,
-                //       39.9273905546867
-                //     ],
-                //     [
-                //       -75.1604978503038,
-                //       39.9269448190093
-                //     ],
-                //     [
-                //       -75.1605991228837,
-                //       39.9265047034187
-                //     ],
-                //     [
-                //       -75.1606927366485,
-                //       39.9261020764705
-                //     ],
-                //     [
-                //       -75.1607671038285,
-                //       39.9257262454442
-                //     ],
-                //     [
-                //       -75.1623404538027,
-                //       39.9259294004418
-                //     ],
-                //     [
-                //       -75.1629026012534,
-                //       39.9259991702987
-                //     ],
-                //     [
-                //       -75.1629996189932,
-                //       39.9260197398441
-                //     ],
-                //     [
-                //       -75.163357005776,
-                //       39.9260653564463
-                //     ],
-                //     [
-                //       -75.1639201998335,
-                //       39.9261393210887
-                //     ],
-                //     [
-                //       -75.1638226200541,
-                //       39.9265675478857
-                //     ],
-                //     [
-                //       -75.163740928687,
-                //       39.9269256346997
-                //     ],
-                //     [
-                //       -75.1636511323861,
-                //       39.9273585753631
-                //     ],
-                //     [
-                //       -75.1635528138144,
-                //       39.9277795231411
-                //     ],
-                //     [
-                //       -75.1634583932705,
-                //       39.9281819329592
-                //     ],
-                //     [
-                //       -75.1633794834593,
-                //       39.9285866099504
-                //     ],
-                //     [
-                //       -75.1618005703091,
-                //       39.9283756729456
-                //     ]
-                //   ]
-                // ]
+                "coordinates": [ coordinates ],
               },
               "properties": {
-                "OBJECTID": 1384,
-                "SHORT_DIV_NUM": "04",
-                "DIVISION_NUM": "0104",
-                "Shape__Area": 127880.61328125,
-                "Shape__Length": 1431.11897239414
+                // "OBJECTID": 1384,
+                // "SHORT_DIV_NUM": "04",
+                // "DIVISION_NUM": "0104",
+                // "Shape__Area": 127880.61328125,
+                // "Shape__Length": 1431.11897239414
               }
             }
-          // ]
-        }];
+          }];
+        }
       }
       return result;
     },
@@ -444,12 +331,6 @@ export default {
       }
       return value;
     },
-    // addressInputPlaceholder() {
-    //   if (this.$config.addressInput) {
-    //     return this.$config.addressInput.placeholder;
-    //   }
-    //   return null;
-    // },
     addressInputWidth() {
       if (this.$config.addressInput) {
         return this.$config.addressInput.mapWidth;
@@ -509,34 +390,6 @@ export default {
     projection3857() {
       return "+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +wktext  +no_defs";
     },
-    // database() {
-    //   console.log('Mappanel computed database is running, this.$appType:', this.$appType);
-    //   let database = this.$store.state.sources[this.$appType].data.rows || this.$store.state.sources[this.$appType].data.features || this.$store.state.sources[this.$appType].data;
-    //
-    //   for (let [key, value] of Object.entries(database)) {
-    //
-    //     if (this.$config.hiddenRefine) {
-    //       for (let field in this.$config.hiddenRefine) {
-    //         let getter = this.$config.hiddenRefine[field];
-    //         let val = getter(value);
-    //         if (val === false) {
-    //           delete database[key];
-    //         }
-    //       }
-    //     }
-    //
-    //     for (let [rowKey, rowValue] of Object.entries(value)) {
-    //       if ( rowKey == 'hide_on_finder' && rowValue == true ){
-    //         //console.log('deleted entry', database[key])
-    //         delete database[key];
-    //       }
-    //     }
-    //
-    //   }
-    //   //filter empty values from deleted database
-    //   let finalDB = database.filter(_ => true);
-    //   return finalDB;
-    // },
     currentMapData() {
       // console.log('MapPanel.vue currentMapData computed is starting recalculating');//, this.currentData:', this.currentData);
       const newRows = [];
@@ -921,13 +774,13 @@ export default {
       }
     },
 
-    geojsonForTopic(nextGeojson) {
-      console.log('watch geojsonForTopic is firing, nextGeojson[0]:', nextGeojson[0]);
+    geojsonForResource(nextGeojson) {
+      console.log('watch geojsonForResource is firing, nextGeojson[0]:', nextGeojson[0]);
       if (this.$store.map) {
-        console.log('watch geojsonForTopic is running, map.getStyle():', this.$store.map.getStyle(), 'map.getStyle().layers:', this.$store.map.getStyle().layers, 'nextGeojson:', nextGeojson);
+        console.log('watch geojsonForResource is running, map.getStyle():', this.$store.map.getStyle(), 'map.getStyle().layers:', this.$store.map.getStyle().layers, 'nextGeojson:', nextGeojson);
       }
       if (nextGeojson[0] && nextGeojson.length > 1) {
-        console.log('watch geojsonForTopic is running, nextGeojson:', nextGeojson, 'nextGeojson[0].geojson:', nextGeojson[0].geojson);
+        console.log('watch geojsonForResource is running, nextGeojson:', nextGeojson, 'nextGeojson[0].geojson:', nextGeojson[0].geojson);
         this.$data.geojsonCollectionForTopicSource.data.features = [];
 
         for (let feature of nextGeojson) {
@@ -962,27 +815,27 @@ export default {
           this.$data.geojsonCollectionForTopicLabelsLayer.minzoom = nextGeojson[0].labelMinZoom;
         }
 
-        this.$data.geojsonForTopicBoolean = true;
+        this.$data.geojsonForResourceBoolean = true;
       } else if (nextGeojson[0]) {
-        console.log('watch geojsonForTopic else if is running, nextGeojson[0].geojson.geometry:', nextGeojson[0].geojson.geometry);
-        this.$data.geojsonForTopicSource.data.geometry.coordinates = nextGeojson[0].geojson.geometry.coordinates;
-        this.$data.geojsonForTopicBoolean = true;
+        console.log('watch geojsonForResource else if is running, nextGeojson[0].geojson.geometry:', nextGeojson[0].geojson.geometry);
+        this.$data.geojsonForResourceSource.data.geometry.coordinates = nextGeojson[0].geojson.geometry.coordinates;
+        this.$data.geojsonForResourceBoolean = true;
       } else {
-        console.log('watch geojsonForTopic else is running');
-        this.$data.geojsonForTopicSource.data.geometry.coordinates = [];
-        this.$data.geojsonForTopicBoolean = false;
+        console.log('watch geojsonForResource else is running');
+        this.$data.geojsonForResourceSource.data.geometry.coordinates = [];
+        this.$data.geojsonForResourceBoolean = false;
       }
       // let czts = this.activeTopicConfig.zoomToShape;
-      let czts = [ 'geojsonForTopic' ];
+      let czts = [ 'geojsonForResource' ];
       let dzts = this.$data.zoomToShape;
-      if (!czts || !czts.includes('geojsonForTopic')) {
-        dzts.geojsonForTopic = [];
+      if (!czts || !czts.includes('geojsonForResource')) {
+        dzts.geojsonForResource = [];
         return;
       }
-      dzts.geojsonForTopic = nextGeojson;
-      // // console.log('exiting geojsonForTopic');
-      if (nextGeojson[0].geojson.geometry.coordinates.length) {
-        console.log('end of watch geojsonForTopic, calling checkBoundsChanges, nextGeojson[0].geojson.geometry.coordinates.length:', nextGeojson[0].geojson.geometry.coordinates.length);
+      dzts.geojsonForResource = nextGeojson;
+      // // console.log('exiting geojsonForResource');
+      if (nextGeojson[0] && nextGeojson[0].geojson.geometry.coordinates.length) {
+        console.log('end of watch geojsonForResource, calling checkBoundsChanges, nextGeojson[0].geojson.geometry.coordinates.length:', nextGeojson[0].geojson.geometry.coordinates.length);
         this.checkBoundsChanges();
       }
 
@@ -1132,7 +985,7 @@ export default {
     checkBoundsChanges() {
       console.log('checkBoundsChanges is running');
       // let czts = this.activeTopicConfig.zoomToShape;
-      let czts = [ 'geojsonForTopic' ];
+      let czts = [ 'geojsonForResource' ];
       if (!czts) {
         return;
       }
@@ -1155,10 +1008,10 @@ export default {
     },
 
     setMapToBounds() {
-      console.log('setMapToBounds is running, this.geojsonForTopic[0].geojson.geometry.coordinates:', this.geojsonForTopic[0].geojson.geometry.coordinates);
+      console.log('setMapToBounds is running, this.geojsonForResource[0].geojson.geometry.coordinates:', this.geojsonForResource[0].geojson.geometry.coordinates);
       let featureArray = [];
       // let czts = this.activeTopicConfig.zoomToShape;
-      let czts = [ 'geojsonForTopic' ];
+      let czts = [ 'geojsonForResource' ];
       if (czts) {
         // if (czts.includes('geojsonParcels')) {
         //   for (let geojsonFeature of this.geojsonParcels) {
@@ -1168,9 +1021,9 @@ export default {
         //     featureArray.push(polygon([ geojsonFeature.geojson.geometry.coordinates ]));
         //   }
         // }
-        if (czts.includes('geojsonForTopic')) {
+        if (czts.includes('geojsonForResource')) {
           console.log('setMapToBounds is still running');
-          for (let geojsonFeature of this.geojsonForTopic) {
+          for (let geojsonFeature of this.geojsonForResource) {
             // featureArray.push(geoJson(geojsonFeature.geojson))
             // featureArray.push(L.geoJSON(geojsonFeature.geojson))
             let theCoords = geojsonFeature.geojson.geometry.coordinates;
