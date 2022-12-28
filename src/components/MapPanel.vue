@@ -2,7 +2,7 @@
   <div class="map-panel-main-div">
 
     <phila-ui-address-input
-      v-show="!isMobile"
+      v-show="!isMobile && !this.$config.searchBar.hide"
       :over-map="true"
       :placeholder="addressInputPlaceholder"
       :width-from-config="addressInputWidth"
@@ -350,12 +350,15 @@ export default {
           // multiple circle colors defined
           // console.log('MapPanel.vue else is running');
           if (this.$config.circleMarkers && this.$config.circleMarkers.circleColors) {
+            // console.log('in MapPanel circleColores, row:', row);
             if (row.attributes) {
               color = this.$config.circleMarkers.circleColors[row.attributes.category_type];
             } else if (row.category_type) {
               color = this.$config.circleMarkers.circleColors[row.category_type];
             } else if (row.site_type) {
               color = this.$config.circleMarkers.circleColors[row.site_type];
+            } else if (row.fields) {
+              color = this.$config.circleMarkers.circleColors[row.fields.category_type];
             }
 
           // single circle color defined
