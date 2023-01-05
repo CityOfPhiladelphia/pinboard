@@ -281,34 +281,59 @@ export default {
     currentData() {
       const locations = this.$store.state.currentData;
 
+      let currentQuery = { ...this.$route.query };
+      let currentQueryKeys = Object.keys(currentQuery);
+
+      // console.log('LocationsPanel.vue currentData computed, currentQuery:', currentQuery, 'currentQueryKeys:', currentQueryKeys);
+
       let valOrGetter = this.locationInfo.siteName;
       const valOrGetterType = typeof valOrGetter;
       let val;
 
-      // console.log('LocationsPanel.vue, currentData, valOrGetter:', valOrGetter, 'valOrGetterType:', valOrGetterType);
+      console.log('LocationsPanel.vue, currentData, locations:', locations, 'valOrGetter:', valOrGetter, 'valOrGetterType:', valOrGetterType);
 
-      if (valOrGetterType === 'function') {
-        const getter = valOrGetter;
+      if (currentQueryKeys.includes('address')) {
+        val = 'distance';
+        console.log('it includes address');
         locations.sort(function(a, b) {
-          let valueA = getter(a, transforms);
-          let valueB = getter(b, transforms);
-          // console.log('valueA:', valueA, 'valueB:', valueB, 'value:', value);
-          let value;
-          if (valueA && valueB) {
-            value = valueA.localeCompare(valueB, undefined, { numeric: true });
-          }
-          // return valueA.localeCompare(valueB);
-          return value;
+          console.log('a:', a, 'b:', b, 'val:', val);
+          // if (a[val] != null && b[val] != null) {
+          //   return a[val].localeCompare(b[val]);
+          // }
+          if (a[val] < b[val]) {
+              return -1;
+            }
+            if (a[val] > b[val]) {
+              return 1;
+            }
+            return 0;
         });
       } else {
-        val = valOrGetter;
-        locations.sort(function(a, b) {
-          // console.log('a:', a, 'b:', b, 'val:', val);
-          if (a[val] != null && b[val] != null) {
-            return a[val].localeCompare(b[val]);
-          }
-        });
+        if (valOrGetterType === 'function') {
+          const getter = valOrGetter;
+          locations.sort(function(a, b) {
+            let valueA = getter(a, transforms);
+            let valueB = getter(b, transforms);
+            // console.log('valueA:', valueA, 'valueB:', valueB, 'value:', value);
+            let value;
+            if (valueA && valueB) {
+              value = valueA.localeCompare(valueB, undefined, { numeric: true });
+            }
+            // return valueA.localeCompare(valueB);
+            return value;
+          });
+        } else {
+          val = valOrGetter;
+          locations.sort(function(a, b) {
+            // console.log('a:', a, 'b:', b, 'val:', val);
+            if (a[val] != null && b[val] != null) {
+              return a[val].localeCompare(b[val]);
+            }
+          });
+        }
       }
+
+
 
       return locations;
     },

@@ -148,6 +148,7 @@ import Fuse from 'fuse.js'
 import { point } from '@turf/helpers';
 import buffer from '@turf/buffer';
 import booleanPointInPolygon from '@turf/boolean-point-in-polygon';
+import distance from '@turf/distance';
 import AlertBanner from '../components/AlertBanner.vue';
 import PhilaModal from '../components/PhilaModal.vue';
 import RefinePanel from '../components/RefinePanel.vue';
@@ -964,8 +965,13 @@ export default {
           // console.log('buffer else if 1 is running, row:', row, 'booleanBuffer:', booleanBuffer, 'typeof row.latlng[0]:', typeof row.latlng[0]);
           if (typeof row.latlng[0] === 'number' && row.latlng[0] !== null) {
             const rowPoint = point([ row.latlng[1], row.latlng[0] ]);
+            let geocodedPoint = point(this.$store.state.geocode.data.geometry.coordinates);
+            let options = { units: 'miles' };
+            let theDistance;
             if (booleanPointInPolygon(rowPoint, this.$data.buffer)) {
               booleanBuffer = true;
+              theDistance = distance(geocodedPoint, rowPoint, options);
+              row.distance = theDistance;
             }
             // console.log('buffer else if 1 IF is running, row:', row, 'rowPoint:', rowPoint, 'booleanBuffer:', booleanBuffer);
           } else if (typeof row.latlng[0] === 'string' && row.latlng[0] !== null) {
