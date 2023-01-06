@@ -82,6 +82,19 @@
             :icon="[timesIconWeight,'times']"
           />
         </button>
+
+        <button
+          v-if="addressEntered"
+          class="box-value column is-narrow"
+          @click="closeAddressBox(addressEntered)"
+        >
+          {{ $t(getBoxValue(addressEntered)) }}
+          <font-awesome-icon
+            class="fa-x"
+            :icon="[timesIconWeight,'times']"
+          />
+        </button>
+
         <button
           v-if="refineType !== 'categoryField_value'"
           v-for="box in selected"
@@ -879,6 +892,14 @@ export default {
     clickBox(e) {
       console.log('clickBox is running, e:', e);
       e.stopPropagation();
+    },
+    closeAddressBox(box) {
+      let startQuery = { ...this.$route.query };
+      console.log('closeAddressBox is running, box:', box, 'startQuery:', startQuery);
+      delete startQuery['address'];
+      this.$router.push({ query: { ...startQuery }});
+      this.$controller.resetGeocode();
+      this.$store.commit('setCurrentSearch', null);
     },
     closeKeywordsBox(box) {
       let startQuery = { ...this.$route.query };
