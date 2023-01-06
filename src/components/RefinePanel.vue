@@ -699,7 +699,8 @@ export default {
     },
     addressEntered() {
       let address;
-      if (this.geocode.status === 'success') {
+      // if (this.geocode.status === 'success') {
+      if (this.geocode && this.geocode.data && this.geocode.data.properties && this.geocode.data.properties.street_address) {
         address = this.geocode.data.properties.street_address;
       }
       return address;

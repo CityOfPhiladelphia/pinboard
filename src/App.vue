@@ -643,29 +643,19 @@ export default {
           if (startQuery['keyword'] && startQuery['keyword'] != '') {
             startKeyword = startQuery['keyword'];
             val = startKeyword + ',' + val;
-            // query = { 'keyword': startKeyword + ',' + val };
           }
           query = { ...startQuery, ...{ 'keyword': val }};
           this.searchBarType = 'keyword';
           searchBarType = 'keyword';
         }
       } else {
-        query = { 'address': val };
+        query = { ...startQuery, ...{ 'address': val }};
         this.searchBarType = 'address';
         searchBarType = 'address';
       }
       
-      // delete startQuery['address'];
-      // delete startQuery['keyword'];
       console.log('handleSubmit 2 is running, val2:', val2, 'searchBarType:', searchBarType, 'startQuery:', startQuery, 'this.$route.query:', this.$route.query, 'query:', query, 'val:', val, 'val.substring(0, 1):', val.substring(0, 1));
 
-      // if (startQuery['keyword'] && query['keyword']) {
-      //   query['keyword'] = startQuery['keyword'] + ',' + query['keyword'];
-      // }
-
-      
-      // console.log('handleSubmit 3, query:', query);
-      // this.$router.push({ query: { ...startQuery, ...query }});
       this.$router.push({ query: { ...query }});
 
       this.searchString = query[this.searchBarType];
@@ -680,7 +670,7 @@ export default {
     },
     clearSearchTriggered() {
       let startQuery = { ...this.$route.query };
-      // console.log('in clearSearchTriggered1, this.$route.query:', this.$route.query, 'startQuery:', startQuery);
+      console.log('in clearSearchTriggered1, this.$route.query:', this.$route.query, 'startQuery:', startQuery);
       delete startQuery['address'];
       delete startQuery['keyword'];
       // delete startQuery[this.searchBarType];
