@@ -70,6 +70,18 @@
         @click="clickBox"
       >
       <!-- v-if="refineType !== 'categoryField_value' && isTablet || refineType !== 'categoryField_value' && isDesktop || refineType !== 'categoryField_value' && isWideScreen" -->
+      <!-- v-if="refineType !== 'categoryField_value'" -->
+        <button
+          v-for="box in keywordsEntered"
+          class="box-value column is-narrow"
+          @click="closeKeywordsBox(box)"
+        >
+          {{ $t(getBoxValue(box)) }}
+          <font-awesome-icon
+            class="fa-x"
+            :icon="[timesIconWeight,'times']"
+          />
+        </button>
         <button
           v-if="refineType !== 'categoryField_value'"
           v-for="box in selected"
@@ -680,7 +692,8 @@ export default {
       return address;
     },
     keywordsEntered() {
-      return this.$store.state.selectedKeywords.toString();
+      // return this.$store.state.selectedKeywords.toString();
+      return this.$store.state.selectedKeywords;
     },
     dataStatus() {
       let value;
@@ -701,6 +714,12 @@ export default {
     },
   },
   watch: {
+    keywordsEntered(nextKeywordsEntered) {
+      console.log('watch keywordsEntered, nextKeywordsEntered:', nextKeywordsEntered);
+      // if (nextKeywordsEntered) {
+      //   this.selected.push('keyword_' + nextKeywordsEntered);
+      // }
+    },
     refineOpen(nextRefineOpen) {
       // console.log('RefinePanel.vue watch refineOpen is firing');
       this.$nextTick(() => {
@@ -760,7 +779,7 @@ export default {
       this.$router.push({ query: { ...this.$route.query, ...{ services: nextSelected.join(',') }}});
     },
     selectedServices(nextSelectedServices) {
-      // console.log('RefinePanel watch selectedServices is firing:', nextSelectedServices);
+      console.log('RefinePanel watch selectedServices is firing:', nextSelectedServices);
       this.$data.selected = nextSelectedServices;
     },
   },
@@ -860,6 +879,26 @@ export default {
     clickBox(e) {
       console.log('clickBox is running, e:', e);
       e.stopPropagation();
+    },
+    closeKeywordsBox(box) {
+      let startQuery = { ...this.$route.query };
+      console.log('closeKeywordsBox is running, box:', box, 'startQuery.keyword:', startQuery.keyword);
+      let keywordsArray;
+      if (startQuery.keyword && typeof startQuery.keyword === 'string' && startQuery.keyword != '') {
+        keywordsArray = startQuery.keyword.split(',');
+      } else {
+        keywordsArray = [];
+      }
+      const index = keywordsArray.indexOf(box);
+      if (index > -1) { // only splice array when item is found
+        keywordsArray.splice(index, 1); // 2nd parameter means remove one item only
+      }
+      let newQuery = keywordsArray.toString();
+      console.log('in closeKeywordsBox, this.$route.query:', this.$route.query, 'startQuery:', startQuery, 'newQuery:', newQuery);
+      // console.log('in clearSearchTriggered2, this.$route.query:', this.$route.query, 'startQuery:', startQuery);
+      this.$router.push({ query: { ...this.$route.query, ...{ keyword: keywordsArray }}});
+      this.searchString = '';
+      this.$store.commit('setSelectedKeywords', keywordsArray);
     },
     closeBox(box) {
       if (this.refineType === 'categoryField_value') {

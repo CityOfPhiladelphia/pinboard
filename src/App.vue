@@ -627,6 +627,9 @@ export default {
       let searchBarType;
       let val2 = parseFloat(val.substring(0));
       console.log('handleSubmit 1, this.$config.searchBar.searchTypes:', this.$config.searchBar.searchTypes);
+      
+      let startQuery = { ...this.$route.query };
+
       if (isNaN(val2)) {
         if (!this.$config.searchBar.searchTypes.includes('keyword')) {
           console.log('cannot search keywords');
@@ -634,27 +637,37 @@ export default {
             duration: 4000,
             closeOnClick: true,
           });
-          // this.inputValidation = false;
           return;
         } else {
-          // this.inputValidation = true;
-          // this.$success(`Success!`, { duration: 1000 });
-          query = { 'keyword': val };
+          let startKeyword;
+          if (startQuery['keyword'] && startQuery['keyword'] != '') {
+            startKeyword = startQuery['keyword'];
+            val = startKeyword + ',' + val;
+            // query = { 'keyword': startKeyword + ',' + val };
+          }
+          query = { ...startQuery, ...{ 'keyword': val }};
           this.searchBarType = 'keyword';
           searchBarType = 'keyword';
         }
       } else {
-        // this.inputValidation = true;
-        // this.$success(`Success!`, { duration: 1000 });
         query = { 'address': val };
         this.searchBarType = 'address';
         searchBarType = 'address';
       }
-      let startQuery = { ...this.$route.query };
-      delete startQuery['address'];
-      delete startQuery['keyword'];
-      console.log('handleSubmit is running, val2:', val2, 'searchBarType:', searchBarType, 'startQuery:', startQuery, 'this.$route.query:', this.$route.query, 'query:', query, 'val:', val, 'val.substring(0, 1):', val.substring(0, 1));
-      this.$router.push({ query: { ...startQuery, ...query }});
+      
+      // delete startQuery['address'];
+      // delete startQuery['keyword'];
+      console.log('handleSubmit 2 is running, val2:', val2, 'searchBarType:', searchBarType, 'startQuery:', startQuery, 'this.$route.query:', this.$route.query, 'query:', query, 'val:', val, 'val.substring(0, 1):', val.substring(0, 1));
+
+      // if (startQuery['keyword'] && query['keyword']) {
+      //   query['keyword'] = startQuery['keyword'] + ',' + query['keyword'];
+      // }
+
+      
+      // console.log('handleSubmit 3, query:', query);
+      // this.$router.push({ query: { ...startQuery, ...query }});
+      this.$router.push({ query: { ...query }});
+
       this.searchString = query[this.searchBarType];
       const searchCategory = Object.keys(query)[0];
       const value = query[searchCategory];
@@ -767,8 +780,8 @@ export default {
               for (let group of selectedGroups) {
                 let groupBooleanConditions = [];
                 for (let service of selectedServices) {
-                  // console.log('App.vue filterPoints loop, service:', service);
-                  if (service.split('_', 1)[0] === group && this.$config.refine.multipleFieldGroups[group]['radio']) {
+                  // console.log('App.vue filterPoints loop, service:', service, 'group:', group);
+                  if (group !== 'keyword' && service.split('_', 1)[0] === group && this.$config.refine.multipleFieldGroups[group]['radio']) {
                     // console.log('group:', group, 'this.$config.refine.multipleFieldGroups[group]["radio"]:', this.$config.refine.multipleFieldGroups[group]['radio']);
                     let dependentGroups = this.$config.refine.multipleFieldGroups[group]['radio'][service.split('_')[1]]['dependentGroups'] || [];
                     // console.log('dependentGroup:', dependentGroup, 'service.split("_", 1)[0]:', service.split('_', 1)[0], 'service.split("_")[1]:', service.split('_')[1], 'group', group, 'this.$config.refine.multipleFieldsGroups[group]', this.$config.refine.multipleFieldsGroups[group], 'this.$config.refine.multipleFieldsGroups[group][service.split("_")[1]]:', this.$config.refine.multipleFieldsGroups[group][service.split('_')[1]]);
@@ -783,7 +796,7 @@ export default {
                     let val = getter(row, dependentServices);
                     groupBooleanConditions.push(val);
                   }
-                  if (service.split('_', 1)[0] === group && this.$config.refine.multipleFieldGroups[group]['checkbox']) {
+                  if (group !== 'keyword' && service.split('_', 1)[0] === group && this.$config.refine.multipleFieldGroups[group]['checkbox']) {
                     // console.log('group:', group, 'this.$config.refine.multipleFieldGroups[group]["dependent"]:', this.$config.refine.multipleFieldGroups[group]['dependent']);
                     let independentGroups = this.$config.refine.multipleFieldGroups[group]['checkbox'][service.split('_')[1]]['independentGroups'] || [];
                     // console.log('dependentGroup:', dependentGroup, 'service.split("_", 1)[0]:', service.split('_', 1)[0], 'service.split("_")[1]:', service.split('_')[1], 'group', group, 'this.$config.refine.multipleFieldsGroups[group]', this.$config.refine.multipleFieldsGroups[group], 'this.$config.refine.multipleFieldsGroups[group][service.split("_")[1]]:', this.$config.refine.multipleFieldsGroups[group][service.split('_')[1]]);
@@ -799,7 +812,7 @@ export default {
                     groupBooleanConditions.push(val);
                   }
                 }
-                console.log('group:', group, 'groupBooleanConditions:', groupBooleanConditions);
+                // console.log('group:', group, 'groupBooleanConditions:', groupBooleanConditions);
                 if (groupBooleanConditions.includes(true)) {
                   booleanConditions.push(true);
                 } else if (groupBooleanConditions.length) {
