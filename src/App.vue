@@ -498,6 +498,7 @@ export default {
       }
     },
     geocodeStatus(nextGeocodeStatus) {
+      console.log('watch geocodeStatus is running, nextGeocodeStatus:', nextGeocodeStatus);
       if (nextGeocodeStatus === 'success') {
         this.runBuffer();
       } else if (nextGeocodeStatus === null) {
