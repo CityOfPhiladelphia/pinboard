@@ -959,7 +959,7 @@ export default {
         }
 
         let booleanKeywords = true;
-        // console.log('row:', row, 'this.$config.tags', this.$config.tags, 'this.selectedKeywords:', this.selectedKeywords, 'this.selectedKeywords.length:', this.selectedKeywords.length);
+        // console.log('App.vue filterPoints booleanKeywords section, row:', row, 'this.$config.tags', this.$config.tags, 'this.selectedKeywords:', this.selectedKeywords, 'this.selectedKeywords.length:', this.selectedKeywords.length);
         if (this.selectedKeywords.length > 0) {
           booleanKeywords = false;
           let description = [];
@@ -984,7 +984,7 @@ export default {
               }
             }
           }
-          // console.log('still going, this.selectedKeywords[0]:', this.selectedKeywords[0], 'row.tags:', row.tags, 'description:', description);
+          // console.log('App.vue filterPoints booleanKeywords section, still going, this.selectedKeywords:', this.selectedKeywords, 'this.selectedKeywords[0]:', this.selectedKeywords[0], 'row.tags:', row.tags, 'description:', description);
 
           let threshold = 0.2;
           if (this.$config.searchBar.fuseThreshold) {
@@ -1012,12 +1012,21 @@ export default {
     			};
 
           const fuse = new Fuse(description, options);
-    			const result = fuse.search(this.selectedKeywords[0]);
-          // const result = description.includes(this.selectedKeywords[0]);
-          // console.log('this.selectedKeywords[0]:', this.selectedKeywords[0], 'result:', result);
-          // if (result) {
-          if (result.length > 0) {
-            booleanKeywords = true;
+    			// const result = fuse.search(this.selectedKeywords[0]);
+          let results = {};
+          for (let keyword of this.selectedKeywords) {
+            // console.log('in selectedKeywords loop, keyword:', keyword);
+            results[keyword] = fuse.search(keyword);
+          }
+    			// const result = fuse.search(this.selectedKeywords[0]);
+          // console.log('App.vue filterPoints booleanKeywords section, result:', result, 'results:', results);
+          // if (result.length > 0) {
+          //   booleanKeywords = true;
+          // }
+          for (let keyword of Object.keys(results)) {
+            if (results[keyword].length > 0) {
+              booleanKeywords = true;
+            }
           }
         }
 
