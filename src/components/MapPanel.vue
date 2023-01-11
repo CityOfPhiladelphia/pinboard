@@ -290,7 +290,7 @@ export default {
       let selectedCurrentMapData = this.currentMapData.filter(test => test._featureId == selectedResource);
       let coordinates = [];
       let result = [];
-      if (this.$config) {
+      if (this.$config && this.$config.geojsonForResource) {
         let geojsonData = this.$store.state.sources[this.$config.geojsonForResource.source].data;
         if (geojsonData && geojsonData.features && selectedCurrentMapData[0] && selectedCurrentMapData[0].fields && selectedCurrentMapData[0].fields.polygon) {
           let geojsonForResource = geojsonData.features.filter(test2 => test2.attributes.globalid == selectedCurrentMapData[0].fields.globalid);

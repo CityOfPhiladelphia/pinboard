@@ -608,7 +608,7 @@ export default {
     let root = document.getElementsByTagName( 'html' )[0]; // '0' to assign the first (and only `HTML` tag)
     root.setAttribute( 'class', 'invisible-scrollbar' );
 
-    // console.log('App.vue created, this.$config:', this.$config);
+    console.log('Pinboard Main.vue created, this.$config:', this.$config);
     if (this.$config.map) {
       if (this.$config.map.shouldInitialize === false) {
         this.$store.commit('setShouldInitializeMap', false);
