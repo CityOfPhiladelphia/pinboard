@@ -922,7 +922,11 @@ export default {
       let newQuery = keywordsArray.toString();
       console.log('in closeKeywordsBox, this.$route.query:', this.$route.query, 'startQuery:', startQuery, 'newQuery:', newQuery);
       // console.log('in clearSearchTriggered2, this.$route.query:', this.$route.query, 'startQuery:', startQuery);
-      this.$router.push({ query: { ...this.$route.query, ...{ keyword: newQuery }}});
+      if (newQuery.length) {
+        this.$router.push({ query: { ...this.$route.query, ...{ keyword: newQuery }}});
+      } else {
+        this.$router.push({ query: { ...this.$route.query, ...{ keyword: [] } }});
+      }
       // this.$router.push({ query: { ...this.$route.query, ...{ keyword: keywordsArray }}});
       this.searchString = '';
       this.$store.commit('setSelectedKeywords', keywordsArray);
