@@ -904,21 +904,26 @@ export default {
     },
     closeKeywordsBox(box) {
       let startQuery = { ...this.$route.query };
-      console.log('closeKeywordsBox is running, box:', box, 'startQuery.keyword:', startQuery.keyword);
       let keywordsArray;
       if (startQuery.keyword && typeof startQuery.keyword === 'string' && startQuery.keyword != '') {
         keywordsArray = startQuery.keyword.split(',');
+      } else if (startQuery.keyword && Array.isArray(startQuery.keyword) && startQuery.keyword.length) {
+        keywordsArray = startQuery.keyword;
       } else {
         keywordsArray = [];
       }
+      console.log('closeKeywordsBox is running, keywordsArray:', keywordsArray, 'typeof startQuery.keyword:', typeof startQuery.keyword, 'box:', box, 'startQuery.keyword:', startQuery.keyword);
       const index = keywordsArray.indexOf(box);
       if (index > -1) { // only splice array when item is found
+        console.log('in closeKeywordsBox in if 1, keywordsArray:', keywordsArray);
         keywordsArray.splice(index, 1); // 2nd parameter means remove one item only
+        console.log('in closeKeywordsBox in if 2, keywordsArray:', keywordsArray);
       }
       let newQuery = keywordsArray.toString();
       console.log('in closeKeywordsBox, this.$route.query:', this.$route.query, 'startQuery:', startQuery, 'newQuery:', newQuery);
       // console.log('in clearSearchTriggered2, this.$route.query:', this.$route.query, 'startQuery:', startQuery);
-      this.$router.push({ query: { ...this.$route.query, ...{ keyword: keywordsArray }}});
+      this.$router.push({ query: { ...this.$route.query, ...{ keyword: newQuery }}});
+      // this.$router.push({ query: { ...this.$route.query, ...{ keyword: keywordsArray }}});
       this.searchString = '';
       this.$store.commit('setSelectedKeywords', keywordsArray);
     },
