@@ -730,6 +730,7 @@ export default {
       this.searchString = '';
       this.$store.commit('setSelectedKeywords', []);
       this.$store.commit('setSelectedZipcode', null);
+      this.$store.commit('setBufferShape', null);
       this.$controller.resetGeocode();
       this.$store.commit('setCurrentSearch', null);
     },
@@ -762,6 +763,7 @@ export default {
       const geocodePoint = point(this.geocodeGeom.coordinates);
       const pointBuffer = buffer(geocodePoint, searchDistance, { units: 'miles' });
       this.$data.buffer = pointBuffer;
+      this.$store.commit('setBufferShape', pointBuffer);
     },
     filterPoints() {
       console.log('App.vue filterPoints is running, this.database:', this.database);

@@ -163,6 +163,30 @@
         :replace="true"
       />
 
+      <MglGeojsonLayer
+        v-if="geojsonForBufferBoolean"
+        key="'geojsonForBufferFill'"
+        :source-id="'geojsonForBuffer'"
+        :source="geojsonForBufferSource"
+        :layer-id="'geojsonForBufferFill'"
+        :layer="geojsonForBufferFillLayer"
+        :clear-source="false"
+        :replace-source="true"
+        :replace="true"
+      />
+
+      <MglGeojsonLayer
+        v-if="geojsonForBufferBoolean"
+        key="'geojsonForBufferLine'"
+        :source-id="'geojsonForBuffer'"
+        :source="geojsonForBufferSource"
+        :layer-id="'geojsonForBufferLine'"
+        :layer="geojsonForBufferLineLayer"
+        :clear-source="true"
+        :replace-source="true"
+        :replace="true"
+      />
+
     </MglMap>
 
     <!-- <slot
@@ -281,6 +305,40 @@ export default {
         },
       },
 
+      geojsonForBufferBoolean: false,
+      geojsonForBufferSource: {
+        'type': 'geojson',
+        'data': {
+          'type': 'Feature',
+          'geometry': {
+            'type': 'Polygon',
+            'coordinates': [],
+          },
+        },
+      },
+      geojsonForBufferFillLayer: {
+        'id': 'geojsonForBufferFill',
+        'type': 'fill',
+        'source': 'geojsonForBuffer',
+        'layout': {},
+        'paint': {
+          // 'fill-color': 'rgb(0,102,255)',
+          'fill-color': '#9e9ac8',
+          'fill-opacity': 0.4,
+          'fill-outline-color': 'rgb(0,102,255)',
+        },
+      },
+      geojsonForBufferLineLayer: {
+        'id': 'geojsonForBufferLine',
+        'type': 'line',
+        'source': 'geojsonForBuffer',
+        'layout': {},
+        'paint': {
+          'line-color': '#9e9ac8',
+          'line-width': 2,
+        },
+      },
+
       geojsonForResourceBoolean: false,
       geojsonForResourceSource: {
         'type': 'geojson',
@@ -325,6 +383,9 @@ export default {
     return data;
   },
   computed: {
+    bufferShape() {
+      return this.$store.state.bufferShape;
+    },
     zipcodeData() {
       // return this.$store.state.sources.zipcodes.data;
       let zipcodesData = this.$store.state.sources.zipcodes.data;
@@ -764,6 +825,18 @@ export default {
 
   },
   watch: {
+    bufferShape(nextBufferShape) {
+      console.log('watch bufferShape is firing, nextBufferShape:', nextBufferShape);
+      let geo;
+      if (nextBufferShape) {
+        geo = nextBufferShape.geometry;
+        this.$data.geojsonForBufferSource.data.geometry.coordinates = geo.coordinates;
+        this.$data.geojsonForBufferBoolean = true;
+      } else {
+        this.$data.geojsonForBufferSource.data.geometry.coordinates = [];
+        this.$data.geojsonForBufferBoolean = false;
+      }
+    },
     zipcodeData(nextZipcodeData) {
       // console.log('watch zipcodeData, nextZipcodeData:', nextZipcodeData);
       let geo;
