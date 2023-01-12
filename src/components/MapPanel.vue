@@ -139,6 +139,30 @@
         :replace="true"
       />
 
+      <MglGeojsonLayer
+        v-if="geojsonForZipcodeBoolean"
+        key="'geojsonForZipcodeFill'"
+        :source-id="'geojsonForZipcode'"
+        :source="geojsonForZipcodeSource"
+        :layer-id="'geojsonForZipcodeFill'"
+        :layer="geojsonForZipcodeFillLayer"
+        :clear-source="false"
+        :replace-source="true"
+        :replace="true"
+      />
+
+      <MglGeojsonLayer
+        v-if="geojsonForZipcodeBoolean"
+        key="'geojsonForZipcodeLine'"
+        :source-id="'geojsonForZipcode'"
+        :source="geojsonForZipcodeSource"
+        :layer-id="'geojsonForZipcodeLine'"
+        :layer="geojsonForZipcodeLineLayer"
+        :clear-source="true"
+        :replace-source="true"
+        :replace="true"
+      />
+
     </MglMap>
 
     <!-- <slot
@@ -223,6 +247,40 @@ export default {
       accessToken: process.env.VUE_APP_MAPBOX_ACCESSTOKEN,
       addressInputPlaceholder: null,
 
+      geojsonForZipcodeBoolean: false,
+      geojsonForZipcodeSource: {
+        'type': 'geojson',
+        'data': {
+          'type': 'Feature',
+          'geometry': {
+            'type': 'Polygon',
+            'coordinates': [],
+          },
+        },
+      },
+      geojsonForZipcodeFillLayer: {
+        'id': 'geojsonForZipcodeFill',
+        'type': 'fill',
+        'source': 'geojsonForZipcode',
+        'layout': {},
+        'paint': {
+          // 'fill-color': 'rgb(0,102,255)',
+          'fill-color': '#9e9ac8',
+          'fill-opacity': 0.4,
+          'fill-outline-color': 'rgb(0,102,255)',
+        },
+      },
+      geojsonForZipcodeLineLayer: {
+        'id': 'geojsonForZipcodeLine',
+        'type': 'line',
+        'source': 'geojsonForZipcode',
+        'layout': {},
+        'paint': {
+          'line-color': '#9e9ac8',
+          'line-width': 2,
+        },
+      },
+
       geojsonForResourceBoolean: false,
       geojsonForResourceSource: {
         'type': 'geojson',
@@ -267,6 +325,19 @@ export default {
     return data;
   },
   computed: {
+    zipcodeData() {
+      // return this.$store.state.sources.zipcodes.data;
+      let zipcodesData = this.$store.state.sources.zipcodes.data;
+      let selectedZipcode = this.selectedZipcode;
+      let zipcode;
+      if (zipcodesData && selectedZipcode) {
+        zipcode = zipcodesData.features.filter(test => test.attributes.CODE == selectedZipcode)[0];
+      }
+      return zipcode;
+    },
+    selectedZipcode() {
+      return this.$store.state.selectedZipcode;
+    },
     boundsProp() {
       let bounds = this.$store.state.map.bounds;
       // console.log('boundsProps, bounds:', bounds);
@@ -693,6 +764,18 @@ export default {
 
   },
   watch: {
+    zipcodeData(nextZipcodeData) {
+      // console.log('watch zipcodeData, nextZipcodeData:', nextZipcodeData);
+      let geo;
+      if (nextZipcodeData) {
+        geo = nextZipcodeData.geometry.rings;
+        this.$data.geojsonForZipcodeSource.data.geometry.coordinates = geo;
+        this.$data.geojsonForZipcodeBoolean = true;
+      } else {
+        this.$data.geojsonForZipcodeSource.data.geometry.coordinates = [];
+        this.$data.geojsonForZipcodeBoolean = false;
+      }
+    },
     map(nextMap) {
       console.log('MapPanel watch map is firing, nextMap:', nextMap);
     },

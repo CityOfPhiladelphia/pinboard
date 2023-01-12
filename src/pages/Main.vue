@@ -213,6 +213,19 @@ export default {
     };
   },
   computed: {
+    zipcodeData() {
+      // return this.$store.state.sources.zipcodes.data;
+      let zipcodesData = this.$store.state.sources.zipcodes.data;
+      let selectedZipcode = this.selectedZipcode;
+      let zipcode;
+      if (zipcodesData && selectedZipcode) {
+        zipcode = zipcodesData.features.filter(test => test.attributes.CODE == selectedZipcode)[0];
+      }
+      return zipcode;
+    },
+    selectedZipcode() {
+      return this.$store.state.selectedZipcode;
+    },
     refineTitle() {
       return this.$config.refine.title;
     },
@@ -471,6 +484,21 @@ export default {
     },
   },
   watch: {
+    zipcodeData(nextZipcodeData) {
+      // console.log('Main.vue watch zipcodeData, nextZipcodeData:', nextZipcodeData);
+      if (nextZipcodeData) {
+        let geo = {
+          geometry: {
+            coordinates: nextZipcodeData.geometry.rings,
+            type: "Polygon"
+          },
+          type: "Feature",
+        };
+        this.$data.buffer = geo;
+      } else {
+        this.$data.buffer = null;
+      }
+    },
     i18nLocale(nexti18nLocale) {
       // console.log('watch i18nLocale, nexti18nLocale:', nexti18nLocale);
       let startQuery = { ...this.$route.query };
@@ -642,9 +670,11 @@ export default {
     handleSubmit(val) {
       let query;
       let searchBarType;
-      let val2 = parseFloat(val.substring(0));
-      console.log('handleSubmit 1, this.$config.searchBar.searchTypes:', this.$config.searchBar.searchTypes);
-      if (isNaN(val2)) {
+      let valAsFloat = parseFloat(val.substring(0));
+      let valToString = valAsFloat.toString();
+      let checkVals = val === valToString;
+      console.log('handleSubmit 1, val.substring(0):', val.substring(0), 'valAsFloat:', valAsFloat, 'checkVals:', checkVals, 'this.$config.searchBar.searchTypes:', this.$config.searchBar.searchTypes);
+      if (isNaN(valAsFloat)) {
         if (!this.$config.searchBar.searchTypes.includes('keyword')) {
           console.log('cannot search keywords');
           this.$warning(`Please search an address`, {
@@ -660,6 +690,11 @@ export default {
           this.searchBarType = 'keyword';
           searchBarType = 'keyword';
         }
+      } else if (checkVals) {
+        console.log('its a zipcode');
+        query = { 'zipcode': val };
+        this.searchBarType = 'zipcode';
+        searchBarType = 'zipcode';
       } else {
         // this.inputValidation = true;
         // this.$success(`Success!`, { duration: 1000 });
@@ -670,7 +705,8 @@ export default {
       let startQuery = { ...this.$route.query };
       delete startQuery['address'];
       delete startQuery['keyword'];
-      console.log('handleSubmit is running, val2:', val2, 'searchBarType:', searchBarType, 'startQuery:', startQuery, 'this.$route.query:', this.$route.query, 'query:', query, 'val:', val, 'val.substring(0, 1):', val.substring(0, 1));
+      delete startQuery['zipcode'];
+      console.log('handleSubmit is running, valAsFloat:', valAsFloat, 'searchBarType:', searchBarType, 'startQuery:', startQuery, 'this.$route.query:', this.$route.query, 'query:', query, 'val:', val, 'val.substring(0, 1):', val.substring(0, 1));
       this.$router.push({ query: { ...startQuery, ...query }});
       this.searchString = query[this.searchBarType];
       const searchCategory = Object.keys(query)[0];
@@ -686,12 +722,14 @@ export default {
       let startQuery = { ...this.$route.query };
       // console.log('in clearSearchTriggered1, this.$route.query:', this.$route.query, 'startQuery:', startQuery);
       delete startQuery['address'];
+      delete startQuery['zipcode'];
       delete startQuery['keyword'];
       // delete startQuery[this.searchBarType];
       // console.log('in clearSearchTriggered2, this.$route.query:', this.$route.query, 'startQuery:', startQuery);
       this.$router.push({ query: startQuery });
       this.searchString = '';
       this.$store.commit('setSelectedKeywords', []);
+      this.$store.commit('setSelectedZipcode', null);
       this.$controller.resetGeocode();
       this.$store.commit('setCurrentSearch', null);
     },
@@ -911,6 +949,7 @@ export default {
             }
             // console.log('buffer else if 1 IF is running, row:', row, 'rowPoint:', rowPoint, 'booleanBuffer:', booleanBuffer);
           } else if (typeof row.latlng[0] === 'string' && row.latlng[0] !== null) {
+            // console.log('buffer else if 1 ELSE IF');
             const rowPoint = point([ parseFloat(row.latlng[1]), parseFloat(row.latlng[0]) ]);
             if (booleanPointInPolygon(rowPoint, this.$data.buffer)) {
               booleanBuffer = true;
