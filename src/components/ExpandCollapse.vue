@@ -13,7 +13,7 @@
     >
       <div
         class="location-title column"
-        :class="{ 'is-8': locationOpen, 'is-11': !locationOpen }"
+        :class="{ 'is-8': locationOpen && this.$config.printView, 'is-11': !locationOpen }"
       >
         <h2
           class="h5"
@@ -38,7 +38,7 @@
         </h2>
       </div>
       <div
-        v-if="locationOpen"
+        v-if="locationOpen && this.$config.printView"
         class="column is-3"
       >
         <button
