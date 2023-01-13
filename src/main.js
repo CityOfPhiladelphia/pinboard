@@ -29,6 +29,8 @@ import configMixin from './util/config-mixin';
 
 import notifications from './components/notifications';
 
+import zipcodes from './data-sources/zipcodes';
+
 
 // baseConfig is right now coming in from within the project
 // if we definitely need one, we can move it outside the project
@@ -45,12 +47,14 @@ const clientConfig = {
 };
 
 function initPinboard(clientConfig) {
-  console.log('initPinboard is running 1, clientConfig:', clientConfig, 'i18n:', i18n);
+  console.log('initPinboard is running 1, clientConfig:', clientConfig, 'i18n:', i18n, 'zipcodes:', zipcodes);
   clientConfig = mergeDeep(i18n, clientConfig);
+  clientConfig = mergeDeep(zipcodes, clientConfig);
   const baseConfigUrl = clientConfig.baseConfig;
   console.log('initPinboard is running 2, clientConfig:', clientConfig, 'baseConfigUrl:', baseConfigUrl);
 
   if (!baseConfigUrl || baseConfigUrl === null) {
+    console.log('about to call finishInit');
     finishInit(clientConfig);
   } else {
     // get base config
@@ -68,7 +72,7 @@ function initPinboard(clientConfig) {
 
       // deep merge base config and client config
       const config = mergeDeep(baseConfig, clientConfig);
-      // console.log('config:', config);
+      // console.log('baseConfig section, config:', config);
       finishInit(config);
     }).catch(err => {
       console.error('Error loading base config:', err);

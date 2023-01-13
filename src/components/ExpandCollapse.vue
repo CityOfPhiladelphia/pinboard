@@ -1,5 +1,4 @@
 <template>
-  <!-- class="cell medium-cell-block-container location-item" -->
   <div
     class="location-item"
     :class="{ 'open': locationOpen }"
@@ -12,8 +11,10 @@
       @keyup.space="expandLocation"
       @keyup.enter="expandLocation"
     >
-      <div class="location-title column is-11">
-        <!-- :id="makeID(getSiteName(item))" -->
+      <div
+        class="location-title column"
+        :class="{ 'is-8': locationOpen, 'is-11': !locationOpen }"
+      >
         <h2
           class="h5"
           :aria-expanded="locationOpen"
@@ -36,6 +37,23 @@
 
         </h2>
       </div>
+      <div
+        v-if="locationOpen"
+        class="column is-3"
+      >
+        <button
+          class="button is-small print-view-button"
+          @click="openPrintView"
+        >
+          Print View
+        </button>
+        <button
+          class="button is-small print-button"
+          @click="openPrintView"
+        >
+          Print
+        </button>
+      </div>
       <div class="location-icon column is-1">
         <font-awesome-icon
           v-if="!locationOpen"
@@ -46,22 +64,11 @@
           v-if="locationOpen"
           :icon="[plusIconWeight, 'minus']"
         />
-        <!-- class="plus-icon" -->
       </div>
-      <!-- <div
-        :class="{ 'location-open': locationOpen }"
-        class="location-content"
-        :aria-labelledby="makeID(getSiteName(item))"
-      >
-        <slot />
-      </div> -->
     </div>
     <div
       :class="locationClass"
     >
-    <!-- :aria-labelledby="makeID(getSiteName(item))" -->
-    <!-- :class="{ 'location-open': locationOpen }" -->
-    <!-- :class="isMobile ? 'location-content-mobile' : 'location-content'" -->
       <slot />
     </div>
   </div>
@@ -223,6 +230,11 @@ export default {
     // };
   },
   methods: {
+    openPrintView(e) {
+      e.stopPropagation();
+      console.log('openPrintView is running, e:', e, 'this.$props.item._featureId:', this.$props.item._featureId);
+      window.open('./resource-view/' + this.$props.item._featureId, '_blank');
+    },
     openLocation() {
       this.locationOpen = true;
       const el = this.$el;
@@ -260,7 +272,8 @@ export default {
       console.log('ExpandCollapse expandLocation is starting, siteName:', siteName);
       this.locationOpen = !this.locationOpen;
       const selectedResource = this.$props.item._featureId;
-      const selectedResources = [ ...this.selectedResources ];
+      // const selectedResources = [ ...this.selectedResources ];
+      const selectedResources = [];
       let latestSelectedResourceFromExpand = null;
       if (this.locationOpen) {
         selectedResources.push(selectedResource);
@@ -298,10 +311,6 @@ export default {
   position: relative;
   border-bottom: 1px solid black;
   height:100%;
-
-  // &:hover::after {
-  //   color: white;
-  // }
 
   &:hover {
     .plus-icon {
@@ -346,39 +355,22 @@ export default {
     color: white;
   }
 
-  // &::after{
-  //   position: absolute;
-  //   right: 1rem;
-  //   top: 1rem;
-  //   content: '+';
-  //   font-weight: 300;
-  //   font-size:1.5rem;
-  //   z-index: 100;
-  //   color: $ben-franklin-blue-dark;
-  //   pointer-events: none;
-  // }
   &.open{
     .location-row {
       color:white;
       background-color: $ben-franklin-blue-dark;
-      // font-weight: 900;
     }
 
-    // .location-title {
     h2 {
       font-weight: 900 !important;
     }
-    // &::after{
-    //   content: '–';
-    //   color:white;
-    // }
   }
+
   .location-content{
     overflow: hidden;
     height:0;
 
     &.location-open{
-      // padding: 1rem;
       padding-top: 1rem;
       padding-bottom: 1rem;
       padding-right: 0px;
@@ -406,5 +398,41 @@ export default {
 .plus-icon {
   color: $ben-franklin-blue-dark;
 }
+
+.print-view-button {
+  padding-left: 5px !important;
+  padding-right: 5px !important;
+}
+
+.print-button {
+  padding-left: 5px !important;
+  padding-right: 5px !important;
+}
+
+@media (max-width: 499px) {
+  .print-view-button {
+    display: none !important;
+  }
+} 
+
+@media (min-width: 500px) and (max-width: 767px) {
+  .print-button {
+    display: none !important;
+  }
+} 
+
+@media (min-width: 768px) and (max-width: 1049px) {
+  .print-view-button {
+    display: none !important;
+  }
+}
+
+@media (min-width: 1050px) {
+  .print-button {
+    display: none !important;
+  }
+} 
+
+
 
 </style>

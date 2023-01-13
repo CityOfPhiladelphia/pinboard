@@ -42,6 +42,16 @@ function createStore(config) {
       }
     },
     mutations: {
+      setMapBounds(state, payload) {
+        console.log('mapboard store.js setMapBounds is running');
+        // const { northEast, southWest } = payload || {};
+        // state.map.bounds.northEast = northEast;
+        // state.map.bounds.southWest = southWest;
+        state.map.bounds = payload;
+      },
+      setMapBoundsBasedOnShape(state, payload) {
+        state.map.boundsBasedOnShape = payload;
+      },
       // setSelectedServices(state, payload) {
       //   state.selectedServices = payload;
       // },

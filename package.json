@@ -19,7 +19,7 @@
     "@creativebulma/bulma-tooltip": "^1.2.0",
     "@fortawesome/free-brands-svg-icons": "^5.15.4",
     "@phila/phila-ui": "2.1.13",
-    "@phila/vue-datafetch": "https://github.com/CityOfPhiladelphia/phila-vue-datafetch#5e88eda1ebfb7b11e09ffc201c2c3bba0bb5007d",
+    "@phila/vue-datafetch": "https://github.com/CityOfPhiladelphia/phila-vue-datafetch#23773957f9b4bbcaf64620382c6bc6f6087e068e",
     "@phila/vue-mapping": "3.1.10",
     "animate.css": "^4.1.1",
     "axios": "^0.19.0",
