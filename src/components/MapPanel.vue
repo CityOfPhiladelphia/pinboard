@@ -829,15 +829,18 @@ export default {
   },
   watch: {
     bufferShape(nextBufferShape) {
-      console.log('watch bufferShape is firing, nextBufferShape:', nextBufferShape);
+      console.log('watch bufferShape is firing now, nextBufferShape:', nextBufferShape);
       let geo;
       if (nextBufferShape) {
+        console.log('if is running, nextBufferShape:', nextBufferShape);
         geo = nextBufferShape.geometry;
         this.$data.geojsonForBufferSource.data.geometry.coordinates = geo.coordinates;
         this.$data.geojsonForBufferBoolean = true;
       } else {
+        console.log('else is running, nextBufferShape:', nextBufferShape);
         this.$data.geojsonForBufferSource.data.geometry.coordinates = [];
         this.$data.geojsonForBufferBoolean = false;
+        // this.$store.commit('setBufferShape', null);
       }
     },
     zipcodeData(nextZipcodeData) {

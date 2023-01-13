@@ -674,6 +674,9 @@ export default {
       let valToString = valAsFloat.toString();
       let checkVals = val === valToString;
       console.log('handleSubmit 1, val.substring(0):', val.substring(0), 'valAsFloat:', valAsFloat, 'checkVals:', checkVals, 'this.$config.searchBar.searchTypes:', this.$config.searchBar.searchTypes);
+      
+      let startQuery = { ...this.$route.query };
+      
       if (isNaN(valAsFloat)) {
         if (!this.$config.searchBar.searchTypes.includes('keyword')) {
           console.log('cannot search keywords');
@@ -681,12 +684,15 @@ export default {
             duration: 4000,
             closeOnClick: true,
           });
-          // this.inputValidation = false;
           return;
         } else {
-          // this.inputValidation = true;
-          // this.$success(`Success!`, { duration: 1000 });
-          query = { 'keyword': val };
+          let startKeyword;
+          if (startQuery['keyword'] && startQuery['keyword'] != '') {
+            startKeyword = startQuery['keyword'];
+            val = startKeyword + ',' + val;
+            // query = { 'keyword': startKeyword + ',' + val };
+          }
+          query = { ...startQuery, ...{ 'keyword': val }};
           this.searchBarType = 'keyword';
           searchBarType = 'keyword';
         }
@@ -696,13 +702,11 @@ export default {
         this.searchBarType = 'zipcode';
         searchBarType = 'zipcode';
       } else {
-        // this.inputValidation = true;
-        // this.$success(`Success!`, { duration: 1000 });
-        query = { 'address': val };
+        query = { ...startQuery, ...{ 'address': val }};
         this.searchBarType = 'address';
         searchBarType = 'address';
       }
-      let startQuery = { ...this.$route.query };
+      // let startQuery = { ...this.$route.query };
       delete startQuery['address'];
       delete startQuery['keyword'];
       delete startQuery['zipcode'];
@@ -811,7 +815,7 @@ export default {
                 let groupBooleanConditions = [];
                 for (let service of selectedServices) {
                   // console.log('App.vue filterPoints loop, service:', service);
-                  if (service.split('_', 1)[0] === group && this.$config.refine.multipleFieldGroups[group]['radio']) {
+                  if (group !== 'keyword' && service.split('_', 1)[0] === group && this.$config.refine.multipleFieldGroups[group]['radio']) {
                     // console.log('group:', group, 'this.$config.refine.multipleFieldGroups[group]["radio"]:', this.$config.refine.multipleFieldGroups[group]['radio']);
                     let dependentGroups = this.$config.refine.multipleFieldGroups[group]['radio'][service.split('_')[1]]['dependentGroups'] || [];
                     // console.log('dependentGroup:', dependentGroup, 'service.split("_", 1)[0]:', service.split('_', 1)[0], 'service.split("_")[1]:', service.split('_')[1], 'group', group, 'this.$config.refine.multipleFieldsGroups[group]', this.$config.refine.multipleFieldsGroups[group], 'this.$config.refine.multipleFieldsGroups[group][service.split("_")[1]]:', this.$config.refine.multipleFieldsGroups[group][service.split('_')[1]]);
@@ -826,7 +830,7 @@ export default {
                     let val = getter(row, dependentServices);
                     groupBooleanConditions.push(val);
                   }
-                  if (service.split('_', 1)[0] === group && this.$config.refine.multipleFieldGroups[group]['checkbox']) {
+                  if (group !== 'keyword' && service.split('_', 1)[0] === group && this.$config.refine.multipleFieldGroups[group]['checkbox']) {
                     // console.log('group:', group, 'this.$config.refine.multipleFieldGroups[group]["dependent"]:', this.$config.refine.multipleFieldGroups[group]['dependent']);
                     let independentGroups = this.$config.refine.multipleFieldGroups[group]['checkbox'][service.split('_')[1]]['independentGroups'] || [];
                     // console.log('dependentGroup:', dependentGroup, 'service.split("_", 1)[0]:', service.split('_', 1)[0], 'service.split("_")[1]:', service.split('_')[1], 'group', group, 'this.$config.refine.multipleFieldsGroups[group]', this.$config.refine.multipleFieldsGroups[group], 'this.$config.refine.multipleFieldsGroups[group][service.split("_")[1]]:', this.$config.refine.multipleFieldsGroups[group][service.split('_')[1]]);
@@ -842,7 +846,7 @@ export default {
                     groupBooleanConditions.push(val);
                   }
                 }
-                console.log('group:', group, 'groupBooleanConditions:', groupBooleanConditions);
+                // console.log('group:', group, 'groupBooleanConditions:', groupBooleanConditions);
                 if (groupBooleanConditions.includes(true)) {
                   booleanConditions.push(true);
                 } else if (groupBooleanConditions.length) {
@@ -1052,12 +1056,20 @@ export default {
     			};
 
           const fuse = new Fuse(description, options);
-    			const result = fuse.search(this.selectedKeywords[0]);
-          // const result = description.includes(this.selectedKeywords[0]);
-          // console.log('this.selectedKeywords[0]:', this.selectedKeywords[0], 'result:', result);
-          // if (result) {
-          if (result.length > 0) {
-            booleanKeywords = true;
+    			let results = {};
+          for (let keyword of this.selectedKeywords) {
+            // console.log('in selectedKeywords loop, keyword:', keyword);
+            results[keyword] = fuse.search(keyword);
+          }
+    			// const result = fuse.search(this.selectedKeywords[0]);
+          // console.log('App.vue filterPoints booleanKeywords section, result:', result, 'results:', results);
+          // if (result.length > 0) {
+          //   booleanKeywords = true;
+          // }
+          for (let keyword of Object.keys(results)) {
+            if (results[keyword].length > 0) {
+              booleanKeywords = true;
+            }
           }
         }
 

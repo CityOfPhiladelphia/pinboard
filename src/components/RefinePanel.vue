@@ -903,6 +903,7 @@ export default {
       this.$router.push({ query: { ...startQuery }});
       this.$controller.resetGeocode();
       this.$store.commit('setCurrentSearch', null);
+      this.$store.commit('setBufferShape', null);
     },
     closeKeywordsBox(box) {
       let startQuery = { ...this.$route.query };

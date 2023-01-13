@@ -48,6 +48,7 @@ const clientConfig = {
 
 function initPinboard(clientConfig) {
   console.log('initPinboard is running 1, clientConfig:', clientConfig, 'i18n:', i18n, 'zipcodes:', zipcodes);
+  clientConfig.pinboard = true;
   clientConfig = mergeDeep(i18n, clientConfig);
   clientConfig = mergeDeep(zipcodes, clientConfig);
   const baseConfigUrl = clientConfig.baseConfig;
