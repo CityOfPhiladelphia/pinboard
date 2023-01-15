@@ -215,11 +215,13 @@ export default {
   computed: {
     zipcodeData() {
       // return this.$store.state.sources.zipcodes.data;
-      let zipcodesData = this.$store.state.sources.zipcodes.data;
-      let selectedZipcode = this.selectedZipcode;
       let zipcode;
-      if (zipcodesData && selectedZipcode) {
-        zipcode = zipcodesData.features.filter(test => test.attributes.CODE == selectedZipcode)[0];
+      if (this.$store.state.sources.zipcodes) {
+        let zipcodesData = this.$store.state.sources.zipcodes.data;
+        let selectedZipcode = this.selectedZipcode;
+        if (zipcodesData && selectedZipcode) {
+          zipcode = zipcodesData.features.filter(test => test.attributes.CODE == selectedZipcode)[0];
+        }
       }
       return zipcode;
     },
@@ -377,8 +379,8 @@ export default {
       return value;
     },
     database() {
-      let database = this.$store.state.sources[this.$appType].data.rows || this.$store.state.sources[this.$appType].data.features || this.$store.state.sources[this.$appType].data.records;
-      console.log('computed database is running, database:', database);
+      let database = this.$store.state.sources[this.$appType].data || this.$store.state.sources[this.$appType].data.rows || this.$store.state.sources[this.$appType].data.features || this.$store.state.sources[this.$appType].data.records;
+      console.log('computed database is running, database:', database, 'this.$appType:', this.$appType);
 
       for (let [key, value] of Object.entries(database)) {
 
@@ -742,10 +744,19 @@ export default {
         status: 'success',
       }
       if (theSources.length > 1) {
+        console.log('theSources:', theSources);
         for (let source of theSources) {
-          for (let point of source.features) {
-            // console.log('point:', point);
-            compiled.data.push(point);
+          console.log('source:', source);
+          if (source.features) {
+            for (let point of source.features) {
+              // console.log('point:', point);
+              compiled.data.push(point);
+            }
+          } else if (source.records) {
+            for (let point of source.records) {
+              // console.log('point:', point);
+              compiled.data.push(point);
+            }
           }
         }
         // console.log('compiled:', compiled);

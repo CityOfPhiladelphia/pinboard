@@ -388,11 +388,13 @@ export default {
     },
     zipcodeData() {
       // return this.$store.state.sources.zipcodes.data;
-      let zipcodesData = this.$store.state.sources.zipcodes.data;
-      let selectedZipcode = this.selectedZipcode;
       let zipcode;
-      if (zipcodesData && selectedZipcode) {
-        zipcode = zipcodesData.features.filter(test => test.attributes.CODE == selectedZipcode)[0];
+      if (this.$store.state.sources.zipcodes) {
+        let zipcodesData = this.$store.state.sources.zipcodes.data;
+        let selectedZipcode = this.selectedZipcode;
+        if (zipcodesData && selectedZipcode) {
+          zipcode = zipcodesData.features.filter(test => test.attributes.CODE == selectedZipcode)[0];
+        }
       }
       return zipcode;
     },
