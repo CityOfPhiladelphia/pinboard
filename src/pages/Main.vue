@@ -165,6 +165,7 @@ import {
   Checkbox,
   LangSelector,
 } from '@phila/phila-ui';
+import { isThisSecond } from 'date-fns';
 
 export default {
   name: 'Main',
@@ -379,7 +380,7 @@ export default {
       return value;
     },
     database() {
-      let database = this.$store.state.sources[this.$appType].data || this.$store.state.sources[this.$appType].data.rows || this.$store.state.sources[this.$appType].data.features || this.$store.state.sources[this.$appType].data.records;
+      let database = this.$store.state.sources[this.$appType].data.rows || this.$store.state.sources[this.$appType].data.features || this.$store.state.sources[this.$appType].data.records;
       console.log('computed database is running, database:', database, 'this.$appType:', this.$appType);
 
       for (let [key, value] of Object.entries(database)) {
@@ -740,7 +741,9 @@ export default {
       // console.log('Pinboard App.vue setUpData is running, theSources:', theSources);
       let compiled = {
         key: 'compiled',
-        data: [],
+        data: {
+          'records':[],
+        },
         status: 'success',
       }
       if (theSources.length > 1) {
@@ -754,8 +757,12 @@ export default {
             }
           } else if (source.records) {
             for (let point of source.records) {
+              let featureId = point._featureId.split('-')[1];
+              if (this.$config.app.categorizeCompiled) {
+                point.fields.category_type = featureId;
+              }
               // console.log('point:', point);
-              compiled.data.push(point);
+              compiled.data.records.push(point);
             }
           }
         }
