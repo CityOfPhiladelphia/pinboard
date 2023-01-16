@@ -5,7 +5,7 @@
   >
 
     <phila-ui-address-input
-      v-show="!isMobile && view=='app'"
+      v-show="!isMobile && view=='app' && !this.$config.searchBar.hide"
       :over-map="true"
       :placeholder="addressInputPlaceholder"
       :width-from-config="addressInputWidth"
