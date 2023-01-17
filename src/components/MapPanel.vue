@@ -5,7 +5,7 @@
   >
 
     <phila-ui-address-input
-      v-show="!isMobile && view=='app'"
+      v-show="!isMobile && view=='app' && !this.$config.searchBar.hide"
       :over-map="true"
       :placeholder="addressInputPlaceholder"
       :width-from-config="addressInputWidth"
@@ -388,11 +388,13 @@ export default {
     },
     zipcodeData() {
       // return this.$store.state.sources.zipcodes.data;
-      let zipcodesData = this.$store.state.sources.zipcodes.data;
-      let selectedZipcode = this.selectedZipcode;
       let zipcode;
-      if (zipcodesData && selectedZipcode) {
-        zipcode = zipcodesData.features.filter(test => test.attributes.CODE == selectedZipcode)[0];
+      if (this.$store.state.sources.zipcodes) {
+        let zipcodesData = this.$store.state.sources.zipcodes.data;
+        let selectedZipcode = this.selectedZipcode;
+        if (zipcodesData && selectedZipcode) {
+          zipcode = zipcodesData.features.filter(test => test.attributes.CODE == selectedZipcode)[0];
+        }
       }
       return zipcode;
     },
@@ -584,6 +586,8 @@ export default {
               color = this.$config.circleMarkers.circleColors[row.category_type];
             } else if (row.site_type) {
               color = this.$config.circleMarkers.circleColors[row.site_type];
+            } else if (row.fields) {
+              color = this.$config.circleMarkers.circleColors[row.fields.category_type];
             }
 
           // single circle color defined
