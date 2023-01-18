@@ -49,7 +49,7 @@
       </div>
 
       <button
-        v-if="!i18nEnabled && isTablet && selected.length || !i18nEnabled && isDesktop && selected.length || !i18nEnabled && isWideScreen && selected.length"
+        v-if="!i18nEnabled && isTablet && (selected.length || anyValueEntered) || !i18nEnabled && isDesktop && (selected.length || anyValueEntered) || !i18nEnabled && isWideScreen && (selected.length || anyValueEntered)"
         class="clear-all"
         @click.prevent="clearAll"
       >
@@ -57,7 +57,7 @@
       </button>
 
       <button
-        v-if="i18nEnabled && isTablet && selected.length || i18nEnabled && isDesktop && selected.length || i18nEnabled && isWideScreen && selected.length"
+        v-if="i18nEnabled && isTablet && (selected.length || anyValueEntered) || i18nEnabled && isDesktop && (selected.length || anyValueEntered) || i18nEnabled && isWideScreen && (selected.length || anyValueEntered)"
         class="clear-all"
         @click.prevent="clearAll"
         v-html="$t('refinePanel.clearAll')"
@@ -77,6 +77,18 @@
           @click="closeKeywordsBox(box)"
         >
           {{ $t(getBoxValue(box)) }}
+          <font-awesome-icon
+            class="fa-x"
+            :icon="[timesIconWeight,'times']"
+          />
+        </button>
+
+        <button
+          v-if="zipcodeEntered"
+          class="box-value column is-narrow"
+          @click="closeZipcodeBox(zipcodeEntered)"
+        >
+          {{ $t(getBoxValue(zipcodeEntered)) }}
           <font-awesome-icon
             class="fa-x"
             :icon="[timesIconWeight,'times']"
@@ -499,6 +511,13 @@ export default {
     };
   },
   computed: {
+    anyValueEntered() {
+      let value = false;
+      if (this.zipcodeEntered != null || this.addressEntered != null || this.keywordsEntered.length != 0) {
+        value = true;
+      }
+      return value;
+    },
     angleIconWeight() {
       let value = 'fas';
       let regularExists = findIconDefinition({ prefix: 'far', iconName: 'angle-down' });
@@ -699,6 +718,9 @@ export default {
         return false;
       }
     },
+    zipcodeEntered() {
+      return this.$store.state.selectedZipcode;
+    },
     addressEntered() {
       let address;
       // if (this.geocode.status === 'success') {
@@ -896,6 +918,16 @@ export default {
       console.log('clickBox is running, e:', e);
       e.stopPropagation();
     },
+    closeZipcodeBox(box) {
+      let startQuery = { ...this.$route.query };
+      console.log('closeZipcodeBox is running, box:', box, 'startQuery:', startQuery);
+      delete startQuery['zipcode'];
+      this.$router.push({ query: { ...startQuery }});
+      // this.$controller.resetGeocode();
+      this.$store.commit('setSelectedZipcode', null);
+      this.$store.commit('setCurrentSearch', null);
+      // this.$store.commit('setBufferShape', null);
+    },
     closeAddressBox(box) {
       let startQuery = { ...this.$route.query };
       console.log('closeAddressBox is running, box:', box, 'startQuery:', startQuery);
@@ -978,6 +1010,14 @@ export default {
       } else {
         this.selected = [];
       }
+      this.$store.commit('setSelectedKeywords', []);
+      this.$store.commit('setSelectedZipcode', null);
+      this.$store.commit('setCurrentSearch', null);
+      let startQuery = { ...this.$route.query };
+      delete startQuery['address'];
+      delete startQuery['zipcode'];
+      delete startQuery['keyword'];
+      this.$router.push({ query: { ...startQuery }});
     },
     getRefineSearchList() {
       console.log('getRefineSearchList is running');

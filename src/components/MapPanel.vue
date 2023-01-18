@@ -832,6 +832,7 @@ export default {
   watch: {
     bufferShape(nextBufferShape) {
       console.log('watch bufferShape is firing now, nextBufferShape:', nextBufferShape);
+      this.$store.commit('setSelectedZipcode:', null);
       let geo;
       if (nextBufferShape) {
         console.log('if is running, nextBufferShape:', nextBufferShape);
@@ -852,6 +853,7 @@ export default {
         geo = nextZipcodeData.geometry.rings;
         this.$data.geojsonForZipcodeSource.data.geometry.coordinates = geo;
         this.$data.geojsonForZipcodeBoolean = true;
+        this.$store.commit('setBufferShape', null);
       } else {
         this.$data.geojsonForZipcodeSource.data.geometry.coordinates = [];
         this.$data.geojsonForZipcodeBoolean = false;
@@ -864,6 +866,7 @@ export default {
       if (nextGeocodeResult._featureId) {
         this.$store.commit('setMapCenter', nextGeocodeResult.geometry.coordinates);
         this.$store.commit('setMapZoom', this.geocodeZoom);
+        this.$store.commit('setSelectedZipcode:', null);
       }
     },
     latestSelectedResourceFromExpand(nextLatestSelectedResource) {
@@ -931,7 +934,7 @@ export default {
       });
     },
     currentMapData(nextCurrentMapData) {
-      console.log('MapPanel.vue, watch currentMapData, this.view:', this.view, 'nextCurrentMapData:', nextCurrentMapData, 'nextCurrentMapData[0].latlng:', nextCurrentMapData[0].latlng);
+      console.log('MapPanel.vue, watch currentMapData, this.view:', this.view, 'nextCurrentMapData:', nextCurrentMapData);
       if (this.view == 'print') {
         console.log('watch, its print view');
         this.$store.commit('setMapCenter', [ nextCurrentMapData[0].latlng[1], nextCurrentMapData[0].latlng[0] ]);

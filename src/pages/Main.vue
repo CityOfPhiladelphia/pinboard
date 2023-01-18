@@ -969,14 +969,17 @@ export default {
           // console.log('buffer else if 1 is running, row:', row, 'booleanBuffer:', booleanBuffer, 'typeof row.latlng[0]:', typeof row.latlng[0]);
           if (typeof row.latlng[0] === 'number' && row.latlng[0] !== null) {
             const rowPoint = point([ row.latlng[1], row.latlng[0] ]);
-            let geocodedPoint = point(this.$store.state.geocode.data.geometry.coordinates);
-            let options = { units: 'miles' };
-            let theDistance;
-            if (booleanPointInPolygon(rowPoint, this.$data.buffer)) {
-              booleanBuffer = true;
+            let geocodedPoint, options, theDistance;
+            if (this.$store.state.geocode.data) {
+              geocodedPoint = point(this.$store.state.geocode.data.geometry.coordinates);
+              options = { units: 'miles' };
               theDistance = distance(geocodedPoint, rowPoint, options);
               row.distance = theDistance;
             }
+            if (booleanPointInPolygon(rowPoint, this.$data.buffer)) {
+              booleanBuffer = true;
+            }
+            // }
             // console.log('buffer else if 1 IF is running, row:', row, 'rowPoint:', rowPoint, 'booleanBuffer:', booleanBuffer);
           } else if (typeof row.latlng[0] === 'string' && row.latlng[0] !== null) {
             // console.log('buffer else if 1 ELSE IF');

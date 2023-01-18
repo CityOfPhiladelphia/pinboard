@@ -256,6 +256,9 @@ export default {
       }
       return value;
     },
+    zipcode() {
+      return this.$store.state.selectedZipcode;
+    },
     geocode() {
       return this.$store.state.geocode.data;
     },
@@ -332,9 +335,6 @@ export default {
           });
         }
       }
-
-
-
       return locations;
     },
     currentDataList() {
@@ -348,6 +348,9 @@ export default {
     },
   },
   watch: {
+    zipcode(nextZipcode) {
+      this.$store.commit('setShouldShowGreeting', false);
+    },
     geocode(nextGeocode) {
       // console.log('watch, nextGeocode:', nextGeocode);
       this.$store.commit('setShouldShowGreeting', false);
