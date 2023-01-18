@@ -671,6 +671,9 @@ export default {
       // console.log('MapPanel.vue currentMapData computed is finishing');
       return newRows;
     },
+    lastPinboardSearchMethod() {
+      return this.$store.state.lastPinboardSearchMethod;
+    },
     geocodeStatus() {
       return this.$store.state.geocode.status;
     },
@@ -830,12 +833,28 @@ export default {
 
   },
   watch: {
+    lastPinboardSearchMethod(nextLastPinboardSearchMethod) {
+      console.log('watch lastPinboardSearchMethod, nextLastPinboardSearchMethod:', nextLastPinboardSearchMethod);
+      if (nextLastPinboardSearchMethod === 'geocode') {
+        this.$data.geojsonForZipcodeBoolean = false;
+        let startQuery = { ...this.$route.query };
+        delete startQuery['zipcode'];
+        this.$router.push({ query: { ...startQuery }});
+        this.$store.commit('setSelectedZipcode', null);
+      } else if (nextLastPinboardSearchMethod === 'zipcode') {
+        this.$data.geojsonForBufferBoolean = false;
+        let startQuery = { ...this.$route.query };
+        delete startQuery['address'];
+        this.$router.push({ query: { ...startQuery }});
+        // this.$controller.resetGeocode();
+      }
+    },
     bufferShape(nextBufferShape) {
       console.log('watch bufferShape is firing now, nextBufferShape:', nextBufferShape);
-      this.$store.commit('setSelectedZipcode:', null);
       let geo;
       if (nextBufferShape) {
         console.log('if is running, nextBufferShape:', nextBufferShape);
+        // this.$store.commit('setSelectedZipcode', null);
         geo = nextBufferShape.geometry;
         this.$data.geojsonForBufferSource.data.geometry.coordinates = geo.coordinates;
         this.$data.geojsonForBufferBoolean = true;
@@ -853,7 +872,7 @@ export default {
         geo = nextZipcodeData.geometry.rings;
         this.$data.geojsonForZipcodeSource.data.geometry.coordinates = geo;
         this.$data.geojsonForZipcodeBoolean = true;
-        this.$store.commit('setBufferShape', null);
+        // this.$store.commit('setBufferShape', null);
       } else {
         this.$data.geojsonForZipcodeSource.data.geometry.coordinates = [];
         this.$data.geojsonForZipcodeBoolean = false;
@@ -866,7 +885,7 @@ export default {
       if (nextGeocodeResult._featureId) {
         this.$store.commit('setMapCenter', nextGeocodeResult.geometry.coordinates);
         this.$store.commit('setMapZoom', this.geocodeZoom);
-        this.$store.commit('setSelectedZipcode:', null);
+        // this.$store.commit('setSelectedZipcode:', null);
       }
     },
     latestSelectedResourceFromExpand(nextLatestSelectedResource) {

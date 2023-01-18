@@ -486,11 +486,18 @@ export default {
     refineOpen() {
       return this.$store.state.refineOpen;
     },
+    lastPinboardSearchMethod() {
+      return this.$store.state.lastPinboardSearchMethod;
+    },
   },
   watch: {
+    buffer(nextBuffer) {
+      console.log('watch buffer, nextBuffer:', nextBuffer);
+    },
     zipcodeData(nextZipcodeData) {
-      // console.log('Main.vue watch zipcodeData, nextZipcodeData:', nextZipcodeData);
+      console.log('Main.vue watch zipcodeData, nextZipcodeData:', nextZipcodeData);
       if (nextZipcodeData) {
+        console.log('watch zipcodeData setting buffer to shape');
         let geo = {
           geometry: {
             coordinates: nextZipcodeData.geometry.rings,
@@ -500,6 +507,7 @@ export default {
         };
         this.$data.buffer = geo;
       } else {
+        console.log('watch zipcodeData setting buffer to null');
         this.$data.buffer = null;
       }
     },
@@ -530,7 +538,7 @@ export default {
     geocodeStatus(nextGeocodeStatus) {
       if (nextGeocodeStatus === 'success') {
         this.runBuffer();
-      } else if (nextGeocodeStatus === null) {
+      } else if (nextGeocodeStatus === null && this.lastPinboardSearchMethod != 'zipcode') {
         this.$data.buffer = null;
       }
     },
@@ -567,6 +575,7 @@ export default {
     },
   },
   mounted() {
+    // this.$store.commit('setLastSearchMethod', 'zipcode');
     console.log('in App.vue mounted 210818, this.$store.state:', this.$store.state, 'this.$config:', this.$config, 'window.location.href:', window.location.href);
     this.$config.searchBar.searchTypes.forEach(item => {
       if (this.$route.query[item]) {
@@ -690,6 +699,7 @@ export default {
           });
           return;
         } else {
+          this.$store.commit('setLastPinboardSearchMethod', 'keyword');
           let startKeyword;
           if (startQuery['keyword'] && startQuery['keyword'] != '') {
             startKeyword = startQuery['keyword'];
@@ -702,11 +712,13 @@ export default {
         }
       } else if (checkVals) {
         console.log('its a zipcode');
+        this.$store.commit('setLastPinboardSearchMethod', 'zipcode');
         query = { 'zipcode': val };
         this.searchBarType = 'zipcode';
         searchBarType = 'zipcode';
       } else {
         query = { ...startQuery, ...{ 'address': val }};
+        this.$store.commit('setLastPinboardSearchMethod', 'geocode');
         this.searchBarType = 'address';
         searchBarType = 'address';
       }
@@ -962,7 +974,7 @@ export default {
         // console.log('about to do buffer stuff, row:', row);
         let booleanBuffer = false;
         if (!this.$data.buffer) {
-          // console.log('!this.$data.buffer');:
+          console.log('!this.$data.buffer');
           booleanBuffer = true;
         } else if (row.latlng) {
           // console.log('row.latlng:', row.latlng);

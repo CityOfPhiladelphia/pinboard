@@ -16,6 +16,7 @@ export default {
         const state = this.$store.state;
         const getter = valOrGetter;
         if (currentQueryKeys.includes('address')) {
+          console.log('item:', item);
           if (item && item.distance) {
             val = '(' + item.distance.toFixed(2) + ' miles) ' + getter(item, transforms);
           } else {

@@ -16,6 +16,7 @@ function createStore(config) {
   const sources = pvdStore.createSources(config);
   const rfStore = {
     state: {
+      lastPinboardSearchMethod: null,
       shouldShowGreeting: true,
       currentSearch: null,
       isMobileOrTablet: isMobileDevice(),
@@ -42,6 +43,9 @@ function createStore(config) {
       }
     },
     mutations: {
+      setLastPinboardSearchMethod(state, payload) {
+        state.lastPinboardSearchMethod = payload;
+      },
       setMapBounds(state, payload) {
         console.log('mapboard store.js setMapBounds is running');
         // const { northEast, southWest } = payload || {};
