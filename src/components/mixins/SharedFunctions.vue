@@ -9,16 +9,32 @@ export default {
       const valOrGetterType = typeof valOrGetter;
       let val;
 
+      let currentQuery = { ...this.$route.query };
+      let currentQueryKeys = Object.keys(currentQuery);
+
       if (valOrGetterType === 'function') {
         const state = this.$store.state;
         const getter = valOrGetter;
-        if (item) {
-          val = getter(item, transforms);
+        if (currentQueryKeys.includes('address')) {
+          if (item) {
+            val = item.distance.toFixed(2) + ' miles - ' + getter(item, transforms);
+          } else {
+            val = item.distance.toFixed(2) + ' miles - ' + getter(state);
+          }
         } else {
-          val = getter(state);
+          if (item) {
+            val = getter(item, transforms);
+          } else {
+            val = getter(state);
+          }
         }
+
       } else {
-        val = item[valOrGetter];
+        if (currentQueryKeys.includes('address')) {
+          val = item.distance.toFixed(2) + ' miles - ' + item[valOrGetter];
+        } else {
+          val = item[valOrGetter];
+        }
       }
       // console.log('getSiteName val:', val);
       return val;
