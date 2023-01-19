@@ -32,6 +32,52 @@
         />
       </div>
       <div
+        v-if="currentData.length > 0"
+        class="columns is-mobile is-vcentered"
+      >
+        <div
+          class="input-wrap input-checkbox"
+        >
+      
+        <!-- id="wawa"
+        name="wawa1" -->
+          <!-- <input
+            type="checkbox"
+            role="checkbox"
+          > -->
+            <!-- class="is-checkradio"
+            role="checkbox" -->
+          <!-- wawa
+          <input
+            type="checkbox"
+          >
+        </div> -->
+        <!-- v-model="localValue" -->
+          <!-- v-on="inputListeners" -->
+          <!-- v-bind="option.attrs || {}" -->
+          <!-- :value="optionValue(option, key)" -->
+          <!-- :aria-checked="value.includes(optionValue(option, key))" -->
+
+
+        <!-- <div class="column is-4">
+          <input
+            type="checkbox"
+            class="is-large large-checkbox"
+          />
+          <div class="checkbox-label">Select All</div>
+        </div> -->
+        </div>
+      </div>
+
+      <!-- <label class="checkbox is-vcentered">
+        <input
+          type="checkbox"
+          class="is-large large-checkbox"
+        >
+        Remember me
+      </label> -->
+
+      <div
         v-for="item in currentData"
         :key="item._featureId"
       >
@@ -418,6 +464,23 @@ export default {
 </script>
 
 <style lang="scss">
+
+.checkbox-label {
+  display: inline-block;
+  padding-left: 4px;
+  line-height: 5px;
+  // padding-bottom: 1px;
+}
+
+.print-options-container {
+  padding: 1rem;
+}
+
+.large-checkbox {
+  // width: 20px;
+  // height: 20px;
+  // padding-top: 20px;
+}
 
 .locations-panel {
   overflow-y: visible !important;
