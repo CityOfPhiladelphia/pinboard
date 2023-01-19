@@ -139,7 +139,7 @@
         :replace="true"
       />
 
-      <MglGeojsonLayer
+      <!-- <MglGeojsonLayer
         v-if="geojsonForZipcodeBoolean"
         key="'geojsonForZipcodeFill'"
         :source-id="'geojsonForZipcode'"
@@ -149,7 +149,7 @@
         :clear-source="false"
         :replace-source="true"
         :replace="true"
-      />
+      /> -->
 
       <MglGeojsonLayer
         v-if="geojsonForZipcodeBoolean"
