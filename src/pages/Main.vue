@@ -491,9 +491,9 @@ export default {
     },
   },
   watch: {
-    buffer(nextBuffer) {
-      console.log('watch buffer, nextBuffer:', nextBuffer);
-    },
+    // buffer(nextBuffer) {
+    //   console.log('watch buffer, nextBuffer:', nextBuffer);
+    // },
     zipcodeData(nextZipcodeData) {
       console.log('Main.vue watch zipcodeData, nextZipcodeData:', nextZipcodeData);
       if (nextZipcodeData) {
@@ -506,6 +506,8 @@ export default {
           type: "Feature",
         };
         this.$data.buffer = geo;
+
+        this.runZipcodeBuffer(geo);
       } else {
         console.log('watch zipcodeData setting buffer to null');
         this.$data.buffer = null;
@@ -800,6 +802,13 @@ export default {
       this.$data.buffer = pointBuffer;
       this.$store.commit('setBufferShape', pointBuffer);
     },
+    runZipcodeBuffer(geo) {
+      console.log('Main.vue runZipcodeBuffer is running, geo:', geo);
+      let searchDistance = 1;
+      const polygonBuffer = buffer(geo, searchDistance, { units: 'miles' });
+      this.$data.buffer = polygonBuffer;
+      this.$store.commit('setZipcodeBufferShape', polygonBuffer);
+    },
     filterPoints() {
       console.log('App.vue filterPoints is running, this.database:', this.database);
       const filteredRows = [];
@@ -974,7 +983,7 @@ export default {
         // console.log('about to do buffer stuff, row:', row);
         let booleanBuffer = false;
         if (!this.$data.buffer) {
-          console.log('!this.$data.buffer');
+          // console.log('!this.$data.buffer');
           booleanBuffer = true;
         } else if (row.latlng) {
           // console.log('row.latlng:', row.latlng);

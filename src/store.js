@@ -40,9 +40,13 @@ function createStore(config) {
       alertResponse: null,
       gtag: {
         category: 'unspecified-pinboard-app'
-      }
+      },
+      zipcodeBufferShape: null,
     },
     mutations: {
+      setZipcodeBufferShape(state, payload) {
+        state.zipcodeBufferShape = payload;
+      },
       setLastPinboardSearchMethod(state, payload) {
         state.lastPinboardSearchMethod = payload;
       },

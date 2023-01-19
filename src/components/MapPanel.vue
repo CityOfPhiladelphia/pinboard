@@ -164,6 +164,30 @@
       />
 
       <MglGeojsonLayer
+        v-if="geojsonForZipcodeBufferBoolean"
+        key="'geojsonForZipcodeBufferFill'"
+        :source-id="'geojsonForZipcodeBuffer'"
+        :source="geojsonForZipcodeBufferSource"
+        :layer-id="'geojsonForZipcodeBufferFill'"
+        :layer="geojsonForZipcodeBufferFillLayer"
+        :clear-source="false"
+        :replace-source="true"
+        :replace="true"
+      />
+
+      <MglGeojsonLayer
+        v-if="geojsonForZipcodeBufferBoolean"
+        key="'geojsonForZipcodeBufferLine'"
+        :source-id="'geojsonForZipcodeBuffer'"
+        :source="geojsonForZipcodeBufferSource"
+        :layer-id="'geojsonForZipcodeBufferLine'"
+        :layer="geojsonForZipcodeBufferLineLayer"
+        :clear-source="true"
+        :replace-source="true"
+        :replace="true"
+      />
+
+      <MglGeojsonLayer
         v-if="geojsonForBufferBoolean"
         key="'geojsonForBufferFill'"
         :source-id="'geojsonForBuffer'"
@@ -305,6 +329,40 @@ export default {
         },
       },
 
+      geojsonForZipcodeBufferBoolean: false,
+      geojsonForZipcodeBufferSource: {
+        'type': 'geojson',
+        'data': {
+          'type': 'Feature',
+          'geometry': {
+            'type': 'Polygon',
+            'coordinates': [],
+          },
+        },
+      },
+      geojsonForZipcodeBufferFillLayer: {
+        'id': 'geojsonForZipcodeBufferFill',
+        'type': 'fill',
+        'source': 'geojsonForZipcodeBuffer',
+        'layout': {},
+        'paint': {
+          // 'fill-color': 'rgb(0,102,255)',
+          'fill-color': '#9e9ac8',
+          'fill-opacity': 0.4,
+          'fill-outline-color': 'rgb(0,102,255)',
+        },
+      },
+      geojsonForZipcodeBufferLineLayer: {
+        'id': 'geojsonForZipcodeBufferLine',
+        'type': 'line',
+        'source': 'geojsonForZipcodeBuffer',
+        'layout': {},
+        'paint': {
+          'line-color': '#9e9ac8',
+          'line-width': 2,
+        },
+      },
+
       geojsonForBufferBoolean: false,
       geojsonForBufferSource: {
         'type': 'geojson',
@@ -383,6 +441,9 @@ export default {
     return data;
   },
   computed: {
+    zipcodeBufferShape() {
+      return this.$store.state.zipcodeBufferShape;
+    },
     bufferShape() {
       return this.$store.state.bufferShape;
     },
@@ -837,6 +898,7 @@ export default {
       console.log('watch lastPinboardSearchMethod, nextLastPinboardSearchMethod:', nextLastPinboardSearchMethod);
       if (nextLastPinboardSearchMethod === 'geocode') {
         this.$data.geojsonForZipcodeBoolean = false;
+        this.$data.geojsonForZipcodeBufferBoolean = false;
         let startQuery = { ...this.$route.query };
         delete startQuery['zipcode'];
         this.$router.push({ query: { ...startQuery }});
@@ -847,6 +909,22 @@ export default {
         delete startQuery['address'];
         this.$router.push({ query: { ...startQuery }});
         // this.$controller.resetGeocode();
+      }
+    },
+    zipcodeBufferShape(nextZipcodeBufferShape) {
+      console.log('watch zipcodeBufferShape is firing now, nextZipcodeBufferShape:', nextZipcodeBufferShape);
+      let geo;
+      if (nextZipcodeBufferShape) {
+        console.log('if is running, nextZipcodeBufferShape:', nextZipcodeBufferShape);
+        // this.$store.commit('setSelectedZipcode', null);
+        geo = nextZipcodeBufferShape.geometry;
+        this.$data.geojsonForZipcodeBufferSource.data.geometry.coordinates = geo.coordinates;
+        this.$data.geojsonForZipcodeBufferBoolean = true;
+      } else {
+        console.log('else is running, nextBufferShape:', nextBufferShape);
+        this.$data.geojsonForZipcodeBufferSource.data.geometry.coordinates = [];
+        this.$data.geojsonForZipcodeBufferBoolean = false;
+        // this.$store.commit('setBufferShape', null);
       }
     },
     bufferShape(nextBufferShape) {
@@ -872,10 +950,12 @@ export default {
         geo = nextZipcodeData.geometry.rings;
         this.$data.geojsonForZipcodeSource.data.geometry.coordinates = geo;
         this.$data.geojsonForZipcodeBoolean = true;
+        this.$data.geojsonForZipcodeBufferBoolean = true;
         // this.$store.commit('setBufferShape', null);
       } else {
         this.$data.geojsonForZipcodeSource.data.geometry.coordinates = [];
         this.$data.geojsonForZipcodeBoolean = false;
+        this.$data.geojsonForZipcodeBufferBoolean = false;
       }
     },
     map(nextMap) {
