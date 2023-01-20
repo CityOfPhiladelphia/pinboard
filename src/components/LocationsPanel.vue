@@ -66,6 +66,7 @@
         <expand-collapse
           :item="item"
           :is-map-visible="isMapVisible"
+          @print-box-checked="printBoxChecked"
         >
 
           <component
@@ -244,7 +245,8 @@ export default {
   },
   data() {
     return {
-      singleCheckboxOptions: [{ 'option-1': 'Option 1' }],
+      // singleCheckboxOptions: [{ 'option-1': 'Option 1' }],
+      printCheckboxes: [],
     };
   },
   mounted() {
@@ -406,6 +408,14 @@ export default {
     },
   },
   methods: {
+    printBoxChecked(id) {
+      console.log('LocationsPanel printBoxChecked, id:', id);
+      if (this.printCheckboxes.includes(id)) {
+        this.printCheckboxes.splice(this.printCheckboxes.indexOf(id), 1);
+      } else {
+        this.printCheckboxes.push(id);
+      }
+    },
     testFunction() {
       console.log('LocationsPanel testFunction is running');
     },

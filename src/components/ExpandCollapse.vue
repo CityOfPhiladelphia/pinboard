@@ -16,18 +16,21 @@
         :class="{ 'is-8': locationOpen && this.$config.printView, 'is-11': !locationOpen }"
       >
         <!-- <div class="checkbox-holder"> -->
-          <div class="field">
+          <div class="field expand-collapse-checkbox">
             <!-- <input class="is-checkradio" id="exampleCheckbox" type="checkbox" name="exampleCheckbox" checked="checked"> -->
             <input
               class="is-checkradio"
               :id="'checkbox'+item._featureId"
               type="checkbox"
               :name="'checkbox'+item._featureId"
-              @click="testFunctionExpandCollapse"
+              @click="testFunctionExpandCollapse(item._featureId)"
             >
               <!-- checked="checked" -->
-            <label for="exampleCheckbox" class="checkbox-label">
-              <span
+            <label
+              :for="'checkbox'+item._featureId"
+              class="checkbox-label"
+            >
+              <!-- <span
                 class="h5"
                 :aria-expanded="locationOpen"
               >
@@ -47,13 +50,13 @@
                 >
                 </div>
       
-              </span>
+              </span> -->
             </label>
           </div>
         <!-- </div>
         <div class="checkbox-holder"> -->
-          <!-- <h2
-            class="h5"
+          <span
+            class="h5 location-name"
             :aria-expanded="locationOpen"
           >
             {{ getSiteName(item) }}
@@ -70,9 +73,9 @@
               :style="{ 'background-color': sectionColor }"
               v-html="'<b>'+$t(sectionTitle)+'</b>'"
             >
-          </div>
-  
-          </h2> -->
+            </div>
+    
+          </span>
         <!-- </div> -->
       </div>
 
@@ -270,9 +273,11 @@ export default {
     // };
   },
   methods: {
-    testFunctionExpandCollapse(e) {
+    testFunctionExpandCollapse(id) {
       // e.stopPropagation();
-      console.log('testFunctionExpandCollapse is running');
+      console.log('testFunctionExpandCollapse is running, id:', id);
+      this.$emit('print-box-checked', id);
+
     },
     openPrintView(e) {
       e.stopPropagation();
@@ -350,6 +355,15 @@ export default {
 </script>
 <style lang="scss">
 @import "../assets/scss/main.scss";
+
+.expand-collapse-checkbox {
+  display: inline-block;
+  margin-bottom: 0px !important;
+}
+
+.location-name {
+  line-height: .5rem;
+}
 
 .checkbox-label {
   width: 10px !important;
