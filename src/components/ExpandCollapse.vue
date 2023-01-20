@@ -17,7 +17,15 @@
       >
         <!-- <div class="checkbox-holder"> -->
           <div class="field">
-            <input class="is-checkradio" id="exampleCheckbox" type="checkbox" name="exampleCheckbox" checked="checked">
+            <!-- <input class="is-checkradio" id="exampleCheckbox" type="checkbox" name="exampleCheckbox" checked="checked"> -->
+            <input
+              class="is-checkradio"
+              :id="'checkbox'+item._featureId"
+              type="checkbox"
+              :name="'checkbox'+item._featureId"
+              @click="testFunctionExpandCollapse"
+            >
+              <!-- checked="checked" -->
             <label for="exampleCheckbox" class="checkbox-label">
               <span
                 class="h5"
@@ -262,6 +270,10 @@ export default {
     // };
   },
   methods: {
+    testFunctionExpandCollapse(e) {
+      // e.stopPropagation();
+      console.log('testFunctionExpandCollapse is running');
+    },
     openPrintView(e) {
       e.stopPropagation();
       console.log('openPrintView is running, e:', e, 'this.$props.item._featureId:', this.$props.item._featureId);

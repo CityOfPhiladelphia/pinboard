@@ -36,17 +36,24 @@
       >
         <div class="checkbox-holder">
           <div class="field">
-            <input class="is-checkradio" id="exampleCheckbox" type="checkbox" name="exampleCheckbox" checked="checked">
-            <label for="exampleCheckbox">Select All</label>
+            <!-- <input class="is-checkradio" id="exampleCheckbox" type="checkbox" name="exampleCheckbox" checked="checked"> -->
+            <input
+              class="is-checkradio"
+              id="locationsPanelCheckbox"
+              type="checkbox"
+              name="locationsPanelCheckbox"
+              @click="testFunction"
+            >
+            <label for="locationsPanelCheckbox">Select All</label>
           </div>
         </div>
         <div class="button-holder">
           <a class="button">
-            wawa
+            print
           </a>
         </div>
         <div class="dropdown-holder">
-          wawa2
+          sortby goes here
         </div>
 
       </div>
@@ -399,6 +406,9 @@ export default {
     },
   },
   methods: {
+    testFunction() {
+      console.log('LocationsPanel testFunction is running');
+    },
     clickedViewList() {
       // console.log('clickedViewList is running');
       if (!this.isMobile) {
