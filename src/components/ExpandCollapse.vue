@@ -15,27 +15,57 @@
         class="location-title column"
         :class="{ 'is-8': locationOpen && this.$config.printView, 'is-11': !locationOpen }"
       >
-        <h2
-          class="h5"
-          :aria-expanded="locationOpen"
-        >
-          {{ getSiteName(item) }}
-          <div
-            v-if="section && !i18nEnabled"
-            class="section-name"
-            :style="{ 'background-color': sectionColor }"
-            >
-            {{ sectionTitle }}
+        <!-- <div class="checkbox-holder"> -->
+          <div class="field">
+            <input class="is-checkradio" id="exampleCheckbox" type="checkbox" name="exampleCheckbox" checked="checked">
+            <label for="exampleCheckbox" class="checkbox-label">
+              <span
+                class="h5"
+                :aria-expanded="locationOpen"
+              >
+                {{ getSiteName(item) }}
+                <div
+                  v-if="section && !i18nEnabled"
+                  class="section-name"
+                  :style="{ 'background-color': sectionColor }"
+                  >
+                  {{ sectionTitle }}
+                </div>
+                <div
+                  v-if="section && i18nEnabled"
+                  class="section-name"
+                  :style="{ 'background-color': sectionColor }"
+                  v-html="'<b>'+$t(sectionTitle)+'</b>'"
+                >
+                </div>
+      
+              </span>
+            </label>
           </div>
-          <div
-            v-if="section && i18nEnabled"
-            class="section-name"
-            :style="{ 'background-color': sectionColor }"
-            v-html="'<b>'+$t(sectionTitle)+'</b>'"
+        <!-- </div>
+        <div class="checkbox-holder"> -->
+          <!-- <h2
+            class="h5"
+            :aria-expanded="locationOpen"
           >
-        </div>
-
-        </h2>
+            {{ getSiteName(item) }}
+            <div
+              v-if="section && !i18nEnabled"
+              class="section-name"
+              :style="{ 'background-color': sectionColor }"
+              >
+              {{ sectionTitle }}
+            </div>
+            <div
+              v-if="section && i18nEnabled"
+              class="section-name"
+              :style="{ 'background-color': sectionColor }"
+              v-html="'<b>'+$t(sectionTitle)+'</b>'"
+            >
+          </div>
+  
+          </h2> -->
+        <!-- </div> -->
       </div>
 
       <div
@@ -308,6 +338,11 @@ export default {
 </script>
 <style lang="scss">
 @import "../assets/scss/main.scss";
+
+.checkbox-label {
+  width: 10px !important;
+  margin-right: 0px !important;
+}
 
 .location-item {
   position: relative;

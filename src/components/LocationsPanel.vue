@@ -33,49 +33,23 @@
       </div>
       <div
         v-if="currentData.length > 0"
-        class="columns is-mobile is-vcentered"
       >
-        <div
-          class="input-wrap input-checkbox"
-        >
-      
-        <!-- id="wawa"
-        name="wawa1" -->
-          <!-- <input
-            type="checkbox"
-            role="checkbox"
-          > -->
-            <!-- class="is-checkradio"
-            role="checkbox" -->
-          <!-- wawa
-          <input
-            type="checkbox"
-          >
-        </div> -->
-        <!-- v-model="localValue" -->
-          <!-- v-on="inputListeners" -->
-          <!-- v-bind="option.attrs || {}" -->
-          <!-- :value="optionValue(option, key)" -->
-          <!-- :aria-checked="value.includes(optionValue(option, key))" -->
-
-
-        <!-- <div class="column is-4">
-          <input
-            type="checkbox"
-            class="is-large large-checkbox"
-          />
-          <div class="checkbox-label">Select All</div>
-        </div> -->
+        <div class="checkbox-holder">
+          <div class="field">
+            <input class="is-checkradio" id="exampleCheckbox" type="checkbox" name="exampleCheckbox" checked="checked">
+            <label for="exampleCheckbox">Select All</label>
+          </div>
         </div>
-      </div>
+        <div class="button-holder">
+          <a class="button">
+            wawa
+          </a>
+        </div>
+        <div class="dropdown-holder">
+          wawa2
+        </div>
 
-      <!-- <label class="checkbox is-vcentered">
-        <input
-          type="checkbox"
-          class="is-large large-checkbox"
-        >
-        Remember me
-      </label> -->
+      </div>
 
       <div
         v-for="item in currentData"
@@ -248,15 +222,23 @@ import { mapState } from 'vuex';
 import ExpandCollapse from './ExpandCollapse.vue';
 import transforms from '../util/transforms.js';
 
+import SingleCheckbox from './SingleCheckbox.vue';
+
 export default {
   components: {
     ExpandCollapse,
+    SingleCheckbox,
   },
   props: {
     isMapVisible: {
       type: Boolean,
       default: true,
     },
+  },
+  data() {
+    return {
+      singleCheckboxOptions: [{ 'option-1': 'Option 1' }],
+    };
   },
   mounted() {
     // console.log('LocationsPanel.vue mounted, this.$config:', this.$config);
@@ -465,22 +447,31 @@ export default {
 
 <style lang="scss">
 
-.checkbox-label {
+.checkbox-holder {
   display: inline-block;
-  padding-left: 4px;
-  line-height: 5px;
-  // padding-bottom: 1px;
 }
 
-.print-options-container {
-  padding: 1rem;
+.button-holder {
+  display: inline-block;
 }
 
-.large-checkbox {
-  // width: 20px;
-  // height: 20px;
-  // padding-top: 20px;
+.dropdown-holder {
+  display: inline-block;
 }
+
+// .field {
+//   width: 0px;
+// }
+
+// .checkbox-label {
+//   display: inline-block;
+//   padding-left: 4px;
+//   line-height: 5px;
+// }
+
+// .print-options-container {
+//   padding: 1rem;
+// }
 
 .locations-panel {
   overflow-y: visible !important;
