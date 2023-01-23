@@ -33,10 +33,10 @@
       </div>
       <div
         v-if="currentData.length > 0"
+        class="columns is-mobile mb-0"
       >
-        <div class="checkbox-holder">
-          <div class="field">
-            <!-- <input class="is-checkradio" id="exampleCheckbox" type="checkbox" name="exampleCheckbox" checked="checked"> -->
+        <!-- <div class="checkbox-holder"> -->
+          <div class="field column is-4 pt-5">
             <input
               class="is-checkradio"
               id="locationsPanelCheckbox"
@@ -46,15 +46,29 @@
             >
             <label for="locationsPanelCheckbox">Select All</label>
           </div>
-        </div>
-        <div class="button-holder">
-          <a class="button">
+        <!-- </div> -->
+        <!-- <div class="button-holder"> -->
+        <div class="column is-3 pt-3">
+          <a
+            class="button"
+            @click="clickedPrint"
+          >
             print
           </a>
         </div>
-        <div class="dropdown-holder">
-          sortby goes here
-        </div>
+        <!-- <div class="dropdown-holder"> -->
+          <div
+            v-if="currentData.length > 0"
+            class="column is-5 pt-0 pb-0"
+          >
+            <dropdown
+              v-model="sortBy"
+              :options="dropdownOptions"
+              placeholder="Sort By"
+              :disabled="geocodeStatus != 'success'"
+            />
+          </div>
+        <!-- </div> -->
 
       </div>
 
@@ -230,11 +244,14 @@ import { mapState } from 'vuex';
 import ExpandCollapse from './ExpandCollapse.vue';
 import transforms from '../util/transforms.js';
 
+import { Dropdown } from '@phila/phila-ui';
+
 import SingleCheckbox from './SingleCheckbox.vue';
 
 export default {
   components: {
     ExpandCollapse,
+    Dropdown,
     SingleCheckbox,
   },
   props: {
@@ -245,6 +262,8 @@ export default {
   },
   data() {
     return {
+      sortBy: 'Alphabetically',
+      dropdownOptions: [ "Alphabetically", "Distance" ],
       // singleCheckboxOptions: [{ 'option-1': 'Option 1' }],
       printCheckboxes: [],
     };
@@ -332,7 +351,8 @@ export default {
 
       console.log('LocationsPanel.vue, currentData, locations:', locations, 'valOrGetter:', valOrGetter, 'valOrGetterType:', valOrGetterType);
 
-      if (currentQueryKeys.includes('address')) {
+      // if (currentQueryKeys.includes('address')) {
+      if (this.sortBy == 'Distance') {
         val = 'distance';
         console.log('it includes address');
         locations.sort(function(a, b) {
@@ -392,6 +412,13 @@ export default {
       // console.log('watch, nextGeocode:', nextGeocode);
       this.$store.commit('setShouldShowGreeting', false);
     },
+    geocodeStatus(nextGeocodeStatus) {
+      if (nextGeocodeStatus == null) {
+        this.$data.sortBy = 'Alphabetically';
+      } else {
+        this.$data.sortBy = 'Distance';
+      }
+    },
     selectedKeywords(nextSelectedKeywords) {
       // console.log('watch, nextSelectedKeywords:', nextSelectedKeywords);
       this.$store.commit('setShouldShowGreeting', false);
@@ -408,6 +435,9 @@ export default {
     },
   },
   methods: {
+    clickedPrint() {
+      console.log('clickedPrint is running');
+    },
     printBoxChecked(id) {
       console.log('LocationsPanel printBoxChecked, id:', id);
       if (this.printCheckboxes.includes(id)) {
@@ -467,16 +497,20 @@ export default {
 
 <style lang="scss">
 
-.checkbox-holder {
-  display: inline-block;
-}
+// .checkbox-holder {
+//   display: inline-block;
+// }
 
-.button-holder {
-  display: inline-block;
-}
+// .button-holder {
+//   display: inline-block;
+// }
 
-.dropdown-holder {
-  display: inline-block;
+// .dropdown-holder {
+//   display: inline-block;
+// }
+
+.dropdown-div {
+  padding-top: 0px !important;
 }
 
 // .field {
