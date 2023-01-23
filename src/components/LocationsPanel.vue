@@ -437,6 +437,7 @@ export default {
   methods: {
     clickedPrint() {
       console.log('clickedPrint is running');
+      
     },
     printBoxChecked(id) {
       console.log('LocationsPanel printBoxChecked, id:', id);
