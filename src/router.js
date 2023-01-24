@@ -24,5 +24,10 @@ export default new Router({
       //   layout: 'full-height',
       // },
     },
+    {
+      path: '/print-view/',
+      name: 'printView',
+      component: () => import('./pages/PrintView'),
+    },
   ],
 });

@@ -215,6 +215,9 @@ export default {
     };
   },
   computed: {
+    printCheckboxes() {
+      return this.$store.state.printCheckboxes;
+    },
     zipcodeData() {
       // return this.$store.state.sources.zipcodes.data;
       let zipcode;
@@ -1320,7 +1323,7 @@ html, body {
 
 .locations-panel-holder {
   min-height: 0px;
-  padding: 0px;
+  padding: 0px !important;
   overflow-y: scroll;
 }
 
@@ -1359,7 +1362,7 @@ html, body {
 
 .map-panel-holder {
   height: 100%;
-  padding: 0px;
+  padding: 0px !important;
 }
 
 .toggle-button {

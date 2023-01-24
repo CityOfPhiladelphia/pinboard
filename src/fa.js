@@ -21,6 +21,7 @@ import { faAngleDown } from '@fortawesome/free-solid-svg-icons/faAngleDown';
 import { faAngleUp } from '@fortawesome/free-solid-svg-icons/faAngleUp';
 import { faPlus } from '@fortawesome/free-solid-svg-icons/faPlus';
 import { faMinus } from '@fortawesome/free-solid-svg-icons/faMinus';
+import { faArrowLeft } from '@fortawesome/free-solid-svg-icons/faArrowLeft';
 
 // console.log('pinboard fa.js, faSearch:', faSearch, 'faAngleDown:', faAngleDown);
 
@@ -46,6 +47,7 @@ library.add(
   faAngleUp,
   faPlus,
   faMinus,
+  faArrowLeft,
 );
 
 // console.log('pinboard fa.js, library:', library);

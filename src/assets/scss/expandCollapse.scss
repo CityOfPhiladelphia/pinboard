@@ -90,6 +90,34 @@ table td:not([align]), table th:not([align]) {
   }
 }
 
+.main-ec-content {
+  padding-left: 1rem;
+  padding-right: 1rem;
+  padding-top: 1rem;
+  padding-bottom: 5rem;
+  font-size: 14px;
+
+  a {
+    color: $ben-franklin-blue-dark;
+    font-weight: bold;
+    text-decoration: underline;
+  }
+}
+
+.main-ec-content-mobile {
+  padding-left: 1rem;
+  padding-right: 1rem;
+  padding-top: 1rem;
+  padding-bottom: 5rem;
+  font-size: 14px;
+
+  a {
+    color: $ben-franklin-blue-dark;
+    font-weight: bold;
+    text-decoration: underline;
+  }
+}
+
 .td-style {
   font-size: 14px !important;
 }

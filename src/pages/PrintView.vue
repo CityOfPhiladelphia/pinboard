@@ -31,7 +31,15 @@
     <div
       class="loc-item open"
     >
-      <div
+      <a
+        class="button"
+      >
+        <!-- @click="clickedPrint" -->
+        <router-link to="/"><font-awesome-icon icon="arrow-left" /> Back to home</router-link>
+        <!-- print -->
+      </a>
+
+      <!-- <div
         class="columns location-row is-mobile"
         tabindex="0"
       >
@@ -40,28 +48,12 @@
             class="h5"
             :aria-expanded="locationOpen"
           >
-            {{ getSiteName(item) }}
-
-            <!-- <div
-              v-if="section && !i18nEnabled"
-              class="section-name"
-              :style="{ 'background-color': sectionColor }"
-              >
-              {{ sectionTitle }}
-            </div>
-            <div
-              v-if="section && i18nEnabled"
-              class="section-name"
-              :style="{ 'background-color': sectionColor }"
-              v-html="'<b>'+$t(sectionTitle)+'</b>'"
-            >
-            </div> -->
-
+            Test
           </h2>
         </div>
-      </div>
+      </div> -->
 
-      <div class="component-holder">
+      <div class="map-holder">
         <map-panel
           :view="'print'"
         />
@@ -70,12 +62,46 @@
         @toggleMap="toggleMap" -->
       </div>
 
-      <div class="component-holder card-content">
+      <!-- class="component-holder card-content" -->
+      <div
+        class="item-content"
+        v-for="item of items"
+      >
+        <div
+          class="columns location-row is-mobile"
+          tabindex="0"
+        >
+          <div class="location-title column is-11">
+            <h2
+              class="h5"
+              :aria-expanded="locationOpen"
+            >
+              {{ getSiteName(item) }}
+              <!-- Test -->
+
+              <!-- <div
+                v-if="section && !i18nEnabled"
+                class="section-name"
+                :style="{ 'background-color': sectionColor }"
+                >
+                {{ sectionTitle }}
+              </div>
+              <div
+                v-if="section && i18nEnabled"
+                class="section-name"
+                :style="{ 'background-color': sectionColor }"
+                v-html="'<b>'+$t(sectionTitle)+'</b>'"
+              >
+              </div> -->
+
+            </h2>
+          </div>
+        </div>
         <component
           :is="'expandCollapseContent'"
-          v-if="showComponent"
           :item="item"
-          />
+        />
+          <!-- v-if="showComponent" -->
       </div>
 
     </div>
@@ -102,7 +128,7 @@ import {
 } from '@phila/phila-ui';
 
 export default {
-  name: 'ResourceView',
+  name: 'PrintView',
   components: {
     AppHeader,
     MobileNav,
@@ -125,16 +151,25 @@ export default {
     printCheckboxes() {
       return this.$store.state.printCheckboxes;
     },
+    items() {
+      let data = this.$store.state.sources.primaryCareSites.data;
+      console.log('PrintView items computed, data:', data);
+      let filteredData;
+      if (data) {
+        filteredData = data.features.filter(item => this.printCheckboxes.includes(item._featureId));
+      }
+      return filteredData;
+    },
     mapType() {
       return this.$store.state.map.type;
     },
-    showComponent() {
-      let value = false;
-      if (this.item && this.item.attributes && this.$config.customComps && Object.keys(this.$config.customComps).includes('expandCollapseContent')) {
-        value = true;
-      }
-      return value;
-    },
+    // showComponent() {
+    //   let value = false;
+    //   if (this.item && this.item.attributes && this.$config.customComps && Object.keys(this.$config.customComps).includes('expandCollapseContent')) {
+    //     value = true;
+    //   }
+    //   return value;
+    // },
     appTitle() {
       let value;
       if (this.$config.app.title) {
@@ -261,16 +296,16 @@ export default {
       }
     }
   },
-  watch: {
-    item(nextItem) {
-      let currentData = [ nextItem ];
-      console.log('ResourceView.vue, watch item, nextItem:', nextItem, 'nextItem._featureId:', nextItem._featureId, 'nextItem.latlng:', nextItem.latlng, 'currentData:', currentData);
-      this.$store.commit('setCurrentData', currentData);
-      // this.$store.commit('setLatestSelectedResourceFromExpand', nextItem._featureId);
-      // this.$store.commit('setMapCenter', [ nextItem.latlng[1], nextItem.latlng[0] ]);
-      // this.$store.commit('setMapZoom', 17);
-    },
-  },
+  // watch: {
+  //   item(nextItem) {
+  //     let currentData = [ nextItem ];
+  //     console.log('ResourceView.vue, watch item, nextItem:', nextItem, 'nextItem._featureId:', nextItem._featureId, 'nextItem.latlng:', nextItem.latlng, 'currentData:', currentData);
+  //     this.$store.commit('setCurrentData', currentData);
+  //     // this.$store.commit('setLatestSelectedResourceFromExpand', nextItem._featureId);
+  //     // this.$store.commit('setMapCenter', [ nextItem.latlng[1], nextItem.latlng[0] ]);
+  //     // this.$store.commit('setMapZoom', 17);
+  //   },
+  // },
   // methods: {
   //   openPrintView(e) {
   //     e.stopPropagation();
@@ -428,6 +463,11 @@ export default {
   width: 100px;
 }
 
+.map-holder {
+  height: 300px;
+  width: 100%;
+}
+
 .component-holder {
   // margin-left: 1rem;
   // margin-right: 1rem;
@@ -437,8 +477,8 @@ export default {
 
 .card-content {
   margin: 1rem;
-  position: absolute;
-  top: 340px;
+  // position: absolute;
+  // top: 340px;
   z-index: 1001;
   // width: 100%;
   padding-left: 0px;

@@ -4,7 +4,10 @@ import transforms from '../../util/transforms.js';
 export default {
   methods: {
     getSiteName(item) {
-      // console.log('in getSiteName, transforms:', transforms);
+      // console.log('in getSiteName, item:', item, 'transforms:', transforms);
+      if (!item) {
+        return;
+      }
       let valOrGetter = this.$config.locationInfo.siteName;
       const valOrGetterType = typeof valOrGetter;
       let val;

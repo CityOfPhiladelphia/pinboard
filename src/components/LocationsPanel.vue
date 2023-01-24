@@ -53,7 +53,8 @@
             class="button"
             @click="clickedPrint"
           >
-            print
+            Print
+            <!-- <router-link to="/print-view/">Print</router-link> -->
           </a>
         </div>
         <!-- <div class="dropdown-holder"> -->
@@ -437,14 +438,22 @@ export default {
   methods: {
     clickedPrint() {
       console.log('clickedPrint is running');
-      
+      if (!this.printCheckboxes.length) {
+        alert('There are no locations selected for printing');
+        return;
+      }
+      // this.$router.push({ name: 'user', params: { userId: '123' } });
+      this.$router.push({ name: 'printView'  });
+      // window.open('./print-view/' + this.printCheckboxes[0], '_blank');
     },
     printBoxChecked(id) {
       console.log('LocationsPanel printBoxChecked, id:', id);
       if (this.printCheckboxes.includes(id)) {
         this.printCheckboxes.splice(this.printCheckboxes.indexOf(id), 1);
+        this.$store.commit('setPrintCheckboxes', this.printCheckboxes);
       } else {
         this.printCheckboxes.push(id);
+        this.$store.commit('setPrintCheckboxes', this.printCheckboxes);
       }
     },
     testFunction() {

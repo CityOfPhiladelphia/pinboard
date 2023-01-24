@@ -464,17 +464,21 @@ export default {
     },
     boundsProp() {
       let bounds = this.$store.state.map.bounds;
-      // console.log('boundsProps, bounds:', bounds);
+      // console.log('in boundsProps, bounds:', bounds);
       let finalBounds;
 
       if (this.mapType === 'leaflet') {
+        // console.log('in boundsProp, mapType is leaflet');
         finalBounds = bounds;
       } else {
         if (bounds._northEast && bounds._northEast.lat != null) {
+          // console.log('in boundsProp else then if 1');
           finalBounds = [[ bounds._southWest.lng, bounds._southWest.lat ], [ bounds._northEast.lng, bounds._northEast.lat ]];
         } else if (bounds._northEast && bounds._northEast.lat == null) {
+          // console.log('in boundsProp else then else if 1');
           // finalBounds = [[ -75.0936906502695, 39.999379013777684 ], [ -75.23325134973207, 39.9072659724458 ]];
         } else {
+          // console.log('in boundsProp else then else');
           finalBounds = bounds;
         }
       }
@@ -586,7 +590,7 @@ export default {
       return "+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +wktext  +no_defs";
     },
     currentMapData() {
-      // console.log('MapPanel.vue currentMapData computed is starting recalculating');//, this.currentData:', this.currentData);
+      console.log('MapPanel.vue currentMapData computed is starting recalculating, this.$config:', this.$config);//, this.currentData:', this.currentData);
       const newRows = [];
       for (const row of [ ...this.currentData ]) {
       // for (const row of this.database) {
@@ -1033,9 +1037,9 @@ export default {
       });
     },
     currentMapData(nextCurrentMapData) {
-      console.log('MapPanel.vue, watch currentMapData, this.view:', this.view, 'nextCurrentMapData:', nextCurrentMapData);
+      // console.log('MapPanel.vue, watch currentMapData, this.view:', this.view, 'nextCurrentMapData:', nextCurrentMapData);
       if (this.view == 'print') {
-        console.log('watch, its print view');
+        // console.log('watch currentMapData, its print view, nextCurrentMapData[0].latlng[1]:', nextCurrentMapData[0].latlng[1]);
         this.$store.commit('setMapCenter', [ nextCurrentMapData[0].latlng[1], nextCurrentMapData[0].latlng[0] ]);
       }
     },
@@ -1104,7 +1108,7 @@ export default {
         console.log('end of watch geojsonForResource, calling checkBoundsChanges, nextGeojson[0].geojson.geometry.coordinates.length:', nextGeojson[0].geojson.geometry.coordinates.length);
         this.checkBoundsChanges();
       }
-
+      console.log('end of watch geojsonForResource');
     },
   },
   // created() {
@@ -1116,7 +1120,7 @@ export default {
     // console.log('MapPanel mounted, logo:', logo, 'logo.length:', logo.length, 'logo.item(0):', logo.item(0));
     // logo[0].remove();
     if (this.view == 'print') {
-      this.$store.commit('setMapZoom', 17);
+      this.$store.commit('setMapZoom', 14);
     } else if (this.$config.map.zoom) {
       this.$store.commit('setMapZoom', this.$config.map.zoom);
     }
@@ -1164,7 +1168,7 @@ export default {
       let selectedResource = [ ...this.selectedResources ];
       // const selectedResource = [];
       if (selectedResource.includes(featureId)) {
-        // console.log('markerClick close marker, featureId', featureId);
+        console.log('markerClick close marker, featureId', featureId);
         selectedResource.splice(selectedResource.indexOf(featureId), 1);
         this.$store.commit('setLatestSelectedResourceFromMap', null);
       } else {
@@ -1222,7 +1226,7 @@ export default {
       this.$emit('toggleMap');
     },
     onMapLoaded(event) {
-      // console.log('onMapLoaded is running, event.map:', event.map, this.$store.state.map);
+      console.log('onMapLoaded is running, event.map:', event.map, this.$store.state.map);
       this.$store.map = event.map;
 
       let canvas = document.querySelector(".mapboxgl-canvas");
