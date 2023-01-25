@@ -42,7 +42,7 @@
               id="locationsPanelCheckbox"
               type="checkbox"
               name="locationsPanelCheckbox"
-              @click="testFunction"
+              @click="clickedSelectAll"
             >
             <label for="locationsPanelCheckbox">Select All</label>
           </div>
@@ -267,6 +267,7 @@ export default {
       dropdownOptions: [ "Alphabetically", "Distance" ],
       // singleCheckboxOptions: [{ 'option-1': 'Option 1' }],
       printCheckboxes: [],
+      selectAllCheckbox: false,
     };
   },
   mounted() {
@@ -448,6 +449,7 @@ export default {
     },
     printBoxChecked(id) {
       console.log('LocationsPanel printBoxChecked, id:', id);
+      // e.stopPropagation();
       if (this.printCheckboxes.includes(id)) {
         this.printCheckboxes.splice(this.printCheckboxes.indexOf(id), 1);
         this.$store.commit('setPrintCheckboxes', this.printCheckboxes);
@@ -456,8 +458,15 @@ export default {
         this.$store.commit('setPrintCheckboxes', this.printCheckboxes);
       }
     },
-    testFunction() {
-      console.log('LocationsPanel testFunction is running');
+    clickedSelectAll() {
+      console.log('LocationsPanel clickedSelectAll is running');
+      if (this.selectAllCheckbox) {
+        console.log('clickedSelect all if');
+        this.$data.selectAllCheckbox = false;
+      } else {
+        console.log('clickedSelect all else');
+        this.$data.selectAllCheckbox = true;
+      }
     },
     clickedViewList() {
       // console.log('clickedViewList is running');

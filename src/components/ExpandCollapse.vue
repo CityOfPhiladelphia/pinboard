@@ -1,10 +1,24 @@
 <template>
   <div
-    class="location-item"
+    class="location-item columns"
     :class="{ 'open': locationOpen }"
   >
+    <div class="field expand-collapse-checkbox column is-1">
+      <input
+        class="is-checkradio"
+        :id="'checkbox'+item._featureId"
+        type="checkbox"
+        :name="'checkbox'+item._featureId"
+        @click="clickCheckBox"
+      >
+      <label
+        :for="'checkbox'+item._featureId"
+        class="checkbox-label"
+      >
+      </label>
+    </div>
     <div
-      class="columns location-row is-mobile"
+      class="column is-11 columns location-row is-mobile"
       tabindex="0"
       @click="expandLocation"
       @keypress.space.prevent
@@ -15,46 +29,20 @@
         class="location-title column"
         :class="{ 'is-8': locationOpen && this.$config.printView, 'is-11': !locationOpen }"
       >
-        <!-- <div class="checkbox-holder"> -->
-          <div class="field expand-collapse-checkbox">
-            <!-- <input class="is-checkradio" id="exampleCheckbox" type="checkbox" name="exampleCheckbox" checked="checked"> -->
+          <!-- <div class="field expand-collapse-checkbox">
             <input
               class="is-checkradio"
               :id="'checkbox'+item._featureId"
               type="checkbox"
               :name="'checkbox'+item._featureId"
-              @click="testFunctionExpandCollapse(item._featureId)"
+              @click="clickCheckBox"
             >
-              <!-- checked="checked" -->
             <label
               :for="'checkbox'+item._featureId"
               class="checkbox-label"
             >
-              <!-- <span
-                class="h5"
-                :aria-expanded="locationOpen"
-              >
-                {{ getSiteName(item) }}
-                <div
-                  v-if="section && !i18nEnabled"
-                  class="section-name"
-                  :style="{ 'background-color': sectionColor }"
-                  >
-                  {{ sectionTitle }}
-                </div>
-                <div
-                  v-if="section && i18nEnabled"
-                  class="section-name"
-                  :style="{ 'background-color': sectionColor }"
-                  v-html="'<b>'+$t(sectionTitle)+'</b>'"
-                >
-                </div>
-      
-              </span> -->
             </label>
-          </div>
-        <!-- </div>
-        <div class="checkbox-holder"> -->
+          </div> -->
           <span
             class="h5 location-name"
             :aria-expanded="locationOpen"
@@ -273,10 +261,10 @@ export default {
     // };
   },
   methods: {
-    testFunctionExpandCollapse(id) {
+    clickCheckBox(e) {
+      console.log('clickCheckBox is running, e:', e, 'this.item._featureId:', this.item._featureId);
       // e.stopPropagation();
-      console.log('testFunctionExpandCollapse is running, id:', id);
-      this.$emit('print-box-checked', id);
+      this.$emit('print-box-checked', this.item._featureId);
 
     },
     openPrintView(e) {
@@ -359,6 +347,7 @@ export default {
 .expand-collapse-checkbox {
   display: inline-block;
   margin-bottom: 0px !important;
+  z-index: 10000;
 }
 
 .location-name {
