@@ -1,100 +1,104 @@
 <template>
-  <div
-    class="location-item columns"
-    :class="{ 'open': locationOpen }"
-  >
-    <div class="field expand-collapse-checkbox column is-1">
-      <input
-        class="is-checkradio"
-        :id="'checkbox'+item._featureId"
-        type="checkbox"
-        :name="'checkbox'+item._featureId"
-        @click="clickCheckBox"
-      >
-      <label
-        :for="'checkbox'+item._featureId"
-        class="checkbox-label"
-      >
-      </label>
-    </div>
-    <div
-      class="column is-11 columns location-row is-mobile"
-      tabindex="0"
-      @click="expandLocation"
-      @keypress.space.prevent
-      @keyup.space="expandLocation"
-      @keyup.enter="expandLocation"
-    >
+  <div class="whole-item">
+    <div class="location-item columns is-mobile pr-2">
+      <div class="field expand-collapse-checkbox column is-1 pt-4 pb-0">
+        <input
+          class="is-checkradio"
+          :id="'checkbox'+item._featureId"
+          type="checkbox"
+          :name="'checkbox'+item._featureId"
+          @click="clickCheckBox"
+        >
+        <label
+          :for="'checkbox'+item._featureId"
+          class="checkbox-label"
+        >
+        </label>
+      </div>
       <div
-        class="location-title column"
-        :class="{ 'is-8': locationOpen && this.$config.printView, 'is-11': !locationOpen }"
+        class="column is-11 p-0"
+        :class="{ 'open': locationOpen }"
       >
-          <!-- <div class="field expand-collapse-checkbox">
-            <input
-              class="is-checkradio"
-              :id="'checkbox'+item._featureId"
-              type="checkbox"
-              :name="'checkbox'+item._featureId"
-              @click="clickCheckBox"
-            >
-            <label
-              :for="'checkbox'+item._featureId"
-              class="checkbox-label"
-            >
-            </label>
-          </div> -->
-          <span
-            class="h5 location-name"
-            :aria-expanded="locationOpen"
+        <div
+          class="columns location-row is-mobile"
+          tabindex="0"
+          @click="expandLocation"
+          @keypress.space.prevent
+          @keyup.space="expandLocation"
+          @keyup.enter="expandLocation"
+        >
+          <div
+            class="location-title column"
+            :class="{ 'is-8': locationOpen && this.$config.printView, 'is-11': !locationOpen }"
           >
-            {{ getSiteName(item) }}
-            <div
-              v-if="section && !i18nEnabled"
-              class="section-name"
-              :style="{ 'background-color': sectionColor }"
+              <!-- <div class="field expand-collapse-checkbox">
+                <input
+                  class="is-checkradio"
+                  :id="'checkbox'+item._featureId"
+                  type="checkbox"
+                  :name="'checkbox'+item._featureId"
+                  @click="clickCheckBox"
+                >
+                <label
+                  :for="'checkbox'+item._featureId"
+                  class="checkbox-label"
+                >
+                </label>
+              </div> -->
+              <span
+                class="h5 location-name"
+                :aria-expanded="locationOpen"
               >
-              {{ sectionTitle }}
-            </div>
-            <div
-              v-if="section && i18nEnabled"
-              class="section-name"
-              :style="{ 'background-color': sectionColor }"
-              v-html="'<b>'+$t(sectionTitle)+'</b>'"
+                {{ getSiteName(item) }}
+                <div
+                  v-if="section && !i18nEnabled"
+                  class="section-name"
+                  :style="{ 'background-color': sectionColor }"
+                  >
+                  {{ sectionTitle }}
+                </div>
+                <div
+                  v-if="section && i18nEnabled"
+                  class="section-name"
+                  :style="{ 'background-color': sectionColor }"
+                  v-html="'<b>'+$t(sectionTitle)+'</b>'"
+                >
+                </div>
+        
+              </span>
+            <!-- </div> -->
+          </div>
+
+          <!-- <div
+            v-if="locationOpen && this.$config.printView"
+            class="column is-3"
+          >
+            <button
+              class="button is-small print-view-button"
+              @click="openPrintView"
             >
-            </div>
-    
-          </span>
-        <!-- </div> -->
-      </div>
+              Print View
+            </button>
+            <button
+              class="button is-small print-button"
+              @click="openPrintView"
+            >
+              Print
+            </button>
+          </div> -->
 
-      <div
-        v-if="locationOpen && this.$config.printView"
-        class="column is-3"
-      >
-        <button
-          class="button is-small print-view-button"
-          @click="openPrintView"
-        >
-          Print View
-        </button>
-        <button
-          class="button is-small print-button"
-          @click="openPrintView"
-        >
-          Print
-        </button>
-      </div>
-
-      <div class="location-icon column is-1">
-        <font-awesome-icon
-          v-if="!locationOpen"
-          :icon="[plusIconWeight, 'plus']"
-          class="plus-icon"
-        />
-        <font-awesome-icon
-          v-if="locationOpen"
-          :icon="[plusIconWeight, 'minus']"
-        />
+          <div class="location-icon column is-1">
+            <font-awesome-icon
+              v-if="!locationOpen"
+              :icon="[plusIconWeight, 'plus']"
+              class="plus-icon"
+            />
+            <font-awesome-icon
+              v-if="locationOpen"
+              :icon="[plusIconWeight, 'minus']"
+            />
+          </div>
+        </div>
       </div>
     </div>
     <div
@@ -104,6 +108,8 @@
     </div>
   </div>
 </template>
+
+
 <script>
 
 import SharedFunctions from './mixins/SharedFunctions.vue';
@@ -345,9 +351,17 @@ export default {
 @import "../assets/scss/main.scss";
 
 .expand-collapse-checkbox {
-  display: inline-block;
+  // display: inline-block;
   margin-bottom: 0px !important;
-  z-index: 10000;
+  height: 50px !important
+  // z-index: 10000;
+
+  // label::after {
+  //   height: 0px !important;
+  // }
+  // label {
+  //   height: 0px !important;
+  // }
 }
 
 .location-name {
@@ -359,10 +373,16 @@ export default {
   margin-right: 0px !important;
 }
 
-.location-item {
-  position: relative;
+.whole-item {
   border-bottom: 1px solid black;
-  height:100%;
+}
+
+.location-item {
+  // border-bottom: 1px solid black;
+  position: relative;
+  height: 100%;
+  padding-top: 12px;
+  margin-bottom: 0px !important;
 
   &:hover {
     .plus-icon {
