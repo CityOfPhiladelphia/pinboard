@@ -413,7 +413,7 @@ export default {
       if (nextSelectAllCheckbox == false) {
         // this.$nextTick(() => {
           this.printCheckboxes = [];
-          let inputs = document.querySelectorAll('.is-checkradio');
+          let inputs = document.querySelectorAll('.location-checkbox');
           // console.log('inputs:', inputs);
           for (var i = 0; i < inputs.length; i++) {
             inputs[i].checked = false;
@@ -422,7 +422,7 @@ export default {
       } else {
         // this.$nextTick(() => {
           this.printCheckboxes = this.currentDataList;
-          let inputs = document.querySelectorAll('.is-checkradio');
+          let inputs = document.querySelectorAll('.location-checkbox');
           // console.log('inputs:', inputs);
           for (var i = 0; i < inputs.length; i++) {
             inputs[i].checked = true;

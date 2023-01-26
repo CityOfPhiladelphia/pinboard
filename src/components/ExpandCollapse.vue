@@ -3,7 +3,7 @@
     <div class="location-item columns is-mobile pr-2">
       <div class="field expand-collapse-checkbox column is-1 pt-4 pb-0">
         <input
-          class="is-checkradio"
+          class="is-checkradio location-checkbox"
           :id="'checkbox'+item._featureId"
           type="checkbox"
           :name="'checkbox'+item._featureId"
