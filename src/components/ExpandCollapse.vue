@@ -125,6 +125,10 @@ export default {
     item: {
       type: Object,
     },
+    checked: {
+      type: Boolean,
+      default: false,
+    }
   },
   data() {
     return {
@@ -216,6 +220,14 @@ export default {
     },
   },
   watch: {
+    checked(nextChecked) {
+      console.log('ExpandCollapse watch checked is running, nextChecked:', nextChecked);
+      // if (nextChecked) {
+
+      // } else {
+      //   document.querySelector('')
+      // }
+    },
     selectedResources(nextSelectedResources) {
       // console.log('watch selectedResources is running');
       if (this.locationOpen || nextSelectedResources.includes(this.$props.item._featureId)) {

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="whole-view">
     <div
       class="header-holder"
     >
@@ -354,6 +354,11 @@ export default {
 }
 
 @media screen and (min-width: 768px) {
+
+  body {
+    overflow-y: scroll;
+  }
+
   .title-col {
     padding-top: 1rem !important;
     padding-bottom: 1rem !important;
@@ -427,7 +432,7 @@ export default {
   }
 
   .location-content{
-    overflow: hidden;
+    // overflow: hidden;
     height:0;
 
     &.location-open{
@@ -441,7 +446,7 @@ export default {
   }
 
   .location-content-mobile{
-    overflow: hidden;
+    // overflow: hidden;
     height:0;
 
     &.location-open{

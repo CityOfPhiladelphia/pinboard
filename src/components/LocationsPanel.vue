@@ -81,6 +81,7 @@
         <expand-collapse
           :item="item"
           :is-map-visible="isMapVisible"
+          :checked="selectAllCheckbox"
           @print-box-checked="printBoxChecked"
         >
 
@@ -407,6 +408,29 @@ export default {
     },
   },
   watch: {
+    selectAllCheckbox(nextSelectAllCheckbox) {
+      console.log('watch selectAllCheckbox, nextSelectAllCheckbox:', nextSelectAllCheckbox);
+      if (nextSelectAllCheckbox == false) {
+        // this.$nextTick(() => {
+          this.printCheckboxes = [];
+          let inputs = document.querySelectorAll('.is-checkradio');
+          // console.log('inputs:', inputs);
+          for (var i = 0; i < inputs.length; i++) {
+            inputs[i].checked = false;
+          }
+        // });
+      } else {
+        // this.$nextTick(() => {
+          this.printCheckboxes = this.currentDataList;
+          let inputs = document.querySelectorAll('.is-checkradio');
+          // console.log('inputs:', inputs);
+          for (var i = 0; i < inputs.length; i++) {
+            inputs[i].checked = true;
+          }
+        // });
+      }
+      this.$store.commit('setPrintCheckboxes', this.printCheckboxes);
+    },
     zipcode(nextZipcode) {
       this.$store.commit('setShouldShowGreeting', false);
     },
