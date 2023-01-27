@@ -16,6 +16,7 @@ function createStore(config) {
   const sources = pvdStore.createSources(config);
   const rfStore = {
     state: {
+      zipcodeCenter: [],
       printCheckboxes: [],
       lastPinboardSearchMethod: null,
       shouldShowGreeting: true,
@@ -45,6 +46,9 @@ function createStore(config) {
       zipcodeBufferShape: null,
     },
     mutations: {
+      setZipcodeCenter(state, payload) {
+        state.zipcodeCenter = payload;
+      },
       setPrintCheckboxes(state, payload) {
         state.printCheckboxes = payload;
       },

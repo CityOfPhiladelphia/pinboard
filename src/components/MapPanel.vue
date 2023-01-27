@@ -139,7 +139,7 @@
         :replace="true"
       />
 
-      <!-- <MglGeojsonLayer
+      <MglGeojsonLayer
         v-if="geojsonForZipcodeBoolean"
         key="'geojsonForZipcodeFill'"
         :source-id="'geojsonForZipcode'"
@@ -149,7 +149,7 @@
         :clear-source="false"
         :replace-source="true"
         :replace="true"
-      /> -->
+      />
 
       <MglGeojsonLayer
         v-if="geojsonForZipcodeBoolean"
@@ -312,9 +312,8 @@ export default {
         'source': 'geojsonForZipcode',
         'layout': {},
         'paint': {
-          // 'fill-color': 'rgb(0,102,255)',
-          'fill-color': '#9e9ac8',
-          'fill-opacity': 0.4,
+          'fill-color': '#cc3000',
+          'fill-opacity': 0.2,
           'fill-outline-color': 'rgb(0,102,255)',
         },
       },
@@ -324,7 +323,7 @@ export default {
         'source': 'geojsonForZipcode',
         'layout': {},
         'paint': {
-          'line-color': '#9e9ac8',
+          'line-color': '#cc3000',
           'line-width': 2,
         },
       },
@@ -348,7 +347,7 @@ export default {
         'paint': {
           // 'fill-color': 'rgb(0,102,255)',
           'fill-color': '#9e9ac8',
-          'fill-opacity': 0.4,
+          'fill-opacity': 0.2,
           'fill-outline-color': 'rgb(0,102,255)',
         },
       },
@@ -382,7 +381,7 @@ export default {
         'paint': {
           // 'fill-color': 'rgb(0,102,255)',
           'fill-color': '#9e9ac8',
-          'fill-opacity': 0.4,
+          'fill-opacity': 0.2,
           'fill-outline-color': 'rgb(0,102,255)',
         },
       },

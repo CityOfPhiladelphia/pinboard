@@ -66,8 +66,9 @@
               v-model="sortBy"
               :options="dropdownOptions"
               placeholder="Sort By"
-              :disabled="geocodeStatus != 'success'"
+              :disabled="sortDisabled"
             />
+              <!-- :disabled="geocodeStatus != 'success'" -->
           </div>
         <!-- </div> -->
 
@@ -278,6 +279,18 @@ export default {
     }
   },
   computed: {
+    sortDisabled() {
+      let value;
+      let geocodeStatus = this.geocodeStatus;
+      let zipcodeCenter = this.zipcodeCenter;
+      console.log('computed sortDisabled, geocodeStatus:', geocodeStatus, 'zipcodeCenter:', zipcodeCenter);
+      if (geocodeStatus || zipcodeCenter[0]) {
+        value = false;
+      } else {
+        value = true;
+      }
+      return value;
+    },
     shouldShowGreeting() {
       return this.$store.state.shouldShowGreeting;
     },
@@ -323,6 +336,9 @@ export default {
     },
     geocodeStatus() {
       return this.$store.state.geocode.status;
+    },
+    zipcodeCenter() {
+      return this.$store.state.zipcodeCenter;
     },
     selectedKeywords() {
       return this.$store.state.selectedKeywords;
@@ -443,6 +459,14 @@ export default {
         this.$data.sortBy = 'Alphabetically';
       } else {
         this.$data.sortBy = 'Distance';
+      }
+    },
+    zipcodeCenter(nextZipcodeCenter) {
+      // console.log('watch');
+      if (nextZipcodeCenter[0]) {
+        this.$data.sortBy = 'Distance';
+      } else {
+        this.$data.sortBy = 'Alphabetically';
       }
     },
     selectedKeywords(nextSelectedKeywords) {

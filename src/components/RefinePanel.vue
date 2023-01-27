@@ -919,12 +919,14 @@ export default {
       e.stopPropagation();
     },
     closeZipcodeBox(box) {
+      console.log('closeZipcodeBox is running');
       let startQuery = { ...this.$route.query };
       console.log('closeZipcodeBox is running, box:', box, 'startQuery:', startQuery);
       delete startQuery['zipcode'];
       this.$router.push({ query: { ...startQuery }});
       // this.$controller.resetGeocode();
       this.$store.commit('setSelectedZipcode', null);
+      this.$store.commit('setZipcodeCenter', []);
       this.$store.commit('setCurrentSearch', null);
       // this.$store.commit('setBufferShape', null);
     },
@@ -1012,7 +1014,10 @@ export default {
       }
       this.$store.commit('setSelectedKeywords', []);
       this.$store.commit('setSelectedZipcode', null);
+      this.$store.commit('setZipcodeCenter', []);
+      this.$controller.resetGeocode();
       this.$store.commit('setCurrentSearch', null);
+      this.$store.commit('setBufferShape', null);
       let startQuery = { ...this.$route.query };
       delete startQuery['address'];
       delete startQuery['zipcode'];

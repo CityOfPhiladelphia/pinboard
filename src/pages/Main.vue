@@ -147,6 +147,7 @@ import Fuse from 'fuse.js'
 
 import { point } from '@turf/helpers';
 import buffer from '@turf/buffer';
+import centerOfMass from '@turf/center-of-mass';
 import booleanPointInPolygon from '@turf/boolean-point-in-polygon';
 import distance from '@turf/distance';
 import AlertBanner from '../components/AlertBanner.vue';
@@ -210,6 +211,7 @@ export default {
       refineEnabled: true,
       searchBarType: 'address',
       addressInputPlaceholder: null,
+      // zipcodeCenter: [],
       // inputValidation: true,
       // footerLinks: [],
     };
@@ -508,8 +510,9 @@ export default {
           },
           type: "Feature",
         };
-        this.$data.buffer = geo;
+        // this.$data.buffer = geo;
 
+        this.runZipcodeFindCenter(geo);
         this.runZipcodeBuffer(geo);
       } else {
         console.log('watch zipcodeData setting buffer to null');
@@ -548,8 +551,13 @@ export default {
       }
     },
     buffer() {
+      console.log('watch buffer is calling filterPoints');
       this.filterPoints();
     },
+    // zipcodeCenter() {
+    //   console.log('watch zipcodeCenter is calling filterPoints');
+    //   this.filterPoints();
+    // },
     selectedServices() {
       if (this.$store.state.sources[this.$appType].data) {
         this.filterPoints();
@@ -741,6 +749,7 @@ export default {
         'event_label': value,
       })
       this.$store.commit('setCurrentSearch', val);
+      this.$store.commit('setZipcodeCenter', []);
       this.$controller.handleSearchFormSubmit(val, searchBarType);
     },
     clearSearchTriggered() {
@@ -811,6 +820,12 @@ export default {
       const polygonBuffer = buffer(geo, searchDistance, { units: 'miles' });
       this.$data.buffer = polygonBuffer;
       this.$store.commit('setZipcodeBufferShape', polygonBuffer);
+    },
+    runZipcodeFindCenter(geo) {
+      let zipcodeCenter = centerOfMass(geo);
+      console.log('Main.vue runZipcodeFindCenter is running, geo:', geo, 'zipcodeCenter:', zipcodeCenter);
+      // this.$data.zipcodeCenter = zipcodeCenter;
+      this.$store.commit('setZipcodeCenter', zipcodeCenter.geometry.coordinates);
     },
     filterPoints() {
       console.log('App.vue filterPoints is running, this.database:', this.database);
@@ -990,7 +1005,7 @@ export default {
           booleanBuffer = true;
         } else if (row.latlng) {
           // console.log('row.latlng:', row.latlng);
-          // console.log('buffer else if 1 is running, row:', row, 'booleanBuffer:', booleanBuffer, 'typeof row.latlng[0]:', typeof row.latlng[0]);
+          console.log('buffer else if 1 is running, row:', row, 'booleanBuffer:', booleanBuffer, 'typeof row.latlng[0]:', typeof row.latlng[0], 'this.$store.state.zipcodeCenter:', this.$store.state.zipcodeCenter);
           if (typeof row.latlng[0] === 'number' && row.latlng[0] !== null) {
             const rowPoint = point([ row.latlng[1], row.latlng[0] ]);
             let geocodedPoint, options, theDistance;
@@ -998,6 +1013,12 @@ export default {
               geocodedPoint = point(this.$store.state.geocode.data.geometry.coordinates);
               options = { units: 'miles' };
               theDistance = distance(geocodedPoint, rowPoint, options);
+              row.distance = theDistance;
+            } else if (this.$store.state.zipcodeCenter[0]) {
+              console.log('inside zipcode center else if');
+              let zipcodeCenter = point(this.$store.state.zipcodeCenter);
+              options = { units: 'miles' };
+              theDistance = distance(zipcodeCenter, rowPoint, options);
               row.distance = theDistance;
             }
             if (booleanPointInPolygon(rowPoint, this.$data.buffer)) {
