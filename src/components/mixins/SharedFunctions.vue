@@ -23,7 +23,10 @@ export default {
           if (item && item.distance) {
             val = '(' + item.distance.toFixed(2) + ' miles) ' + getter(item, transforms);
           } else {
-            val = '(' + item.distance.toFixed(2) + ' miles) ' + getter(state);
+            console.log('getSiteName else is running');
+            // val = '(' + item.distance.toFixed(2) + ' miles) ' + getter(state);
+            // val = getter(state);
+            val = getter(item, transforms);
           }
         } else {
           if (item) {

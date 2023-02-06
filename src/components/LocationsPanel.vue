@@ -17,7 +17,19 @@
       class="location-container"
     >
       <div
-        v-if="currentData.length === 0"
+        v-if="geocodeStatus === 'error'"
+        class="h3 no-results"
+      >
+        <p>The address that you searched could not be found.</p>
+        <button
+          class="button"
+          @click="clearBadAddress"
+        >
+          Clear Address
+        </button>
+      </div>
+      <div
+        v-if="geocodeStatus !== 'error' && currentData.length === 0"
         class="h3 no-results"
       >
         <p
@@ -32,7 +44,7 @@
         />
       </div>
       <div
-        v-if="currentData.length > 0"
+        v-if="geocodeStatus !== 'error' && currentData.length > 0"
         class="columns is-mobile mb-0"
       >
         <!-- <div class="checkbox-holder"> -->
@@ -74,171 +86,177 @@
 
       </div>
 
-      <div
-        v-for="item in currentData"
-        :key="item._featureId"
-      >
-      <!-- :key="item.cartodb_id" -->
-        <expand-collapse
-          :item="item"
-          :is-map-visible="isMapVisible"
-          :checked="selectAllCheckbox"
-          @print-box-checked="printBoxChecked"
+      <div v-if="geocodeStatus !== 'error'">
+      
+        <div
+          v-for="item in currentData"
+          :key="item._featureId"
         >
-
-          <component
-            :is="'expandCollapseContent'"
-            v-if="$config.customComps && Object.keys($config.customComps).includes('expandCollapseContent') && selectedResources.includes(item._featureId)"
+        <!-- :key="item.cartodb_id" -->
+          <expand-collapse
             :item="item"
             :is-map-visible="isMapVisible"
-          />
-
-          <div
-            v-if="!$config.customComps || !Object.keys($config.customComps).includes('expandCollapseContent') && selectedResources.includes(item._featureId)"
-            :class="isMobile ? 'main-content-mobile' : 'main-content'"
+            :checked="selectAllCheckbox"
+            @print-box-checked="printBoxChecked"
           >
-            <div class="columns">
-              <div class="column is-6">
-                <div
-                  v-if="item.street_address"
-                  class="columns is-mobile"
-                >
-                  <div class="column is-1">
-                    <font-awesome-icon icon="map-marker-alt" />
-                  </div>
-                  <div
-                    class="column is-11"
-                    v-html="parseAddress(item.street_address)"
-                  >
-                    <!-- {{ parseAddress(item.street_address) }} -->
-                  </div>
-                </div>
-              </div>
 
-              <div class="column is-6">
-
-                <div
-                  v-if="item.phone_number"
-                  class="columns is-mobile"
-                >
-                  <div
-                    class="column is-1"
-                  >
-                    <font-awesome-icon icon="phone" />
-                  </div>
-                  <div class="column is-11">
-                    {{ item.phone_number }}
-                  </div>
-                </div>
-
-                <div
-                  v-if="item.email"
-                  class="columns is-mobile"
-                >
-                  <div
-                    class="column is-1"
-                  >
-                    <font-awesome-icon icon="envelope" />
-                  </div>
-                  <div class="column is-11">
-                    <a :href="`mailto:${item.email}`">{{ item.email }}</a>
-                  </div>
-                </div>
-
-                <div
-                  v-if="item.website"
-                  class="columns is-mobile website-div"
-                >
-                  <div
-                    class="column is-1"
-                  >
-                    <font-awesome-icon icon="globe" />
-                  </div>
-                  <div class="column is-11">
-                    <a
-                      target="_blank"
-                      :href="makeValidUrl(item.website)"
-                    >
-                      {{ item.website }}
-                      <font-awesome-icon icon="external-link-alt" />
-                    </a>
-                  </div>
-                </div>
-
-                <div
-                  v-if="item.facebook_name"
-                  class="columns is-mobile"
-                >
-                  <div
-                    class="column is-1"
-                  >
-                    <font-awesome-icon :icon="['fab', 'facebook']" />
-                  </div>
-                  <div class="column is-11">
-                    <a
-                      target="_blank"
-                      :href="item.facebook_name"
-                    >
-                      Facebook
-                    </a>
-                  </div>
-                </div>
-
-                <div
-                  v-if="item.twitter"
-                  class="columns is-mobile"
-                >
-                  <div
-                    class="column is-1"
-                  >
-                    <font-awesome-icon :icon="['fab', 'twitter']" />
-                  </div>
-                  <div class="column is-11">
-                    <a
-                      target="_blank"
-                      :href="item.twitter"
-                    >
-                      Twitter
-                    </a>
-                  </div>
-                </div>
-              </div>
-
-            </div>
+            <component
+              :is="'expandCollapseContent'"
+              v-if="$config.customComps && Object.keys($config.customComps).includes('expandCollapseContent') && selectedResources.includes(item._featureId)"
+              :item="item"
+              :is-map-visible="isMapVisible"
+            />
 
             <div
-              v-if="item.services_offered"
+              v-if="!$config.customComps || !Object.keys($config.customComps).includes('expandCollapseContent') && selectedResources.includes(item._featureId)"
+              :class="isMobile ? 'main-content-mobile' : 'main-content'"
             >
-              <h3>
-                Services offered
-              </h3>
-              <div class="columns is-multiline is-gapless">
-                <div
-                  v-for="i in parseServiceList(item.services_offered)"
-                  :key="i"
-                  class="column is-half"
-                >
-                  {{ i }}
+              <div class="columns">
+                <div class="column is-6">
+                  <div
+                    v-if="item.street_address"
+                    class="columns is-mobile"
+                  >
+                    <div class="column is-1">
+                      <font-awesome-icon icon="map-marker-alt" />
+                    </div>
+                    <div
+                      class="column is-11"
+                      v-html="parseAddress(item.street_address)"
+                    >
+                      <!-- {{ parseAddress(item.street_address) }} -->
+                    </div>
+                  </div>
+                </div>
+
+                <div class="column is-6">
+
+                  <div
+                    v-if="item.phone_number"
+                    class="columns is-mobile"
+                  >
+                    <div
+                      class="column is-1"
+                    >
+                      <font-awesome-icon icon="phone" />
+                    </div>
+                    <div class="column is-11">
+                      {{ item.phone_number }}
+                    </div>
+                  </div>
+
+                  <div
+                    v-if="item.email"
+                    class="columns is-mobile"
+                  >
+                    <div
+                      class="column is-1"
+                    >
+                      <font-awesome-icon icon="envelope" />
+                    </div>
+                    <div class="column is-11">
+                      <a :href="`mailto:${item.email}`">{{ item.email }}</a>
+                    </div>
+                  </div>
+
+                  <div
+                    v-if="item.website"
+                    class="columns is-mobile website-div"
+                  >
+                    <div
+                      class="column is-1"
+                    >
+                      <font-awesome-icon icon="globe" />
+                    </div>
+                    <div class="column is-11">
+                      <a
+                        target="_blank"
+                        :href="makeValidUrl(item.website)"
+                      >
+                        {{ item.website }}
+                        <font-awesome-icon icon="external-link-alt" />
+                      </a>
+                    </div>
+                  </div>
+
+                  <div
+                    v-if="item.facebook_name"
+                    class="columns is-mobile"
+                  >
+                    <div
+                      class="column is-1"
+                    >
+                      <font-awesome-icon :icon="['fab', 'facebook']" />
+                    </div>
+                    <div class="column is-11">
+                      <a
+                        target="_blank"
+                        :href="item.facebook_name"
+                      >
+                        Facebook
+                      </a>
+                    </div>
+                  </div>
+
+                  <div
+                    v-if="item.twitter"
+                    class="columns is-mobile"
+                  >
+                    <div
+                      class="column is-1"
+                    >
+                      <font-awesome-icon :icon="['fab', 'twitter']" />
+                    </div>
+                    <div class="column is-11">
+                      <a
+                        target="_blank"
+                        :href="item.twitter"
+                      >
+                        Twitter
+                      </a>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+
+              <div
+                v-if="item.services_offered"
+              >
+                <h3>
+                  Services offered
+                </h3>
+                <div class="columns is-multiline is-gapless">
+                  <div
+                    v-for="i in parseServiceList(item.services_offered)"
+                    :key="i"
+                    class="column is-half"
+                  >
+                    {{ i }}
+                  </div>
+                </div>
+              </div>
+
+              <div
+                v-if="item.tags && item.tags.length"
+              >
+                <!-- <h3 class="title section-title is-4 pt-2"> -->
+                <h3>
+                  Tags
+                </h3>
+                <div>
+                  {{ parseTagsList(item.tags) }}
                 </div>
               </div>
             </div>
 
-            <div
-              v-if="item.tags && item.tags.length"
-            >
-              <!-- <h3 class="title section-title is-4 pt-2"> -->
-              <h3>
-                Tags
-              </h3>
-              <div>
-                {{ parseTagsList(item.tags) }}
-              </div>
-            </div>
-          </div>
+          </expand-collapse>
+        </div>
 
-        </expand-collapse>
       </div>
+
     </div>
+
   </div>
 </template>
 <script>
@@ -375,7 +393,7 @@ export default {
         val = 'distance';
         console.log('it includes address');
         locations.sort(function(a, b) {
-          console.log('a:', a, 'b:', b, 'val:', val);
+          // console.log('a:', a, 'b:', b, 'val:', val);
           // if (a[val] != null && b[val] != null) {
           //   return a[val].localeCompare(b[val]);
           // }
@@ -485,6 +503,9 @@ export default {
     },
   },
   methods: {
+    clearBadAddress() {
+      this.$emit('clear-bad-address');
+    },
     clickedPrint() {
       console.log('clickedPrint is running');
       if (!this.printCheckboxes.length) {

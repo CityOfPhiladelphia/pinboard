@@ -105,6 +105,7 @@
       >
         <locations-panel
           :is-map-visible="isMapVisible"
+          @clear-bad-address="clearBadAddress"
         />
       </div>
 
@@ -548,6 +549,9 @@ export default {
         this.runBuffer();
       } else if (nextGeocodeStatus === null && this.lastPinboardSearchMethod != 'zipcode') {
         this.$data.buffer = null;
+      } else if (nextGeocodeStatus === 'error') {
+        console.log('Main.vue watch geocodeStatus, nextGeocodeStatus is an error:', nextGeocodeStatus);
+        this.geocodeFailed();
       }
     },
     buffer() {
@@ -686,6 +690,22 @@ export default {
   },
 
   methods: {
+    clearBadAddress() {
+      console.log('clearBadAddress is running');
+      let startQuery = { ...this.$route.query };
+      delete startQuery['address'];
+      this.$router.push({ query: startQuery });
+      this.searchString = '';
+      // this.$store.commit('setSelectedKeywords', []);
+      // this.$store.commit('setSelectedZipcode', null);
+      // this.$store.commit('setBufferShape', null);
+      this.$controller.resetGeocode();
+      this.$store.commit('setCurrentSearch', null);
+    },
+    geocodeFailed() {
+      console.log('geocodeFailed is running');
+      this.$store.commit('setBufferShape', null);
+    },
     compareArrays(arr1, arr2) {
       const finalArray = [];
       arr1.forEach((e1) => arr2.forEach((e2) =>
@@ -734,6 +754,7 @@ export default {
         this.searchBarType = 'zipcode';
         searchBarType = 'zipcode';
       } else {
+        console.log('its an address');
         query = { ...startQuery, ...{ 'address': val }};
         this.$store.commit('setLastPinboardSearchMethod', 'geocode');
         this.searchBarType = 'address';
@@ -1009,7 +1030,7 @@ export default {
           booleanBuffer = true;
         } else if (row.latlng) {
           // console.log('row.latlng:', row.latlng);
-          console.log('buffer else if 1 is running, row:', row, 'booleanBuffer:', booleanBuffer, 'typeof row.latlng[0]:', typeof row.latlng[0], 'this.$store.state.zipcodeCenter:', this.$store.state.zipcodeCenter);
+          // console.log('buffer else if 1 is running, row:', row, 'booleanBuffer:', booleanBuffer, 'typeof row.latlng[0]:', typeof row.latlng[0], 'this.$store.state.zipcodeCenter:', this.$store.state.zipcodeCenter);
           if (typeof row.latlng[0] === 'number' && row.latlng[0] !== null) {
             const rowPoint = point([ row.latlng[1], row.latlng[0] ]);
             let geocodedPoint, options, theDistance;
