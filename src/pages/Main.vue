@@ -588,6 +588,10 @@ export default {
     },
   },
   mounted() {
+    let body = document.body;
+    body.classList.remove('print-view');
+    body.classList.add('main-view');
+
     // this.$store.commit('setLastSearchMethod', 'zipcode');
     console.log('in App.vue mounted 210818, this.$store.state:', this.$store.state, 'this.$config:', this.$config, 'window.location.href:', window.location.href);
     this.$config.searchBar.searchTypes.forEach(item => {

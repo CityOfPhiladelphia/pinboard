@@ -277,6 +277,10 @@ export default {
     },
   },
   mounted() {
+    let body = document.body;
+    body.classList.remove('main-view');
+    body.classList.add('print-view');
+
     if (this.$config.dataSources) {
       this.$controller.dataManager.fetchData();
     }
@@ -355,7 +359,11 @@ export default {
 
 @media screen and (min-width: 768px) {
 
-  body {
+  // body {
+  //   overflow-y: scroll;
+  // }
+
+  .print-view {
     overflow-y: scroll;
   }
 
