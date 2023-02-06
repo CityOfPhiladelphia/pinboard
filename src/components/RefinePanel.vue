@@ -765,7 +765,7 @@ export default {
       });
     },
     database(nextDatabase) {
-      // console.log('watch database is running, nextDatabase:', nextDatabase);
+      // console.log('watch database is calling getRefineSearchList, nextDatabase:', nextDatabase);
       this.getRefineSearchList();
     },
     selected(nextSelected, oldSelected) {
@@ -850,6 +850,7 @@ export default {
     //   //   this.expandRefine();
     //   // }
     // };
+    this.getRefineSearchList();
   },
   methods: {
     getCategoryFieldValue(section) {

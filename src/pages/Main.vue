@@ -1130,7 +1130,7 @@ export default {
           const fuse = new Fuse(description, options);
     			let results = {};
           for (let keyword of this.selectedKeywords) {
-            // console.log('in selectedKeywords loop, keyword:', keyword);
+            console.log('in selectedKeywords loop, keyword:', keyword);
             results[keyword] = fuse.search(keyword);
           }
     			// const result = fuse.search(this.selectedKeywords[0]);
