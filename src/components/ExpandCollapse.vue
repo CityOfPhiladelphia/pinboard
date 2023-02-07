@@ -369,12 +369,7 @@ export default {
   height: 50px !important
 }
 
-.is-checkradio[type=checkbox]+label {
-  border-width: 2px !important;
-  border-color: #2176d2 !important;
-}
-
-// .is-checkradio[type=checkbox]:hover:not([disabled])+label::before, .is-checkradio[type=checkbox]:hover:not([disabled])+label:before, .is-checkradio[type=radio]:hover:not([disabled])+label::before, .is-checkradio[type=radio]:hover:not([disabled])+label:before {
+// .is-checkradio[type=checkbox]+label {
 //   border-width: 2px !important;
 //   border-color: #2176d2 !important;
 // }
@@ -384,26 +379,10 @@ export default {
   border-color: #2176d2 !important;
 }
 
-// .location-checkbox[type=checkbox]:hover:not([disabled])+label::before, .location-checkbox[type=checkbox]:hover:not([disabled])+label:before, .location-checkbox[type=radio]:hover:not([disabled])+label::before, .location-checkbox[type=radio]:hover:not([disabled])+label:before {
-//   border-width: 2px !important;
-//   border-color: #2176d2 !important;
-// }
-
-// .is-checkradio[type=checkbox]:hover::before {
-//   border-width: 2px !important;
-//   border-color: #2176d2 !important;
-// }
-
 .is-checkradio[type=checkbox]+label:after {
   border-width: 2px !important;
   border-color: #2176d2 !important;
 }
-
-
-// .is-checkradio[type=checkbox]:focus:not([disabled])+label::before, .is-checkradio[type=checkbox]:focus:not([disabled])+label:before, .is-checkradio[type=radio]:focus:not([disabled])+label::before, .is-checkradio[type=radio]:focus:not([disabled])+label:before {
-//   border-width: 2px !important;
-//   border-color: #2176d2 !important;
-// }
 
 .location-name {
   line-height: .5rem;

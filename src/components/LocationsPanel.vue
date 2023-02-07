@@ -49,7 +49,7 @@
       >
         <div class="field column is-4 pt-5">
           <input
-            class="is-checkradio"
+            class="is-checkradio location-checkbox"
             id="locationsPanelCheckbox"
             type="checkbox"
             name="locationsPanelCheckbox"
