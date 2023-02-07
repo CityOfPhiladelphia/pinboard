@@ -2,6 +2,8 @@
   <div class="whole-item">
     <div class="location-item columns is-mobile pr-2">
       <div class="field expand-collapse-checkbox column is-1 pt-4 pb-0">
+        <!-- class="is-checkradio location-checkbox" -->
+        <!-- :id="'checkbox'+item._featureId" -->
         <input
           class="is-checkradio location-checkbox"
           :id="'checkbox'+item._featureId"
@@ -360,21 +362,48 @@ export default {
 };
 </script>
 <style lang="scss">
-@import "../assets/scss/main.scss";
+// @import "../assets/scss/main.scss";
 
 .expand-collapse-checkbox {
-  // display: inline-block;
   margin-bottom: 0px !important;
   height: 50px !important
-  // z-index: 10000;
-
-  // label::after {
-  //   height: 0px !important;
-  // }
-  // label {
-  //   height: 0px !important;
-  // }
 }
+
+.is-checkradio[type=checkbox]+label {
+  border-width: 2px !important;
+  border-color: #2176d2 !important;
+}
+
+// .is-checkradio[type=checkbox]:hover:not([disabled])+label::before, .is-checkradio[type=checkbox]:hover:not([disabled])+label:before, .is-checkradio[type=radio]:hover:not([disabled])+label::before, .is-checkradio[type=radio]:hover:not([disabled])+label:before {
+//   border-width: 2px !important;
+//   border-color: #2176d2 !important;
+// }
+
+.is-checkradio[type=checkbox].location-checkbox:hover:not([disabled])+label::before, .is-checkradio[type=checkbox].location-checkbox:hover:not([disabled])+label:before, .is-checkradio[type=radio]:hover:not([disabled])+label::before, .is-checkradio[type=radio]:hover:not([disabled])+label:before {
+  border-width: 2px !important;
+  border-color: #2176d2 !important;
+}
+
+// .location-checkbox[type=checkbox]:hover:not([disabled])+label::before, .location-checkbox[type=checkbox]:hover:not([disabled])+label:before, .location-checkbox[type=radio]:hover:not([disabled])+label::before, .location-checkbox[type=radio]:hover:not([disabled])+label:before {
+//   border-width: 2px !important;
+//   border-color: #2176d2 !important;
+// }
+
+// .is-checkradio[type=checkbox]:hover::before {
+//   border-width: 2px !important;
+//   border-color: #2176d2 !important;
+// }
+
+.is-checkradio[type=checkbox]+label:after {
+  border-width: 2px !important;
+  border-color: #2176d2 !important;
+}
+
+
+// .is-checkradio[type=checkbox]:focus:not([disabled])+label::before, .is-checkradio[type=checkbox]:focus:not([disabled])+label:before, .is-checkradio[type=radio]:focus:not([disabled])+label::before, .is-checkradio[type=radio]:focus:not([disabled])+label:before {
+//   border-width: 2px !important;
+//   border-color: #2176d2 !important;
+// }
 
 .location-name {
   line-height: .5rem;
@@ -396,11 +425,11 @@ export default {
   padding-top: 12px;
   margin-bottom: 0px !important;
 
-  &:hover {
-    .plus-icon {
-      color: white;
-    }
-  }
+  // &:hover {
+  //   .plus-icon {
+  //     color: white;
+  //   }
+  // }
 
   .location-row {
     cursor: pointer;
@@ -409,9 +438,14 @@ export default {
     margin-bottom: 0px !important;
     margin-left: 0px !important;
     margin-right: 0px !important;
+
     &:hover{
       background: #2176d2;
       color: white;
+
+      .plus-icon {
+        color: white;
+      }
     }
   }
 

@@ -20,9 +20,9 @@
         v-if="geocodeStatus === 'error'"
         class="h3 no-results"
       >
-        <p>The address that you searched could not be found.</p>
+        <p class="pb-4">The address that was searched is not a valid Philadelphia address.</p>
         <button
-          class="button"
+          class="button app-button is-vcentered"
           @click="clearBadAddress"
         >
           Clear Address
@@ -47,29 +47,24 @@
         v-if="geocodeStatus !== 'error' && currentData.length > 0"
         class="columns is-mobile mb-0"
       >
-        <!-- <div class="checkbox-holder"> -->
-          <div class="field column is-4 pt-5">
-            <input
-              class="is-checkradio"
-              id="locationsPanelCheckbox"
-              type="checkbox"
-              name="locationsPanelCheckbox"
-              @click="clickedSelectAll"
-            >
-            <label for="locationsPanelCheckbox">Select All</label>
-          </div>
-        <!-- </div> -->
-        <!-- <div class="button-holder"> -->
+        <div class="field column is-4 pt-5">
+          <input
+            class="is-checkradio"
+            id="locationsPanelCheckbox"
+            type="checkbox"
+            name="locationsPanelCheckbox"
+            @click="clickedSelectAll"
+          >
+          <label for="locationsPanelCheckbox">Select All</label>
+        </div>
         <div class="column is-3 pt-3">
           <a
-            class="button"
+            class="button app-button"
             @click="clickedPrint"
           >
             Print
-            <!-- <router-link to="/print-view/">Print</router-link> -->
           </a>
         </div>
-        <!-- <div class="dropdown-holder"> -->
           <div
             v-if="currentData.length > 0"
             class="column is-5 pt-0 pb-0"
@@ -468,11 +463,12 @@ export default {
     zipcode(nextZipcode) {
       this.$store.commit('setShouldShowGreeting', false);
     },
-    geocode(nextGeocode) {
-      // console.log('watch, nextGeocode:', nextGeocode);
-      this.$store.commit('setShouldShowGreeting', false);
-    },
+    // geocode(nextGeocode) {
+    //   // console.log('watch, nextGeocode:', nextGeocode);
+    //   this.$store.commit('setShouldShowGreeting', false);
+    // },
     geocodeStatus(nextGeocodeStatus) {
+      this.$store.commit('setShouldShowGreeting', false);
       if (nextGeocodeStatus == null) {
         this.$data.sortBy = 'Alphabetically';
       } else {
@@ -585,35 +581,9 @@ export default {
 
 <style lang="scss">
 
-// .checkbox-holder {
-//   display: inline-block;
-// }
-
-// .button-holder {
-//   display: inline-block;
-// }
-
-// .dropdown-holder {
-//   display: inline-block;
-// }
-
 .dropdown-div {
   padding-top: 0px !important;
 }
-
-// .field {
-//   width: 0px;
-// }
-
-// .checkbox-label {
-//   display: inline-block;
-//   padding-left: 4px;
-//   line-height: 5px;
-// }
-
-// .print-options-container {
-//   padding: 1rem;
-// }
 
 .locations-panel {
   overflow-y: visible !important;

@@ -723,9 +723,12 @@ export default {
     },
     addressEntered() {
       let address;
-      // if (this.geocode.status === 'success') {
+      let routeAddress = this.$route.query.address;
+      console.log('addressEntered computed, routeAddress:', routeAddress);
       if (this.geocode && this.geocode.data && this.geocode.data.properties && this.geocode.data.properties.street_address) {
         address = this.geocode.data.properties.street_address;
+      } else if (routeAddress) {
+        address = routeAddress;
       }
       return address;
     },
@@ -1495,7 +1498,6 @@ export default {
     }
 
     #multiple-field-groups-div {
-      // margin: 5px;
       padding-left: 16px;
       padding-right: 16px;
     }
@@ -1503,12 +1505,7 @@ export default {
 
   &.refine-panel-open {
     overflow-y: hidden;
-    // overflow-y: scroll;
     height: 100%;
-    // height: calc(100vh - 400px);
-    // height: calc(100vh);
-    // height: calc(100vh - 230px);
-    // max-height: 100vh;
   }
 }
 
@@ -1606,7 +1603,6 @@ export default {
 
 .is-checkradio[type=checkbox]:focus:not([disabled])+label::before, .is-checkradio[type=checkbox]:focus:not([disabled])+label:before, .is-checkradio[type=radio]:focus:not([disabled])+label::before, .is-checkradio[type=radio]:focus:not([disabled])+label:before {
   border-width: 2px !important;
-  // border-color: rgb(33, 118, 210) !important;
   border-color: #2176d2 !important;
 }
 
