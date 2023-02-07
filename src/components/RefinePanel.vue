@@ -88,7 +88,7 @@
           class="box-value column is-narrow"
           @click="closeZipcodeBox(zipcodeEntered)"
         >
-          {{ $t(getBoxValue(zipcodeEntered)) }}
+          {{ $t(getBoxValue(zipcodeEntered)) + ' - 1 mile' }}
           <font-awesome-icon
             class="fa-x"
             :icon="[timesIconWeight,'times']"
@@ -100,7 +100,7 @@
           class="box-value column is-narrow"
           @click="closeAddressBox(addressEntered)"
         >
-          {{ $t(getBoxValue(addressEntered)) }}
+          {{ $t(getBoxValue(addressEntered)) + ' - ' + searchDistance }}
           <font-awesome-icon
             class="fa-x"
             :icon="[timesIconWeight,'times']"
@@ -506,6 +506,21 @@ export default {
     };
   },
   computed: {
+    searchDistance() {
+      let value;
+      if (this.$config.searchBar.searchDistance) {
+        value = this.$config.searchBar.searchDistance;
+      } else {
+        value = 1
+      }
+      let word;
+      if (value == 1) {
+        word = 'mile';
+      } else {
+        word = 'miles';
+      }
+      return value + ' ' + word;
+    },
     refineList() {
       return this.$store.state.refineList;
     },

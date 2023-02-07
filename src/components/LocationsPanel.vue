@@ -81,6 +81,12 @@
 
       </div>
 
+      <div
+        v-if="geocodeStatus !== 'error'"
+      >
+        {{ currentData.length }} resources found
+      </div>
+
       <div v-if="geocodeStatus !== 'error'">
       
         <div
