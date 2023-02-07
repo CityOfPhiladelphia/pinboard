@@ -218,6 +218,23 @@ export default {
     };
   },
   computed: {
+    refineList() {
+      return this.$store.state.refineList;
+    },
+    checkboxText() {
+      let text = []
+      let refineList = this.refineList;
+      for (let key of Object.keys(refineList)) {
+        for (let key2 of Object.keys(refineList[key])) {
+          if (key2 === 'radio' || key2 === 'checkbox') {
+            for (let key3 of Object.keys(refineList[key][key2])) {
+              text.push(this.$i18n.messages[this.i18nLocale][key][key3].toLowerCase());
+            }
+          }
+        }
+      }
+      return text;
+    },
     printCheckboxes() {
       return this.$store.state.printCheckboxes;
     },
@@ -736,6 +753,10 @@ export default {
           });
           return;
         } else {
+          if (this.checkboxText.includes(val.toLowerCase())) {
+            alert('There is already a checkbox or radio button for that search term');
+            return;
+          }
           this.$store.commit('setLastPinboardSearchMethod', 'keyword');
           let startKeyword;
           if (startQuery['keyword'] && startQuery['keyword'] != '') {

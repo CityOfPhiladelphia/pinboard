@@ -44,8 +44,12 @@ function createStore(config) {
         category: 'unspecified-pinboard-app'
       },
       zipcodeBufferShape: null,
+      refineList: {},
     },
     mutations: {
+      setRefineList(state, payload) {
+        state.refineList = payload;
+      },
       setZipcodeCenter(state, payload) {
         state.zipcodeCenter = payload;
       },

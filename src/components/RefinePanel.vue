@@ -501,16 +501,14 @@ export default {
   data() {
     return {
       baseUrl: process.env.VUE_APP_BASE_URL,
-      refineList: null,
       selected: [],
       selectedList: {},
-      // pushValue: [],
-      // pushValue2: {
-      //   pushValue2Child: [],
-      // },
     };
   },
   computed: {
+    refineList() {
+      return this.$store.state.refineList;
+    },
     anyValueEntered() {
       let value = false;
       if (this.zipcodeEntered != null || this.addressEntered != null || this.keywordsEntered.length != 0) {
@@ -572,8 +570,8 @@ export default {
       let mainObject = {};
       let mainArray = [];
       if (this.refineType === 'categoryField_value') {
-        // mainArray = this.$data.refineList;
-        for (let category of this.$data.refineList) {
+        // mainArray = this.refineList;
+        for (let category of this.refineList) {
           mainArray.push({
             value: category.data,
             text: this.$t(category.data),
@@ -582,7 +580,7 @@ export default {
         }
         return mainArray;
       } else if (this.refineType !== 'multipleFieldGroups' && this.refineType !== 'multipleDependentFieldGroups') {
-        for (let category of this.$data.refineList) {
+        for (let category of this.refineList) {
           mainArray.push({
             value: category,
             text: this.$t(category),
@@ -591,24 +589,24 @@ export default {
         }
         return mainArray;
       } else if (this.refineType == 'multipleFieldGroups') {
-        if (this.$data.refineList) {
-          for (let category of Object.keys(this.$data.refineList)) {
+        if (this.refineList) {
+          for (let category of Object.keys(this.refineList)) {
             mainObject[category] = {};
-            for (let dep of Object.keys(this.$data.refineList[category])) {
+            for (let dep of Object.keys(this.refineList[category])) {
               // console.log('dep:', dep);
               if (dep !== 'tooltip') {
 
                 mainObject[category][dep] = [];
-                for (let box of Object.keys(this.$data.refineList[category][dep])) {
+                for (let box of Object.keys(this.refineList[category][dep])) {
 
-                  let data = this.$data.refineList[category][dep][box].unique_key;
-                  let textLabel = this.$t(this.$data.refineList[category][dep][box].box_label);
+                  let data = this.refineList[category][dep][box].unique_key;
+                  let textLabel = this.$t(this.refineList[category][dep][box].box_label);
                   let tooltip;
-                  if (this.$data.refineList[category][dep][box].tooltip) {
+                  if (this.refineList[category][dep][box].tooltip) {
                     tooltip = {};
-                    tooltip.tip = this.$t(this.$data.refineList[category][dep][box].tooltip.tip);
-                    tooltip.multiline = this.$data.refineList[category][dep][box].tooltip.multiline
-                    // console.log('tooltip:', tooltip, 'this.$data.refineList[category][dep][box].tooltip.tip:', this.$data.refineList[category][dep][box].tooltip.tip);
+                    tooltip.tip = this.$t(this.refineList[category][dep][box].tooltip.tip);
+                    tooltip.multiline = this.refineList[category][dep][box].tooltip.multiline
+                    // console.log('tooltip:', tooltip, 'this.refineList[category][dep][box].tooltip.tip:', this.refineList[category][dep][box].tooltip.tip);
                   }
                   let keyPairs = {
                     data: data,
@@ -618,25 +616,25 @@ export default {
                   mainObject[category][dep].push(keyPairs)
                 }
               } else {
-                mainObject[category][dep] = this.$t(this.$data.refineList[category][dep].tip);
+                mainObject[category][dep] = this.$t(this.refineList[category][dep].tip);
               }
             }
           }
         }
         return mainObject;
       } else {
-        for (let category of Object.keys(this.$data.refineList)) {
+        for (let category of Object.keys(this.refineList)) {
           mainObject[category] = {};
-          for (let dep of Object.keys(this.$data.refineList[category])) {
+          for (let dep of Object.keys(this.refineList[category])) {
             // console.log('in loop, dep', dep);
             mainObject[category][dep] = [];
-            for (let box of Object.keys(this.$data.refineList[category][dep])) {
+            for (let box of Object.keys(this.refineList[category][dep])) {
               // console.log('in inner loop, box:', box, 'dep:', dep);
-              let data = this.$data.refineList[category][dep][box].unique_key;
-              let textLabel = this.$t(this.$data.refineList[category][dep][box].box_label);
+              let data = this.refineList[category][dep][box].unique_key;
+              let textLabel = this.$t(this.refineList[category][dep][box].box_label);
               let tooltip;
-              if (this.$data.refineList[category][dep][box].tooltip) {
-                tooltip = this.$t(this.$data.refineList[category][dep][box].tooltip);
+              if (this.refineList[category][dep][box].tooltip) {
+                tooltip = this.$t(this.refineList[category][dep][box].tooltip);
               }
               let keyPairs = {
                 data: data,
@@ -1194,7 +1192,8 @@ export default {
         this.$data.selectedList = selected;
       }
 
-      this.$data.refineList = uniq;
+      // this.refineList = uniq;
+      this.$store.commit('setRefineList', uniq);
 
       return uniq;
     },
