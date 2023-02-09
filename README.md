@@ -29,6 +29,10 @@ Create pull request for changes and merge into `master` branch for travis-ci bui
 
 ## Release Notes
 
+### 1.1.42 - 2/9/2023
+
+* updates packages
+
 ### 1.1.41 - 12/27/2022
 
 * undoes change to filtering of categoryField_array apps
