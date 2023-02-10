@@ -81,7 +81,10 @@
     >
       <refine-panel
         :refine-title="refineTitle"
-      />
+        :submitted-checkbox-value="submittedCheckboxValue"
+        @gaga="watchedSubmittedCheckboxValue"
+        />
+        <!-- @watched-submitted-checkbox-value="watchedSubmittedCheckboxValue" -->
     </div>
 
     <div
@@ -215,6 +218,7 @@ export default {
       // zipcodeCenter: [],
       // inputValidation: true,
       // footerLinks: [],
+      submittedCheckboxValue: null,
     };
   },
   computed: {
@@ -707,6 +711,10 @@ export default {
   },
 
   methods: {
+    watchedSubmittedCheckboxValue() {
+      console.log('Main.vue watchedSubmittedCheckboxValue is running');
+      this.submittedCheckboxValue = null;
+    },
     clearBadAddress() {
       console.log('clearBadAddress is running');
       let startQuery = { ...this.$route.query };
@@ -754,7 +762,8 @@ export default {
           return;
         } else {
           if (this.checkboxText.includes(val.toLowerCase())) {
-            alert('There is already a checkbox or radio button for that search term');
+            // alert('There is already a checkbox or radio button for that search term');
+            this.submittedCheckboxValue = val;
             return;
           }
           this.$store.commit('setLastPinboardSearchMethod', 'keyword');
