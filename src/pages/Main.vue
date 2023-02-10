@@ -82,9 +82,8 @@
       <refine-panel
         :refine-title="refineTitle"
         :submitted-checkbox-value="submittedCheckboxValue"
-        @gaga="watchedSubmittedCheckboxValue"
-        />
-        <!-- @watched-submitted-checkbox-value="watchedSubmittedCheckboxValue" -->
+        @watched-submitted-checkbox-value="watchedSubmittedCheckboxValue"
+      />
     </div>
 
     <div

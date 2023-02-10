@@ -778,23 +778,7 @@ export default {
   },
   watch: {
     submittedCheckboxValue(nextSubmittedCheckboxValue) {
-      // add clicks here to warm them up
-      // for (let value of Object.keys(this.$config.refine.multipleFieldGroups)) {
-      //   // console.log('submittedCheckboxValue is running, this.$config.refine.multipleFieldGroups[value]:', this.$config.refine.multipleFieldGroups[value]);
-      //   if (Object.keys(this.$config.refine.multipleFieldGroups[value]).includes('checkbox')) {
-      //     let checkbox = this.$config.refine.multipleFieldGroups[value].checkbox;
-      //     let firstValue = Object.keys(checkbox)[0];
-      //     let unique_key = value+'_'+firstValue;
-      //     let element = document.querySelector('[value='+unique_key+']');
-      //     console.log('submittedCheckboxValue is running, element:', element, 'unique_key:', unique_key, 'value:', value, 'firstValue:', firstValue, 'this.$config.refine.multipleFieldGroups[value]:', this.$config.refine.multipleFieldGroups[value]);
-      //     // element.dispatchEvent(new Event('change'))
-      //     element.checked = !element.checked;
-      //     // element.checked = !element.checked;
-      //   }
-      // }
-
-
-      console.log('RefinePanel watch submittedCheckboxValue, nextSubmittedCheckboxValue:', nextSubmittedCheckboxValue);
+      // console.log('RefinePanel watch submittedCheckboxValue, nextSubmittedCheckboxValue:', nextSubmittedCheckboxValue);
       if (nextSubmittedCheckboxValue == null) {
         return;
       }
@@ -805,10 +789,8 @@ export default {
             for (let key3 of Object.keys(refineList[key][key2])) {
               let unique_key = this.$config.refine.multipleFieldGroups[key][key2][key3].unique_key;
               let i18nValue = this.$i18n.messages[this.i18nLocale][key][key3];
-              console.log('in watch submittedCheckboxValue, key:', key, 'key2:', key2, 'key3:', key3, 'unique_key:', unique_key, 'i18nValue:', i18nValue);
-              // if (key3.toLowerCase() === nextSubmittedCheckboxValue.toLowerCase()) {
+              // console.log('in watch submittedCheckboxValue, key:', key, 'key2:', key2, 'key3:', key3, 'unique_key:', unique_key, 'i18nValue:', i18nValue);
               if (i18nValue.toLowerCase() === nextSubmittedCheckboxValue.toLowerCase()) {
-
 
 
                 this.selected.push(unique_key);
@@ -863,56 +845,12 @@ export default {
 
                 this.$data.selectedList = selected;
 
-                // this.selectedList[key].push(unique_key);
-                // this.selectedList[key] = [];
-                // this.selectedList[key].push(unique_key);
-                
-                // if (!this.selected.includes(unique_key)) {
-
-                // this.selected.push(unique_key);
-                // if (!this.selectedList[key]) {
-                //   this.$nextTick(() => {
-                //     this.selectedList[key] = [];
-                //     this.$set(this.selectedList[key], 0, unique_key);
-                //   });
-                // }
-                // if (this.selectedList[key] && !this.selectedList[key].includes(unique_key)) {
-                //   this.$nextTick(() => {
-                //     // this.selectedList[key].push(unique_key);
-                //     // this.selectedList[key].splice(0, 1, unique_key);
-                //     this.$set(this.selectedList[key], this.selectedList[key].length, unique_key);
-                //   });
-                // }
-                // this.manualSelectedListCompiled([unique_key]);
-
-                // }
-
-
-
-
-
-
-                // else {
-                //   let index = selected.indexOf(unique_key);
-                //   this.selected.splice(index, 1);
-                // }
-                // let element = document.querySelector('[value='+unique_key+']');
-                // element.dispatchEvent(new Event('change'))
-                // element.checked = !element.checked;
-
-                // const myCheckbox = this.$refs.myCheckbox //references the MyCheckbox component
-                // const checkboxElement = myCheckbox.$refs.checkbox //references the input[type='checkbox'] within the MyCheckbox component
-                // checkboxElement.dispatchEvent(new Event('change')) //to trigger the "change" event
-
-                // console.log('element:', element);
               }
             }
           }
         }
       }
-      // this.$emit('watchedSubmittedCheckboxValue');
-      this.$emit('gaga');
-      // this.submittedCheckboxValue = null;
+      this.$emit('watchedSubmittedCheckboxValue');
     },
     keywordsEntered(nextKeywordsEntered) {
       console.log('watch keywordsEntered, nextKeywordsEntered:', nextKeywordsEntered);
