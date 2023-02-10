@@ -53,14 +53,14 @@
         </div>
       </div> -->
 
-      <div class="map-holder">
+      <!-- <div class="map-holder">
         <map-panel
           :view="'print'"
         />
-        <!-- @handle-search-form-submit="handleSubmit"
-        @clear-search="clearSearchTriggered"
-        @toggleMap="toggleMap" -->
-      </div>
+      </div> -->
+      <!-- @handle-search-form-submit="handleSubmit"
+      @clear-search="clearSearchTriggered"
+      @toggleMap="toggleMap" -->
 
       <!-- class="component-holder card-content" -->
       <div
@@ -119,7 +119,7 @@ import { findIconDefinition } from '@fortawesome/fontawesome-svg-core';
 // import all fontawesome icons included in phila-vue-mapping
 import * as faMapping from '@phila/vue-mapping/src/fa';
 
-import MapPanel from '../components/MapPanel.vue';
+// import MapPanel from '../components/MapPanel.vue';
 
 import {
   AppHeader,
@@ -133,7 +133,7 @@ export default {
     AppHeader,
     MobileNav,
     LangSelector,
-    MapPanel,
+    // MapPanel,
   },
   data() {
     return {
@@ -289,6 +289,7 @@ export default {
     let selectedResources = [ this.resource ];
     this.$store.commit('setSelectedResources', selectedResources);
 
+    window.print();
   },
   created() {
     if (this.$config.map) {
