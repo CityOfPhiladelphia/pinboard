@@ -84,7 +84,8 @@
       <div
         v-if="geocodeStatus !== 'error'"
       >
-        {{ currentData.length }} resources found
+        {{ summarySentenceStart }} <b><i>{{ summarySentenceEnd }}</i></b>
+        <!-- Showing {{ currentData.length }} resources for {{ selectedKeywords }} -->
       </div>
 
       <div v-if="geocodeStatus !== 'error'">
@@ -298,6 +299,96 @@ export default {
     }
   },
   computed: {
+    summarySentenceStart() {
+      let sentence = 'Showing ' + this.currentData.length + ' resources';
+      if (this.selectedKeywords.length || this.zipcodeEntered || this.addressEntered || this.selectedServices.length) {
+        sentence += ' for '; 
+      }
+      return sentence;
+    },
+    summarySentenceEnd() {
+      let sentence = '';
+      if (this.selectedKeywords.length) {
+        for (let keyword of this.selectedKeywords) {
+          sentence += keyword;
+          if (this.zipcodeEntered || this.addressEntered || this.selectedServices.length) {
+            sentence += ': ';
+          }
+        }
+      }
+      if (this.zipcodeEntered) {
+        sentence += this.zipcodeEntered;
+        if (this.selectedServices.length) {
+          sentence += ': ';
+        }
+      }
+      if (this.addressEntered) {
+        sentence += this.addressEntered;
+        sentence += ' - ';
+        sentence += this.searchDistance;
+        if (this.selectedServices.length) {
+          sentence += ': ';
+        }
+      }
+      if (this.selectedServices.length) {
+        for (let service of this.selectedServices) {
+          let refineList = this.refineList;
+          for (let key of Object.keys(refineList)) {
+            for (let key2 of Object.keys(refineList[key])) {
+              if (key2 === 'radio' || key2 === 'checkbox') {
+                for (let key3 of Object.keys(refineList[key][key2])) {
+                  if (refineList[key][key2][key3].unique_key == service) {
+                    sentence += this.$i18n.messages[this.i18nLocale][key][key3];//.toLowerCase();
+                  }
+                }
+              }
+            }
+          }
+          if (this.selectedServices.indexOf(service) < this.selectedServices.length-1) {
+            sentence += ': ';
+          }
+        }
+      }
+      return sentence;
+    },
+    refineList() {
+      return this.$store.state.refineList;
+    },
+    i18nLocale() {
+      return this.$i18n.locale;
+    },
+    zipcodeEntered() {
+      return this.$store.state.selectedZipcode;
+    },
+    geocode() {
+      return this.$store.state.geocode;
+    },
+    addressEntered() {
+      let address;
+      let routeAddress = this.$route.query.address;
+      console.log('addressEntered computed, routeAddress:', routeAddress);
+      if (this.geocode && this.geocode.properties && this.geocode.properties.street_address) {
+        address = this.geocode.properties.street_address;
+      } else if (routeAddress) {
+        address = routeAddress;
+      }
+      return address;
+    },
+    searchDistance() {
+      let value;
+      if (this.$config.searchBar.searchDistance) {
+        value = this.$config.searchBar.searchDistance;
+      } else {
+        value = 1
+      }
+      let word;
+      if (value == 1) {
+        word = 'mile';
+      } else {
+        word = 'miles';
+      }
+      return value + ' ' + word;
+    },
     sortDisabled() {
       let value;
       let geocodeStatus = this.geocodeStatus;
