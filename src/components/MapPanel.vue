@@ -1178,9 +1178,9 @@ export default {
           'event_label': siteName,
         });
         selectedResource.push(featureId);
-        if (window.innerWidth < 750) {
-          this.$store.commit('setLatestSelectedResourceFromMap', featureId);
-        }
+        // if (window.innerWidth < 750) {
+        this.$store.commit('setLatestSelectedResourceFromMap', featureId);
+        // }
       }
       this.$store.commit('setSelectedResources', selectedResource);
     },

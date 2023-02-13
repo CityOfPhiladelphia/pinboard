@@ -5,21 +5,24 @@
       class="location-item columns is-mobile pr-2"
       :class="{ 'open': locationOpen }"
     >
-      <div class="field expand-collapse-checkbox column is-1 pt-4 pb-0">
+      <div class="field column expand-collapse-checkbox is-1 pt-4 pb-0">
         <!-- class="is-checkradio location-checkbox" -->
         <!-- :id="'checkbox'+item._featureId" -->
-        <input
-          class="is-checkradio location-checkbox"
-          :id="'checkbox'+item._featureId"
-          type="checkbox"
-          :name="'checkbox'+item._featureId"
-          @click="clickCheckBox"
-        >
-        <label
-          :for="'checkbox'+item._featureId"
-          class="checkbox-label"
-        >
-        </label>
+
+        <div class="checkbox-height-fixer">
+          <input
+            class="is-checkradio location-checkbox"
+            :id="'checkbox'+item._featureId"
+            type="checkbox"
+            :name="'checkbox'+item._featureId"
+            @click="clickCheckBox"
+          >
+          <label
+            :for="'checkbox'+item._featureId"
+            class="checkbox-label"
+          >
+          </label>
+        </div>
       </div>
       <div
         class="column is-11 p-0"
@@ -34,7 +37,7 @@
           @keyup.enter="expandLocation"
         >
           <div
-            class="location-title column"
+            class="location-title column pl-0"
             :class="{ 'is-8': locationOpen && this.$config.printView, 'is-11': !locationOpen }"
           >
               <!-- <div class="field expand-collapse-checkbox">
@@ -370,7 +373,10 @@ export default {
 
 .expand-collapse-checkbox {
   margin-bottom: 0px !important;
-  height: 56px !important
+}
+
+.checkbox-height-fixer {
+  height: 40px !important
 }
 
 // .is-checkradio[type=checkbox]+label {
@@ -378,14 +384,20 @@ export default {
 //   border-color: #2176d2 !important;
 // }
 
+.is-checkradio[type=checkbox].location-checkbox:not([disabled])+label::before, .is-checkradio[type=checkbox].location-checkbox:not([disabled])+label:before, .is-checkradio[type=radio]:not([disabled])+label::before, .is-checkradio[type=radio]:not([disabled])+label:before {
+  background-color: white;
+}
+
 .is-checkradio[type=checkbox].location-checkbox:hover:not([disabled])+label::before, .is-checkradio[type=checkbox].location-checkbox:hover:not([disabled])+label:before, .is-checkradio[type=radio]:hover:not([disabled])+label::before, .is-checkradio[type=radio]:hover:not([disabled])+label:before {
   border-width: 2px !important;
   border-color: #2176d2 !important;
+  background-color: white;
 }
 
 .is-checkradio[type=checkbox]+label:after {
   border-width: 2px !important;
   border-color: #2176d2 !important;
+  background-color: white;
 }
 
 .location-name {
@@ -395,6 +407,7 @@ export default {
 .checkbox-label {
   width: 10px !important;
   margin-right: 0px !important;
+  height: 56px;
 }
 
 .whole-item {
@@ -408,23 +421,23 @@ export default {
   padding-top: 12px;
   margin-bottom: 0px !important;
 
-  // &:hover .location-row{
-  //   background: #2176d2;
-  //   color: white;
+  &:hover .location-row{
+    background: #2176d2;
+    color: white;
 
-  //   .plus-icon {
-  //     color: white;
-  //   }
-  // }
+    .plus-icon {
+      color: white;
+    }
+  }
 
-  // &:hover .expand-collapse-checkbox{
-  //   background: #2176d2;
-  //   color: white;
+  &:hover .expand-collapse-checkbox{
+    background: #2176d2;
+    color: white;
 
-  //   .plus-icon {
-  //     color: white;
-  //   }
-  // }
+    .plus-icon {
+      color: white;
+    }
+  }
 
   .location-row {
     cursor: pointer;
@@ -474,10 +487,10 @@ export default {
       background-color: $ben-franklin-blue-dark;
     }
 
-    // .expand-collapse-checkbox {
-    //   color:white;
-    //   background-color: $ben-franklin-blue-dark;
-    // }
+    .expand-collapse-checkbox {
+      color:white;
+      background-color: $ben-franklin-blue-dark;
+    }
 
     h2 {
       font-weight: 900 !important;
