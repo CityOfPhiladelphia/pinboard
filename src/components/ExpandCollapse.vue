@@ -1,6 +1,10 @@
 <template>
   <div class="whole-item">
-    <div class="location-item columns is-mobile pr-2">
+    <!-- class="location-item columns is-mobile pr-3 pl-3" -->
+    <div
+      class="location-item columns is-mobile pr-2"
+      :class="{ 'open': locationOpen }"
+    >
       <div class="field expand-collapse-checkbox column is-1 pt-4 pb-0">
         <!-- class="is-checkradio location-checkbox" -->
         <!-- :id="'checkbox'+item._featureId" -->
@@ -19,8 +23,8 @@
       </div>
       <div
         class="column is-11 p-0"
-        :class="{ 'open': locationOpen }"
-      >
+        >
+        <!-- :class="{ 'open': locationOpen }" -->
         <div
           class="columns location-row is-mobile"
           tabindex="0"
@@ -366,7 +370,7 @@ export default {
 
 .expand-collapse-checkbox {
   margin-bottom: 0px !important;
-  height: 50px !important
+  height: 56px !important
 }
 
 // .is-checkradio[type=checkbox]+label {
@@ -404,7 +408,19 @@ export default {
   padding-top: 12px;
   margin-bottom: 0px !important;
 
-  // &:hover {
+  // &:hover .location-row{
+  //   background: #2176d2;
+  //   color: white;
+
+  //   .plus-icon {
+  //     color: white;
+  //   }
+  // }
+
+  // &:hover .expand-collapse-checkbox{
+  //   background: #2176d2;
+  //   color: white;
+
   //   .plus-icon {
   //     color: white;
   //   }
@@ -457,6 +473,11 @@ export default {
       color:white;
       background-color: $ben-franklin-blue-dark;
     }
+
+    // .expand-collapse-checkbox {
+    //   color:white;
+    //   background-color: $ben-franklin-blue-dark;
+    // }
 
     h2 {
       font-weight: 900 !important;
