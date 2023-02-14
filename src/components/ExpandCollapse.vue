@@ -394,7 +394,7 @@ export default {
   background-color: white;
 }
 
-.is-checkradio[type=checkbox]+label:after {
+.is-checkradio[type=checkbox].location-checkbox+label:after {
   border-width: 2px !important;
   border-color: #2176d2 !important;
   background-color: white;
