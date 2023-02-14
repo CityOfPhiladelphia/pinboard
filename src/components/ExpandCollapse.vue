@@ -37,7 +37,7 @@
           @keyup.enter="expandLocation"
         >
           <div
-            class="location-title column pl-0"
+            class="location-title column"
             :class="{ 'is-8': locationOpen && this.$config.printView, 'is-11': !locationOpen }"
           >
               <!-- <div class="field expand-collapse-checkbox">
@@ -467,11 +467,6 @@ export default {
     }
   }
 
-  .location-title {
-    padding-top: 1rem;
-    padding-bottom: 1rem;
-  }
-
   .location-icon {
     padding-top: 1rem;
     padding-bottom: 1rem;
@@ -550,9 +545,22 @@ export default {
   padding-right: 5px !important;
 }
 
+.location-item {
+  .location-title {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+  }
+}
+
 @media (max-width: 499px) {
   .print-view-button {
     display: none !important;
+  }
+
+  .location-item {
+    .location-title {
+      padding-left: 1rem;
+    }
   }
 } 
 
@@ -560,17 +568,35 @@ export default {
   .print-button {
     display: none !important;
   }
+
+  .location-item {
+    .location-title {
+      padding-left: 1rem;
+    }
+  }
 } 
 
 @media (min-width: 768px) and (max-width: 1049px) {
   .print-view-button {
     display: none !important;
   }
+
+  .location-item {
+    .location-title {
+      padding-left: 1rem;
+    }
+  }
 }
 
 @media (min-width: 1050px) {
   .print-button {
     display: none !important;
+  }
+
+  .location-item {
+    .location-title {
+      padding-left: 0rem;
+    }
   }
 } 
 
