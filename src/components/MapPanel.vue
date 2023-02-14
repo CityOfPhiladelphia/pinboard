@@ -75,6 +75,7 @@
         :markerId="marker._featureId"
         :size="marker.size"
         :fill-color="marker.color"
+        :color="marker.borderColor"
         :weight="marker.weight"
         @click="handleMarkerClick"
       >
@@ -598,6 +599,7 @@ export default {
         let color, // all markers
           size, // circleMarkers only
           weight, // circleMarkers only
+          borderColor, // circleMarkers only
           faSize; // font awesome markers only
           // offset; // font awesome markers only
           // markerSize,
@@ -618,9 +620,14 @@ export default {
           // radius = 6;
         }
 
+        if (this.$config.circleMarkers.borderColor) {
+          borderColor = this.$config.circleMarkers.borderColor;
+        }
+
         // selected = true;
         if (this.selectedResources.includes(row._featureId)) {
           console.log('row is selected, row._featureId:', row._featureId);
+
           if (this.$config.circleMarkers.selectedColor) {
             color = this.$config.circleMarkers.selectedColor;
           } else {
@@ -629,6 +636,7 @@ export default {
           // color = this.$config.circleMarkers.circleColors[row.category_type];
           // color = 'green';
           }
+
           size = 30;
           // console.log('color:', color, 'size:', size, 'this.$config.circleMarkers.circleColors[row.category_type]:', this.$config.circleMarkers.circleColors[row.category_type]);
           faSize = '4x';
@@ -714,6 +722,7 @@ export default {
         }
 
         row.color = color;
+        row.borderColor = borderColor;
         row.size = size;
         row.weight = weight;
         row.icon = {
