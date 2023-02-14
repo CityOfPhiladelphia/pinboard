@@ -976,6 +976,7 @@ export default {
       if (nextLatestSelectedResource) {
         let rows;
         const map = this.$store.map;
+        this.$store.commit('setLatestSelectedResourceFromMap', nextLatestSelectedResource);
 
         // data coming as "rows" means it came from carto
         if (this.$store.state.sources[this.$appType].data.rows) {
