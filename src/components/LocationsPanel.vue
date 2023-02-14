@@ -43,49 +43,61 @@
           v-html="$t('app.noResults')"
         />
       </div>
-      <div
-        v-if="geocodeStatus !== 'error' && currentData.length > 0"
-        class="columns is-mobile mb-0"
-      >
-        <div class="field column is-4 pt-5">
-          <input
-            class="is-checkradio location-checkbox"
-            id="locationsPanelCheckbox"
-            type="checkbox"
-            name="locationsPanelCheckbox"
-            @click="clickedSelectAll"
-          >
-          <label for="locationsPanelCheckbox">Select All</label>
-        </div>
-        <div class="column is-3 pt-3">
-          <a
-            class="button app-button"
-            @click="clickedPrint"
-          >
-            Print
-          </a>
-        </div>
-          <div
-            v-if="currentData.length > 0"
-            class="column is-5 pt-0 pb-0"
-          >
-            <dropdown
-              v-model="sortBy"
-              :options="dropdownOptions"
-              placeholder="Sort By"
-              :disabled="sortDisabled"
-            />
-              <!-- :disabled="geocodeStatus != 'success'" -->
-          </div>
-        <!-- </div> -->
 
+      <div
+        v-if="!isMobile && geocodeStatus !== 'error' && currentData.length > 0"
+        class="columns is-desktop mb-0"
+      >
+        <div class="column is-8-desktop is-12-tablet mr-0 mb-0 pb-0 columns">
+          <div class="field column is-6 pt-5">
+            <input
+              class="is-checkradio location-checkbox"
+              id="locationsPanelCheckbox"
+              type="checkbox"
+              name="locationsPanelCheckbox"
+              @click="clickedSelectAll"
+            >
+            <label for="locationsPanelCheckbox">Select All</label>
+          </div>
+          <div class="column is-6 pt-3">
+            <a
+              class="button app-button"
+              @click="clickedPrint"
+            >
+              Print
+            </a>
+          </div>
+        </div>
+        <div
+          v-if="currentData.length > 0"
+          class="column is-4-desktop is-12-tablet p-0"
+        >
+          <dropdown
+            v-model="sortBy"
+            :options="dropdownOptions"
+            placeholder="Sort By"
+            :disabled="sortDisabled"
+          />
+        </div>
+      </div>
+
+      <div
+        v-if="isMobile && geocodeStatus !== 'error' && currentData.length > 0"
+        class="mb-1 mobile-dropdown-container"
+      >
+        <dropdown
+          v-model="sortBy"
+          :options="dropdownOptions"
+          placeholder="Sort By"
+          :disabled="sortDisabled"
+        />
       </div>
 
       <div
         v-if="geocodeStatus !== 'error'"
+        class="mt-2 mb-2"
       >
         {{ summarySentenceStart }} <b><i>{{ summarySentenceEnd }}</i></b>
-        <!-- Showing {{ currentData.length }} resources for {{ selectedKeywords }} -->
       </div>
 
       <div v-if="geocodeStatus !== 'error'">
@@ -94,7 +106,6 @@
           v-for="item in currentData"
           :key="item._featureId"
         >
-        <!-- :key="item.cartodb_id" -->
           <expand-collapse
             :item="item"
             :is-map-visible="isMapVisible"
@@ -677,6 +688,11 @@ export default {
 </script>
 
 <style lang="scss">
+
+.mobile-dropdown-container {
+  margin-left: -10px;
+  margin-right: -10px;
+}
 
 .dropdown-div {
   padding-top: 0px !important;

@@ -1,14 +1,13 @@
 <template>
   <div class="whole-item">
-    <!-- class="location-item columns is-mobile pr-3 pl-3" -->
     <div
       class="location-item columns is-mobile pr-2"
       :class="{ 'open': locationOpen }"
     >
-      <div class="field column expand-collapse-checkbox is-1 pt-4 pb-0">
-        <!-- class="is-checkradio location-checkbox" -->
-        <!-- :id="'checkbox'+item._featureId" -->
-
+      <div
+        v-if="!isMobile"
+        class="field column expand-collapse-checkbox is-1 pt-4 pb-0"
+      >
         <div class="checkbox-height-fixer">
           <input
             class="is-checkradio location-checkbox"
@@ -25,9 +24,8 @@
         </div>
       </div>
       <div
-        class="column is-11 p-0"
-        >
-        <!-- :class="{ 'open': locationOpen }" -->
+        class="column is-12-mobile is-11-tablet p-0"
+      >
         <div
           class="columns location-row is-mobile"
           tabindex="0"
@@ -40,61 +38,27 @@
             class="location-title column"
             :class="{ 'is-8': locationOpen && this.$config.printView, 'is-11': !locationOpen }"
           >
-              <!-- <div class="field expand-collapse-checkbox">
-                <input
-                  class="is-checkradio"
-                  :id="'checkbox'+item._featureId"
-                  type="checkbox"
-                  :name="'checkbox'+item._featureId"
-                  @click="clickCheckBox"
+            <span
+              class="h5 location-name"
+              :aria-expanded="locationOpen"
+            >
+              {{ getSiteName(item) }}
+              <div
+                v-if="section && !i18nEnabled"
+                class="section-name"
+                :style="{ 'background-color': sectionColor }"
                 >
-                <label
-                  :for="'checkbox'+item._featureId"
-                  class="checkbox-label"
-                >
-                </label>
-              </div> -->
-              <span
-                class="h5 location-name"
-                :aria-expanded="locationOpen"
+                {{ sectionTitle }}
+              </div>
+              <div
+                v-if="section && i18nEnabled"
+                class="section-name"
+                :style="{ 'background-color': sectionColor }"
+                v-html="'<b>'+$t(sectionTitle)+'</b>'"
               >
-                {{ getSiteName(item) }}
-                <div
-                  v-if="section && !i18nEnabled"
-                  class="section-name"
-                  :style="{ 'background-color': sectionColor }"
-                  >
-                  {{ sectionTitle }}
-                </div>
-                <div
-                  v-if="section && i18nEnabled"
-                  class="section-name"
-                  :style="{ 'background-color': sectionColor }"
-                  v-html="'<b>'+$t(sectionTitle)+'</b>'"
-                >
-                </div>
-        
-              </span>
-            <!-- </div> -->
+              </div>
+            </span>
           </div>
-
-          <!-- <div
-            v-if="locationOpen && this.$config.printView"
-            class="column is-3"
-          >
-            <button
-              class="button is-small print-view-button"
-              @click="openPrintView"
-            >
-              Print View
-            </button>
-            <button
-              class="button is-small print-button"
-              @click="openPrintView"
-            >
-              Print
-            </button>
-          </div> -->
 
           <div class="location-icon column is-1">
             <font-awesome-icon
@@ -110,11 +74,11 @@
         </div>
       </div>
     </div>
-    <div
-      :class="locationClass"
-    >
+
+    <div :class="locationClass">
       <slot />
     </div>
+
   </div>
 </template>
 
@@ -122,7 +86,7 @@
 <script>
 
 import SharedFunctions from './mixins/SharedFunctions.vue';
-import { library } from '@fortawesome/fontawesome-svg-core';
+// import { library } from '@fortawesome/fontawesome-svg-core';
 import { findIconDefinition } from '@fortawesome/fontawesome-svg-core';
 
 export default {
