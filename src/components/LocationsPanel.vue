@@ -14,7 +14,7 @@
 
     <div
       v-if="!shouldShowGreeting && dataStatus === 'success'"
-      class="location-container"
+      class="summary-and-location-container"
     >
       <div
         v-if="geocodeStatus === 'error'"
@@ -28,7 +28,7 @@
           Clear Address
         </button>
       </div>
-      <div
+      <!-- <div
         v-if="geocodeStatus !== 'error' && currentData.length === 0"
         class="h3 no-results"
       >
@@ -42,35 +42,49 @@
           v-if="i18nEnabled"
           v-html="$t('app.noResults')"
         />
-      </div>
+      </div> -->
 
-      <div
-        v-if="!isMobile && geocodeStatus !== 'error' && currentData.length > 0"
-        class="columns is-desktop mb-0"
-      >
-        <div class="column is-8-desktop is-12-tablet mr-0 mb-0 pb-0 columns">
-          <div class="field column is-6 pt-5">
-            <input
-              class="is-checkradio location-checkbox"
-              id="locationsPanelCheckbox"
-              type="checkbox"
-              name="locationsPanelCheckbox"
-              @click="clickedSelectAll"
-            >
-            <label for="locationsPanelCheckbox">Select All</label>
+      <div class="summary-container">
+        <div
+          v-if="!isMobile && geocodeStatus !== 'error' && currentData.length > 0"
+          class="columns is-desktop mb-0"
+        >
+          <div class="column is-8-desktop is-12-tablet mr-0 mb-0 pb-0 columns">
+            <div class="field column is-6 pt-5">
+              <input
+                class="is-checkradio location-checkbox"
+                id="locationsPanelCheckbox"
+                type="checkbox"
+                name="locationsPanelCheckbox"
+                @click="clickedSelectAll"
+              >
+              <label for="locationsPanelCheckbox">Select All</label>
+            </div>
+            <div class="column is-6 pt-3">
+              <a
+                class="button app-button"
+                @click="clickedPrint"
+              >
+                Print
+              </a>
+            </div>
           </div>
-          <div class="column is-6 pt-3">
-            <a
-              class="button app-button"
-              @click="clickedPrint"
-            >
-              Print
-            </a>
+          <div
+            v-if="currentData.length > 0"
+            class="column is-4-desktop is-12-tablet p-0"
+          >
+            <dropdown
+              v-model="sortBy"
+              :options="dropdownOptions"
+              placeholder="Sort By"
+              :disabled="sortDisabled"
+            />
           </div>
         </div>
+
         <div
-          v-if="currentData.length > 0"
-          class="column is-4-desktop is-12-tablet p-0"
+          v-if="isMobile && geocodeStatus !== 'error' && currentData.length > 0"
+          class="mb-1 mobile-dropdown-container"
         >
           <dropdown
             v-model="sortBy"
@@ -79,28 +93,19 @@
             :disabled="sortDisabled"
           />
         </div>
-      </div>
 
-      <div
-        v-if="isMobile && geocodeStatus !== 'error' && currentData.length > 0"
-        class="mb-1 mobile-dropdown-container"
-      >
-        <dropdown
-          v-model="sortBy"
-          :options="dropdownOptions"
-          placeholder="Sort By"
-          :disabled="sortDisabled"
-        />
+        <div
+          v-if="geocodeStatus !== 'error'"
+          class="mt-2 mb-2"
+        >
+          {{ summarySentenceStart }} <b><i>{{ summarySentenceEnd }}</i></b>
+        </div>
       </div>
 
       <div
         v-if="geocodeStatus !== 'error'"
-        class="mt-2 mb-2"
+        class="location-container"
       >
-        {{ summarySentenceStart }} <b><i>{{ summarySentenceEnd }}</i></b>
-      </div>
-
-      <div v-if="geocodeStatus !== 'error'">
       
         <div
           v-for="item in currentData"
@@ -702,9 +707,31 @@ export default {
   overflow-y: visible !important;
 }
 
+.summary-and-location-container {
+  // padding: 1rem;
+  overflow-y: visible;
+}
+
+.summary-container {
+  position: absolute;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  padding-top: 1rem;
+  // background-color: rgba(225, 225, 225, 1);
+  width: 48%;
+  z-index:9;
+  background:#fff
+}
+
+@media (max-width: 767px) {
+  .summary-container {
+    width: 100%;
+  }
+}
+
 .location-container {
   padding: 1rem;
-  overflow-y: visible;
+  padding-top: 150px;
 }
 
 .no-results {

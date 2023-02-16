@@ -49,26 +49,28 @@
       </div>
 
       <button
-        v-if="!i18nEnabled && isTablet && (selected.length || anyValueEntered) || !i18nEnabled && isDesktop && (selected.length || anyValueEntered) || !i18nEnabled && isWideScreen && (selected.length || anyValueEntered)"
+        v-if="!i18nEnabled && (selected.length || anyValueEntered)"
         class="clear-all"
         @click.prevent="clearAll"
       >
+      <!-- v-if="!i18nEnabled && isTablet && (selected.length || anyValueEntered) || !i18nEnabled && isDesktop && (selected.length || anyValueEntered) || !i18nEnabled && isWideScreen && (selected.length || anyValueEntered)" -->
         Clear all
       </button>
 
       <button
-        v-if="i18nEnabled && isTablet && (selected.length || anyValueEntered) || i18nEnabled && isDesktop && (selected.length || anyValueEntered) || i18nEnabled && isWideScreen && (selected.length || anyValueEntered)"
+        v-if="i18nEnabled && (selected.length || anyValueEntered)"
         class="clear-all"
         @click.prevent="clearAll"
         v-html="$t('refinePanel.clearAll')"
       />
+      <!-- v-if="i18nEnabled && isTablet && (selected.length || anyValueEntered) || i18nEnabled && isDesktop && (selected.length || anyValueEntered) || i18nEnabled && isWideScreen && (selected.length || anyValueEntered)" -->
 
       <div
         id="selected-boxes"
-        v-if="isTablet || isDesktop || isWideScreen"
-        class="selected-boxes columns"
+        class="selected-boxes columns is-mobile"
         @click="clickBox"
       >
+      <!-- v-if="isTablet || isDesktop || isWideScreen" -->
       <!-- v-if="refineType !== 'categoryField_value' && isTablet || refineType !== 'categoryField_value' && isDesktop || refineType !== 'categoryField_value' && isWideScreen" -->
       <!-- v-if="refineType !== 'categoryField_value'" -->
         <button
@@ -1551,7 +1553,7 @@ export default {
   }
 
   @media screen and (max-width: 767px) {
-    height: 3rem;
+    // height: 3rem;
     position: relative;
 
     .clear-all {
@@ -1609,7 +1611,7 @@ export default {
     .refine-title{
       // margin-bottom: 14px !important;
       cursor: pointer;
-      height:7vh;
+      // height:7vh;
     }
 
     .service-group-holder-x {
