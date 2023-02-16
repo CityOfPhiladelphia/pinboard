@@ -983,6 +983,7 @@ export default {
     latestSelectedResourceFromExpand(nextLatestSelectedResource) {
       console.log('watch latestSelectedResourceFromExpand:', nextLatestSelectedResource, 'this.$appType:', this.$appType, 'this.$store.state.sources[this.$appType].data:', this.$store.state.sources[this.$appType].data);
       if (nextLatestSelectedResource) {
+        console.log('watch latestSelectedResourceFromExpand, in if nextLatestSelectedResource:', nextLatestSelectedResource);
         let rows;
         const map = this.$store.map;
         this.$store.commit('setLatestSelectedResourceFromMap', nextLatestSelectedResource);
@@ -1033,10 +1034,14 @@ export default {
           map.setCenter([ dataValue[0].latlng[1], dataValue[0].latlng[0] ], this.geocodeZoom);
           // }
         }
+      } else {
+        console.log('watch latestSelectedResourceFromExpand, in else nextLatestSelectedResource:', nextLatestSelectedResource);
+        this.$store.commit('setLatestSelectedResourceFromMap', null);
       }
     },
     latestSelectedResourceFromMap(nextLatestSelectedResource) {
       let test = document.getElementById('customPopup');
+      this.$store.commit('setLatestSelectedResourceFromExpand', nextLatestSelectedResource);
       // console.log('in watch latestSelectedResourceFromMap, test:', test);
     },
     cyclomediaActive(value) {
