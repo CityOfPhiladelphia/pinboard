@@ -270,7 +270,7 @@ export default {
       let visible = this.isElementInViewport(el);
       // console.log('visible 1:', visible)
       if (!visible) {
-        el.scrollIntoView();
+        el.scrollIntoView({ block: 'center' });
       }
     },
     isElementInViewport(el) {
