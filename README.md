@@ -29,6 +29,10 @@ Create pull request for changes and merge into `master` branch for travis-ci bui
 
 ## Release Notes
 
+### 1.1.43 - 2/21/2023
+
+* fixes bug with using tab and spacebar to open refine panel
+
 ### 1.1.42 - 2/9/2023
 
 * updates packages
