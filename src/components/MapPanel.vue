@@ -986,54 +986,60 @@ export default {
         console.log('watch latestSelectedResourceFromExpand, in if nextLatestSelectedResource:', nextLatestSelectedResource);
         let rows;
         const map = this.$store.map;
-        this.$store.commit('setLatestSelectedResourceFromMap', nextLatestSelectedResource);
+        // this.$store.commit('setLatestSelectedResourceFromMap', nextLatestSelectedResource);
 
-        // data coming as "rows" means it came from carto
-        if (this.$store.state.sources[this.$appType].data.rows) {
-          rows = this.$store.state.sources[this.$appType].data.rows;
-          const dataValue = rows.filter(row => row._featureId === nextLatestSelectedResource);
-          console.log('in watch latestSelectedResourceFromExpand, rows, nextLatestSelectedResource:', nextLatestSelectedResource, 'rows:', rows, 'dataValue:', dataValue);
-          // do not set view if there is not lat value
-          if (dataValue[0].lat) {
-            // if (this.mapType === 'leaflet') {
-            //   map.setView([ dataValue[0].lat, dataValue[0].lon ], this.geocodeZoom);
-            // } else if (this.mapType === 'mapbox') {
-            map.setCenter([ dataValue[0].lon, dataValue[0].lat ], this.geocodeZoom);
-            // }
-          }
+        if (!this.latestSelectedResourceFromMap || !this.latestSelectedResourceFromMap == nextLatestSelectedResource) {
+        
+          // data coming as "rows" means it came from carto
+          if (this.$store.state.sources[this.$appType].data.rows) {
+            rows = this.$store.state.sources[this.$appType].data.rows;
+            const dataValue = rows.filter(row => row._featureId === nextLatestSelectedResource);
+            console.log('in watch latestSelectedResourceFromExpand, rows, nextLatestSelectedResource:', nextLatestSelectedResource, 'rows:', rows, 'dataValue:', dataValue);
+            // do not set view if there is not lat value
+            if (dataValue[0].lat) {
+              // if (this.mapType === 'leaflet') {
+              //   map.setView([ dataValue[0].lat, dataValue[0].lon ], this.geocodeZoom);
+              // } else if (this.mapType === 'mapbox') {
+              map.setCenter([ dataValue[0].lon, dataValue[0].lat ], this.geocodeZoom);
+              // }
+            }
 
-        // data coming as "features" means it came from arcgis
-        } else if (this.$store.state.sources[this.$appType].data.features) {
-          rows = this.$store.state.sources[this.$appType].data.features;
-          const dataValue = rows.filter(row => row._featureId === nextLatestSelectedResource);
-          console.log('in watch latestSelectedResourceFromExpand, features, nextLatestSelectedResource:', nextLatestSelectedResource, 'rows:', rows, 'dataValue:', dataValue, 'dataValue[0].latlng:', dataValue[0].latlng);
-          if (dataValue[0].latlng[0]) {
+          // data coming as "features" means it came from arcgis
+          } else if (this.$store.state.sources[this.$appType].data.features) {
+            rows = this.$store.state.sources[this.$appType].data.features;
+            const dataValue = rows.filter(row => row._featureId === nextLatestSelectedResource);
+            console.log('in watch latestSelectedResourceFromExpand, features, nextLatestSelectedResource:', nextLatestSelectedResource, 'rows:', rows, 'dataValue:', dataValue, 'dataValue[0].latlng:', dataValue[0].latlng);
+            if (dataValue[0].latlng[0]) {
+              // if (this.mapType === 'leaflet') {
+              //   map.setView([ dataValue[0].latlng[0], dataValue[0].latlng[1] ], this.geocodeZoom);
+              //   // map.setView([ dataValue[0].lat, dataValue[0].lon ], this.geocodeZoom);
+              // } else if (this.mapType === 'mapbox') {
+              map.setCenter([ dataValue[0].latlng[1], dataValue[0].latlng[0] ], this.geocodeZoom);
+              // }
+            }
+
+          // data coming in as "records" means it came from airtable
+          } else if (this.$store.state.sources[this.$appType].data.records) {
+            rows = this.$store.state.sources[this.$appType].data.records;
+            const dataValue = rows.filter(row => row._featureId === nextLatestSelectedResource);
+            // console.log('in watch latestSelectedResourceFromExpand, array, nextLatestSelectedResource:', nextLatestSelectedResource, 'rows:', rows, 'dataValue:', dataValue);
+            map.setCenter([ dataValue[0].latlng[1], dataValue[0].latlng[0] ], this.geocodeZoom);
+          
+          // data coming in as an array means it came from a compiled datasource or airtable
+          } else if (Array.isArray(this.$store.state.sources[this.$appType].data)) {
+            rows = this.$store.state.sources[this.$appType].data;
+            const dataValue = rows.filter(row => row._featureId === nextLatestSelectedResource);
+            console.log('in watch latestSelectedResourceFromExpand, array, nextLatestSelectedResource:', nextLatestSelectedResource, 'rows:', rows, 'dataValue:', dataValue);
             // if (this.mapType === 'leaflet') {
             //   map.setView([ dataValue[0].latlng[0], dataValue[0].latlng[1] ], this.geocodeZoom);
-            //   // map.setView([ dataValue[0].lat, dataValue[0].lon ], this.geocodeZoom);
             // } else if (this.mapType === 'mapbox') {
             map.setCenter([ dataValue[0].latlng[1], dataValue[0].latlng[0] ], this.geocodeZoom);
             // }
           }
-
-        // data coming in as "records" means it came from airtable
-        } else if (this.$store.state.sources[this.$appType].data.records) {
-          rows = this.$store.state.sources[this.$appType].data.records;
-          const dataValue = rows.filter(row => row._featureId === nextLatestSelectedResource);
-          // console.log('in watch latestSelectedResourceFromExpand, array, nextLatestSelectedResource:', nextLatestSelectedResource, 'rows:', rows, 'dataValue:', dataValue);
-          map.setCenter([ dataValue[0].latlng[1], dataValue[0].latlng[0] ], this.geocodeZoom);
-        
-        // data coming in as an array means it came from a compiled datasource or airtable
-        } else if (Array.isArray(this.$store.state.sources[this.$appType].data)) {
-          rows = this.$store.state.sources[this.$appType].data;
-          const dataValue = rows.filter(row => row._featureId === nextLatestSelectedResource);
-          console.log('in watch latestSelectedResourceFromExpand, array, nextLatestSelectedResource:', nextLatestSelectedResource, 'rows:', rows, 'dataValue:', dataValue);
-          // if (this.mapType === 'leaflet') {
-          //   map.setView([ dataValue[0].latlng[0], dataValue[0].latlng[1] ], this.geocodeZoom);
-          // } else if (this.mapType === 'mapbox') {
-          map.setCenter([ dataValue[0].latlng[1], dataValue[0].latlng[0] ], this.geocodeZoom);
-          // }
         }
+
+        this.$store.commit('setLatestSelectedResourceFromMap', nextLatestSelectedResource);
+
       } else {
         console.log('watch latestSelectedResourceFromExpand, in else nextLatestSelectedResource:', nextLatestSelectedResource);
         this.$store.commit('setLatestSelectedResourceFromMap', null);
