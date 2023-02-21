@@ -348,7 +348,8 @@ export default {
 //   border-color: #2176d2 !important;
 // }
 
-.is-checkradio[type=checkbox].location-checkbox:not([disabled])+label::before, .is-checkradio[type=checkbox].location-checkbox:not([disabled])+label:before, .is-checkradio[type=radio]:not([disabled])+label::before, .is-checkradio[type=radio]:not([disabled])+label:before {
+// .is-checkradio[type=checkbox].location-checkbox:not([disabled])+label::before, .is-checkradio[type=checkbox].location-checkbox:not([disabled])+label:before, .is-checkradio[type=radio]:not([disabled])+label::before, .is-checkradio[type=radio]:not([disabled])+label:before {
+.is-checkradio[type=checkbox].location-checkbox:not([disabled])+label::before, .is-checkradio[type=checkbox].location-checkbox:not([disabled])+label:before {
   background-color: white;
 }
 
@@ -356,7 +357,8 @@ export default {
   background-color: #2176d2 !important;
 }
 
-.is-checkradio[type=checkbox].location-checkbox:hover:not([disabled])+label::before, .is-checkradio[type=checkbox].location-checkbox:hover:not([disabled])+label:before, .is-checkradio[type=radio]:hover:not([disabled])+label::before, .is-checkradio[type=radio]:hover:not([disabled])+label:before {
+// .is-checkradio[type=checkbox].location-checkbox:hover:not([disabled])+label::before, .is-checkradio[type=checkbox].location-checkbox:hover:not([disabled])+label:before, .is-checkradio[type=radio]:hover:not([disabled])+label::before, .is-checkradio[type=radio]:hover:not([disabled])+label:before {
+.is-checkradio[type=checkbox].location-checkbox:hover:not([disabled])+label::before, .is-checkradio[type=checkbox].location-checkbox:hover:not([disabled])+label:before {
   border-width: 2px !important;
   border-color: #2176d2 !important;
   background-color: white;
@@ -368,7 +370,8 @@ export default {
   background-color: white;
 }
 
-.is-checkradio[type=checkbox]:checked+label::after, .is-checkradio[type=checkbox]:checked+label:after, .is-checkradio[type=radio]:checked+label::after, .is-checkradio[type=radio]:checked+label:after {
+// .is-checkradio[type=checkbox]:checked+label::after, .is-checkradio[type=checkbox]:checked+label:after, .is-checkradio[type=radio]:checked+label::after, .is-checkradio[type=radio]:checked+label:after {
+.is-checkradio[type=checkbox]:checked+label::after, .is-checkradio[type=checkbox]:checked+label:after {
   border-width: 2px !important;
   border-color: white !important;
   background-color: #2176d2 !important;

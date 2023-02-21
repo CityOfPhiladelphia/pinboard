@@ -61,12 +61,12 @@
               <label for="locationsPanelCheckbox">Select All</label>
             </div>
             <div class="column is-6 pt-3">
-              <a
+              <button
                 class="button app-button"
                 @click="clickedPrint"
               >
                 Print
-              </a>
+            </button>
             </div>
           </div>
           <div
