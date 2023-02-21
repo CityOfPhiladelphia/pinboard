@@ -40,6 +40,7 @@
           >
             <span
               class="h5 location-name"
+              :class="item._featureId"
               :aria-expanded="locationOpen"
             >
               {{ getSiteName(item) }}
@@ -214,15 +215,16 @@ export default {
       }
     },
     isMapVisible(nextIsMapVisible) {
-      // console.log('ExpandCollapse watch isMapVisible');
+      console.log('ExpandCollapse watch isMapVisible');
       if (!nextIsMapVisible) {
         if (this.latestSelectedResourceFromMap) {
-          // console.log('ExpandCollapse is reporting map is invisible and there is a this.latestSelectedResourceFromMap:', this.latestSelectedResourceFromMap);
+          console.log('ExpandCollapse is reporting map is invisible and there is a this.latestSelectedResourceFromMap:', this.latestSelectedResourceFromMap);
           if (this.latestSelectedResourceFromMap === this.item._featureId) {
             const el = this.$el;
             const visible = this.isElementInViewport(el);
             if (!visible) {
-              el.scrollIntoView();
+              console.log('ExpandCollapse in if in if');
+              el.scrollIntoView({ block: 'center' });
             }
           }
         }
@@ -265,10 +267,11 @@ export default {
     },
     openLocation() {
       this.locationOpen = true;
-      const el = this.$el;
-      // console.log('ExpandCollapse openLocation is running, el:', el);
+      const el = document.getElementsByClassName(this.item._featureId)[0];
+      // const el = this.$el;
+      console.log('ExpandCollapse openLocation is running, el:', el);
       let visible = this.isElementInViewport(el);
-      // console.log('visible 1:', visible)
+      console.log('ExpandCollapse visible 1:', visible)
       if (!visible) {
         el.scrollIntoView({ block: 'center' });
       }
