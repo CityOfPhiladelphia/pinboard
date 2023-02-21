@@ -906,6 +906,11 @@ export default {
 
   },
   watch: {
+    selectedResources(nextSelectedResources) {
+      if (this.latestSelectedResourceFromExpand == null && this.latestSelectedResourceFromMap == null) {
+        this.$store.commit('setLatestSelectedResourceFromMap', nextSelectedResources[0]);
+      }
+    },
     lastPinboardSearchMethod(nextLastPinboardSearchMethod) {
       console.log('watch lastPinboardSearchMethod, nextLastPinboardSearchMethod:', nextLastPinboardSearchMethod);
       if (nextLastPinboardSearchMethod === 'geocode') {
@@ -1156,6 +1161,13 @@ export default {
     if (this.$config.searchBar) {
       this.addressInputPlaceholder = this.$config.searchBar.placeholder;
     }
+
+    // if (this.selectedResources.length) {
+    //   console.log('MapPanel.vue mounted, if this.selectedResources.length:', this.selectedResources.length);
+    //   this.$store.commit('setLatestSelectedResourceFromMap', this.selectedResources[0]);
+    // } else {
+    //   console.log('MapPanel.vue mounted, else this.selectedResources.length:', this.selectedResources.length);
+    // }
 
   },
   beforeDestroy() {
