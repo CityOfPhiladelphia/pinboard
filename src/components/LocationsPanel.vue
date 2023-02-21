@@ -731,7 +731,24 @@ export default {
 
 .location-container {
   padding: 1rem;
-  padding-top: 150px;
+}
+
+@media (min-width: 1024px) {
+  .location-container {
+    padding-top: 150px;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  .location-container {
+    padding-top: 270px;
+  }
+}
+
+@media (max-width: 767px) {
+  .location-container {
+    padding-top: 200px;
+  }
 }
 
 .no-results {
