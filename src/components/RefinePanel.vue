@@ -181,8 +181,9 @@
       id="field-div"
       class="refine-holder"
     >
+    <!-- :options="getRefineSearchList()" -->
       <checkbox
-        :options="getRefineSearchList()"
+        :options="refineListTranslated"
         :numOfColumns="NumRefineColumns"
         :small="!isMobile"
         v-model="selected"
@@ -607,12 +608,23 @@ export default {
         }
         return mainArray;
       } else if (this.refineType !== 'multipleFieldGroups' && this.refineType !== 'multipleDependentFieldGroups') {
-        for (let category of this.refineList) {
-          mainArray.push({
-            value: category,
-            text: this.$t(category),
-          });
-          console.log('refineListTranslated computed, category:', category, 'this.$t(category):', this.$t(category), 'mainArray:', mainArray);
+        for (let refineObject of this.refineList) {
+          let translatedObject = {}
+          for (let category of Object.keys(refineObject)) {
+            console.log('in refineListTranslated, category:', category);
+            if (category == 'textLabel') {
+              translatedObject[category] = this.$t(refineObject[category]);
+            } else {
+              translatedObject[category] = refineObject[category];
+            }
+            // translatedObject.value = refineObject[category];
+          }
+          console.log('in refineListTranslated, refineObject:', refineObject, 'translatedObject:', translatedObject);
+          mainArray.push(translatedObject);
+            // text: this.$t(refineObject[category]),
+            // value: refineObject[category],
+          // });
+          // console.log('refineListTranslated computed, category:', category, 'this.$t(category):', this.$t(category), 'mainArray:', mainArray);
         }
         return mainArray;
       } else if (this.refineType == 'multipleFieldGroups') {
@@ -650,7 +662,9 @@ export default {
         }
         return mainObject;
       } else {
+        // console.log('in refineListTranslated else');
         for (let category of Object.keys(this.refineList)) {
+          // console.log('in refineListTranslated else, first loop');
           mainObject[category] = {};
           for (let dep of Object.keys(this.refineList[category])) {
             // console.log('in loop, dep', dep);
@@ -780,6 +794,9 @@ export default {
     },
   },
   watch: {
+    // dataStatus(nextDataStatus) {
+    //   console.log('RefinePanel.vue watch dataStatus, nextDataStatus:', nextDataStatus);
+    // },
     submittedCheckboxValue(nextSubmittedCheckboxValue) {
       // console.log('RefinePanel watch submittedCheckboxValue, nextSubmittedCheckboxValue:', nextSubmittedCheckboxValue);
       if (nextSubmittedCheckboxValue == null) {
@@ -868,7 +885,7 @@ export default {
       });
     },
     database(nextDatabase) {
-      // console.log('watch database is calling getRefineSearchList, nextDatabase:', nextDatabase);
+      console.log('watch database is calling getRefineSearchList, nextDatabase:', nextDatabase);
       this.getRefineSearchList();
     },
     selected(nextSelected, oldSelected) {
@@ -953,6 +970,7 @@ export default {
     //   //   this.expandRefine();
     //   // }
     // };
+    console.log('RefinePanel.vue mounted is calling getRefineSearchList');
     this.getRefineSearchList();
     // console.log('this.$config.refine.type:', this.$config.refine.type);
     // this.$nextTick(() => {
@@ -1199,7 +1217,7 @@ export default {
         // console.log('RefinePanel.vue, uniqArray:', uniqArray);
 
         // clean up any dangling , or ;
-        uniqPrep = uniqArray.filter(a => a.length > 2);
+        uniqPrep = uniqArray.filter(a => a.length > 1);
         uniqPrep.filter(Boolean); // remove empties
         let undef = uniqPrep.indexOf('undefined');
         if (undef > -1) {
