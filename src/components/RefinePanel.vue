@@ -49,7 +49,7 @@
       </div>
 
       <button
-        v-if="!i18nEnabled && (selected.length || anyValueEntered)"
+        v-if="!i18nEnabled && (selected.length || anyValueEntered)  && !isMobile"
         class="clear-all"
         @click.prevent="clearAll"
       >
@@ -58,7 +58,7 @@
       </button>
 
       <button
-        v-if="i18nEnabled && (selected.length || anyValueEntered)"
+        v-if="i18nEnabled && (selected.length || anyValueEntered) && !isMobile"
         class="clear-all"
         @click.prevent="clearAll"
         v-html="$t('refinePanel.clearAll')"
@@ -66,6 +66,7 @@
       <!-- v-if="i18nEnabled && isTablet && (selected.length || anyValueEntered) || i18nEnabled && isDesktop && (selected.length || anyValueEntered) || i18nEnabled && isWideScreen && (selected.length || anyValueEntered)" -->
 
       <div
+        v-if="!isMobile"
         id="selected-boxes"
         class="selected-boxes columns is-mobile"
         @click="clickBox"
