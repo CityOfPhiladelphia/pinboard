@@ -152,7 +152,8 @@ export default {
       return this.$store.state.printCheckboxes;
     },
     items() {
-      let data = this.$store.state.sources.primaryCareSites.data;
+      let appType = this.$config.app.type;
+      let data = this.$store.state.sources[appType].data;
       console.log('PrintView items computed, data:', data);
       let filteredData;
       if (data) {
