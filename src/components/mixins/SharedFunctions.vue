@@ -47,20 +47,23 @@ export default {
       return val;
     },
     getProjection(item) {
-      let valOrGetter = this.$config.projection;
-      const valOrGetterType = typeof valOrGetter;
       let val;
-
-      if (valOrGetterType === 'function') {
-        const state = this.$store.state;
-        const getter = valOrGetter;
-        if (item) {
-          val = getter(item);
+      if (this.$config && this.$config.projection) {
+        let valOrGetter = this.$config.projection;
+        const valOrGetterType = typeof valOrGetter;
+        
+  
+        if (valOrGetterType === 'function') {
+          const state = this.$store.state;
+          const getter = valOrGetter;
+          if (item) {
+            val = getter(item);
+          } else {
+            val = getter(state);
+          }
         } else {
-          val = getter(state);
+          val = valOrGetter;
         }
-      } else {
-        val = valOrGetter;
       }
       return val;
     },

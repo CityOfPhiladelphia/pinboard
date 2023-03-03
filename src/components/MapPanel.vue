@@ -610,7 +610,8 @@ export default {
           // nonSelectedRadius,
 
         // circle-marker size
-        if (this.$config.circleMarkers && this.$config.circleMarkers.size) {
+        console.log('this.$config:', this.$config);
+        if (this.$config && this.$config.circleMarkers && this.$config.circleMarkers.size) {
           if (this.isMobileOrTablet && this.$config.circleMarkers.mobileSize) {
             size = this.$config.circleMarkers.mobileSize;
             // radius = this.$config.circleMarkers.mobileRadius;
@@ -623,7 +624,7 @@ export default {
           // radius = 6;
         }
 
-        if (this.$config.circleMarkers.borderColor) {
+        if (this.$config && this.$config.circleMarkers && this.$config.circleMarkers.borderColor) {
           borderColor = this.$config.circleMarkers.borderColor;
         }
 
@@ -631,7 +632,7 @@ export default {
         if (this.selectedResources.includes(row._featureId)) {
           console.log('row is selected, row._featureId:', row._featureId);
 
-          if (this.$config.circleMarkers.selectedColor) {
+          if (this.$config && this.$config.circleMarkers && this.$config.circleMarkers.selectedColor) {
             color = this.$config.circleMarkers.selectedColor;
           } else {
             color = '#0f4d90';
@@ -654,7 +655,7 @@ export default {
         } else {
           // multiple circle colors defined
           // console.log('MapPanel.vue else is running');
-          if (this.$config.circleMarkers && this.$config.circleMarkers.circleColors) {
+          if (this.$config && this.$config.circleMarkers && this.$config.circleMarkers.circleColors) {
             // console.log('in MapPanel circleColores, row:', row);
             if (row.attributes) {
               color = this.$config.circleMarkers.circleColors[row.attributes.category_type];
@@ -667,7 +668,7 @@ export default {
             }
 
           // single circle color defined
-          } else if (this.$config.circleMarkers && this.$config.circleMarkers.color) {
+          } else if (this.$config && this.$config.circleMarkers && this.$config.circleMarkers.color) {
             color = this.$config.circleMarkers.color;
 
           // no circle color defined;
@@ -681,7 +682,7 @@ export default {
           // }
           // markerSize = 20;
 
-          if (this.$config.circleMarkers && this.$config.circleMarkers.weight || this.$config.circleMarkers && this.$config.circleMarkers.weight === 0) {
+          if (this.$config && this.$config.circleMarkers && this.$config.circleMarkers.weight || this.$config && this.$config.circleMarkers && this.$config.circleMarkers.weight === 0) {
             weight = this.$config.circleMarkers.weight;
           } else {
             weight = 1;
@@ -1075,7 +1076,7 @@ export default {
     geojsonForResource(nextGeojson) {
       console.log('watch geojsonForResource is firing, nextGeojson[0]:', nextGeojson[0]);
       if (this.$store.map) {
-        console.log('watch geojsonForResource is running, map.getStyle():', this.$store.map.getStyle(), 'map.getStyle().layers:', this.$store.map.getStyle().layers, 'nextGeojson:', nextGeojson);
+        // console.log('watch geojsonForResource is running, map.getStyle():', this.$store.map.getStyle(), 'map.getStyle().layers:', this.$store.map.getStyle().layers, 'nextGeojson:', nextGeojson);
       }
       if (nextGeojson[0] && nextGeojson.length > 1) {
         console.log('watch geojsonForResource is running, nextGeojson:', nextGeojson, 'nextGeojson[0].geojson:', nextGeojson[0].geojson);
