@@ -610,7 +610,7 @@ export default {
           // nonSelectedRadius,
 
         // circle-marker size
-        console.log('this.$config:', this.$config);
+        // console.log('this.$config:', this.$config);
         if (this.$config && this.$config.circleMarkers && this.$config.circleMarkers.size) {
           if (this.isMobileOrTablet && this.$config.circleMarkers.mobileSize) {
             size = this.$config.circleMarkers.mobileSize;

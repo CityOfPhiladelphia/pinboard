@@ -109,6 +109,7 @@
           :is-map-visible="isMapVisible"
           @clear-bad-address="clearBadAddress"
         />
+          <!-- @change-search-distance="changeSearchDistance" -->
       </div>
 
     </div>
@@ -515,11 +516,18 @@ export default {
     lastPinboardSearchMethod() {
       return this.$store.state.lastPinboardSearchMethod;
     },
+    searchDistance() {
+      return this.$store.state.searchDistance;
+    },
   },
   watch: {
     // buffer(nextBuffer) {
     //   console.log('watch buffer, nextBuffer:', nextBuffer);
     // },
+    searchDistance(nextSearchDistance) {
+      console.log('Main.vue watch searchDistance, nextSearchDistance:', nextSearchDistance);
+      this.runBuffer();
+    },
     zipcodeData(nextZipcodeData) {
       console.log('Main.vue watch zipcodeData, nextZipcodeData:', nextZipcodeData);
       if (nextZipcodeData) {
@@ -858,11 +866,13 @@ export default {
       // console.log('end of setUpData, this.$store.state.sources:', this.$store.state.sources);
     },
     runBuffer() {
-      let searchDistance = 1;
-      if (this.$config.searchBar.searchDistance) {
-        searchDistance = this.$config.searchBar.searchDistance;
-      }
+      // let searchDistance = 1;
+      // if (this.$config.searchBar.searchDistance) {
+      //   searchDistance = this.$config.searchBar.searchDistance;
+      // }
       // console.log('runBuffer is running, searchDistance:', searchDistance);
+      let searchDistance = this.searchDistance;
+
       const geocodePoint = point(this.geocodeGeom.coordinates);
       const pointBuffer = buffer(geocodePoint, searchDistance, { units: 'miles' });
       this.$data.buffer = pointBuffer;

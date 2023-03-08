@@ -518,12 +518,12 @@ export default {
   },
   computed: {
     searchDistance() {
-      let value;
-      if (this.$config.searchBar.searchDistance) {
-        value = this.$config.searchBar.searchDistance;
-      } else {
-        value = 1
-      }
+      let value = this.$store.state.searchDistance;
+      // if (this.$config.searchBar.searchDistance) {
+      //   value = this.$config.searchBar.searchDistance;
+      // } else {
+      //   value = 1
+      // }
       let word;
       if (value == 1) {
         word = 'mile';

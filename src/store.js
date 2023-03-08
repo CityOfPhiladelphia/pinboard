@@ -16,6 +16,7 @@ function createStore(config) {
   const sources = pvdStore.createSources(config);
   const rfStore = {
     state: {
+      searchDistance: null,
       zipcodeCenter: [],
       printCheckboxes: [],
       lastPinboardSearchMethod: null,
@@ -47,6 +48,9 @@ function createStore(config) {
       refineList: {},
     },
     mutations: {
+      setSearchDistance(state, payload) {
+        state.searchDistance = payload;
+      },
       setRefineList(state, payload) {
         state.refineList = payload;
       },

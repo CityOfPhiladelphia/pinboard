@@ -49,7 +49,7 @@
           v-if="!isMobile && geocodeStatus !== 'error' && currentData.length > 0"
           class="columns is-desktop mb-0"
         >
-          <div class="column is-8-desktop is-12-tablet mr-0 mb-0 pb-0 columns">
+          <div class="column is-6-desktop is-12-tablet mr-0 mb-0 pb-0 columns">
             <div class="field column is-6 pt-5">
               <input
                 class="is-checkradio location-checkbox"
@@ -69,9 +69,40 @@
             </button>
             </div>
           </div>
+
+          <div class="column is-6-desktop is-12-tablet mr-0 mb-0 pb-0 columns">
+            <div
+              v-if="currentData.length > 0"
+              class="column is-6-tablet is-7-desktop p-0"
+            >
+              <dropdown
+                v-model="sortBy"
+                :options="dropdownOptions"
+                placeholder="Sort By"
+                :disabled="sortDisabled"
+              />
+            </div>
+            <div
+              v-if="currentData.length > 0"
+              class="column is-6-tablet is-5-desktop p-0"
+            >
+              <dropdown
+                v-model="searchDistance"
+                :options="searchDistanceOptions"
+                placeholder="Distance"
+                :disabled="sortDisabled"
+              />
+            </div>
+          </div>
+        </div>
+
+        <div
+          v-if="isMobile && geocodeStatus !== 'error' && currentData.length > 0"
+          class="columns is-mobile"
+        >
           <div
-            v-if="currentData.length > 0"
-            class="column is-4-desktop is-12-tablet p-0"
+            v-if="isMobile && geocodeStatus !== 'error' && currentData.length > 0"
+            class="mb-1 mobile-dropdown-container column is-6"
           >
             <dropdown
               v-model="sortBy"
@@ -80,18 +111,17 @@
               :disabled="sortDisabled"
             />
           </div>
-        </div>
-
-        <div
-          v-if="isMobile && geocodeStatus !== 'error' && currentData.length > 0"
-          class="mb-1 mobile-dropdown-container"
-        >
-          <dropdown
-            v-model="sortBy"
-            :options="dropdownOptions"
-            placeholder="Sort By"
-            :disabled="sortDisabled"
-          />
+          <div
+            v-if="isMobile && geocodeStatus !== 'error' && currentData.length > 0"
+            class="mb-1 mobile-dropdown-container column is-6"
+          >
+            <dropdown
+              v-model="searchDistance"
+              :options="searchDistanceOptions"
+              placeholder="Distance"
+              :disabled="sortDisabled"
+            />
+          </div>
         </div>
 
         <div
@@ -301,6 +331,8 @@ export default {
   },
   data() {
     return {
+      searchDistance: 3,
+      searchDistanceOptions: [ '1', '2', '3', '4', '5' ],
       sortBy: 'Alphabetically',
       dropdownOptions: [ "Alphabetically", "Distance" ],
       // singleCheckboxOptions: [{ 'option-1': 'Option 1' }],
@@ -313,6 +345,21 @@ export default {
     if (!this.$config.greeting && (!this.$config.customComps || !this.$config.customComps.customGreeting)) {
       this.$store.commit(setShouldShowGreeting, false);
     }
+
+    let value;
+    if (this.$config.searchBar.searchDistance) {
+      value = this.$config.searchBar.searchDistance;
+    } else {
+      value = 1
+    }
+    let word;
+    if (value == 1) {
+      word = 'mile';
+    } else {
+      word = 'miles';
+    }
+    this.searchDistance = value;// + ' ' + word;
+    this.$store.commit('setSearchDistance', value);
   },
   computed: {
     summarySentenceStart() {
@@ -342,6 +389,15 @@ export default {
         sentence += this.addressEntered;
         sentence += ' - ';
         sentence += this.searchDistance;
+
+        let word;
+        if (this.searchDistance == 1) {
+          word = ' mile';
+        } else {
+          word = ' miles';
+        }
+        sentence += word;
+        
         if (this.selectedServices.length) {
           sentence += ': ';
         }
@@ -390,21 +446,21 @@ export default {
       }
       return address;
     },
-    searchDistance() {
-      let value;
-      if (this.$config.searchBar.searchDistance) {
-        value = this.$config.searchBar.searchDistance;
-      } else {
-        value = 1
-      }
-      let word;
-      if (value == 1) {
-        word = 'mile';
-      } else {
-        word = 'miles';
-      }
-      return value + ' ' + word;
-    },
+    // searchDistance() {
+    //   let value;
+    //   if (this.$config.searchBar.searchDistance) {
+    //     value = this.$config.searchBar.searchDistance;
+    //   } else {
+    //     value = 1
+    //   }
+    //   let word;
+    //   if (value == 1) {
+    //     word = 'mile';
+    //   } else {
+    //     word = 'miles';
+    //   }
+    //   return value + ' ' + word;
+    // },
     sortDisabled() {
       let value;
       let geocodeStatus = this.geocodeStatus;
@@ -550,6 +606,10 @@ export default {
     },
   },
   watch: {
+    searchDistance(nextSearchDistance) {
+      // this.$emit('change-search-distance');
+      this.$store.commit('setSearchDistance', parseInt(nextSearchDistance));
+    },
     selectAllCheckbox(nextSelectAllCheckbox) {
       console.log('watch selectAllCheckbox, nextSelectAllCheckbox:', nextSelectAllCheckbox);
       if (nextSelectAllCheckbox == false) {
@@ -715,7 +775,7 @@ export default {
 .summary-container {
   position: absolute;
   padding-left: 1rem;
-  padding-right: 1rem;
+  // padding-right: 1rem;
   padding-top: 1rem;
   // background-color: rgba(225, 225, 225, 1);
   width: 48%;
