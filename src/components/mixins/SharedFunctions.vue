@@ -19,11 +19,11 @@ export default {
         const state = this.$store.state;
         const getter = valOrGetter;
         if (currentQueryKeys.includes('address') || currentQueryKeys.includes('zipcode')) {
-          console.log('item:', item);
+          // console.log('item:', item);
           if (item && item.distance) {
             val = '(' + item.distance.toFixed(2) + ' miles) ' + getter(item, transforms);
           } else {
-            console.log('getSiteName else is running');
+            // console.log('getSiteName else is running');
             // val = '(' + item.distance.toFixed(2) + ' miles) ' + getter(state);
             // val = getter(state);
             val = getter(item, transforms);

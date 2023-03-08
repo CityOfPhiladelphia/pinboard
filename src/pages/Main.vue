@@ -870,13 +870,15 @@ export default {
       // if (this.$config.searchBar.searchDistance) {
       //   searchDistance = this.$config.searchBar.searchDistance;
       // }
-      // console.log('runBuffer is running, searchDistance:', searchDistance);
       let searchDistance = this.searchDistance;
+      console.log('runBuffer is running, searchDistance:', searchDistance, 'this.geocodeGeom:', this.geocodeGeom);
 
-      const geocodePoint = point(this.geocodeGeom.coordinates);
-      const pointBuffer = buffer(geocodePoint, searchDistance, { units: 'miles' });
-      this.$data.buffer = pointBuffer;
-      this.$store.commit('setBufferShape', pointBuffer);
+      if (this.geocodeGeom) {
+        const geocodePoint = point(this.geocodeGeom.coordinates);
+        const pointBuffer = buffer(geocodePoint, searchDistance, { units: 'miles' });
+        this.$data.buffer = pointBuffer;
+        this.$store.commit('setBufferShape', pointBuffer);
+      }
     },
     runZipcodeBuffer(geo) {
       console.log('Main.vue runZipcodeBuffer is running, geo:', geo);
