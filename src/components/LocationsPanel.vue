@@ -45,8 +45,9 @@
       </div> -->
 
       <div class="summary-container">
+        <!-- v-if="!isMobile && geocodeStatus !== 'error' && currentData.length > 0" -->
         <div
-          v-if="!isMobile && geocodeStatus !== 'error' && currentData.length > 0"
+          v-if="!isMobile && geocodeStatus !== 'error' > 0"
           class="columns is-desktop mb-0"
         >
           <div class="column is-6-desktop is-12-tablet mr-0 mb-0 pb-0 columns">
@@ -71,8 +72,8 @@
           </div>
 
           <div class="column is-6-desktop is-12-tablet mr-0 mb-0 pb-0 columns">
+            <!-- v-if="currentData.length > 0" -->
             <div
-              v-if="currentData.length > 0"
               class="column is-6-tablet is-7-desktop p-0"
             >
               <dropdown
@@ -96,12 +97,13 @@
           </div>
         </div>
 
+        <!-- v-if="isMobile && geocodeStatus !== 'error' && currentData.length > 0" -->
         <div
-          v-if="isMobile && geocodeStatus !== 'error' && currentData.length > 0"
+          v-if="isMobile && geocodeStatus !== 'error'"
           class="columns is-mobile"
         >
+        <!-- v-if="isMobile && geocodeStatus !== 'error' && currentData.length > 0" -->
           <div
-            v-if="isMobile && geocodeStatus !== 'error' && currentData.length > 0"
             class="mb-1 mobile-dropdown-container column is-6"
           >
             <dropdown
@@ -111,8 +113,8 @@
               :disabled="sortDisabled"
             />
           </div>
+          <!-- v-if="isMobile && geocodeStatus !== 'error' && currentData.length > 0" -->
           <div
-            v-if="isMobile && geocodeStatus !== 'error' && currentData.length > 0"
             class="mb-1 mobile-dropdown-container column is-6"
           >
             <dropdown
