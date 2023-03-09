@@ -83,8 +83,8 @@
                 :disabled="sortDisabled"
               />
             </div>
+            <!-- v-if="currentData.length > 0" -->
             <div
-              v-if="currentData.length > 0"
               class="column is-6-tablet is-5-desktop p-0"
             >
               <dropdown
