@@ -48,22 +48,22 @@
         <!-- class="open-close-icon" -->
       </div>
 
+      <!-- v-if="!i18nEnabled && (selected.length || anyValueEntered) && !isMobile" -->
       <button
-        v-if="!i18nEnabled && (selected.length || anyValueEntered)  && !isMobile"
+        v-if="!i18nEnabled && (selected.length || anyValueEntered)"
         class="clear-all"
         @click.prevent="clearAll"
       >
-      <!-- v-if="!i18nEnabled && isTablet && (selected.length || anyValueEntered) || !i18nEnabled && isDesktop && (selected.length || anyValueEntered) || !i18nEnabled && isWideScreen && (selected.length || anyValueEntered)" -->
         Clear all
       </button>
 
+      <!-- v-if="i18nEnabled && (selected.length || anyValueEntered) && !isMobile" -->
       <button
-        v-if="i18nEnabled && (selected.length || anyValueEntered) && !isMobile"
+        v-if="i18nEnabled && (selected.length || anyValueEntered)"
         class="clear-all"
         @click.prevent="clearAll"
         v-html="$t('refinePanel.clearAll')"
       />
-      <!-- v-if="i18nEnabled && isTablet && (selected.length || anyValueEntered) || i18nEnabled && isDesktop && (selected.length || anyValueEntered) || i18nEnabled && isWideScreen && (selected.length || anyValueEntered)" -->
 
       <div
         v-if="!isMobile"
@@ -149,7 +149,7 @@
     </div>
 
     <!-- Mobile Clear All Button -->
-    <div
+    <!-- <div
       v-if="isMobile && refineOpen"
     >
       <div
@@ -172,7 +172,7 @@
         >
         </button>
       </div>
-    </div>
+    </div> -->
 
     <!-- if using categoryField_value, categoryField_array, or multipleFields options -->
     <div
