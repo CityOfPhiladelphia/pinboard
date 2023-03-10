@@ -100,11 +100,11 @@
         <!-- v-if="isMobile && geocodeStatus !== 'error' && currentData.length > 0" -->
         <div
           v-if="isMobile && geocodeStatus !== 'error'"
-          class="columns is-mobile"
+          class="columns is-mobile mb-0"
         >
         <!-- v-if="isMobile && geocodeStatus !== 'error' && currentData.length > 0" -->
           <div
-            class="mb-1 mobile-dropdown-container column is-6"
+            class="mb-1 p-0 mobile-dropdown-container column is-6"
           >
             <dropdown
               v-model="sortBy"
@@ -115,7 +115,7 @@
           </div>
           <!-- v-if="isMobile && geocodeStatus !== 'error' && currentData.length > 0" -->
           <div
-            class="mb-1 mobile-dropdown-container column is-6"
+            class="mb-1 p-0 mobile-dropdown-container column is-6"
           >
             <dropdown
               v-model="searchDistance"
@@ -757,7 +757,7 @@ export default {
 <style lang="scss">
 
 .mobile-dropdown-container {
-  margin-left: -10px;
+  // margin-left: -10px;
   margin-right: -10px;
 }
 
