@@ -50,7 +50,7 @@
           v-if="!isMobile && geocodeStatus !== 'error' > 0"
           class="columns is-desktop mb-0"
         >
-          <div class="column is-6-desktop is-12-tablet mr-0 mb-0 pb-0 columns">
+          <div class="column is-6-desktop is-12-tablet mr-0 mb-0 pb-0 columns loc-panel-widget">
             <div class="field column is-6 pt-5">
               <input
                 class="is-checkradio location-checkbox"
@@ -71,7 +71,7 @@
             </div>
           </div>
 
-          <div class="column is-6-desktop is-12-tablet mr-0 mb-0 pb-0 columns">
+          <div class="column is-6-desktop is-12-tablet mr-0 mb-0 pb-0 columns loc-panel-widget">
             <!-- v-if="currentData.length > 0" -->
             <div
               class="column is-6-tablet is-7-desktop p-0"
@@ -804,6 +804,14 @@ export default {
 @media (min-width: 768px) and (max-width: 1023px) {
   .location-container {
     padding-top: 270px;
+  }
+
+  .loc-panel-widget {
+    padding-top: 0px !important;
+  }
+
+  .summary-container {
+    padding-top: .5rem;
   }
 }
 
