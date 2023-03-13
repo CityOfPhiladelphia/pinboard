@@ -16,34 +16,7 @@
       v-if="!shouldShowGreeting && dataStatus === 'success'"
       class="summary-and-location-container"
     >
-      <div
-        v-if="geocodeStatus === 'error'"
-        class="h3 no-results"
-      >
-        <p class="pb-4">The address that was searched is not a valid Philadelphia address.</p>
-        <button
-          class="button app-button is-vcentered"
-          @click="clearBadAddress"
-        >
-          Clear Address
-        </button>
-      </div>
-      <!-- <div
-        v-if="geocodeStatus !== 'error' && currentData.length === 0"
-        class="h3 no-results"
-      >
-        <p
-          v-if="!i18nEnabled"
-        >
-          We're sorry, there are no results for that search.
-          Adjust the filters you've selected and try again.
-        </p>
-        <p
-          v-if="i18nEnabled"
-          v-html="$t('app.noResults')"
-        />
-      </div> -->
-
+      
       <div class="summary-container">
         <!-- v-if="!isMobile && geocodeStatus !== 'error' && currentData.length > 0" -->
         <div
@@ -132,6 +105,34 @@
         >
           {{ summarySentenceStart }} <b><i>{{ summarySentenceEnd }}</i></b>
         </div>
+      </div>
+
+      <div
+        v-if="geocodeStatus === 'error'"
+        class="h3 no-results"
+      >
+        <p class="pb-4">The address that was searched is not a valid Philadelphia address.</p>
+        <button
+          class="button app-button is-vcentered"
+          @click="clearBadAddress"
+        >
+          Clear Address
+        </button>
+      </div>
+      <div
+        v-if="geocodeStatus !== 'error' && currentData.length === 0"
+        class="h3 no-results"
+      >
+        <p
+          v-if="!i18nEnabled"
+        >
+          We're sorry, there are no results for that search.
+          Adjust the filters you've selected and try again.
+        </p>
+        <p
+          v-if="i18nEnabled"
+          v-html="$t('app.noResults')"
+        />
       </div>
 
       <div
@@ -822,7 +823,10 @@ export default {
 }
 
 .no-results {
-  padding: 1rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  padding-bottom: 1rem;
+  padding-top: 12rem;
 }
 
 .section-title {
