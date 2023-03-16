@@ -5,7 +5,7 @@
       :class="{ 'open': locationOpen }"
     >
       <div
-        v-if="!isMobile"
+        v-if="allowPrint && !isMobile"
         class="field column expand-collapse-checkbox is-1 pt-4 pb-0"
       >
         <div class="checkbox-height-fixer">
@@ -24,10 +24,12 @@
         </div>
       </div>
       <div
-        class="column is-12-mobile is-11-tablet p-0"
+        class="column is-12-mobile p-0"
+        :class="allowPrint ? 'is-11-tablet': 'is-12-tablet pl-3'"
       >
         <div
           class="columns location-row is-mobile"
+          :class="allowPrint ? 'pl-0': 'pl-2'"
           tabindex="0"
           @click="expandLocation"
           @keypress.space.prevent
@@ -111,6 +113,13 @@ export default {
   },
   mixins: [ SharedFunctions ],
   computed: {
+    allowPrint() {
+      let value = false;
+      if (this.$config.allowPrint) {
+        value = true;
+      }
+      return value;
+    },
     locationClass() {
       let value;
       if (this.locationOpen && this.isMobile) {

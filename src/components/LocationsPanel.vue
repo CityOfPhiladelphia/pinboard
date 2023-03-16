@@ -23,7 +23,10 @@
           v-if="!isMobile && geocodeStatus !== 'error' > 0"
           class="columns is-desktop mb-0"
         >
-          <div class="column is-6-desktop is-12-tablet mr-0 mb-0 pb-0 columns loc-panel-widget">
+          <div
+            v-if="allowPrint"
+            class="column is-6-desktop is-12-tablet mr-0 mb-0 pb-0 columns loc-panel-widget"
+          >
             <div class="field column is-6 pt-5">
               <input
                 class="is-checkradio location-checkbox"
@@ -365,6 +368,13 @@ export default {
     this.$store.commit('setSearchDistance', value);
   },
   computed: {
+    allowPrint() {
+      let value = false;
+      if (this.$config.allowPrint) {
+        value = true;
+      }
+      return value;
+    },
     summarySentenceStart() {
       let sentence = 'Showing ' + this.currentData.length + ' resources';
       if (this.selectedKeywords.length || this.zipcodeEntered || this.addressEntered || this.selectedServices.length) {
@@ -781,7 +791,7 @@ export default {
   // padding-right: 1rem;
   padding-top: 1rem;
   // background-color: rgba(225, 225, 225, 1);
-  width: 48%;
+  // width: 48%;
   z-index:9;
   background:#fff
 }
@@ -800,11 +810,19 @@ export default {
   .location-container {
     padding-top: 150px;
   }
+
+  .summary-container {
+    width: 48.5%;
+  }
 }
 
 @media (min-width: 768px) and (max-width: 1023px) {
   .location-container {
     padding-top: 270px;
+  }
+
+  .summary-container {
+    width: 48%;
   }
 
   .loc-panel-widget {

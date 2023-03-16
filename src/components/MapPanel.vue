@@ -141,7 +141,7 @@
       />
 
       <MglGeojsonLayer
-        v-if="geojsonForZipcodeBoolean"
+        v-if="showBuffers && geojsonForZipcodeBoolean"
         key="'geojsonForZipcodeFill'"
         :source-id="'geojsonForZipcode'"
         :source="geojsonForZipcodeSource"
@@ -153,7 +153,7 @@
       />
 
       <MglGeojsonLayer
-        v-if="geojsonForZipcodeBoolean"
+        v-if="showBuffers && geojsonForZipcodeBoolean"
         key="'geojsonForZipcodeLine'"
         :source-id="'geojsonForZipcode'"
         :source="geojsonForZipcodeSource"
@@ -165,7 +165,7 @@
       />
 
       <MglGeojsonLayer
-        v-if="geojsonForZipcodeBufferBoolean"
+        v-if="showBuffers && geojsonForZipcodeBufferBoolean"
         key="'geojsonForZipcodeBufferFill'"
         :source-id="'geojsonForZipcodeBuffer'"
         :source="geojsonForZipcodeBufferSource"
@@ -177,7 +177,7 @@
       />
 
       <MglGeojsonLayer
-        v-if="geojsonForZipcodeBufferBoolean"
+        v-if="showBuffers && geojsonForZipcodeBufferBoolean"
         key="'geojsonForZipcodeBufferLine'"
         :source-id="'geojsonForZipcodeBuffer'"
         :source="geojsonForZipcodeBufferSource"
@@ -189,7 +189,7 @@
       />
 
       <MglGeojsonLayer
-        v-if="geojsonForBufferBoolean"
+        v-if="showBuffers && geojsonForBufferBoolean"
         key="'geojsonForBufferFill'"
         :source-id="'geojsonForBuffer'"
         :source="geojsonForBufferSource"
@@ -201,7 +201,7 @@
       />
 
       <MglGeojsonLayer
-        v-if="geojsonForBufferBoolean"
+        v-if="showBuffers && geojsonForBufferBoolean"
         key="'geojsonForBufferLine'"
         :source-id="'geojsonForBuffer'"
         :source="geojsonForBufferSource"
@@ -441,6 +441,13 @@ export default {
     return data;
   },
   computed: {
+    showBuffers() {
+      let value = false;
+      if (this.$config.showBuffers) {
+        value = true;
+      }
+      return value;
+    },
     zipcodeBufferShape() {
       return this.$store.state.zipcodeBufferShape;
     },
