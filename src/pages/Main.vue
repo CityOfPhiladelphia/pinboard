@@ -716,7 +716,7 @@ export default {
       }
     }
 
-    this.$store.commit('setSelectedServices', []);
+    // this.$store.commit('setSelectedServices', []);
   },
 
   methods: {

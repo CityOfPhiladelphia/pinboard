@@ -31,14 +31,15 @@
     <div
       class="loc-item open"
     >
-      <a
+      <button
         class="button"
+        @click="clickedBackToHome"
       >
-        <!-- @click="clickedBackToHome" -->
+        Back to home
         <!-- @click="clickedPrint" -->
-        <router-link to="/"><font-awesome-icon icon="arrow-left" /> Back to home</router-link>
+        <!-- <router-link to="/"><font-awesome-icon icon="arrow-left" /> Back to home</router-link> -->
         <!-- print -->
-      </a>
+      </button>
 
       <!-- <div
         class="columns location-row is-mobile"
@@ -314,9 +315,11 @@ export default {
   //   },
   // },
   methods: {
-    // clickedBackToHome() {
-    //   this.$store.commit('setSelectedServices', null);
-    // },
+    clickedBackToHome() {
+      console.log('clickedBackToHome is running');
+      history.back();
+      // this.$store.commit('setSelectedServices', null);
+    },
   //   openPrintView(e) {
   //     e.stopPropagation();
   //     console.log('openPrintView is running, e:', e, 'this.$props.item._featureId:', this.$props.item._featureId);
