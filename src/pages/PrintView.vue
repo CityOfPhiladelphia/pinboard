@@ -34,6 +34,7 @@
       <a
         class="button"
       >
+        <!-- @click="clickedBackToHome" -->
         <!-- @click="clickedPrint" -->
         <router-link to="/"><font-awesome-icon icon="arrow-left" /> Back to home</router-link>
         <!-- print -->
@@ -312,13 +313,16 @@ export default {
   //     // this.$store.commit('setMapZoom', 17);
   //   },
   // },
-  // methods: {
+  methods: {
+    // clickedBackToHome() {
+    //   this.$store.commit('setSelectedServices', null);
+    // },
   //   openPrintView(e) {
   //     e.stopPropagation();
   //     console.log('openPrintView is running, e:', e, 'this.$props.item._featureId:', this.$props.item._featureId);
   //     window.open();
   //   },
-  // },
+  },
 };
 </script>
 <style lang="scss">

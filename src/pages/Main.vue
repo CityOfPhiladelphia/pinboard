@@ -715,6 +715,8 @@ export default {
         width: "200px",
       }
     }
+
+    this.$store.commit('setSelectedServices', []);
   },
 
   methods: {

@@ -458,11 +458,13 @@ export default {
     top: -3px;
     padding-left: 14px;
     padding-right: 14px;
+    padding-top: 7px;
     font-size: 12px;
     border-style: solid;
     border-width: 1px;
     display: inline-block;
     color: white;
+    height: 24px;
   }
 
   &.open{

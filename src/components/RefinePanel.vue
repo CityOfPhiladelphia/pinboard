@@ -926,6 +926,7 @@ export default {
     },
     selectedListCompiled(nextSelected) {
       window.theRouter = this.$router;
+      console.log('selectedListCompiled is firing, nextSelected:', nextSelected);
       this.$store.commit('setSelectedServices', nextSelected);
       if (typeof nextSelected === 'string') {
         nextSelected = [nextSelected];
@@ -999,6 +1000,7 @@ export default {
     },
     manualSelectedListCompiled(nextSelected) {
       window.theRouter = this.$router;
+      console.log('manualSelectedListCompiled is firing, nextSelected:', nextSelected);
       this.$store.commit('setSelectedServices', nextSelected);
       if (typeof nextSelected === 'string') {
         nextSelected = [nextSelected];
