@@ -101,9 +101,151 @@
         </div>
         <component
           :is="'expandCollapseContent'"
+          v-if="$config.customComps && Object.keys($config.customComps).includes('expandCollapseContent')"
           :item="item"
         />
-          <!-- v-if="showComponent" -->
+        <div
+          v-if="!$config.customComps || !Object.keys($config.customComps).includes('expandCollapseContent')"
+          :class="isMobile ? 'main-content-mobile' : 'main-content'"
+        >
+          <div class="columns">
+            <div class="column is-6">
+              <div
+                v-if="item.street_address"
+                class="columns is-mobile"
+              >
+                <div class="column is-1">
+                  <font-awesome-icon icon="map-marker-alt" />
+                </div>
+                <div
+                  class="column is-11"
+                  v-html="parseAddress(item.street_address)"
+                >
+                  <!-- {{ parseAddress(item.street_address) }} -->
+                </div>
+              </div>
+            </div>
+
+            <div class="column is-6">
+
+              <div
+                v-if="item.phone_number"
+                class="columns is-mobile"
+              >
+                <div
+                  class="column is-1"
+                >
+                  <font-awesome-icon icon="phone" />
+                </div>
+                <div class="column is-11">
+                  {{ item.phone_number }}
+                </div>
+              </div>
+
+              <div
+                v-if="item.email"
+                class="columns is-mobile"
+              >
+                <div
+                  class="column is-1"
+                >
+                  <font-awesome-icon icon="envelope" />
+                </div>
+                <div class="column is-11">
+                  <a :href="`mailto:${item.email}`">{{ item.email }}</a>
+                </div>
+              </div>
+
+              <div
+                v-if="item.website"
+                class="columns is-mobile website-div"
+              >
+                <div
+                  class="column is-1"
+                >
+                  <font-awesome-icon icon="globe" />
+                </div>
+                <div class="column is-11">
+                  <a
+                    target="_blank"
+                    :href="makeValidUrl(item.website)"
+                  >
+                    {{ item.website }}
+                    <font-awesome-icon icon="external-link-alt" />
+                  </a>
+                </div>
+              </div>
+
+              <div
+                v-if="item.facebook_name"
+                class="columns is-mobile"
+              >
+                <div
+                  class="column is-1"
+                >
+                  <font-awesome-icon :icon="['fab', 'facebook']" />
+                </div>
+                <div class="column is-11">
+                  <a
+                    target="_blank"
+                    :href="item.facebook_name"
+                  >
+                    Facebook
+                  </a>
+                </div>
+              </div>
+
+              <div
+                v-if="item.twitter"
+                class="columns is-mobile"
+              >
+                <div
+                  class="column is-1"
+                >
+                  <font-awesome-icon :icon="['fab', 'twitter']" />
+                </div>
+                <div class="column is-11">
+                  <a
+                    target="_blank"
+                    :href="item.twitter"
+                  >
+                    Twitter
+                  </a>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <div
+            v-if="item.services_offered"
+          >
+            <h3>
+              Services offered
+            </h3>
+            <div class="columns is-multiline is-gapless">
+              <div
+                v-for="i in parseServiceList(item.services_offered)"
+                :key="i"
+                class="column is-half"
+              >
+                {{ i }}
+              </div>
+            </div>
+          </div>
+
+          <div
+            v-if="item.tags && item.tags.length"
+          >
+            <!-- <h3 class="title section-title is-4 pt-2"> -->
+            <h3>
+              Tags
+            </h3>
+            <div>
+              {{ parseTagsList(item.tags) }}
+            </div>
+          </div>
+        </div>
       </div>
 
     </div>
@@ -159,7 +301,12 @@ export default {
       console.log('PrintView items computed, data:', data);
       let filteredData;
       if (data) {
-        filteredData = data.features.filter(item => this.printCheckboxes.includes(item._featureId));
+        console.log('in PrintView.vue items computed, data:', data);
+        if (data.features) {
+          filteredData = data.features.filter(item => this.printCheckboxes.includes(item._featureId));
+        } else if (data.rows) {
+          filteredData = data.rows.filter(item => this.printCheckboxes.includes(item._featureId));
+        }
       }
       return filteredData;
     },
@@ -258,26 +405,26 @@ export default {
         return finalDB;
       }
     },
-    item() {
-      let value;
+    // item() {
+    //   let value;
 
-      // let appType = this.$config.app.type;
-      let appType = this.$appType;
-      console.log('in ResourceView.vue, item computed, appType:', appType);
-      // let test = this.$store.state.sources[appType].data;
-      let test = this.database;
-      console.log('computed item test:', test, 'this.resource:', this.resource);
-      // let value;
-      // if (this.$store.state.sources[appType].data) {
-      if (test) {
-        value = test.filter(features => {
-          // console.log('inside filter function, features:', features, 'this.resource:', this.resource);
-          return features._featureId == this.resource;
-        })[0];
-      }
-      console.log('computed item, value:', value);
-      return value;
-    },
+    //   // let appType = this.$config.app.type;
+    //   let appType = this.$appType;
+    //   console.log('in ResourceView.vue, item computed, appType:', appType);
+    //   // let test = this.$store.state.sources[appType].data;
+    //   let test = this.database;
+    //   console.log('computed item test:', test, 'this.resource:', this.resource);
+    //   // let value;
+    //   // if (this.$store.state.sources[appType].data) {
+    //   if (test) {
+    //     value = test.filter(features => {
+    //       // console.log('inside filter function, features:', features, 'this.resource:', this.resource);
+    //       return features._featureId == this.resource;
+    //     })[0];
+    //   }
+    //   console.log('computed item, value:', value);
+    //   return value;
+    // },
   },
   mounted() {
     let body = document.body;
@@ -288,9 +435,9 @@ export default {
       this.$controller.dataManager.fetchData();
     }
 
-    this.resource = this.$route.params.resource;
-    let selectedResources = [ this.resource ];
-    this.$store.commit('setSelectedResources', selectedResources);
+    // this.resource = this.$route.params.resource;
+    // let selectedResources = [ this.resource ];
+    // this.$store.commit('setSelectedResources', selectedResources);
 
     window.print();
   },
@@ -319,6 +466,31 @@ export default {
       console.log('clickedBackToHome is running');
       history.back();
       // this.$store.commit('setSelectedServices', null);
+    },
+    parseAddress(address) {
+      const formattedAddress = address.replace(/(Phila.+)/g, city => `<div>${city}</div>`).replace(/^\d+\s[A-z]+\s[A-z]+/g, lineOne => `<div>${lineOne}</div>`).replace(/,/, '');
+      return formattedAddress;
+    },
+    parseServiceList(list) {
+      const formattedService = list;
+      return formattedService;
+    },
+    parseTagsList(list) {
+      const formattedTags = list.slice().sort().join(", ");
+      return formattedTags;
+    },
+    makeValidUrl(url) {
+      let newUrl = window.decodeURIComponent(url);
+      newUrl = newUrl
+        .trim()
+        .replace(/\s/g, '');
+      if (/^(:\/\/)/.test(newUrl)) {
+        return `http${newUrl}`;
+      }
+      if (!/^(f|ht)tps?:\/\//i.test(newUrl)) {
+        return `http://${newUrl}`;
+      }
+      return newUrl;
     },
   //   openPrintView(e) {
   //     e.stopPropagation();
