@@ -13,7 +13,7 @@
       @handle-search-form-submit="handleSearchFormSubmit"
     />
 
-    <MglMap
+    <MaplibreGlMap
       :map-style.sync="this.$config.mbStyle"
       :bounds="boundsProp"
       :zoom="this.$store.state.map.zoom"
@@ -212,7 +212,7 @@
         :replace="true"
       />
 
-    </MglMap>
+    </MaplibreGlMap>
 
     <!-- <slot
       class="widget-slot"
@@ -234,7 +234,8 @@ import cyclomediaMixin from '@phila/vue-mapping/src/cyclomedia/map-panel-mixin.j
 import PhilaUiAddressInput from './PhilaUiAddressInput.vue';
 import MglFontAwesomeMarker from '@phila/vue-mapping/src/mapbox/UI/FontAwesomeMarker.vue';
 
-import MglMap from '@phila/vue-mapping/src/mapbox/map/GlMap.vue';
+// import MglMap from '@phila/vue-mapping/src/mapbox/map/GlMap.vue';
+import MaplibreGlMap from '@phila/vue-mapping/src/mapbox/map/MaplibreGlMap.vue';
 import MglMarker from '@phila/vue-mapping/src/mapbox/UI/Marker.vue';
 import MglCircleMarker from '@phila/vue-mapping/src/mapbox/UI/CircleMarker.vue';
 import MglNavigationControl from '@phila/vue-mapping/src/mapbox/UI/controls/NavigationControl';
@@ -248,7 +249,8 @@ import { point, polygon, convertArea, featureCollection } from '@turf/helpers';
 export default {
   name: "MapPanel",
   components: {
-    MglMap,
+    MaplibreGlMap,
+    // MglMap,
     MglMarker,
     MglCircleMarker,
     MglNavigationControl,
