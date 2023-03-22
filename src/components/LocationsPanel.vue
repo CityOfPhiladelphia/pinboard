@@ -857,4 +857,9 @@ export default {
   margin-bottom: .5rem !important;
 }
 
+.main-content {
+  padding-top: 1.5rem;
+  padding-bottom: 1.5rem;
+}
+
 </style>
