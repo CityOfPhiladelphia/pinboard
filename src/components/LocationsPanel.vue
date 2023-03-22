@@ -862,4 +862,8 @@ export default {
   padding-bottom: 1.5rem;
 }
 
+.app-button:focus {
+  color: white !important;
+}
+
 </style>
