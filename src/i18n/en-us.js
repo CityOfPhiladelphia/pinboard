@@ -44,4 +44,5 @@ export default {
   No: 'No',
   Unknown: 'Unknown',
   website: 'Website',
+  print: 'Print',
 };

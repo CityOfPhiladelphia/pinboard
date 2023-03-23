@@ -44,4 +44,5 @@ export default {
   No: 'Không',
   Unknown: 'Không có thông tin',
   website: 'Trang web',
+  print: 'Vietnamese Print',
 };

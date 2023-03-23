@@ -42,7 +42,15 @@
                 class="button app-button"
                 @click="clickedPrint"
               >
-                Print
+                <p
+                  v-if="!i18nEnabled"
+                >
+                  Print
+                </p>
+                <p
+                  v-if="i18nEnabled"
+                  v-html="$t('print')"
+                />
             </button>
             </div>
           </div>

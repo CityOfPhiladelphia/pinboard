@@ -44,4 +44,5 @@ export default {
   No: 'No',
   Unknown: 'Se desconoce',
   website: 'Sitio web',
+  print: 'Spanish Print',
 };

@@ -44,4 +44,5 @@ export default {
   No: 'Non',
   Unknown: 'Inconnu',
   website: 'Site web',
+  print: 'French Print',
 };

@@ -44,4 +44,5 @@ export default {
   No: 'Нет',
   Unknown: 'Неизвестный',
   website: 'Сайт',
+  print: 'Russian Print',
 };

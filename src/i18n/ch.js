@@ -44,4 +44,5 @@ export default {
   No: '否',
   Unknown: '未知',
   website: '网站',
+  print: 'Chinese Print',
 };
