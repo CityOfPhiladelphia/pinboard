@@ -19,7 +19,7 @@
     "@creativebulma/bulma-tooltip": "^1.2.0",
     "@fortawesome/free-brands-svg-icons": "^5.15.4",
     "@phila/phila-ui": "2.1.13",
-    "@phila/vue-datafetch": "2.2.10",
+    "@phila/vue-datafetch": "2.2.12",
     "@phila/vue-mapping": "3.1.11",
     "animate.css": "^4.1.1",
     "axios": "^0.19.0",
