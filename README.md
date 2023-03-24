@@ -29,6 +29,10 @@ Create pull request for changes and merge into `master` branch for travis-ci bui
 
 ## Release Notes
 
+### 1.1.46 - 3/24/2023
+
+* fixes bug with using maplibre
+
 ### 1.1.45 - 3/24/2023
 
 * uses @phila/vue-mapping with updated maplibre and @phila/vue-datafetch with updated geoserver

@@ -10,7 +10,7 @@
       @handle-search-form-submit="handleSearchFormSubmit"
     />
 
-    <MglMap
+    <MaplibreGlMap
       :map-style.sync="this.$config.mbStyle"
       :zoom="this.$store.state.map.zoom"
       :center="this.$store.state.map.center"
@@ -121,7 +121,7 @@
 
       <MglNavigationControl position="bottom-right"/>
 
-    </MglMap>
+    </MaplibreGlMap>
 
     <!-- <slot
       class="widget-slot"
@@ -143,7 +143,7 @@ import cyclomediaMixin from '@phila/vue-mapping/src/cyclomedia/map-panel-mixin.j
 import PhilaUiAddressInput from './PhilaUiAddressInput.vue';
 import MglFontAwesomeMarker from '@phila/vue-mapping/src/mapbox/UI/FontAwesomeMarker.vue';
 
-import MglMap from '@phila/vue-mapping/src/mapbox/map/GlMap.vue';
+// import MglMap from '@phila/vue-mapping/src/mapbox/map/GlMap.vue';
 import MglMarker from '@phila/vue-mapping/src/mapbox/UI/Marker.vue';
 import MglCircleMarker from '@phila/vue-mapping/src/mapbox/UI/CircleMarker.vue';
 import MglNavigationControl from '@phila/vue-mapping/src/mapbox/UI/controls/NavigationControl';
@@ -154,7 +154,7 @@ import OverlayLegend from '@phila/vue-mapping/src/mapbox/OverlayLegend';
 export default {
   name: "MapPanel",
   components: {
-    MglMap,
+    // MglMap,
     MglMarker,
     MglCircleMarker,
     MglNavigationControl,
@@ -163,7 +163,7 @@ export default {
     OverlayLegend,
     // CyclomediaRecordingsClient,
     PhilaUiAddressInput,
-    // MglMap: () => import(/* webpackChunkName: "pvm_MglMap" */'@phila/vue-mapping/src/mapbox/map/MaplibreGlMap.vue'),
+    MaplibreGlMap: () => import(/* webpackChunkName: "pvm_MglMap" */'@phila/vue-mapping/src/mapbox/map/MaplibreGlMap.vue'),
     // MglMap: () => import(/* webpackChunkName: "pvm_MglMap" */'@phila/vue-mapping/src/mapbox/map/GlMap.vue'),
     // MglMarker: () => import(/* webpackChunkName: "pvm_MglMarker" */'@phila/vue-mapping/src/mapbox/UI/Marker.vue'),
     // MglIcon: () => import(/* webpackChunkName: "mbmp_pvm_MglIcon" */'@phila/vue-mapping/src/mapbox/UI/Icon.vue'),
