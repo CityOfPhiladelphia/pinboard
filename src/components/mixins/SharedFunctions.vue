@@ -9,7 +9,7 @@ export default {
   },
   methods: {
     getSiteName(item) {
-      console.log('in getSiteName, item:', item, 'transforms:', transforms, 'this.$i18n.messages:', this.$i18n.messages, 'this.i18nLocale:', this.i18nLocale);
+      // console.log('in getSiteName, item:', item, 'transforms:', transforms, 'this.$i18n.messages:', this.$i18n.messages, 'this.i18nLocale:', this.i18nLocale);
       if (!item) {
         return;
       }

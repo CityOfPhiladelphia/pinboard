@@ -448,21 +448,31 @@ export default {
           // console.log('this.$i18n.messages[this.i18nLocale][this.selectedServices]:', this.$i18n.messages[this.i18nLocale]);
           sentence += this.$i18n.messages[this.i18nLocale][this.selectedServices];
         } else {
-          for (let service of this.selectedServices) {
-            let refineList = this.refineList;
-            for (let key of Object.keys(refineList)) {
-              for (let key2 of Object.keys(refineList[key])) {
-                if (key2 === 'radio' || key2 === 'checkbox') {
-                  for (let key3 of Object.keys(refineList[key][key2])) {
-                    if (refineList[key][key2][key3].unique_key == service) {
-                      sentence += this.$i18n.messages[this.i18nLocale][key][key3];//.toLowerCase();
+          if (Array.isArray(this.refineList)) {
+            for (let service of this.selectedServices) {
+              sentence += service;
+              if (this.selectedServices.indexOf(service) < this.selectedServices.length-1) {
+                sentence += ': ';
+              }
+            }
+          } else {
+            for (let service of this.selectedServices) {
+              console.log('in summarySentenceEnd, if else for service:', service);
+              let refineList = this.refineList;
+              for (let key of Object.keys(refineList)) {
+                for (let key2 of Object.keys(refineList[key])) {
+                  if (key2 === 'radio' || key2 === 'checkbox') {
+                    for (let key3 of Object.keys(refineList[key][key2])) {
+                      if (refineList[key][key2][key3].unique_key == service) {
+                        sentence += this.$i18n.messages[this.i18nLocale][key][key3];//.toLowerCase();
+                      }
                     }
                   }
                 }
               }
-            }
-            if (this.selectedServices.indexOf(service) < this.selectedServices.length-1) {
-              sentence += ': ';
+              if (this.selectedServices.indexOf(service) < this.selectedServices.length-1) {
+                sentence += ': ';
+              }
             }
           }
         }

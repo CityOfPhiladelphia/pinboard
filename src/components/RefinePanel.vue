@@ -613,7 +613,7 @@ export default {
         for (let refineObject of this.refineList) {
           let translatedObject = {}
           for (let category of Object.keys(refineObject)) {
-            console.log('in refineListTranslated, category:', category);
+            // console.log('in refineListTranslated, category:', category);
             if (category == 'textLabel') {
               translatedObject[category] = this.$t(refineObject[category]);
             } else {
