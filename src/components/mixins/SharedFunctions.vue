@@ -2,9 +2,14 @@
 import transforms from '../../util/transforms.js';
 
 export default {
+  computed: {
+    i18nLocale() {
+      return this.$i18n.locale;
+    },
+  },
   methods: {
     getSiteName(item) {
-      // console.log('in getSiteName, item:', item, 'transforms:', transforms);
+      console.log('in getSiteName, item:', item, 'transforms:', transforms, 'this.$i18n.messages:', this.$i18n.messages, 'this.i18nLocale:', this.i18nLocale);
       if (!item) {
         return;
       }
@@ -21,7 +26,7 @@ export default {
         if (currentQueryKeys.includes('address') || currentQueryKeys.includes('zipcode')) {
           // console.log('item:', item);
           if (item && item.distance) {
-            val = '(' + item.distance.toFixed(2) + ' miles) ' + getter(item, transforms);
+            val = '(' + item.distance.toFixed(2) + ' ' + this.$i18n.messages[this.i18nLocale]['miles'] + ') ' + getter(item, transforms);
           } else {
             // console.log('getSiteName else is running');
             // val = '(' + item.distance.toFixed(2) + ' miles) ' + getter(state);

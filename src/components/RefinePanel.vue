@@ -91,7 +91,7 @@
           class="box-value column is-narrow"
           @click="closeZipcodeBox(zipcodeEntered)"
         >
-          {{ $t(getBoxValue(zipcodeEntered)) + ' - 1 mile' }}
+          {{ $t(getBoxValue(zipcodeEntered)) + ' - 1 ' + $t('mile') }}
           <font-awesome-icon
             class="fa-x"
             :icon="[timesIconWeight,'times']"
@@ -526,9 +526,11 @@ export default {
       // }
       let word;
       if (value == 1) {
-        word = 'mile';
+        // word = 'mile';
+        word = this.$i18n.messages[this.i18nLocale]['mile'];
       } else {
-        word = 'miles';
+        // word = 'miles';
+        word = this.$i18n.messages[this.i18nLocale]['miles'];
       }
       return value + ' ' + word;
     },

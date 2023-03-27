@@ -35,7 +35,17 @@
                 name="locationsPanelCheckbox"
                 @click="clickedSelectAll"
               >
-              <label for="locationsPanelCheckbox">Select All</label>
+              <label for="locationsPanelCheckbox">
+                <span
+                  v-if="!i18nEnabled"
+                >
+                  Select All
+                </span>
+                <span
+                  v-if="i18nEnabled"
+                  v-html="$t('selectAll')"
+                />
+              </label>
             </div>
             <div class="column is-6 pt-3">
               <button
@@ -62,8 +72,8 @@
             >
               <dropdown
                 v-model="sortBy"
-                :options="dropdownOptions"
-                placeholder="Sort By"
+                :options="sortByOptions"
+                :placeholder="$t('sortBy')"
                 :disabled="sortDisabled"
               />
             </div>
@@ -74,7 +84,7 @@
               <dropdown
                 v-model="searchDistance"
                 :options="searchDistanceOptions"
-                placeholder="Distance"
+                :placeholder="$t('distance')"
                 :disabled="sortDisabled"
               />
             </div>
@@ -92,7 +102,7 @@
           >
             <dropdown
               v-model="sortBy"
-              :options="dropdownOptions"
+              :options="sortByOptions"
               placeholder="Sort By"
               :disabled="sortDisabled"
             />
@@ -348,8 +358,7 @@ export default {
       searchDistance: 3,
       searchDistanceOptions: [ '1', '2', '3', '4', '5' ],
       sortBy: 'Alphabetically',
-      dropdownOptions: [ "Alphabetically", "Distance" ],
-      // singleCheckboxOptions: [{ 'option-1': 'Option 1' }],
+      // sortByOptions: [ "Alphabetically", "Distance" ],
       printCheckboxes: [],
       selectAllCheckbox: false,
     };
@@ -368,14 +377,22 @@ export default {
     }
     let word;
     if (value == 1) {
-      word = 'mile';
+      // word = 'mile';
+      word = this.$i18n.messages[this.i18nLocale]['mile'];
     } else {
-      word = 'miles';
+      // word = 'miles';
+      word = this.$i18n.messages[this.i18nLocale]['miles']
     }
     this.searchDistance = value;// + ' ' + word;
     this.$store.commit('setSearchDistance', value);
   },
   computed: {
+    sortByOptions() {
+      let value = {};
+      value.Alphabetically = this.$i18n.messages[this.i18nLocale]['alphabetically'];
+      value.Distance = this.$i18n.messages[this.i18nLocale]['distance'];
+      return value;
+    },
     allowPrint() {
       let value = false;
       if (this.$config.allowPrint) {
@@ -384,9 +401,9 @@ export default {
       return value;
     },
     summarySentenceStart() {
-      let sentence = 'Showing ' + this.currentData.length + ' resources';
+      let sentence = this.$i18n.messages[this.i18nLocale]['showing'] + ' ' + this.currentData.length + ' ' + this.$i18n.messages[this.i18nLocale]['resources'];
       if (this.selectedKeywords.length || this.zipcodeEntered || this.addressEntered || this.selectedServices.length) {
-        sentence += ' for '; 
+        sentence += ' ' + this.$i18n.messages[this.i18nLocale]['for'] + ' '; 
       }
       return sentence;
     },
@@ -413,9 +430,11 @@ export default {
 
         let word;
         if (this.searchDistance == 1) {
-          word = ' mile';
+          // word = ' mile';
+          word = ' ' + this.$i18n.messages[this.i18nLocale]['mile'];
         } else {
-          word = ' miles';
+          // word = ' miles';
+          word = ' ' + this.$i18n.messages[this.i18nLocale]['miles'];
         }
         sentence += word;
         
@@ -473,21 +492,6 @@ export default {
       }
       return address;
     },
-    // searchDistance() {
-    //   let value;
-    //   if (this.$config.searchBar.searchDistance) {
-    //     value = this.$config.searchBar.searchDistance;
-    //   } else {
-    //     value = 1
-    //   }
-    //   let word;
-    //   if (value == 1) {
-    //     word = 'mile';
-    //   } else {
-    //     word = 'miles';
-    //   }
-    //   return value + ' ' + word;
-    // },
     sortDisabled() {
       let value;
       let geocodeStatus = this.geocodeStatus;

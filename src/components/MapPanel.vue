@@ -1292,7 +1292,7 @@ export default {
     onMapPreloaded(event) {
       let logo = document.getElementsByClassName('mapboxgl-ctrl-logo');
       console.log('MapPanel onMapPreloaded, logo:', logo, 'logo.length:', logo.length, 'logo.item(0):', logo.item(0));
-      logo[0].remove();
+      // logo[0].remove();
       let attrib = document.getElementsByClassName('mapboxgl-ctrl-attrib');
       attrib[0].remove();
     },
