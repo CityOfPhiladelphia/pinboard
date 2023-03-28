@@ -465,10 +465,11 @@ export default {
       if (index > -1) {
         sources.splice(index, 1);
 
-        let sourcesWatched = [];
+        // let sourcesWatched = [];
+        let sourcesWatched = {};
 
         for (let source of sources) {
-          sourcesWatched.push(this.$store.state.sources[source].data);
+          sourcesWatched[source] = this.$store.state.sources[source].data;
         }
         return sourcesWatched;
       } else {
@@ -568,7 +569,12 @@ export default {
     },
     sourcesWatched(nextSourcesWatched) {
       console.log('watch sourcesWatched, nextSourcesWatched:', nextSourcesWatched);
-      if (!nextSourcesWatched.includes(null)) {
+      let allSourceValues = [];
+      for (let value of Object.keys(nextSourcesWatched)) {
+        allSourceValues.push(nextSourcesWatched[value]);
+      }
+      // if (!nextSourcesWatched.includes(null)) {
+      if (!allSourceValues.includes(null)) {
         this.setUpData(nextSourcesWatched);
       }
     },
@@ -833,7 +839,7 @@ export default {
       this.$store.commit('setCurrentSearch', null);
     },
     setUpData(theSources) {
-      // console.log('Pinboard App.vue setUpData is running, theSources:', theSources);
+      console.log('Pinboard App.vue setUpData is running, theSources:', theSources);
       let compiled = {
         key: 'compiled',
         data: {
@@ -841,17 +847,18 @@ export default {
         },
         status: 'success',
       }
-      if (theSources.length > 1) {
-        console.log('theSources:', theSources);
-        for (let source of theSources) {
-          console.log('source:', source);
-          if (source.features) {
-            for (let point of source.features) {
+      let keys = Object.keys(theSources);
+      if (keys.length > 1) {
+        console.log('theSources:', theSources, 'this.$config.dataSources:', this.$config.dataSources);
+        for (let key of keys) {
+          console.log('source:', key);
+          if (theSources[key].features && this.$config.dataSources[key].compile) {
+            for (let point of theSources[key].features) {
               // console.log('point:', point);
               compiled.data.push(point);
             }
-          } else if (source.records) {
-            for (let point of source.records) {
+          } else if (theSources[key].records && this.$config.dataSources[key].compile) {
+            for (let point of theSources[key].records) {
               let featureId = point._featureId.split('-')[1];
               if (this.$config.app.categorizeCompiled) {
                 point.fields.category_type = featureId;
