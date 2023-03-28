@@ -358,7 +358,6 @@ export default {
       searchDistance: 3,
       searchDistanceOptions: [ '1', '2', '3', '4', '5' ],
       sortBy: 'Alphabetically',
-      // sortByOptions: [ "Alphabetically", "Distance" ],
       printCheckboxes: [],
       selectAllCheckbox: false,
     };
@@ -677,10 +676,6 @@ export default {
     zipcode(nextZipcode) {
       this.$store.commit('setShouldShowGreeting', false);
     },
-    // geocode(nextGeocode) {
-    //   // console.log('watch, nextGeocode:', nextGeocode);
-    //   this.$store.commit('setShouldShowGreeting', false);
-    // },
     geocodeStatus(nextGeocodeStatus) {
       this.$store.commit('setShouldShowGreeting', false);
       if (nextGeocodeStatus == null) {
