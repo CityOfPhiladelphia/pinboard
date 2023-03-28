@@ -418,6 +418,20 @@ export default {
       }
       if (this.zipcodeEntered) {
         sentence += this.zipcodeEntered;
+
+        sentence += ' - ';
+        sentence += this.searchDistance;
+
+        let word;
+        if (this.searchDistance == 1) {
+          // word = ' mile';
+          word = ' ' + this.$i18n.messages[this.i18nLocale]['mile'];
+        } else {
+          // word = ' miles';
+          word = ' ' + this.$i18n.messages[this.i18nLocale]['miles'];
+        }
+        sentence += word;
+
         if (this.selectedServices.length) {
           sentence += ': ';
         }

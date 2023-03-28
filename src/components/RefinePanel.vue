@@ -91,7 +91,8 @@
           class="box-value column is-narrow"
           @click="closeZipcodeBox(zipcodeEntered)"
         >
-          {{ $t(getBoxValue(zipcodeEntered)) + ' - 1 ' + $t('mile') }}
+          <!-- {{ $t(getBoxValue(zipcodeEntered)) + ' - 1 ' + $t('mile') }} -->
+          {{ $t(getBoxValue(zipcodeEntered)) + ' - ' + searchDistance }}
           <font-awesome-icon
             class="fa-x"
             :icon="[timesIconWeight,'times']"

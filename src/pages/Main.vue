@@ -527,7 +527,24 @@ export default {
     // },
     searchDistance(nextSearchDistance) {
       console.log('Main.vue watch searchDistance, nextSearchDistance:', nextSearchDistance);
-      this.runBuffer();
+      if (this.lastPinboardSearchMethod == 'geocode') {
+        this.runBuffer();
+      } else if (this.lastPinboardSearchMethod == 'zipcode') {
+        console.log('Main.vue watch searchDistance and lastPinboardSearchMethod is zipcode');
+        // let nextZipcodeData = this.$store.state.zipcodeBufferShape;
+        let nextZipcodeData = this.zipcodeData;
+        let geo = {
+          geometry: {
+            coordinates: nextZipcodeData.geometry.rings,
+            type: "Polygon"
+          },
+          type: "Feature",
+        };
+        // this.$data.buffer = geo;
+
+        // this.runZipcodeFindCenter(geo);
+        this.runZipcodeBuffer(geo);
+      }
     },
     zipcodeData(nextZipcodeData) {
       console.log('Main.vue watch zipcodeData, nextZipcodeData:', nextZipcodeData);
@@ -630,8 +647,10 @@ export default {
     body.classList.remove('print-view');
     body.classList.add('main-view');
 
+    console.log('in Main.vue mounted, this.$route.query:', this.$route.query);
+
     // this.$store.commit('setLastSearchMethod', 'zipcode');
-    console.log('in App.vue mounted 210818, this.$store.state:', this.$store.state, 'this.$config:', this.$config, 'window.location.href:', window.location.href);
+    console.log('in Main.vue mounted, this.$store.state:', this.$store.state, 'this.$config:', this.$config, 'window.location.href:', window.location.href);
     this.$config.searchBar.searchTypes.forEach(item => {
       if (this.$route.query[item]) {
         // console.log('App.vue mounted item:', item, 'this.searchBarType:', this.searchBarType);
@@ -639,6 +658,12 @@ export default {
         this.searchString = this.$route.query[item];
       }
     });
+
+    if (this.$route.query.address) {
+      this.$store.commit('setLastPinboardSearchMethod', 'geocode');
+    } else if (this.$route.query.zipcode) {
+      this.$store.commit('setLastPinboardSearchMethod', 'zipcode');
+    }
 
     if (this.$route.query.resource) {
       console.log('App.vue mounted, this.$route.query.resource:', this.$route.query.resource);
@@ -794,10 +819,12 @@ export default {
         }
       } else if (checkVals) {
         console.log('its a zipcode');
-        this.$store.commit('setLastPinboardSearchMethod', 'zipcode');
-        query = { 'zipcode': val };
-        this.searchBarType = 'zipcode';
-        searchBarType = 'zipcode';
+        if (this.$config.allowZipcodeSearch) {
+          this.$store.commit('setLastPinboardSearchMethod', 'zipcode');
+          query = { 'zipcode': val };
+          this.searchBarType = 'zipcode';
+          searchBarType = 'zipcode';
+        }
       } else {
         console.log('its an address');
         query = { ...startQuery, ...{ 'address': val }};
@@ -891,7 +918,8 @@ export default {
     },
     runZipcodeBuffer(geo) {
       console.log('Main.vue runZipcodeBuffer is running, geo:', geo);
-      let searchDistance = 1;
+      // let searchDistance = 1;
+      let searchDistance = this.searchDistance;
       const polygonBuffer = buffer(geo, searchDistance, { units: 'miles' });
       this.$data.buffer = polygonBuffer;
       this.$store.commit('setZipcodeBufferShape', polygonBuffer);
