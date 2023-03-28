@@ -203,14 +203,9 @@ export default {
     },
   },
   watch: {
-    checked(nextChecked) {
-      console.log('ExpandCollapse watch checked is running, nextChecked:', nextChecked);
-      // if (nextChecked) {
-
-      // } else {
-      //   document.querySelector('')
-      // }
-    },
+    // checked(nextChecked) {
+    //   console.log('ExpandCollapse watch checked is running, nextChecked:', nextChecked);
+    // },
     selectedResources(nextSelectedResources) {
       // console.log('watch selectedResources is running');
       if (this.locationOpen || nextSelectedResources.includes(this.$props.item._featureId)) {
@@ -265,9 +260,7 @@ export default {
   methods: {
     clickCheckBox(e) {
       console.log('clickCheckBox is running, e:', e, 'this.item._featureId:', this.item._featureId);
-      // e.stopPropagation();
       this.$emit('print-box-checked', this.item._featureId);
-
     },
     openPrintView(e) {
       e.stopPropagation();
@@ -277,7 +270,6 @@ export default {
     openLocation() {
       this.locationOpen = true;
       const el = document.getElementsByClassName(this.item._featureId)[0];
-      // const el = this.$el;
       console.log('ExpandCollapse openLocation is running, el:', el);
       let visible = this.isElementInViewport(el);
       console.log('ExpandCollapse visible 1:', visible)
@@ -301,7 +293,6 @@ export default {
         bottom: rect.bottom <= (window.innerHeight || document.documentElement.clientHeight),
         right: rect.right <= (window.innerWidth || document.documentElement.clientWidth),
       };
-
       // console.log('visibility', visibility);
 
       // return if all sides are visible
@@ -309,10 +300,9 @@ export default {
     },
     expandLocation() {
       let siteName = this.getSiteName(this.$props.item);
-      console.log('ExpandCollapse expandLocation is starting, siteName:', siteName);
+      // console.log('ExpandCollapse expandLocation is starting, siteName:', siteName);
       this.locationOpen = !this.locationOpen;
       const selectedResource = this.$props.item._featureId;
-      // const selectedResources = [ ...this.selectedResources ];
       const selectedResources = [];
       let latestSelectedResourceFromExpand = null;
       if (this.locationOpen) {
@@ -325,7 +315,6 @@ export default {
       } else {
         selectedResources.splice(selectedResources.indexOf(selectedResource), 1);
       }
-      // this.locationOpen ? selectedResources.push(selectedResource) : selectedResources.splice(selectedResources.indexOf(selectedResource), 1);
       // console.log('ExpandCollapse expandLocation after selectedResources is defined');
 
       this.$store.commit('setSelectedResources', selectedResources);
@@ -580,7 +569,5 @@ export default {
     }
   }
 } 
-
-
 
 </style>

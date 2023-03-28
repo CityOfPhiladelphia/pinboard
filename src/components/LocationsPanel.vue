@@ -18,7 +18,6 @@
     >
       
       <div class="summary-container">
-        <!-- v-if="!isMobile && geocodeStatus !== 'error' && currentData.length > 0" -->
         <div
           v-if="!isMobile && geocodeStatus !== 'error' > 0"
           class="columns is-desktop mb-0"
@@ -66,7 +65,6 @@
           </div>
 
           <div class="column is-6-desktop is-12-tablet mr-0 mb-0 pb-0 columns loc-panel-widget">
-            <!-- v-if="currentData.length > 0" -->
             <div
               class="column is-6-tablet is-7-desktop p-0"
             >
@@ -77,7 +75,6 @@
                 :disabled="sortDisabled"
               />
             </div>
-            <!-- v-if="currentData.length > 0" -->
             <div
               class="column is-6-tablet is-5-desktop p-0"
             >
@@ -91,12 +88,10 @@
           </div>
         </div>
 
-        <!-- v-if="isMobile && geocodeStatus !== 'error' && currentData.length > 0" -->
         <div
           v-if="isMobile && geocodeStatus !== 'error'"
           class="columns is-mobile mb-0"
         >
-        <!-- v-if="isMobile && geocodeStatus !== 'error' && currentData.length > 0" -->
           <div
             class="mb-1 p-0 mobile-dropdown-container column is-6"
           >
@@ -107,7 +102,6 @@
               :disabled="sortDisabled"
             />
           </div>
-          <!-- v-if="isMobile && geocodeStatus !== 'error' && currentData.length > 0" -->
           <div
             class="mb-1 p-0 mobile-dropdown-container column is-6"
           >
@@ -196,7 +190,6 @@
                       class="column is-11"
                       v-html="parseAddress(item.street_address)"
                     >
-                      <!-- {{ parseAddress(item.street_address) }} -->
                     </div>
                   </div>
                 </div>
@@ -312,7 +305,6 @@
               <div
                 v-if="item.tags && item.tags.length"
               >
-                <!-- <h3 class="title section-title is-4 pt-2"> -->
                 <h3>
                   Tags
                 </h3>
@@ -374,15 +366,13 @@ export default {
     } else {
       value = 1
     }
-    let word;
-    if (value == 1) {
-      // word = 'mile';
-      word = this.$i18n.messages[this.i18nLocale]['mile'];
-    } else {
-      // word = 'miles';
-      word = this.$i18n.messages[this.i18nLocale]['miles']
-    }
-    this.searchDistance = value;// + ' ' + word;
+    // let word;
+    // if (value == 1) {
+    //   word = this.$i18n.messages[this.i18nLocale]['mile'];
+    // } else {
+    //   word = this.$i18n.messages[this.i18nLocale]['miles']
+    // }
+    this.searchDistance = value;;
     this.$store.commit('setSearchDistance', value);
   },
   computed: {
@@ -424,10 +414,8 @@ export default {
 
         let word;
         if (this.searchDistance == 1) {
-          // word = ' mile';
           word = ' ' + this.$i18n.messages[this.i18nLocale]['mile'];
         } else {
-          // word = ' miles';
           word = ' ' + this.$i18n.messages[this.i18nLocale]['miles'];
         }
         sentence += word;
@@ -443,10 +431,8 @@ export default {
 
         let word;
         if (this.searchDistance == 1) {
-          // word = ' mile';
           word = ' ' + this.$i18n.messages[this.i18nLocale]['mile'];
         } else {
-          // word = ' miles';
           word = ' ' + this.$i18n.messages[this.i18nLocale]['miles'];
         }
         sentence += word;
@@ -457,7 +443,6 @@ export default {
       }
       if (this.selectedServices.length) {
         if (typeof this.selectedServices == 'string') {
-          // sentence += this.selectedServices;
           // console.log('this.$i18n.messages[this.i18nLocale][this.selectedServices]:', this.$i18n.messages[this.i18nLocale]);
           sentence += this.$i18n.messages[this.i18nLocale][this.selectedServices];
         } else {
@@ -470,7 +455,7 @@ export default {
             }
           } else {
             for (let service of this.selectedServices) {
-              console.log('in summarySentenceEnd, if else for service:', service);
+              // console.log('in summarySentenceEnd, if else for service:', service);
               let refineList = this.refineList;
               for (let key of Object.keys(refineList)) {
                 for (let key2 of Object.keys(refineList[key])) {
@@ -661,29 +646,24 @@ export default {
   },
   watch: {
     searchDistance(nextSearchDistance) {
-      // this.$emit('change-search-distance');
       this.$store.commit('setSearchDistance', parseInt(nextSearchDistance));
     },
     selectAllCheckbox(nextSelectAllCheckbox) {
       console.log('watch selectAllCheckbox, nextSelectAllCheckbox:', nextSelectAllCheckbox);
       if (nextSelectAllCheckbox == false) {
-        // this.$nextTick(() => {
-          this.printCheckboxes = [];
-          let inputs = document.querySelectorAll('.location-checkbox');
-          // console.log('inputs:', inputs);
-          for (var i = 0; i < inputs.length; i++) {
-            inputs[i].checked = false;
-          }
-        // });
+        this.printCheckboxes = [];
+        let inputs = document.querySelectorAll('.location-checkbox');
+        // console.log('inputs:', inputs);
+        for (var i = 0; i < inputs.length; i++) {
+          inputs[i].checked = false;
+        }
       } else {
-        // this.$nextTick(() => {
-          this.printCheckboxes = this.currentDataList;
-          let inputs = document.querySelectorAll('.location-checkbox');
-          // console.log('inputs:', inputs);
-          for (var i = 0; i < inputs.length; i++) {
-            inputs[i].checked = true;
-          }
-        // });
+        this.printCheckboxes = this.currentDataList;
+        let inputs = document.querySelectorAll('.location-checkbox');
+        // console.log('inputs:', inputs);
+        for (var i = 0; i < inputs.length; i++) {
+          inputs[i].checked = true;
+        }
       }
       this.$store.commit('setPrintCheckboxes', this.printCheckboxes);
     },
@@ -699,7 +679,6 @@ export default {
       }
     },
     zipcodeCenter(nextZipcodeCenter) {
-      // console.log('watch');
       if (nextZipcodeCenter[0]) {
         this.$data.sortBy = 'Distance';
       } else {
@@ -731,13 +710,10 @@ export default {
         alert('There are no locations selected for printing');
         return;
       }
-      // this.$router.push({ name: 'user', params: { userId: '123' } });
       this.$router.push({ name: 'printView'  });
-      // window.open('./print-view/' + this.printCheckboxes[0], '_blank');
     },
     printBoxChecked(id) {
       console.log('LocationsPanel printBoxChecked, id:', id);
-      // e.stopPropagation();
       if (this.printCheckboxes.includes(id)) {
         this.printCheckboxes.splice(this.printCheckboxes.indexOf(id), 1);
         this.$store.commit('setPrintCheckboxes', this.printCheckboxes);

@@ -39,16 +39,13 @@
           v-if="refineOpen && retractable  || refineOpen && isMobile"
           :icon="[angleIconWeight, 'angle-up']"
         />
-        <!-- class="open-close-icon" -->
 
         <font-awesome-icon
           v-if="!refineOpen && retractable  || !refineOpen && isMobile"
           :icon="[angleIconWeight, 'angle-down']"
         />
-        <!-- class="open-close-icon" -->
       </div>
 
-      <!-- v-if="!i18nEnabled && (selected.length || anyValueEntered) && !isMobile" -->
       <button
         v-if="!i18nEnabled && (selected.length || anyValueEntered)"
         class="clear-all"
@@ -57,7 +54,6 @@
         Clear all
       </button>
 
-      <!-- v-if="i18nEnabled && (selected.length || anyValueEntered) && !isMobile" -->
       <button
         v-if="i18nEnabled && (selected.length || anyValueEntered)"
         class="clear-all"
@@ -71,9 +67,6 @@
         class="selected-boxes columns is-mobile"
         @click="clickBox"
       >
-      <!-- v-if="isTablet || isDesktop || isWideScreen" -->
-      <!-- v-if="refineType !== 'categoryField_value' && isTablet || refineType !== 'categoryField_value' && isDesktop || refineType !== 'categoryField_value' && isWideScreen" -->
-      <!-- v-if="refineType !== 'categoryField_value'" -->
         <button
           v-for="box in keywordsEntered"
           class="box-value column is-narrow"
@@ -91,7 +84,6 @@
           class="box-value column is-narrow"
           @click="closeZipcodeBox(zipcodeEntered)"
         >
-          <!-- {{ $t(getBoxValue(zipcodeEntered)) + ' - 1 ' + $t('mile') }} -->
           {{ $t(getBoxValue(zipcodeEntered)) + ' - ' + searchDistance }}
           <font-awesome-icon
             class="fa-x"
@@ -149,40 +141,12 @@
 
     </div>
 
-    <!-- Mobile Clear All Button -->
-    <!-- <div
-      v-if="isMobile && refineOpen"
-    >
-      <div
-        v-if="!i18nEnabled"
-      >
-        <button
-          class="clear-all"
-          @click.prevent="clearAll"
-        >
-          Clear all
-        </button>
-      </div>
-      <div
-        v-if="i18nEnabled"
-      >
-        <button
-          class="clear-all"
-          @click.prevent="clearAll"
-          v-html="$t('refinePanel.clearAll')"
-        >
-        </button>
-      </div>
-    </div> -->
-
-    <!-- if using categoryField_value, categoryField_array, or multipleFields options -->
     <div
       v-if="dataStatus === 'success' && ['categoryField_array', 'multipleFields'].includes(refineType)"
       v-show="!retractable && !isMobile || refineOpen"
       id="field-div"
       class="refine-holder"
     >
-    <!-- :options="getRefineSearchList()" -->
       <checkbox
         :options="refineListTranslated"
         :numOfColumns="NumRefineColumns"
@@ -190,9 +154,7 @@
         v-model="selected"
         text-key="textLabel"
         value-key="data"
-        >
-        <!-- ref="textLab" -->
-        <!-- @click="clickedCheckbox" -->
+      >
       </checkbox>
     </div>
 
@@ -257,7 +219,6 @@
             shrinkToFit="true"
             :num-of-columns="calculateColumns(refineList[ind]['checkbox'])"
           >
-            <!-- ref="ind" -->
             <div
               :class="isMobile ? 'large-label': 'small-label'"
               slot="label"
@@ -454,37 +415,13 @@
         </div>
       </div>
 
-      <!-- <div
-        class="column is-narrow small-side-padding"
-        v-if="!i18nEnabled"
-      >
-        <button
-          class="button is-primary medium-side-padding"
-          @click.prevent="clearAll"
-        >
-          Clear all
-        </button>
-      </div> -->
-
-      <!-- <div
-        class="column is-narrow small-side-padding"
-        v-if="i18nEnabled"
-      >
-        <button
-          class="button is-primary medium-side-padding"
-          @click.prevent="clearAll"
-          v-html="$t('refinePanel.clearAll')"
-        >
-        </button>
-      </div> -->
-
     </div>
 
   </div>
 </template>
 <script>
 
-import { library } from '@fortawesome/fontawesome-svg-core';
+// import { library } from '@fortawesome/fontawesome-svg-core';
 import { findIconDefinition } from '@fortawesome/fontawesome-svg-core';
 
 import Vue from 'vue';
@@ -520,17 +457,10 @@ export default {
   computed: {
     searchDistance() {
       let value = this.$store.state.searchDistance;
-      // if (this.$config.searchBar.searchDistance) {
-      //   value = this.$config.searchBar.searchDistance;
-      // } else {
-      //   value = 1
-      // }
       let word;
       if (value == 1) {
-        // word = 'mile';
         word = this.$i18n.messages[this.i18nLocale]['mile'];
       } else {
-        // word = 'miles';
         word = this.$i18n.messages[this.i18nLocale]['miles'];
       }
       return value + ' ' + word;
@@ -601,7 +531,6 @@ export default {
       let mainObject = {};
       let mainArray = [];
       if (this.refineType === 'categoryField_value') {
-        // mainArray = this.refineList;
         for (let category of this.refineList) {
           mainArray.push({
             value: category.data,
@@ -620,13 +549,9 @@ export default {
             } else {
               translatedObject[category] = refineObject[category];
             }
-            // translatedObject.value = refineObject[category];
           }
           console.log('in refineListTranslated, refineObject:', refineObject, 'translatedObject:', translatedObject);
           mainArray.push(translatedObject);
-            // text: this.$t(refineObject[category]),
-            // value: refineObject[category],
-          // });
           // console.log('refineListTranslated computed, category:', category, 'this.$t(category):', this.$t(category), 'mainArray:', mainArray);
         }
         return mainArray;
@@ -703,14 +628,6 @@ export default {
       let value;
       if (this.retractable) {
         value = 'retractable-refine-title';
-        // if (this.refineOpen) {
-        //   value = 'refine-title-open';
-        // // }
-        // } else {
-        //   value = 'retractable-refine-title';
-        // }
-      // } else {
-      //   value = 'refine-title';
       }
       return value;
     },
@@ -731,7 +648,6 @@ export default {
       } else if (this.$config.dropdownRefine) {
         console.log('dropdownRefine is used');
         value = 'refine-panel refine-dropdown-closed refine-panel-non-mobile-closed invisible-scrollbar';
-        // value = 'refine-panel refine-panel-non-mobile invisible-scrollbar';
       } else {
         value = 'refine-panel refine-panel-non-mobile invisible-scrollbar';
       }
@@ -775,7 +691,6 @@ export default {
       return address;
     },
     keywordsEntered() {
-      // return this.$store.state.selectedKeywords.toString();
       return this.$store.state.selectedKeywords;
     },
     dataStatus() {
@@ -797,9 +712,6 @@ export default {
     },
   },
   watch: {
-    // dataStatus(nextDataStatus) {
-    //   console.log('RefinePanel.vue watch dataStatus, nextDataStatus:', nextDataStatus);
-    // },
     submittedCheckboxValue(nextSubmittedCheckboxValue) {
       // console.log('RefinePanel watch submittedCheckboxValue, nextSubmittedCheckboxValue:', nextSubmittedCheckboxValue);
       if (nextSubmittedCheckboxValue == null) {
@@ -814,7 +726,6 @@ export default {
               let i18nValue = this.$i18n.messages[this.i18nLocale][key][key3];
               // console.log('in watch submittedCheckboxValue, key:', key, 'key2:', key2, 'key3:', key3, 'unique_key:', unique_key, 'i18nValue:', i18nValue);
               if (i18nValue.toLowerCase() === nextSubmittedCheckboxValue.toLowerCase()) {
-
 
                 this.selected.push(unique_key);
 
@@ -867,7 +778,6 @@ export default {
                 }
 
                 this.$data.selectedList = selected;
-
               }
             }
           }
@@ -875,12 +785,9 @@ export default {
       }
       this.$emit('watchedSubmittedCheckboxValue');
     },
-    keywordsEntered(nextKeywordsEntered) {
-      console.log('watch keywordsEntered, nextKeywordsEntered:', nextKeywordsEntered);
-      // if (nextKeywordsEntered) {
-      //   this.selected.push('keyword_' + nextKeywordsEntered);
-      // }
-    },
+    // keywordsEntered(nextKeywordsEntered) {
+    //   console.log('watch keywordsEntered, nextKeywordsEntered:', nextKeywordsEntered);
+    // },
     refineOpen(nextRefineOpen) {
       // console.log('RefinePanel.vue watch refineOpen is firing');
       this.$nextTick(() => {
@@ -888,7 +795,7 @@ export default {
       });
     },
     database(nextDatabase) {
-      console.log('watch database is calling getRefineSearchList, nextDatabase:', nextDatabase);
+      // console.log('watch database is calling getRefineSearchList, nextDatabase:', nextDatabase);
       this.getRefineSearchList();
     },
     selected(nextSelected, oldSelected) {
@@ -911,14 +818,7 @@ export default {
           });
         }
       }
-      console.log('watch selected is firing, nextSelected:', nextSelected, 'oldSelected:', oldSelected, 'newSelection:', newSelection);
-      // if (newSelection.length) {
-      //   this.$gtag.event('refine-checkbox-click', {
-      //     'event_category': this.$store.state.gtag.category,
-      //     'event_label': newSelection[0],
-      //   });
-      // }
-
+      // console.log('watch selected is firing, nextSelected:', nextSelected, 'oldSelected:', oldSelected, 'newSelection:', newSelection);
       this.$store.commit('setSelectedServices', nextSelected);
 
       if (this.refineType !== 'categoryField_value' && nextSelected.length) {
@@ -965,28 +865,13 @@ export default {
         this.expandRefine();
       }
     };
-    // let closeButton = document.querySelectorAll('.fa-times');
-    // console.log('closeButton:', closeButton);
-    // closeButton.addEventListener('keypress', activate2.bind(this));
-    // function activate2(e) {
-    //   console.log('activate2, e:', e, 'e.path[0]:', e.path[0]);
-    //   // if (e.type === 'keypress' && e.keyCode == 32 && e.srcElement.id == 'refine-top') {
-    //   //   this.expandRefine();
-    //   // }
-    // };
-    console.log('RefinePanel.vue mounted is calling getRefineSearchList');
+    // console.log('RefinePanel.vue mounted is calling getRefineSearchList');
     this.getRefineSearchList();
-    // console.log('this.$config.refine.type:', this.$config.refine.type);
-    // this.$nextTick(() => {
-    //   if (this.$config.refine.type == 'multipleFieldGroups') {
-    // this.clickFirstBoxes();
-    console.log('mounted still running');
-    //   }
-    // });
+    // console.log('mounted still running');
   },
   methods: {
     clickFirstBoxes() {
-      console.log('clickFirstBoxes is running');
+      // console.log('clickFirstBoxes is running');
       for (let value of Object.keys(this.$config.refine.multipleFieldGroups)) {
         // console.log('clickFirstBoxes is running, this.$config.refine.multipleFieldGroups[value]:', this.$config.refine.multipleFieldGroups[value]);
         if (Object.keys(this.$config.refine.multipleFieldGroups[value]).includes('checkbox')) {
@@ -994,10 +879,7 @@ export default {
           let firstValue = Object.keys(checkbox)[0];
           let unique_key = value+'_'+firstValue;
           let element = document.querySelector('[value='+unique_key+']');
-          console.log('clickFirstBoxes is running, element:', element, 'unique_key:', unique_key, 'value:', value, 'firstValue:', firstValue, 'this.$config.refine.multipleFieldGroups[value]:', this.$config.refine.multipleFieldGroups[value]);
-          // element.dispatchEvent(new Event('change'))
-          // element.checked = !element.checked;
-          // element.checked = !element.checked;
+          // console.log('clickFirstBoxes is running, element:', element, 'unique_key:', unique_key, 'value:', value, 'firstValue:', firstValue, 'this.$config.refine.multipleFieldGroups[value]:', this.$config.refine.multipleFieldGroups[value]);
         }
       }
     },
@@ -1014,9 +896,6 @@ export default {
       }
       this.$router.push({ query: { ...this.$route.query, ...{ services: nextSelected.join(',') }}});
     },
-    // clickedCheckbox() {
-    //   console.log('clickedCheckbox is running');
-    // },
     getCategoryFieldValue(section) {
       let sectionLower = section.toLowerCase().replaceAll(' ', '');
       let i18nCategories = Object.keys(this.$i18n.messages[this.i18nLocale].sections);
@@ -1046,10 +925,6 @@ export default {
       let value;
       if (this.isMobile || this.$config.refine.columns) {
         value = 1;
-      // if (this.$config.refine.columns && Object.keys(ind).length < 8) {
-      //   value = 1;
-      // } else if (this.$config.refine.columns) {
-      //   value = 2;
       } else {
         value = Object.keys(ind).length;
       }
@@ -1089,11 +964,9 @@ export default {
       console.log('closeZipcodeBox is running, box:', box, 'startQuery:', startQuery);
       delete startQuery['zipcode'];
       this.$router.push({ query: { ...startQuery }});
-      // this.$controller.resetGeocode();
       this.$store.commit('setSelectedZipcode', null);
       this.$store.commit('setZipcodeCenter', []);
       this.$store.commit('setCurrentSearch', null);
-      // this.$store.commit('setBufferShape', null);
     },
     closeAddressBox(box) {
       let startQuery = { ...this.$route.query };
@@ -1122,14 +995,12 @@ export default {
         console.log('in closeKeywordsBox in if 2, keywordsArray:', keywordsArray);
       }
       let newQuery = keywordsArray.toString();
-      console.log('in closeKeywordsBox, this.$route.query:', this.$route.query, 'startQuery:', startQuery, 'newQuery:', newQuery);
-      // console.log('in clearSearchTriggered2, this.$route.query:', this.$route.query, 'startQuery:', startQuery);
+      // console.log('in closeKeywordsBox, this.$route.query:', this.$route.query, 'startQuery:', startQuery, 'newQuery:', newQuery);
       if (newQuery.length) {
         this.$router.push({ query: { ...this.$route.query, ...{ keyword: newQuery }}});
       } else {
         this.$router.push({ query: { ...this.$route.query, ...{ keyword: [] } }});
       }
-      // this.$router.push({ query: { ...this.$route.query, ...{ keyword: keywordsArray }}});
       this.searchString = '';
       this.$store.commit('setSelectedKeywords', keywordsArray);
     },
@@ -1139,25 +1010,23 @@ export default {
         return;
       }
       let section = box.split('_')[0];
-      console.log('closeBox is running, section:', section, 'this.$data.selected:', this.$data.selected, 'this.$data.selected[section]:', this.$data.selected[section]);
+      // console.log('closeBox is running, section:', section, 'this.$data.selected:', this.$data.selected, 'this.$data.selected[section]:', this.$data.selected[section]);
       if (this.$data.selectedList[section]) {
-        console.log('it\'s there in selectedList');
+        // console.log('it\'s there in selectedList');
         let boxIndex = this.$data.selectedList[section].indexOf(box);
         this.$data.selectedList[section].splice(boxIndex, 1);
-        // this.$data.selected.splice(box, 1);
       } else if (this.$data.selectedList['radio_' + section]) {
-        // let boxIndex = this.$data.selectedList['radio_' + section].indexOf(box);
-        console.log('1 it\'s there in selectedList WITH radio, box:', box, 'this.$data.selectedList["radio_" + section]:', this.$data.selectedList['radio_' + section]);
+        // console.log('1 it\'s there in selectedList WITH radio, box:', box, 'this.$data.selectedList["radio_" + section]:', this.$data.selectedList['radio_' + section]);
         let test = 'radio_' + section;
         const { [test]: removedProperty, ...exceptBoth } = this.$data.selectedList;
         this.$data.selectedList = exceptBoth;
-        console.log('2 exceptBoth:', exceptBoth, 'it\'s there in selectedList WITH radio, box:', box, 'this.$data.selectedList["radio_" + section]:', this.$data.selectedList['radio_' + section]);
+        // console.log('2 exceptBoth:', exceptBoth, 'it\'s there in selectedList WITH radio, box:', box, 'this.$data.selectedList["radio_" + section]:', this.$data.selectedList['radio_' + section]);
       } else if (this.$data.selected.includes(section)) {
-        console.log('its in the array');
+        // console.log('its in the array');
         let boxIndex = this.$data.selected.indexOf(section);
         this.$data.selected.splice(boxIndex, 1);
       } else {
-        console.log('not there in selected list');
+        // console.log('not there in selected list');
       }
       // console.log('closeBox is running, box:', box, 'section:', section, 'boxIndex:', boxIndex);
     },
@@ -1172,7 +1041,6 @@ export default {
           } else {
             const { [checkbox]: removedProperty, ...exceptBoth } = this.$data.selectedList;
             this.$data.selectedList = exceptBoth;
-            // this.$data.selectedList[checkbox] = undefined;
           }
         }
       } else {
@@ -1292,8 +1160,6 @@ export default {
             }
           }
         }
-
-        
 
         // console.log('RefinePanel end of getRefineSearchList, uniq:', uniq, 'selected:', selected, 'this.selected:', this.selected);
         if (this.selected.length) {

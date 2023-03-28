@@ -145,7 +145,6 @@ import proj4 from 'proj4';
 import SharedFunctions from '../components/mixins/SharedFunctions.vue';
 
 import 'maplibre-gl/dist/maplibre-gl.css';
-// import 'mapbox-gl/dist/mapbox-gl.css';
 
 import Fuse from 'fuse.js'
 
@@ -160,7 +159,6 @@ import RefinePanel from '../components/RefinePanel.vue';
 import LocationsPanel from '../components/LocationsPanel.vue';
 import MapPanel from '../components/MapPanel.vue';
 import PhilaUiAddressInput from '../components/PhilaUiAddressInput.vue';
-// import ResourceView from '../components/ResourceView';
 
 import {
   AppHeader,
@@ -189,7 +187,6 @@ export default {
     LocationsPanel,
     MapPanel,
     PhilaUiAddressInput,
-    // ResourceView,
     CyclomediaWidget: () => import(/* webpackChunkName: "mbmb_pvm_CyclomediaWidget" */'@phila/vue-mapping/src/cyclomedia/Widget.vue'),
   },
   mixins: [
@@ -215,9 +212,6 @@ export default {
       refineEnabled: true,
       searchBarType: 'address',
       addressInputPlaceholder: null,
-      // zipcodeCenter: [],
-      // inputValidation: true,
-      // footerLinks: [],
       submittedCheckboxValue: null,
     };
   },
@@ -272,10 +266,6 @@ export default {
     shouldShowGreeting() {
       return this.$store.state.shouldShowGreeting;
     },
-    // locationsAndMapsPanelClass() {
-    //   let value = 'invisible-scrollbar';
-    //   return value;
-    // },
     locationsPanelClass() {
       let value;
       if (this.isMobile) {
@@ -522,16 +512,12 @@ export default {
     },
   },
   watch: {
-    // buffer(nextBuffer) {
-    //   console.log('watch buffer, nextBuffer:', nextBuffer);
-    // },
     searchDistance(nextSearchDistance) {
       console.log('Main.vue watch searchDistance, nextSearchDistance:', nextSearchDistance);
       if (this.lastPinboardSearchMethod == 'geocode') {
         this.runBuffer();
       } else if (this.lastPinboardSearchMethod == 'zipcode') {
         console.log('Main.vue watch searchDistance and lastPinboardSearchMethod is zipcode');
-        // let nextZipcodeData = this.$store.state.zipcodeBufferShape;
         let nextZipcodeData = this.zipcodeData;
         let geo = {
           geometry: {
@@ -540,9 +526,6 @@ export default {
           },
           type: "Feature",
         };
-        // this.$data.buffer = geo;
-
-        // this.runZipcodeFindCenter(geo);
         this.runZipcodeBuffer(geo);
       }
     },
@@ -557,8 +540,6 @@ export default {
           },
           type: "Feature",
         };
-        // this.$data.buffer = geo;
-
         this.runZipcodeFindCenter(geo);
         this.runZipcodeBuffer(geo);
       } else {
@@ -590,7 +571,6 @@ export default {
       for (let value of Object.keys(nextSourcesWatched)) {
         allSourceValues.push(nextSourcesWatched[value]);
       }
-      // if (!nextSourcesWatched.includes(null)) {
       if (!allSourceValues.includes(null)) {
         this.setUpData(nextSourcesWatched);
       }
@@ -609,10 +589,6 @@ export default {
       console.log('watch buffer is calling filterPoints');
       this.filterPoints();
     },
-    // zipcodeCenter() {
-    //   console.log('watch zipcodeCenter is calling filterPoints');
-    //   this.filterPoints();
-    // },
     selectedServices() {
       if (this.$store.state.sources[this.$appType].data) {
         this.filterPoints();
@@ -746,8 +722,6 @@ export default {
         width: "200px",
       }
     }
-
-    // this.$store.commit('setSelectedServices', []);
   },
 
   methods: {
@@ -761,9 +735,6 @@ export default {
       delete startQuery['address'];
       this.$router.push({ query: startQuery });
       this.searchString = '';
-      // this.$store.commit('setSelectedKeywords', []);
-      // this.$store.commit('setSelectedZipcode', null);
-      // this.$store.commit('setBufferShape', null);
       this.$controller.resetGeocode();
       this.$store.commit('setCurrentSearch', null);
     },
@@ -811,7 +782,6 @@ export default {
           if (startQuery['keyword'] && startQuery['keyword'] != '') {
             startKeyword = startQuery['keyword'];
             val = startKeyword + ',' + val;
-            // query = { 'keyword': startKeyword + ',' + val };
           }
           query = { ...startQuery, ...{ 'keyword': val }};
           this.searchBarType = 'keyword';
@@ -832,7 +802,6 @@ export default {
         this.searchBarType = 'address';
         searchBarType = 'address';
       }
-      // let startQuery = { ...this.$route.query };
       delete startQuery['address'];
       delete startQuery['keyword'];
       delete startQuery['zipcode'];
@@ -855,7 +824,6 @@ export default {
       delete startQuery['address'];
       delete startQuery['zipcode'];
       delete startQuery['keyword'];
-      // delete startQuery[this.searchBarType];
       // console.log('in clearSearchTriggered2, this.$route.query:', this.$route.query, 'startQuery:', startQuery);
       this.$router.push({ query: startQuery });
       this.searchString = '';
@@ -902,13 +870,8 @@ export default {
       // console.log('end of setUpData, this.$store.state.sources:', this.$store.state.sources);
     },
     runBuffer() {
-      // let searchDistance = 1;
-      // if (this.$config.searchBar.searchDistance) {
-      //   searchDistance = this.$config.searchBar.searchDistance;
-      // }
       let searchDistance = this.searchDistance;
       console.log('runBuffer is running, searchDistance:', searchDistance, 'this.geocodeGeom:', this.geocodeGeom);
-
       if (this.geocodeGeom) {
         const geocodePoint = point(this.geocodeGeom.coordinates);
         const pointBuffer = buffer(geocodePoint, searchDistance, { units: 'miles' });
@@ -918,7 +881,6 @@ export default {
     },
     runZipcodeBuffer(geo) {
       console.log('Main.vue runZipcodeBuffer is running, geo:', geo);
-      // let searchDistance = 1;
       let searchDistance = this.searchDistance;
       const polygonBuffer = buffer(geo, searchDistance, { units: 'miles' });
       this.$data.buffer = polygonBuffer;
@@ -927,7 +889,6 @@ export default {
     runZipcodeFindCenter(geo) {
       let zipcodeCenter = centerOfMass(geo);
       console.log('Main.vue runZipcodeFindCenter is running, geo:', geo, 'zipcodeCenter:', zipcodeCenter);
-      // this.$data.zipcodeCenter = zipcodeCenter;
       this.$store.commit('setZipcodeCenter', zipcodeCenter.geometry.coordinates);
     },
     filterPoints() {

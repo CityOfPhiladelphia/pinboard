@@ -227,14 +227,12 @@ import proj4 from 'proj4';
 import SharedFunctions from './mixins/SharedFunctions.vue';
 
 // import all fontawesome icons included in phila-vue-mapping
-import * as faMapping from '@phila/vue-mapping/src/fa';
+// import * as faMapping from '@phila/vue-mapping/src/fa';
 
-import cyclomediaMixin from '@phila/vue-mapping/src/cyclomedia/map-panel-mixin.js';
-// import CyclomediaRecordingsClient from '@phila/vue-mapping/src/cyclomedia/recordings-client.js';
+// import cyclomediaMixin from '@phila/vue-mapping/src/cyclomedia/map-panel-mixin.js';
 import PhilaUiAddressInput from './PhilaUiAddressInput.vue';
 import MglFontAwesomeMarker from '@phila/vue-mapping/src/mapbox/UI/FontAwesomeMarker.vue';
 
-// import MglMap from '@phila/vue-mapping/src/mapbox/map/GlMap.vue';
 import MaplibreGlMap from '@phila/vue-mapping/src/mapbox/map/MaplibreGlMap.vue';
 import MglMarker from '@phila/vue-mapping/src/mapbox/UI/Marker.vue';
 import MglCircleMarker from '@phila/vue-mapping/src/mapbox/UI/CircleMarker.vue';
@@ -250,39 +248,17 @@ export default {
   name: "MapPanel",
   components: {
     MaplibreGlMap,
-    // MglMap,
     MglMarker,
     MglCircleMarker,
     MglNavigationControl,
     MglRasterLayer,
     MglPopup,
     OverlayLegend,
-    // CyclomediaRecordingsClient,
     PhilaUiAddressInput,
-    // MglMap: () => import(/* webpackChunkName: "pvm_MglMap" */'@phila/vue-mapping/src/mapbox/map/MaplibreGlMap.vue'),
-    // MglMap: () => import(/* webpackChunkName: "pvm_MglMap" */'@phila/vue-mapping/src/mapbox/map/GlMap.vue'),
-    // MglMarker: () => import(/* webpackChunkName: "pvm_MglMarker" */'@phila/vue-mapping/src/mapbox/UI/Marker.vue'),
-    // MglIcon: () => import(/* webpackChunkName: "mbmp_pvm_MglIcon" */'@phila/vue-mapping/src/mapbox/UI/Icon.vue'),
-    // MglCircleMarker: () => import(/* webpackChunkName: "pvm_MglCircleMarker" */'@phila/vue-mapping/src/mapbox/UI/CircleMarker.vue'),
-    // MglNavigationControl: () => import(/* webpackChunkName: "pvm_MglNavigationControl" */'@phila/vue-mapping/src/mapbox/UI/controls/NavigationControl'),
-    // MglGeolocateControl: () => import(/* webpackChunkName: "pvm_MglGeolocateControl" */'@phila/vue-mapping/src/mapbox/UI/controls/GeolocateControl'),
-    // MglRasterLayer: () => import(/* webpackChunkName: "pvm_MglRasterLayer" */'@phila/vue-mapping/src/mapbox/layer/RasterLayer.vue'),
-    // MglButtonControl: () => import(/* webpackChunkName: "pvm_MglButtonControl" */'@phila/vue-mapping/src/mapbox/UI/controls/ButtonControl.vue'),
-    // MglControlContainer: () => import(/* webpackChunkName: "pvm_MglControlContainer" */'@phila/vue-mapping/src/mapbox/UI/controls/ControlContainer.vue'),
-    // MglImageLayer: () => import(/* webpackChunkName: "pvm_MglImageLayer" */'@phila/vue-mapping/src/mapbox/layer/ImageLayer'),
-    // MglVectorLayer: () => import(/* webpackChunkName: "pvm_MglVectorLayer" */'@phila/vue-mapping/src/mapbox/layer/VectorLayer'),
-    // MbIcon: () => import(/* webpackChunkName: "pvm_MbIcon" */'@phila/vue-mapping/src/mapbox/UI/MbIcon'),
     MglGeojsonLayer: () => import(/* webpackChunkName: "pvm_MglGeojsonLayer" */'@phila/vue-mapping/src/mapbox/layer/GeojsonLayer'),
-    // MglPopup: () => import(/* webpackChunkName: "pvm_MglPopup" */'@phila/vue-mapping/src/mapbox/UI/Popup'),
-    // MglFontAwesomeMarker: () => import(/* webpackChunkName: "pvm_MglFontAwesomeMarker" */'@phila/vue-mapping/src/mapbox/UI/FontAwesomeMarker.vue'),
     MglFontAwesomeMarker,
-    // OverlayLegend: () => import(/* webpackChunkName: "pvm_OverlayLegend" */'@phila/vue-mapping/src/mapbox/OverlayLegend'),
   },
   props: {
-    // inputValidation: {
-    //   type: Boolean,
-    //   default: true,
-    // },
     view: {
       type: String,
       default: 'app',
@@ -290,7 +266,6 @@ export default {
   },
   mixins: [
     SharedFunctions,
-    cyclomediaMixin,
   ],
   data() {
     const data = {
@@ -348,7 +323,6 @@ export default {
         'source': 'geojsonForZipcodeBuffer',
         'layout': {},
         'paint': {
-          // 'fill-color': 'rgb(0,102,255)',
           'fill-color': '#9e9ac8',
           'fill-opacity': 0.2,
           'fill-outline-color': 'rgb(0,102,255)',
@@ -382,7 +356,6 @@ export default {
         'source': 'geojsonForBuffer',
         'layout': {},
         'paint': {
-          // 'fill-color': 'rgb(0,102,255)',
           'fill-color': '#9e9ac8',
           'fill-opacity': 0.2,
           'fill-outline-color': 'rgb(0,102,255)',
@@ -416,7 +389,6 @@ export default {
         'source': 'geojsonForResource',
         'layout': {},
         'paint': {
-          // 'fill-color': 'rgb(0,102,255)',
           'fill-color': '#9e9ac8',
           'fill-opacity': 0.4,
           'fill-outline-color': 'rgb(0,102,255)',
@@ -457,7 +429,6 @@ export default {
       return this.$store.state.bufferShape;
     },
     zipcodeData() {
-      // return this.$store.state.sources.zipcodes.data;
       let zipcode;
       if (this.$store.state.sources.zipcodes) {
         let zipcodesData = this.$store.state.sources.zipcodes.data;
@@ -485,7 +456,6 @@ export default {
           finalBounds = [[ bounds._southWest.lng, bounds._southWest.lat ], [ bounds._northEast.lng, bounds._northEast.lat ]];
         } else if (bounds._northEast && bounds._northEast.lat == null) {
           // console.log('in boundsProp else then else if 1');
-          // finalBounds = [[ -75.0936906502695, 39.999379013777684 ], [ -75.23325134973207, 39.9072659724458 ]];
         } else {
           // console.log('in boundsProp else then else');
           finalBounds = bounds;
@@ -500,8 +470,7 @@ export default {
       let result = [];
       if (this.$config && this.$config.geojsonForResource) {
         let geojsonData = this.$store.state.sources[this.$config.geojsonForResource.source].data;
-        console.log('in geojsonForResource computed, geojsonData:', geojsonData, 'selectedCurrentMapData:', selectedCurrentMapData);
-        // if (geojsonData && geojsonData.features && selectedCurrentMapData[0] && selectedCurrentMapData[0].attributes && selectedCurrentMapData[0].attributes.polygon) {
+        // console.log('in geojsonForResource computed, geojsonData:', geojsonData, 'selectedCurrentMapData:', selectedCurrentMapData);
         if (geojsonData && geojsonData.features && selectedCurrentMapData[0]) {
           let geojsonForResource = geojsonData.features.filter(test2 => test2.attributes.globalid == selectedCurrentMapData[0].attributes.globalid);
           coordinates = geojsonForResource[0].geometry.rings[0];
@@ -511,7 +480,6 @@ export default {
             'color':"#9e9ac8",
             'fillColor':"#9e9ac8",
             'fillOpacity':0.3,
-            // 'key':1384,
             'opacity':1,
             'weight':2,
             'geojson': {
@@ -523,11 +491,6 @@ export default {
                 "coordinates": [ coordinates ],
               },
               "properties": {
-                // "OBJECTID": 1384,
-                // "SHORT_DIV_NUM": "04",
-                // "DIVISION_NUM": "0104",
-                // "Shape__Area": 127880.61328125,
-                // "Shape__Length": 1431.11897239414
               }
             }
           }];
@@ -602,10 +565,9 @@ export default {
       return "+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +wktext  +no_defs";
     },
     currentMapData() {
-      console.log('MapPanel.vue currentMapData computed is starting recalculating, this.$config:', this.$config);//, this.currentData:', this.currentData);
+      // console.log('MapPanel.vue currentMapData computed is starting recalculating, this.$config:', this.$config);//, this.currentData:', this.currentData);
       const newRows = [];
       for (const row of [ ...this.currentData ]) {
-      // for (const row of this.database) {
         // console.log('MapPanel in loop, row:', row);
 
         let color, // all markers
@@ -623,14 +585,11 @@ export default {
         if (this.$config && this.$config.circleMarkers && this.$config.circleMarkers.size) {
           if (this.isMobileOrTablet && this.$config.circleMarkers.mobileSize) {
             size = this.$config.circleMarkers.mobileSize;
-            // radius = this.$config.circleMarkers.mobileRadius;
           } else {
             size = this.$config.circleMarkers.size;
-            // radius = this.$config.circleMarkers.radius;
           }
         } else {
           size = 14;
-          // radius = 6;
         }
 
         if (this.$config && this.$config.circleMarkers && this.$config.circleMarkers.borderColor) {
@@ -645,20 +604,12 @@ export default {
             color = this.$config.circleMarkers.selectedColor;
           } else {
             color = '#0f4d90';
-          // color = '#2176d2';
-          // color = this.$config.circleMarkers.circleColors[row.category_type];
-          // color = 'green';
           }
 
           size = 30;
           // console.log('color:', color, 'size:', size, 'this.$config.circleMarkers.circleColors[row.category_type]:', this.$config.circleMarkers.circleColors[row.category_type]);
           faSize = '4x';
           weight = 0;
-          // if (this.$config.markerType === 'pin-marker') {
-          //   offset = [ 0, 0 ];
-          // }
-          // markerSize = 40;
-          // radius = radius + 6;
 
         // selected = false;
         } else {
@@ -785,7 +736,6 @@ export default {
         } else {
           color = '#cc3000';
         }
-        // const color = '#2176d2';
         const markerType = 'geocode';
         const icon = {
           prefix: 'fas',
@@ -925,7 +875,7 @@ export default {
       }
     },
     lastPinboardSearchMethod(nextLastPinboardSearchMethod) {
-      console.log('watch lastPinboardSearchMethod, nextLastPinboardSearchMethod:', nextLastPinboardSearchMethod);
+      // console.log('watch lastPinboardSearchMethod, nextLastPinboardSearchMethod:', nextLastPinboardSearchMethod);
       if (nextLastPinboardSearchMethod === 'geocode') {
         this.$data.geojsonForZipcodeBoolean = false;
         this.$data.geojsonForZipcodeBufferBoolean = false;
@@ -938,39 +888,34 @@ export default {
         let startQuery = { ...this.$route.query };
         delete startQuery['address'];
         this.$router.push({ query: { ...startQuery }});
-        // this.$controller.resetGeocode();
       }
     },
     zipcodeBufferShape(nextZipcodeBufferShape) {
-      console.log('watch zipcodeBufferShape is firing now, nextZipcodeBufferShape:', nextZipcodeBufferShape);
+      // console.log('watch zipcodeBufferShape is firing now, nextZipcodeBufferShape:', nextZipcodeBufferShape);
       let geo;
       if (nextZipcodeBufferShape) {
-        console.log('if is running, nextZipcodeBufferShape:', nextZipcodeBufferShape);
-        // this.$store.commit('setSelectedZipcode', null);
+        // console.log('if is running, nextZipcodeBufferShape:', nextZipcodeBufferShape);
         geo = nextZipcodeBufferShape.geometry;
         this.$data.geojsonForZipcodeBufferSource.data.geometry.coordinates = geo.coordinates;
         this.$data.geojsonForZipcodeBufferBoolean = true;
       } else {
-        console.log('else is running, nextBufferShape:', nextBufferShape);
+        // console.log('else is running, nextBufferShape:', nextBufferShape);
         this.$data.geojsonForZipcodeBufferSource.data.geometry.coordinates = [];
         this.$data.geojsonForZipcodeBufferBoolean = false;
-        // this.$store.commit('setBufferShape', null);
       }
     },
     bufferShape(nextBufferShape) {
-      console.log('watch bufferShape is firing now, nextBufferShape:', nextBufferShape);
+      // console.log('watch bufferShape is firing now, nextBufferShape:', nextBufferShape);
       let geo;
       if (nextBufferShape) {
-        console.log('if is running, nextBufferShape:', nextBufferShape);
-        // this.$store.commit('setSelectedZipcode', null);
+        // console.log('if is running, nextBufferShape:', nextBufferShape);
         geo = nextBufferShape.geometry;
         this.$data.geojsonForBufferSource.data.geometry.coordinates = geo.coordinates;
         this.$data.geojsonForBufferBoolean = true;
       } else {
-        console.log('else is running, nextBufferShape:', nextBufferShape);
+        // console.log('else is running, nextBufferShape:', nextBufferShape);
         this.$data.geojsonForBufferSource.data.geometry.coordinates = [];
         this.$data.geojsonForBufferBoolean = false;
-        // this.$store.commit('setBufferShape', null);
       }
     },
     zipcodeData(nextZipcodeData) {
@@ -981,30 +926,27 @@ export default {
         this.$data.geojsonForZipcodeSource.data.geometry.coordinates = geo;
         this.$data.geojsonForZipcodeBoolean = true;
         this.$data.geojsonForZipcodeBufferBoolean = true;
-        // this.$store.commit('setBufferShape', null);
       } else {
         this.$data.geojsonForZipcodeSource.data.geometry.coordinates = [];
         this.$data.geojsonForZipcodeBoolean = false;
         this.$data.geojsonForZipcodeBufferBoolean = false;
       }
     },
-    map(nextMap) {
-      console.log('MapPanel watch map is firing, nextMap:', nextMap);
-    },
+    // map(nextMap) {
+    //   console.log('MapPanel watch map is firing, nextMap:', nextMap);
+    // },
     geocodeResult(nextGeocodeResult) {
       if (nextGeocodeResult._featureId) {
         this.$store.commit('setMapCenter', nextGeocodeResult.geometry.coordinates);
         this.$store.commit('setMapZoom', this.geocodeZoom);
-        // this.$store.commit('setSelectedZipcode:', null);
       }
     },
     latestSelectedResourceFromExpand(nextLatestSelectedResource) {
-      console.log('watch latestSelectedResourceFromExpand:', nextLatestSelectedResource, 'this.$appType:', this.$appType, 'this.$store.state.sources[this.$appType].data:', this.$store.state.sources[this.$appType].data);
+      // console.log('watch latestSelectedResourceFromExpand:', nextLatestSelectedResource, 'this.$appType:', this.$appType, 'this.$store.state.sources[this.$appType].data:', this.$store.state.sources[this.$appType].data);
       if (nextLatestSelectedResource) {
-        console.log('watch latestSelectedResourceFromExpand, in if nextLatestSelectedResource:', nextLatestSelectedResource);
+        // console.log('watch latestSelectedResourceFromExpand, in if nextLatestSelectedResource:', nextLatestSelectedResource);
         let rows;
         const map = this.$store.map;
-        // this.$store.commit('setLatestSelectedResourceFromMap', nextLatestSelectedResource);
 
         if (!this.latestSelectedResourceFromMap || !this.latestSelectedResourceFromMap == nextLatestSelectedResource) {
         
@@ -1012,14 +954,10 @@ export default {
           if (this.$store.state.sources[this.$appType].data.rows) {
             rows = this.$store.state.sources[this.$appType].data.rows;
             const dataValue = rows.filter(row => row._featureId === nextLatestSelectedResource);
-            console.log('in watch latestSelectedResourceFromExpand, rows, nextLatestSelectedResource:', nextLatestSelectedResource, 'rows:', rows, 'dataValue:', dataValue);
+            // console.log('in watch latestSelectedResourceFromExpand, rows, nextLatestSelectedResource:', nextLatestSelectedResource, 'rows:', rows, 'dataValue:', dataValue);
             // do not set view if there is not lat value
             if (dataValue[0].lat) {
-              // if (this.mapType === 'leaflet') {
-              //   map.setView([ dataValue[0].lat, dataValue[0].lon ], this.geocodeZoom);
-              // } else if (this.mapType === 'mapbox') {
               map.setCenter([ dataValue[0].lon, dataValue[0].lat ], this.geocodeZoom);
-              // }
             }
 
           // data coming as "features" means it came from arcgis
@@ -1028,12 +966,7 @@ export default {
             const dataValue = rows.filter(row => row._featureId === nextLatestSelectedResource);
             console.log('in watch latestSelectedResourceFromExpand, features, nextLatestSelectedResource:', nextLatestSelectedResource, 'rows:', rows, 'dataValue:', dataValue, 'dataValue[0].latlng:', dataValue[0].latlng);
             if (dataValue[0].latlng[0]) {
-              // if (this.mapType === 'leaflet') {
-              //   map.setView([ dataValue[0].latlng[0], dataValue[0].latlng[1] ], this.geocodeZoom);
-              //   // map.setView([ dataValue[0].lat, dataValue[0].lon ], this.geocodeZoom);
-              // } else if (this.mapType === 'mapbox') {
               map.setCenter([ dataValue[0].latlng[1], dataValue[0].latlng[0] ], this.geocodeZoom);
-              // }
             }
 
           // data coming in as "records" means it came from airtable
@@ -1047,19 +980,14 @@ export default {
           } else if (Array.isArray(this.$store.state.sources[this.$appType].data)) {
             rows = this.$store.state.sources[this.$appType].data;
             const dataValue = rows.filter(row => row._featureId === nextLatestSelectedResource);
-            console.log('in watch latestSelectedResourceFromExpand, array, nextLatestSelectedResource:', nextLatestSelectedResource, 'rows:', rows, 'dataValue:', dataValue);
-            // if (this.mapType === 'leaflet') {
-            //   map.setView([ dataValue[0].latlng[0], dataValue[0].latlng[1] ], this.geocodeZoom);
-            // } else if (this.mapType === 'mapbox') {
+            // console.log('in watch latestSelectedResourceFromExpand, array, nextLatestSelectedResource:', nextLatestSelectedResource, 'rows:', rows, 'dataValue:', dataValue);
             map.setCenter([ dataValue[0].latlng[1], dataValue[0].latlng[0] ], this.geocodeZoom);
-            // }
           }
         }
-
         this.$store.commit('setLatestSelectedResourceFromMap', nextLatestSelectedResource);
 
       } else {
-        console.log('watch latestSelectedResourceFromExpand, in else nextLatestSelectedResource:', nextLatestSelectedResource);
+        // console.log('watch latestSelectedResourceFromExpand, in else nextLatestSelectedResource:', nextLatestSelectedResource);
         this.$store.commit('setLatestSelectedResourceFromMap', null);
       }
     },
@@ -1070,7 +998,6 @@ export default {
     },
     cyclomediaActive(value) {
       this.$nextTick(() => {
-        // this.$store.state.map.map.invalidateSize();
         this.$store.map.invalidateSize();
       });
     },
@@ -1133,7 +1060,6 @@ export default {
         this.$data.geojsonForResourceSource.data.geometry.coordinates = [];
         this.$data.geojsonForResourceBoolean = false;
       }
-      // let czts = this.activeTopicConfig.zoomToShape;
       let czts = [ 'geojsonForResource' ];
       let dzts = this.$data.zoomToShape;
       if (!czts || !czts.includes('geojsonForResource')) {
@@ -1141,7 +1067,7 @@ export default {
         return;
       }
       dzts.geojsonForResource = nextGeojson;
-      // // console.log('exiting geojsonForResource');
+      // console.log('exiting geojsonForResource');
       if (nextGeojson[0] && nextGeojson[0].geojson.geometry.coordinates.length) {
         console.log('end of watch geojsonForResource, calling checkBoundsChanges, nextGeojson[0].geojson.geometry.coordinates.length:', nextGeojson[0].geojson.geometry.coordinates.length);
         this.checkBoundsChanges();
@@ -1149,9 +1075,6 @@ export default {
       console.log('end of watch geojsonForResource');
     },
   },
-  // created() {
-  //   this.mapbox = Mapbox;
-  // },
   mounted() {
     console.log('MapPanel mounted, this.view:', this.view, 'this.currentData:', this.currentData, 'this.$store.map:', this.$store.map, 'this.$config.map.zoom:', this.$config.map.zoom);
     let logo = document.getElementsByClassName('mapboxgl-ctrl-logo');
@@ -1163,8 +1086,6 @@ export default {
       this.$store.commit('setMapZoom', this.$config.map.zoom);
     }
 
-    // if (this.view == 'print') {
-    //   this.$store.commit('setMapCenter', [ this.currentData[0].latlng[1], this.currentData[0].latlng[0] ]);
     if (this.view != 'print' && this.$config.map.center) {
       this.$store.commit('setMapCenter', this.$config.map.center);
     }
@@ -1174,13 +1095,6 @@ export default {
     if (this.$config.searchBar) {
       this.addressInputPlaceholder = this.$config.searchBar.placeholder;
     }
-
-    // if (this.selectedResources.length) {
-    //   console.log('MapPanel.vue mounted, if this.selectedResources.length:', this.selectedResources.length);
-    //   this.$store.commit('setLatestSelectedResourceFromMap', this.selectedResources[0]);
-    // } else {
-    //   console.log('MapPanel.vue mounted, else this.selectedResources.length:', this.selectedResources.length);
-    // }
 
   },
   beforeDestroy() {
@@ -1211,7 +1125,6 @@ export default {
       console.log('handleMarkerClick is running, e:', e, 'siteName:', siteName);
 
       let selectedResource = [ ...this.selectedResources ];
-      // const selectedResource = [];
       if (selectedResource.includes(featureId)) {
         console.log('markerClick close marker, featureId', featureId);
         selectedResource.splice(selectedResource.indexOf(featureId), 1);
@@ -1233,14 +1146,9 @@ export default {
 
     handleResize(event) {
       // console.log('MapPanel.vue handleResize is running');
-      // if (this.mapType === 'leaflet') {
-      //   this.$store.state.map.map.invalidateSize();
-      // } else if (this.mapType === 'mapbox') {
       this.$store.map.resize();
-      // }
     },
     handleMapMove(e) {
-      // const map = this.$store.state.map.map;
       const map = this.$store.map;
       // console.log('in handleMapMove, map:', map);
 
@@ -1291,15 +1199,14 @@ export default {
     },
     onMapPreloaded(event) {
       let logo = document.getElementsByClassName('mapboxgl-ctrl-logo');
-      console.log('MapPanel onMapPreloaded, logo:', logo, 'logo.length:', logo.length, 'logo.item(0):', logo.item(0));
+      // console.log('MapPanel onMapPreloaded, logo:', logo, 'logo.length:', logo.length, 'logo.item(0):', logo.item(0));
       // logo[0].remove();
       let attrib = document.getElementsByClassName('mapboxgl-ctrl-attrib');
       attrib[0].remove();
     },
 
     checkBoundsChanges() {
-      console.log('checkBoundsChanges is running');
-      // let czts = this.activeTopicConfig.zoomToShape;
+      // console.log('checkBoundsChanges is running');
       let czts = [ 'geojsonForResource' ];
       if (!czts) {
         return;
@@ -1314,7 +1221,7 @@ export default {
           tf.push(false);
         }
       }
-      console.log('MapPanel.vue checkBoundsChanges, dzts:', dzts, 'czts:', czts, 'tf:', tf);
+      // console.log('MapPanel.vue checkBoundsChanges, dzts:', dzts, 'czts:', czts, 'tf:', tf);
       if (tf.includes(false)) {
         return;
       }
@@ -1323,62 +1230,26 @@ export default {
     },
 
     setMapToBounds() {
-      console.log('setMapToBounds is running, this.geojsonForResource[0].geojson.geometry.coordinates:', this.geojsonForResource[0].geojson.geometry.coordinates);
+      // console.log('setMapToBounds is running, this.geojsonForResource[0].geojson.geometry.coordinates:', this.geojsonForResource[0].geojson.geometry.coordinates);
       let featureArray = [];
-      // let czts = this.activeTopicConfig.zoomToShape;
       let czts = [ 'geojsonForResource' ];
       if (czts) {
-        // if (czts.includes('geojsonParcels')) {
-        //   for (let geojsonFeature of this.geojsonParcels) {
-        //     // featureArray.push(geoJson(geojsonFeature.geojson))
-        //     // featureArray.push(L.geoJSON(geojsonFeature.geojson))
-        //     console.log('geojsonFeature.geojson:', geojsonFeature.geojson);
-        //     featureArray.push(polygon([ geojsonFeature.geojson.geometry.coordinates ]));
-        //   }
-        // }
         if (czts.includes('geojsonForResource')) {
           console.log('setMapToBounds is still running');
           for (let geojsonFeature of this.geojsonForResource) {
-            // featureArray.push(geoJson(geojsonFeature.geojson))
-            // featureArray.push(L.geoJSON(geojsonFeature.geojson))
             let theCoords = geojsonFeature.geojson.geometry.coordinates;
             console.log('theCoords:', theCoords);
             let thePolygon = polygon(theCoords);
-            // let thePolygon = polygon(geojsonFeature.geojson.geometry.coordinates);
             console.log('setMapToBounds geojsonFeature.geojson:', geojsonFeature.geojson, 'thePolygon:', thePolygon);
             featureArray.push(thePolygon);
-            // featureArray.push(polygon(geojsonFeature.geojson.geometry.coordinates));
           }
         }
-        // if (czts.includes('markersForAddress')) {
-        //   for (let marker of this.markersForAddress) {
-        //     featureArray.push(point([ marker.latlng[1], marker.latlng[0] ]));
-        //     // featureArray.push(L.marker(marker.latlng))
-        //   }
-        // }
-      //   if (czts.includes('markersForTopic')) {
-      //     for (let marker of this.markersForTopic) {
-      //       featureArray.push(point([ marker.latlng[1], marker.latlng[0] ]));
-      //       // featureArray.push(L.marker(marker.latlng))
-      //     }
-      //   }
-      //   // const group = new FeatureGroup(featureArray);
-      //   // const group = new featureGroup(featureArray);
-      //   // const group = new L.featureGroup(featureArray);
-      //   // const bounds = group.getBounds();
         const theFeatureCollection = featureCollection(featureArray);
-        console.log('featureArray:', featureArray, 'theFeatureCollection:', theFeatureCollection);
+        // console.log('featureArray:', featureArray, 'theFeatureCollection:', theFeatureCollection);
         const bounds = bbox(theFeatureCollection);
-        // const theBbox = theFeatureCollection.bbox;
-        // const bounds = bboxPolygon(theBbox);
-        console.log('bounds:', bounds);
-        if (this.mapType === 'leaflet') {
-          this.$store.commit('setMapBounds', bounds);
-        } else if (this.mapType === 'mapbox') {
-          // let bounds2 = [[ bounds._southWest.lng, bounds._southWest.lat ], [ bounds._northEast.lng, bounds._northEast.lat ]];
-          let bounds2 = [[ bounds[0], bounds[1] ], [ bounds[2], bounds[3] ]];
-          this.$store.commit('setMapBounds', bounds2);
-        }
+        // console.log('bounds:', bounds);
+        let bounds2 = [[ bounds[0], bounds[1] ], [ bounds[2], bounds[3] ]];
+        this.$store.commit('setMapBounds', bounds2);
       }
     },
   },
@@ -1400,24 +1271,6 @@ export default {
 .map-panel-main-div {
   height: 100%;
 }
-
-/* @media screen and (max-width: 749px) {
-  .map-container{ */
-    /* min-height: calc(100vh - 192px); */
-    /* min-height: calc(100vh - 100px); */
-    /* height: 100vh; */
-    /* height: 400px; */
-    /* min-height: 100%; */
-  /* } */
-
-  /* .map-container-no-refine { */
-    /* min-height: calc(100vh - 132px); */
-    /* min-height: calc(100vh - 100px); */
-    /* height: 100vh; */
-    /* height: 400px; */
-    /* min-height: 100%; */
-  /* }
-} */
 
 .mb-map-with-widget {
   height: 50%;
