@@ -1,3 +1,5 @@
+import * as faMapping from '@phila/vue-mapping/src/fa.js';
+
 /* eslint-disable import/no-extraneous-dependencies */
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons/faSpinner';
