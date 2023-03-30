@@ -553,7 +553,7 @@ export default {
     },
     currentData() {
       // console.log('MapPanel.vue currentData is recalculating');
-      return this.$store.state.currentData;
+      return [ ...this.$store.state.currentData ];
     },
     projection4326() {
       return "+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs";
@@ -566,6 +566,9 @@ export default {
     },
     currentMapData() {
       // console.log('MapPanel.vue currentMapData computed is starting recalculating, this.$config:', this.$config);//, this.currentData:', this.currentData);
+      // if (!this.$config) {
+      //   return;
+      // }
       const newRows = [];
       for (const row of [ ...this.currentData ]) {
         // console.log('MapPanel in loop, row:', row);
@@ -655,10 +658,11 @@ export default {
           row.lon = row.fields.lon;
         }
 
+        let projection = this.$config.projection;
         if (row.lat) {
           // console.log('MapPanel if row.lat is running, row.lat:', row.lat, 'row.lon:', row.lon, 'color:', color, 'size:', size);
           // console.log('if row.lat is running, color:', color, 'markerSize:', markerSize);
-          let projection = this.getProjection(row);
+          // let projection = this.getProjection(row);
           if (projection === '3857') {
             // console.log('if row.lat, and projection is 3857, row.lat:', row.lat, 'row.lon:', row.lon);
             let lnglat = proj4(this.projection3857, this.projection4326, [ row.lon, row.lat ]);
@@ -672,7 +676,8 @@ export default {
             row.latlng = [ row.lat, row.lon ];
           }
         } else if (row.geometry) {
-          let projection = this.getProjection(row);
+          // console.log('else if row.geometry is true, this.$config.projection:', this.$config.projection);
+          // let projection = this.getProjection(row);
           // console.log('else if row.geometry is true, row.geometry:', row.geometry, 'projection:', projection, 'row.geometry.x:', row.geometry.x, 'row.geometry.y:', row.geometry.y);
           if (projection === '3857') {
             let lnglat = proj4(this.projection3857, this.projection4326, [ row.geometry.x, row.geometry.y ]);
@@ -875,7 +880,7 @@ export default {
       }
     },
     lastPinboardSearchMethod(nextLastPinboardSearchMethod) {
-      // console.log('watch lastPinboardSearchMethod, nextLastPinboardSearchMethod:', nextLastPinboardSearchMethod);
+      console.log('watch lastPinboardSearchMethod, nextLastPinboardSearchMethod:', nextLastPinboardSearchMethod);
       if (nextLastPinboardSearchMethod === 'geocode') {
         this.$data.geojsonForZipcodeBoolean = false;
         this.$data.geojsonForZipcodeBufferBoolean = false;
@@ -891,7 +896,7 @@ export default {
       }
     },
     zipcodeBufferShape(nextZipcodeBufferShape) {
-      // console.log('watch zipcodeBufferShape is firing now, nextZipcodeBufferShape:', nextZipcodeBufferShape);
+      console.log('watch zipcodeBufferShape is firing now, nextZipcodeBufferShape:', nextZipcodeBufferShape);
       let geo;
       if (nextZipcodeBufferShape) {
         // console.log('if is running, nextZipcodeBufferShape:', nextZipcodeBufferShape);
@@ -905,7 +910,7 @@ export default {
       }
     },
     bufferShape(nextBufferShape) {
-      // console.log('watch bufferShape is firing now, nextBufferShape:', nextBufferShape);
+      console.log('watch bufferShape is firing now, nextBufferShape:', nextBufferShape);
       let geo;
       if (nextBufferShape) {
         // console.log('if is running, nextBufferShape:', nextBufferShape);
@@ -1010,12 +1015,12 @@ export default {
     },
 
     geojsonForResource(nextGeojson) {
-      console.log('watch geojsonForResource is firing, nextGeojson[0]:', nextGeojson[0]);
+      // console.log('watch geojsonForResource is firing, nextGeojson[0]:', nextGeojson[0]);
       if (this.$store.map) {
         // console.log('watch geojsonForResource is running, map.getStyle():', this.$store.map.getStyle(), 'map.getStyle().layers:', this.$store.map.getStyle().layers, 'nextGeojson:', nextGeojson);
       }
       if (nextGeojson[0] && nextGeojson.length > 1) {
-        console.log('watch geojsonForResource is running, nextGeojson:', nextGeojson, 'nextGeojson[0].geojson:', nextGeojson[0].geojson);
+        // console.log('watch geojsonForResource is running, nextGeojson:', nextGeojson, 'nextGeojson[0].geojson:', nextGeojson[0].geojson);
         this.$data.geojsonCollectionForTopicSource.data.features = [];
 
         for (let feature of nextGeojson) {
@@ -1052,11 +1057,11 @@ export default {
 
         this.$data.geojsonForResourceBoolean = true;
       } else if (nextGeojson[0]) {
-        console.log('watch geojsonForResource else if is running, nextGeojson[0].geojson.geometry:', nextGeojson[0].geojson.geometry);
+        // console.log('watch geojsonForResource else if is running, nextGeojson[0].geojson.geometry:', nextGeojson[0].geojson.geometry);
         this.$data.geojsonForResourceSource.data.geometry.coordinates = nextGeojson[0].geojson.geometry.coordinates;
         this.$data.geojsonForResourceBoolean = true;
       } else {
-        console.log('watch geojsonForResource else is running');
+        // console.log('watch geojsonForResource else is running');
         this.$data.geojsonForResourceSource.data.geometry.coordinates = [];
         this.$data.geojsonForResourceBoolean = false;
       }
@@ -1069,14 +1074,14 @@ export default {
       dzts.geojsonForResource = nextGeojson;
       // console.log('exiting geojsonForResource');
       if (nextGeojson[0] && nextGeojson[0].geojson.geometry.coordinates.length) {
-        console.log('end of watch geojsonForResource, calling checkBoundsChanges, nextGeojson[0].geojson.geometry.coordinates.length:', nextGeojson[0].geojson.geometry.coordinates.length);
+        // console.log('end of watch geojsonForResource, calling checkBoundsChanges, nextGeojson[0].geojson.geometry.coordinates.length:', nextGeojson[0].geojson.geometry.coordinates.length);
         this.checkBoundsChanges();
       }
-      console.log('end of watch geojsonForResource');
+      // console.log('end of watch geojsonForResource');
     },
   },
   mounted() {
-    console.log('MapPanel mounted, this.view:', this.view, 'this.currentData:', this.currentData, 'this.$store.map:', this.$store.map, 'this.$config.map.zoom:', this.$config.map.zoom);
+    // console.log('MapPanel mounted, this.view:', this.view, 'this.currentData:', this.currentData, 'this.$store.map:', this.$store.map, 'this.$config.map.zoom:', this.$config.map.zoom);
     let logo = document.getElementsByClassName('mapboxgl-ctrl-logo');
     // console.log('MapPanel mounted, logo:', logo, 'logo.length:', logo.length, 'logo.item(0):', logo.item(0));
     // logo[0].remove();
@@ -1091,6 +1096,14 @@ export default {
     }
 
     window.addEventListener('resize', this.handleResize);
+
+    if (this.lastPinboardSearchMethod) {
+      console.log('MapPanel mounted, this.lastPinboardSearchMethod:', this.lastPinboardSearchMethod);
+      if (this.lastPinboardSearchMethod == 'zipcode') {
+        this.$data.geojsonForZipcodeBoolean = true;
+        this.$data.geojsonForZipcodeBufferBoolean = true;
+      }
+    }
 
     if (this.$config.searchBar) {
       this.addressInputPlaceholder = this.$config.searchBar.placeholder;
@@ -1179,7 +1192,7 @@ export default {
       this.$emit('toggleMap');
     },
     onMapLoaded(event) {
-      console.log('onMapLoaded is running, event.map:', event.map, this.$store.state.map);
+      // console.log('onMapLoaded is running, event.map:', event.map, this.$store.state.map);
       this.$store.map = event.map;
 
       let canvas = document.querySelector(".mapboxgl-canvas");

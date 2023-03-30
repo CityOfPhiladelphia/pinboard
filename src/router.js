@@ -6,7 +6,7 @@ import Router from 'vue-router';
 
 Vue.use(Router);
 
-export default new Router({
+const router = new Router({
   mode: 'history',
   routes: [
     {
@@ -15,15 +15,15 @@ export default new Router({
       component: () => import('./pages/Main'),
       // component: Main,
     },
-    {
-      path: '/resource-view/:resource?',
-      name: 'resourceView',
-      component: () => import('./pages/ResourceView'),
-      // component: ResourceView,
-      // meta: {
-      //   layout: 'full-height',
-      // },
-    },
+    // {
+    //   path: '/resource-view/:resource?',
+    //   name: 'resourceView',
+    //   component: () => import('./pages/ResourceView'),
+    //   // component: ResourceView,
+    //   // meta: {
+    //   //   layout: 'full-height',
+    //   // },
+    // },
     {
       path: '/print-view/',
       name: 'printView',
@@ -31,3 +31,19 @@ export default new Router({
     },
   ],
 });
+
+function hasQueryParams(route) {
+  return !!Object.keys(route.query).length
+}
+
+router.beforeEach((to, from, next) => {
+   if(!hasQueryParams(to) && hasQueryParams(from)){
+    next({name: to.name, query: from.query});
+  } else {
+    next()
+  }
+})
+
+
+
+export default router;

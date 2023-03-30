@@ -54,4 +54,6 @@ export default {
   for: 'for',
   mile: 'mile',
   miles: 'miles',
+  noLocations: 'There are no locations selected for printing',
+  copiedUrl: 'URL copied to clipboard',
 };

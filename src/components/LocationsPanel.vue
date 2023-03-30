@@ -504,7 +504,7 @@ export default {
       let value;
       let geocodeStatus = this.geocodeStatus;
       let zipcodeCenter = this.zipcodeCenter;
-      console.log('computed sortDisabled, geocodeStatus:', geocodeStatus, 'zipcodeCenter:', zipcodeCenter);
+      // console.log('computed sortDisabled, geocodeStatus:', geocodeStatus, 'zipcodeCenter:', zipcodeCenter);
       if (geocodeStatus || zipcodeCenter[0]) {
         value = false;
       } else {
@@ -576,7 +576,7 @@ export default {
     orgTitle() {
       return 'agencyname';
     },
-    ...mapState([ 'sources' ]),
+    // ...mapState([ 'sources' ]),
     currentData() {
       const locations = this.$store.state.currentData;
 
@@ -589,12 +589,12 @@ export default {
       const valOrGetterType = typeof valOrGetter;
       let val;
 
-      console.log('LocationsPanel.vue, currentData, locations:', locations, 'valOrGetter:', valOrGetter, 'valOrGetterType:', valOrGetterType);
+      // console.log('LocationsPanel.vue, currentData, locations:', locations, 'valOrGetter:', valOrGetter, 'valOrGetterType:', valOrGetterType);
 
       // if (currentQueryKeys.includes('address')) {
       if (this.sortBy == 'Distance') {
         val = 'distance';
-        console.log('it includes address');
+        // console.log('it includes address');
         locations.sort(function(a, b) {
           // console.log('a:', a, 'b:', b, 'val:', val);
           // if (a[val] != null && b[val] != null) {
@@ -642,6 +642,9 @@ export default {
     },
     locationInfo() {
       return this.$config.locationInfo;
+    },
+    noLocations() {
+      return this.$i18n.messages[this.i18nLocale]['noLocations'];
     },
   },
   watch: {
@@ -705,9 +708,13 @@ export default {
       this.$emit('clear-bad-address');
     },
     clickedPrint() {
+      this.$store.commit('setSelectedZipcode', null);
       console.log('clickedPrint is running');
       if (!this.printCheckboxes.length) {
-        alert('There are no locations selected for printing');
+        this.$warning(this.noLocations, {
+          duration: 3000,
+          closeOnClick: true,
+        });
         return;
       }
       this.$router.push({ name: 'printView'  });

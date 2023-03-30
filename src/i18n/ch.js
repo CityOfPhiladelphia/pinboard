@@ -54,4 +54,6 @@ export default {
   for: '为了',
   mile: '英里',
   miles: '英里',
+  noLocations: '未选择要打印的位置',
+  copiedUrl: 'URL 已复制到剪贴板',
 };

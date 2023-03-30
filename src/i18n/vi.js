@@ -54,4 +54,6 @@ export default {
   for: 'cho',
   mile: 'dặm',
   miles: 'dặm',
+  noLocations: 'Không có vị trí nào được chọn để in',
+  copiedUrl: 'URL được sao chép vào clipboard',
 };

@@ -54,4 +54,6 @@ export default {
   for: 'pour',
   mile: 'mille',
   miles: 'milles',
+  noLocations: "Aucun emplacement n'a été sélectionné pour l'impression",
+  copiedUrl: 'URL copiée dans le presse-papiers',
 };

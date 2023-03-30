@@ -317,7 +317,7 @@ export default {
     i18nLanguages() {
       let values = [];
       if (this.$config.i18n.languages) {
-        console.log('in if, this.$config.i18n.languages');
+        // console.log('in if, this.$config.i18n.languages');
         values = this.$config.i18n.languages;
       } else {
         for (let key of Object.keys(this.$i18n.messages)) {
@@ -328,7 +328,7 @@ export default {
           values.push(value);
         }
       }
-      console.log('end of i18nLanguages, values:', values);
+      // console.log('end of i18nLanguages, values:', values);
       return values;
     },
     feedbackLink() {
@@ -398,32 +398,35 @@ export default {
       return value;
     },
     database() {
-      let database = this.$store.state.sources[this.$appType].data.rows || this.$store.state.sources[this.$appType].data.features || this.$store.state.sources[this.$appType].data.records;
-      console.log('computed database is running, database:', database, 'this.$appType:', this.$appType);
+      if (this.$store.state.sources[this.$appType].data) {
 
-      for (let [key, value] of Object.entries(database)) {
-
-        if (this.$config.hiddenRefine) {
-          for (let field in this.$config.hiddenRefine) {
-            let getter = this.$config.hiddenRefine[field];
-            let val = getter(value);
-            if (val === false) {
+        let database = this.$store.state.sources[this.$appType].data.rows || this.$store.state.sources[this.$appType].data.features || this.$store.state.sources[this.$appType].data.records;
+        // console.log('computed database is running, database:', database, 'this.$appType:', this.$appType);
+  
+        for (let [key, value] of Object.entries(database)) {
+  
+          if (this.$config.hiddenRefine) {
+            for (let field in this.$config.hiddenRefine) {
+              let getter = this.$config.hiddenRefine[field];
+              let val = getter(value);
+              if (val === false) {
+                delete database[key];
+              }
+            }
+          }
+  
+          for (let [rowKey, rowValue] of Object.entries(value)) {
+            if ( rowKey == 'hide_on_finder' && rowValue == true ){
+              //console.log('deleted entry', database[key])
               delete database[key];
             }
           }
+  
         }
-
-        for (let [rowKey, rowValue] of Object.entries(value)) {
-          if ( rowKey == 'hide_on_finder' && rowValue == true ){
-            //console.log('deleted entry', database[key])
-            delete database[key];
-          }
-        }
-
+        //filter empty values from deleted database
+        let finalDB = database.filter(_ => true);
+        return finalDB;
       }
-      //filter empty values from deleted database
-      let finalDB = database.filter(_ => true);
-      return finalDB;
     },
     shouldLoadCyclomediaWidget() {
       return this.$config.cyclomedia && this.$config.cyclomedia.enabled && !this.isMobileOrTablet;
@@ -519,14 +522,16 @@ export default {
       } else if (this.lastPinboardSearchMethod == 'zipcode') {
         console.log('Main.vue watch searchDistance and lastPinboardSearchMethod is zipcode');
         let nextZipcodeData = this.zipcodeData;
-        let geo = {
-          geometry: {
-            coordinates: nextZipcodeData.geometry.rings,
-            type: "Polygon"
-          },
-          type: "Feature",
-        };
-        this.runZipcodeBuffer(geo);
+        if (nextZipcodeData) {
+          let geo = {
+            geometry: {
+              coordinates: nextZipcodeData.geometry.rings,
+              type: "Polygon"
+            },
+            type: "Feature",
+          };
+          this.runZipcodeBuffer(geo);
+        }
       }
     },
     zipcodeData(nextZipcodeData) {
@@ -671,7 +676,9 @@ export default {
     } else {
       this.appLink = '.';
     }
-    if (this.$config.dataSources) {
+
+    // console.log('Main.vue mounted this.$store.state.sources[this.$config.app.type].data:', this.$store.state.sources[this.$config.app.type].data, 'Object.keys(this.$store.state.sources):', Object.keys(this.$store.state.sources));
+    if (!this.$store.state.sources[this.$config.app.type].data && this.$config.dataSources) {
       this.$controller.dataManager.fetchData();
     }
 
@@ -705,7 +712,7 @@ export default {
     let root = document.getElementsByTagName( 'html' )[0]; // '0' to assign the first (and only `HTML` tag)
     root.setAttribute( 'class', 'invisible-scrollbar' );
 
-    console.log('Pinboard Main.vue created, this.$config:', this.$config);
+    // console.log('Pinboard Main.vue created, this.$config:', this.$config);
     if (this.$config.map) {
       if (this.$config.map.shouldInitialize === false) {
         this.$store.commit('setShouldInitializeMap', false);
@@ -892,10 +899,14 @@ export default {
       this.$store.commit('setZipcodeCenter', zipcodeCenter.geometry.coordinates);
     },
     filterPoints() {
-      console.log('App.vue filterPoints is running, this.database:', this.database);
+      // console.log('App.vue filterPoints is running, this.database:', this.database);
       const filteredRows = [];
 
-      for (const [index, row] of this.database.entries()) {
+      if (!this.database) {
+        return;
+      }
+
+      for (const [index, row] of [ ...this.database.entries() ]) {
         // console.log('row:', row, 'index:', index);
         let booleanServices;
         const { selectedServices } = this.$store.state;
@@ -1079,12 +1090,13 @@ export default {
               theDistance = distance(geocodedPoint, rowPoint, options);
               row.distance = theDistance;
             } else if (this.$store.state.zipcodeCenter[0]) {
-              console.log('inside zipcode center else if');
+              // console.log('inside zipcode center else if');
               let zipcodeCenter = point(this.$store.state.zipcodeCenter);
               options = { units: 'miles' };
               theDistance = distance(zipcodeCenter, rowPoint, options);
               row.distance = theDistance;
             }
+            // console.log('rowPoint:', rowPoint, 'this.$data.buffer:', this.$data.buffer, 'booleanPointInPolygon(rowPoint, this.$data.buffer):', booleanPointInPolygon(rowPoint, this.$data.buffer));
             if (booleanPointInPolygon(rowPoint, this.$data.buffer)) {
               booleanBuffer = true;
             }
@@ -1128,6 +1140,21 @@ export default {
               lnglat = [ row.geometry.x, row.geometry.y ];
             }
             const rowPoint = point(lnglat);
+
+            let geocodedPoint, options, theDistance;
+            if (this.$store.state.geocode.data) {
+              geocodedPoint = point(this.$store.state.geocode.data.geometry.coordinates);
+              options = { units: 'miles' };
+              theDistance = distance(geocodedPoint, rowPoint, options);
+              row.distance = theDistance;
+            } else if (this.$store.state.zipcodeCenter[0]) {
+              // console.log('inside zipcode center else if');
+              let zipcodeCenter = point(this.$store.state.zipcodeCenter);
+              options = { units: 'miles' };
+              theDistance = distance(zipcodeCenter, rowPoint, options);
+              row.distance = theDistance;
+            }
+
             if (booleanPointInPolygon(rowPoint, this.$data.buffer)) {
               booleanBuffer = true;
             }
@@ -1215,6 +1242,7 @@ export default {
           filteredRows.push(row);
         }
       }
+      // console.log('filteredRows:', filteredRows);
 
       this.$store.commit('setCurrentData', filteredRows);
     },

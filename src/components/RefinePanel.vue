@@ -511,11 +511,11 @@ export default {
       return value;
     },
     selectedListCompiled() {
-      console.log('selectedListCompiled computed is running');
+      // console.log('selectedListCompiled computed is running');
       let test = this.$data.selectedList;
       let compiled = [];
       for (let value of Object.keys(test)) {
-        console.log('in selectedListCompiled computed, value:', value, value.split('_')[0]);
+        // console.log('in selectedListCompiled computed, value:', value, value.split('_')[0]);
         if (value.split('_')[0] == 'radio') {
           // console.log('radio button clicked!');
           compiled.push(this.$data.selectedList[value]);
@@ -536,7 +536,7 @@ export default {
             value: category.data,
             text: this.$t(category.data),
           });
-          console.log('refineListTranslated computed, category:', category, 'mainArray:', mainArray);
+          // console.log('refineListTranslated computed, category:', category, 'mainArray:', mainArray);
         }
         return mainArray;
       } else if (this.refineType !== 'multipleFieldGroups' && this.refineType !== 'multipleDependentFieldGroups') {
@@ -550,7 +550,7 @@ export default {
               translatedObject[category] = refineObject[category];
             }
           }
-          console.log('in refineListTranslated, refineObject:', refineObject, 'translatedObject:', translatedObject);
+          // console.log('in refineListTranslated, refineObject:', refineObject, 'translatedObject:', translatedObject);
           mainArray.push(translatedObject);
           // console.log('refineListTranslated computed, category:', category, 'this.$t(category):', this.$t(category), 'mainArray:', mainArray);
         }
@@ -682,7 +682,7 @@ export default {
     addressEntered() {
       let address;
       let routeAddress = this.$route.query.address;
-      console.log('addressEntered computed, routeAddress:', routeAddress);
+      // console.log('addressEntered computed, routeAddress:', routeAddress);
       if (this.geocode && this.geocode.data && this.geocode.data.properties && this.geocode.data.properties.street_address) {
         address = this.geocode.data.properties.street_address;
       } else if (routeAddress) {
@@ -829,25 +829,25 @@ export default {
     },
     selectedListCompiled(nextSelected) {
       window.theRouter = this.$router;
-      console.log('selectedListCompiled is firing, nextSelected:', nextSelected);
+      // console.log('selectedListCompiled is firing, nextSelected:', nextSelected);
       this.$store.commit('setSelectedServices', nextSelected);
       if (typeof nextSelected === 'string') {
         nextSelected = [nextSelected];
       }
-      console.log('RefinePanel watch selectedListCompiled is firing, nextSelected', nextSelected);
+      // console.log('RefinePanel watch selectedListCompiled is firing, nextSelected', nextSelected);
       if (!nextSelected.length) {
         return;
       }
       this.$router.push({ query: { ...this.$route.query, ...{ services: nextSelected.join(',') }}});
     },
     selectedServices(nextSelectedServices) {
-      console.log('RefinePanel watch selectedServices is firing:', nextSelectedServices);
+      // console.log('RefinePanel watch selectedServices is firing:', nextSelectedServices);
       this.$data.selected = nextSelectedServices;
     },
   },
   beforeMount() {
     if (this.$route.query.services) {
-      console.log('RefinePanel.vue beforeMount is running, this.selectedList:', this.selectedList, 'this.$route.query:', this.$route.query, 'this.$route.query.services.split(','):', this.$route.query.services.split(','));
+      // console.log('RefinePanel.vue beforeMount is running, this.selectedList:', this.selectedList, 'this.$route.query:', this.$route.query);//, 'this.$route.query.services.split(','):', this.$route.query.services.split(','));
       if (this.refineType !== 'categoryField_value') {
         this.$data.selected = this.$route.query.services.split(',');
       } else {
@@ -1059,7 +1059,7 @@ export default {
       this.$router.push({ query: { ...startQuery }});
     },
     getRefineSearchList() {
-      console.log('getRefineSearchList is running');
+      // console.log('getRefineSearchList is running');
       let refineData = this.database;
       if (refineData && refineData.records) {
         refineData = refineData.records;

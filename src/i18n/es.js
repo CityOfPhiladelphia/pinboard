@@ -54,4 +54,6 @@ export default {
   for: 'para',
   mile: 'milla',
   miles: 'millas',
+  noLocations: 'No hay ubicaciones seleccionadas para la impresión',
+  copiedUrl: 'URL copiada al portapapeles',
 };

@@ -431,7 +431,10 @@ export default {
     body.classList.remove('main-view');
     body.classList.add('print-view');
 
-    if (this.$config.dataSources) {
+    // if (this.$config.dataSources) {
+    //   this.$controller.dataManager.fetchData();
+    // }
+    if (!this.$store.state.sources[this.$config.app.type].data && this.$config.dataSources) {
       this.$controller.dataManager.fetchData();
     }
 
@@ -464,7 +467,8 @@ export default {
   methods: {
     clickedBackToHome() {
       console.log('clickedBackToHome is running');
-      history.back();
+      // history.back();
+      this.$router.push({ name: 'home'  });
       // this.$store.commit('setSelectedServices', null);
     },
     parseAddress(address) {
