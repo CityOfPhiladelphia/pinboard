@@ -32,7 +32,7 @@
       class="loc-item open"
     >
       <button
-        class="button"
+        class="button no-print"
         @click="clickedBackToHome"
       >
         Back to home
@@ -681,6 +681,13 @@ export default {
   // width: 100%;
   padding-left: 0px;
   background-color: white;
+}
+
+@media print {
+  .no-print {
+    visibility: hidden;
+    // display: none;
+  }
 }
 
 </style>
