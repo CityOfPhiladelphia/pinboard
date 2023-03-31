@@ -6,11 +6,19 @@ import Router from 'vue-router';
 
 Vue.use(Router);
 
+let publicPath = '';
+// if (config.publicPath) {
+if (process.env.VUE_APP_PUBLIC_PATH) {
+  // publicPath = config.publicPath;
+  publicPath = process.env.VUE_APP_PUBLIC_PATH;
+// }
+}
+
 const router = new Router({
   mode: 'history',
   routes: [
     {
-      path: '/',
+      path: publicPath + '/',
       name: 'home',
       component: () => import('./pages/Main'),
       // component: Main,
@@ -25,7 +33,7 @@ const router = new Router({
     //   // },
     // },
     {
-      path: '/print-view/',
+      path: publicPath + '/print-view/',
       name: 'printView',
       component: () => import('./pages/PrintView'),
     },
