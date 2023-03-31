@@ -177,6 +177,26 @@
               v-if="!$config.customComps || !Object.keys($config.customComps).includes('expandCollapseContent') && selectedResources.includes(item._featureId)"
               :class="isMobile ? 'main-content-mobile' : 'main-content'"
             >
+              <div
+                v-if="showPrintAndShare"
+                style="text-align:right;"
+              >
+                <button
+                  class="button is-small card-button"
+                  @click="clickedShare"
+                >
+                  <font-awesome-icon icon="share-alt" />
+                  <span class="card-button-text">Share</span>
+                </button>
+                <button
+                  v-if="!isMobile"
+                  class="button is-small card-button"
+                  @click="clickedSinglePrint(item)"
+                >
+                  <font-awesome-icon icon="print" />
+                  <span class="card-button-text">Print</span>
+                </button>
+              </div>
               <div class="columns">
                 <div class="column is-6">
                   <div
@@ -366,16 +386,17 @@ export default {
     } else {
       value = 1
     }
-    // let word;
-    // if (value == 1) {
-    //   word = this.$i18n.messages[this.i18nLocale]['mile'];
-    // } else {
-    //   word = this.$i18n.messages[this.i18nLocale]['miles']
-    // }
     this.searchDistance = value;;
     this.$store.commit('setSearchDistance', value);
   },
   computed: {
+    showPrintAndShare() {
+      let value = false;
+      if (this.$route.name == 'home') {
+        value = true;
+      }
+      return value;
+    },
     sortByOptions() {
       let value = {};
       value.Alphabetically = this.$i18n.messages[this.i18nLocale]['alphabetically'];
@@ -646,6 +667,9 @@ export default {
     noLocations() {
       return this.$i18n.messages[this.i18nLocale]['noLocations'];
     },
+    copiedUrl() {
+      return this.$i18n.messages[this.i18nLocale]['copiedUrl'];
+    },
   },
   watch: {
     searchDistance(nextSearchDistance) {
@@ -704,8 +728,29 @@ export default {
     },
   },
   methods: {
+    clickedShare() {
+      console.log('clickedShare is running');
+      var dummy = document.createElement('input'),
+        text = window.location.href;
+
+      document.body.appendChild(dummy);
+      dummy.value = text;
+      dummy.select();
+      document.execCommand('copy');
+      document.body.removeChild(dummy);
+
+      this.$success(this.copiedUrl, {
+        duration: 3000,
+        closeOnClick: true,
+      });
+    },
     clearBadAddress() {
       this.$emit('clear-bad-address');
+    },
+    clickedSinglePrint(item) {
+      console.log('clickedSinglePrint is running');
+      this.$store.commit('setPrintCheckboxes', [ item._featureId ]);
+      this.$router.push({ name: 'printView'  });
     },
     clickedPrint() {
       this.$store.commit('setSelectedZipcode', null);
@@ -878,6 +923,25 @@ export default {
 
 .app-button:focus {
   color: white !important;
+}
+
+.card-button {
+  border-width: 0px !important;
+  color: #0f4d90;
+}
+
+.card-button:hover {
+  color: black;
+}
+
+.card-button:focus:not(:active), .card-button.is-focused:not(:active) {
+  box-shadow: none !important;
+}
+.card-button-text {
+  font-family: "OpenSans-Regular", "Open Sans", sans-serif;
+  font-size: 14px;
+  padding-left: 5px;
+  text-transform: none;
 }
 
 </style>
