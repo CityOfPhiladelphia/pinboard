@@ -197,7 +197,7 @@
                   <span class="card-button-text">Print</span>
                 </button>
               </div>
-              <div class="columns">
+              <div class="columns top-section">
                 <div class="column is-6">
                   <div
                     v-if="item.street_address"
@@ -917,7 +917,7 @@ export default {
 }
 
 .main-content {
-  padding-top: 1.5rem;
+  padding-top: .5rem;
   padding-bottom: 1.5rem;
 }
 
@@ -927,11 +927,11 @@ export default {
 
 .card-button {
   border-width: 0px !important;
-  color: #0f4d90;
+  color: #0f4d90 !important;
 }
 
 .card-button:hover {
-  color: black;
+  color: black !important;
 }
 
 .card-button:focus:not(:active), .card-button.is-focused:not(:active) {
@@ -942,6 +942,10 @@ export default {
   font-size: 14px;
   padding-left: 5px;
   text-transform: none;
+}
+
+.top-section {
+  padding-top: 1rem;
 }
 
 </style>
