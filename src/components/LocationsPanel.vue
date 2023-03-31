@@ -177,26 +177,11 @@
               v-if="!$config.customComps || !Object.keys($config.customComps).includes('expandCollapseContent') && selectedResources.includes(item._featureId)"
               :class="isMobile ? 'main-content-mobile' : 'main-content'"
             >
-              <div
-                v-if="showPrintAndShare"
-                style="text-align:right;"
+              <print-share-section
+                :item="item"
               >
-                <button
-                  class="button is-small card-button"
-                  @click="clickedShare"
-                >
-                  <font-awesome-icon icon="share-alt" />
-                  <span class="card-button-text">Share</span>
-                </button>
-                <button
-                  v-if="!isMobile"
-                  class="button is-small card-button"
-                  @click="clickedSinglePrint(item)"
-                >
-                  <font-awesome-icon icon="print" />
-                  <span class="card-button-text">Print</span>
-                </button>
-              </div>
+              </print-share-section>
+
               <div class="columns top-section">
                 <div class="column is-6">
                   <div
@@ -352,12 +337,14 @@ import transforms from '../util/transforms.js';
 import { Dropdown } from '@phila/phila-ui';
 
 import SingleCheckbox from './SingleCheckbox.vue';
+import PrintShareSection from '@phila/pinboard/src/components/PrintShareSection';
 
 export default {
   components: {
     ExpandCollapse,
     Dropdown,
     SingleCheckbox,
+    PrintShareSection,
   },
   props: {
     isMapVisible: {
