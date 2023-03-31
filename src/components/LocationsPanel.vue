@@ -48,8 +48,9 @@
             </div>
             <div class="column is-6 pt-3">
               <button
-                class="button app-button"
                 @click="clickedPrint"
+                class="button app-button"
+                :class="!printCheckboxes.length ? 'disabled' : '' "
               >
                 <p
                   v-if="!i18nEnabled"
@@ -935,6 +936,25 @@ export default {
 
 .top-section {
   padding-top: 1rem;
+}
+
+.button.disabled, fieldset.disabled .button {
+  // background-color: #878787 !important;
+  // border-color: #878787 !important;
+  background-color: #cfcfcf !important;
+  border-color: #cfcfcf !important;
+}
+
+.button.disabled, fieldset.disabled .button {
+  // background-color: #878787 !important;
+  // border-color: #878787 !important;
+  background-color: #cfcfcf !important;
+  border-color: #cfcfcf !important;
+  cursor: not-allowed;
+}
+
+.button.disabled:focus:not(:active), .button.disabled.is-medium:focus:not(:active), .button.disabled.is-default:focus:not(:active) {
+  box-shadow: 0 0 0 0em #25cef7 !important;
 }
 
 </style>
