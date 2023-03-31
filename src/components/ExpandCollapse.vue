@@ -113,6 +113,9 @@ export default {
   },
   mixins: [ SharedFunctions ],
   computed: {
+    printCheckboxes() {
+      return this.$store.state.printCheckboxes;
+    },
     allowPrint() {
       let value = false;
       if (this.$config.allowPrint) {
@@ -239,6 +242,19 @@ export default {
     // console.log('ExpColl mounted:', this.evaluateSlot(this.slots.siteName));
     if (this.selectedResources.includes(this.item._featureId)) {
       this.openLocation();
+    }
+
+    let values = []
+    if (this.printCheckboxes.length) {
+      for (let checkbox of this.printCheckboxes) {
+        if (checkbox == this.item._featureId) {
+          values.push(true);
+        }
+      }
+    }
+    if (values.includes(true)) {
+      console.log('ExpandCollapse mounted, values includes true, this.printCheckboxes:', this.printCheckboxes, 'this.item._featureId:', this.item._featureId, 'this.printCheckboxes.includes(this.item_featureId):', this.printCheckboxes.includes(this.item_featureId));
+      document.getElementById('checkbox'+this.item._featureId).checked = true;
     }
 
     // window.addEventListener('keydown', (e) => {

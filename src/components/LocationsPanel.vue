@@ -375,6 +375,8 @@ export default {
     }
     this.searchDistance = value;;
     this.$store.commit('setSearchDistance', value);
+
+    this.printCheckboxes = this.$store.state.printCheckboxes;
   },
   computed: {
     showPrintAndShare() {
@@ -734,11 +736,11 @@ export default {
     clearBadAddress() {
       this.$emit('clear-bad-address');
     },
-    clickedSinglePrint(item) {
-      console.log('clickedSinglePrint is running');
-      this.$store.commit('setPrintCheckboxes', [ item._featureId ]);
-      this.$router.push({ name: 'printView'  });
-    },
+    // clickedSinglePrint(item) {
+    //   console.log('clickedSinglePrint is running');
+    //   this.$store.commit('setPrintCheckboxes', [ item._featureId ]);
+    //   this.$router.push({ name: 'printView'  });
+    // },
     clickedPrint() {
       this.$store.commit('setSelectedZipcode', null);
       console.log('clickedPrint is running');
