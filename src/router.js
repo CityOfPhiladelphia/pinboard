@@ -45,7 +45,8 @@ function hasQueryParams(route) {
 }
 
 router.beforeEach((to, from, next) => {
-   if(!hasQueryParams(to) && hasQueryParams(from)){
+  console.log('router.beforeEach is firing, to:', to, 'from:', from);
+  if(to.name != from.name && !hasQueryParams(to) && hasQueryParams(from)){
     next({name: to.name, query: from.query});
   } else {
     next()

@@ -43,7 +43,7 @@ export default {
 
       } else {
         if (currentQueryKeys.includes('address')) {
-          console.log('item:', item);
+          // console.log('item:', item);
           if (item.distance) {
             val = item.distance.toFixed(2) + ' miles - ' + item[valOrGetter];
           } else {
