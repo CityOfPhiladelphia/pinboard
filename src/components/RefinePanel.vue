@@ -1072,14 +1072,16 @@ export default {
 
       if (!this.$config.refine || this.$config.refine && ['categoryField_array', 'categoryField_value'].includes(this.$config.refine.type)) {
         console.log('in getRefineSearchList, refineData:', refineData);
-        refineData.forEach((item) => {
-          if (this.$config.refine) {
-            let value = this.$config.refine.value(item);
-            service += `${value},`;
-          } else if (item.services_offered) {
-            service += `${item.services_offered},`;
-          }
-        });
+        if(refineData) {
+          refineData.forEach((item) => {
+            if (this.$config.refine) {
+              let value = this.$config.refine.value(item);
+              service += `${value},`;
+            } else if (item.services_offered) {
+              service += `${item.services_offered},`;
+            }
+          });
+        }
 
         // console.log('RefinePanel.vue, service:', service);
         let serviceArray = service.split(/(,|;)/);

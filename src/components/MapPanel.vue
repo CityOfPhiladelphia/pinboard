@@ -658,7 +658,12 @@ export default {
           row.lon = row.fields.lon;
         }
 
-        let projection = this.$config.projection;
+        
+        let projection;
+        if (this.$config.projection) {
+          projection = this.$config.projection;
+        }
+
         if (row.lat) {
           // console.log('MapPanel if row.lat is running, row.lat:', row.lat, 'row.lon:', row.lon, 'color:', color, 'size:', size);
           // console.log('if row.lat is running, color:', color, 'markerSize:', markerSize);
