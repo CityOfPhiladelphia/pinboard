@@ -466,6 +466,7 @@ export default {
     geojsonForResource() {
       let selectedResource = this.$store.state.selectedResources[0];
       let selectedCurrentMapData = this.currentMapData.filter(test => test._featureId == selectedResource);
+      console.log('geojsonForResource computed, selectedResource:', selectedResource);
       let coordinates = [];
       let result = [];
       if (this.$config && this.$config.geojsonForResource) {
@@ -660,7 +661,7 @@ export default {
 
         
         let projection;
-        if (this.$config.projection) {
+        if (this.$config && this.$config.projection) {
           projection = this.$config.projection;
         }
 
@@ -1020,7 +1021,7 @@ export default {
     },
 
     geojsonForResource(nextGeojson) {
-      // console.log('watch geojsonForResource is firing, nextGeojson[0]:', nextGeojson[0]);
+      console.log('watch geojsonForResource is firing, nextGeojson[0]:', nextGeojson[0]);
       if (this.$store.map) {
         // console.log('watch geojsonForResource is running, map.getStyle():', this.$store.map.getStyle(), 'map.getStyle().layers:', this.$store.map.getStyle().layers, 'nextGeojson:', nextGeojson);
       }
