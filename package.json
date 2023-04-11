@@ -20,7 +20,7 @@
     "@fortawesome/free-brands-svg-icons": "^5.15.4",
     "@phila/phila-ui": "2.1.13",
     "@phila/vue-datafetch": "https://github.com/CityOfPhiladelphia/phila-vue-datafetch#7f7b3c6",
-    "@phila/vue-mapping": "3.1.14",
+    "@phila/vue-mapping": "https://github.com/CityOfPhiladelphia/phila-vue-mapping#5b424a82f309632719040294f92b2b066f724684",
     "animate.css": "^4.1.1",
     "axios": "^0.19.0",
     "bulma": "^0.9.4",
