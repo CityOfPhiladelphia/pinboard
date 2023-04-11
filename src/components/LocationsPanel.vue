@@ -65,7 +65,10 @@
             </div>
           </div>
 
-          <div class="column is-6-desktop is-12-tablet mr-0 mb-0 pb-0 columns loc-panel-widget">
+          <div
+            v-if="anySearch"
+            class="column is-6-desktop is-12-tablet mr-0 mb-0 pb-0 columns loc-panel-widget"
+          >
             <div
               class="column is-6-tablet is-7-desktop p-0"
             >
@@ -380,6 +383,15 @@ export default {
     this.printCheckboxes = this.$store.state.printCheckboxes;
   },
   computed: {
+    anySearch() {
+      let value = true;
+      if (Object.keys(this.$config).includes('anySearch')) {
+        value = this.$config.anySearch
+      } //else {
+      //   value = true;
+      // }
+      return value;
+    },
     showPrintAndShare() {
       let value = false;
       if (this.$route.name == 'home') {
