@@ -729,9 +729,20 @@ export default {
         width: "200px",
       }
     }
+
+    window.addEventListener("popstate", (event) => {
+      console.log('popstate event:', document.location, event.state);
+      // this.handlePopStateChange();
+      // this.filterPoints();
+      location.reload();
+    });
   },
 
   methods: {
+    // handlePopStateChange() {
+    //   console.log('Main.vue handlePopStateChange is running');
+    //   location.reload();
+    // },
     watchedSubmittedCheckboxValue() {
       console.log('Main.vue watchedSubmittedCheckboxValue is running');
       this.submittedCheckboxValue = null;
