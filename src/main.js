@@ -14,7 +14,8 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import fonts from './fa';
 
 import App from './App.vue';
-import router from './router';
+// import router from './router';
+import Router from 'vue-router';
 
 import ResponsiveHelpers from './plugins/ResponsiveHelpers.js';
 
@@ -99,6 +100,10 @@ function initPinboard(clientConfig) {
   }
 }
 
+function hasQueryParams(route) {
+  return !!Object.keys(route.query).length
+}
+
 function finishInit(config) {
   console.log('finishInit is running, config:', config);
 
@@ -128,6 +133,41 @@ function finishInit(config) {
     i18nData = {};
   }
   const i18n = new VueI18n(i18nData);
+
+  Vue.use(Router);
+
+  // console.log('process.env.VUE_APP_PUBLIC_PATH:', process.env.VUE_APP_PUBLIC_PATH);
+
+  let publicPath = '';
+  if (config.publicPath) {
+    publicPath = config.publicPath;
+  }
+
+  const router = new Router({
+    mode: 'history',
+    routes: [
+      {
+        path: publicPath + '/',
+        name: 'home',
+        component: () => import('./pages/Main'),
+      },
+      {
+        path: publicPath + '/print-view/',
+        name: 'printView',
+        component: () => import('./pages/PrintView'),
+      },
+    ],
+  });
+  
+  router.beforeEach((to, from, next) => {
+    console.log('router.beforeEach is firing, to:', to, 'from:', from);
+    if(to.name != from.name && !hasQueryParams(to) && hasQueryParams(from)){
+      next({name: to.name, query: from.query});
+    } else {
+      next()
+    }
+  })
+
 
   Vue.use(VueGtag, {
     config:{
