@@ -199,7 +199,7 @@
             text-key="textLabel"
             value-key="data"
             :small="!isMobile"
-            :num-of-columns="calculateColumns(refineList[ind]['radio'])"
+            :num-of-columns="calculateColumns(refineList[ind]['radio'], ind)"
           >
             <div
               :class="isMobile ? 'large-label': 'small-label'"
@@ -217,7 +217,7 @@
             text-key="textLabel"
             value-key="data"
             shrinkToFit="true"
-            :num-of-columns="calculateColumns(refineList[ind]['checkbox'])"
+            :num-of-columns="calculateColumns(refineList[ind]['checkbox'], ind)"
           >
             <div
               :class="isMobile ? 'large-label': 'small-label'"
@@ -284,7 +284,7 @@
                 text-key="textLabel"
                 value-key="data"
                 :small="!isMobile"
-                :num-of-columns="calculateColumns(refineList[ind]['radio'])"
+                :num-of-columns="calculateColumns(refineList[ind]['radio'], ind)"
               >
                 <div
                   slot="label"
@@ -300,7 +300,7 @@
                 text-key="textLabel"
                 value-key="data"
                 shrinkToFit="true"
-                :num-of-columns="calculateColumns(refineList[ind]['checkbox'])"
+                :num-of-columns="calculateColumns(refineList[ind]['checkbox'], ind)"
               >
                 <div
                   slot="label"
@@ -920,11 +920,19 @@ export default {
       }
       return value;
     },
-    calculateColumns(ind) {
-      // console.log('calculateColumns is running, ind:', ind, 'this.$config.refine.columns', this.$config.refine.columns);
+    calculateColumns(ind, indName) {
+      console.log('calculateColumns is running, indName:', indName, 'ind:', ind, 'this.$config.refine.columns', this.$config.refine.columns, 'this.$config.refine.multipleFieldGroups', this.$config.refine.multipleFieldGroups);
       let value;
-      if (this.isMobile || this.$config.refine.columns) {
+      // if (this.isMobile || this.$config.refine.columns) {
+      if (this.isMobile) {
         value = 1;
+      } else if (this.$config.refine.columns) {
+        if (this.$config.refine.multipleFieldGroups[indName].columns) {
+          console.log('calculateColumns is running, this.$config.refine.multipleFieldGroups[indName].columns:', this.$config.refine.multipleFieldGroups[indName].columns);
+          value = this.$config.refine.multipleFieldGroups[indName].columns;
+        } else {
+          value = 1;
+        }
       } else {
         value = Object.keys(ind).length;
       }
