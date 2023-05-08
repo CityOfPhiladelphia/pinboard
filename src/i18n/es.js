@@ -56,4 +56,5 @@ export default {
   miles: 'millas',
   noLocations: 'No hay ubicaciones seleccionadas para la impresión',
   copiedUrl: 'URL copiada al portapapeles',
+  share: 'Compartir',
 };

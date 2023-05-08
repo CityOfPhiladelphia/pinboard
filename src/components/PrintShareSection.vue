@@ -9,7 +9,9 @@
           @click="clickedShare"
         >
           <font-awesome-icon icon="share-alt" />
-          <span class="card-button-text">Share</span>
+          <span class="card-button-text">
+            {{ $t('share') }}
+          </span>
         </button>
         <button
           v-if="!isMobile"
@@ -17,7 +19,9 @@
           @click="clickedPrint"
         >
           <font-awesome-icon icon="print" />
-          <span class="card-button-text">Print</span>
+          <span class="card-button-text">
+            {{ $t('print') }}
+          </span>
         </button>
       </div>
   </div>

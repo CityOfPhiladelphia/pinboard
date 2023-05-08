@@ -56,4 +56,5 @@ export default {
   miles: 'миль',
   noLocations: 'Места для печати не выбраны',
   copiedUrl: 'URL-адрес скопирован в буфер обмена',
+  share: 'Поделись',
 };
