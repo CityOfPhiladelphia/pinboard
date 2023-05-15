@@ -55,7 +55,7 @@
         @click="handleMarkerClick"
       >
         <MglPopup
-          v-if="latestSelectedResourceFromMap === marker._featureId"
+          v-if="latestSelectedResourceFromMap === marker._featureId || latestSelectedResourceFromExpand === marker._featureId"
           :showed="true"
         >
           <div
@@ -80,7 +80,7 @@
         @click="handleMarkerClick"
       >
         <MglPopup
-          v-if="latestSelectedResourceFromMap === marker._featureId"
+          v-if="latestSelectedResourceFromMap === marker._featureId || latestSelectedResourceFromExpand === marker._featureId"
           :showed="true"
         >
           <div
@@ -882,7 +882,7 @@ export default {
   watch: {
     selectedResources(nextSelectedResources) {
       if (this.latestSelectedResourceFromExpand == null && this.latestSelectedResourceFromMap == null) {
-        this.$store.commit('setLatestSelectedResourceFromMap', nextSelectedResources[0]);
+        this.$store.commit('setLatestSelectedResourceFromExpand', nextSelectedResources[0]);
       }
     },
     lastPinboardSearchMethod(nextLastPinboardSearchMethod) {
@@ -955,7 +955,8 @@ export default {
     latestSelectedResourceFromExpand(nextLatestSelectedResource) {
       // console.log('watch latestSelectedResourceFromExpand:', nextLatestSelectedResource, 'this.$appType:', this.$appType, 'this.$store.state.sources[this.$appType].data:', this.$store.state.sources[this.$appType].data);
       if (nextLatestSelectedResource) {
-        // console.log('watch latestSelectedResourceFromExpand, in if nextLatestSelectedResource:', nextLatestSelectedResource);
+        // this.$store.commit('setLatestSelectedResourceFromMap', null);
+        console.log('watch latestSelectedResourceFromExpand, in if nextLatestSelectedResource:', nextLatestSelectedResource);
         let rows;
         const map = this.$store.map;
 
@@ -995,7 +996,8 @@ export default {
             map.setCenter([ dataValue[0].latlng[1], dataValue[0].latlng[0] ], this.geocodeZoom);
           }
         }
-        this.$store.commit('setLatestSelectedResourceFromMap', nextLatestSelectedResource);
+        // this.$store.commit('setLatestSelectedResourceFromMap', nextLatestSelectedResource);
+        this.$store.commit('setLatestSelectedResourceFromMap', null);
 
       } else {
         // console.log('watch latestSelectedResourceFromExpand, in else nextLatestSelectedResource:', nextLatestSelectedResource);
@@ -1004,7 +1006,7 @@ export default {
     },
     latestSelectedResourceFromMap(nextLatestSelectedResource) {
       let test = document.getElementById('customPopup');
-      this.$store.commit('setLatestSelectedResourceFromExpand', nextLatestSelectedResource);
+      // this.$store.commit('setLatestSelectedResourceFromExpand', nextLatestSelectedResource);
       // console.log('in watch latestSelectedResourceFromMap, test:', test);
     },
     cyclomediaActive(value) {
