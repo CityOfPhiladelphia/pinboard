@@ -358,31 +358,43 @@ export default {
   },
   data() {
     return {
-      searchDistance: 3,
-      searchDistanceOptions: [ '1', '2', '3', '4', '5' ],
+      // searchDistance: '3' + this.$i18n.messages[this.i18nLocale]['miles'],
+      searchDistance: null,
+      // searchDistanceOptions: [ '1 mile', '2', '3', '4', '5' ],
       sortBy: 'Alphabetically',
       printCheckboxes: [],
       selectAllCheckbox: false,
     };
   },
   mounted() {
-    // console.log('LocationsPanel.vue mounted, this.$config:', this.$config);
+    console.log('LocationsPanel.vue mounted, this.$config:', this.$config, 'this.i18nLocale:', this.i18nLocale);
     if (!this.$config.greeting && (!this.$config.customComps || !this.$config.customComps.customGreeting)) {
       this.$store.commit(setShouldShowGreeting, false);
     }
 
-    let value;
+    let value, valueWithMiles;
     if (this.$config.searchBar.searchDistance) {
       value = this.$config.searchBar.searchDistance;
+      valueWithMiles = this.$config.searchBar.searchDistance + ' ' + this.$i18n.messages[this.i18nLocale]['miles'];
     } else {
-      value = 1
+      value = 1;
+      valueWithMiles = 1 + ' ' + this.$i18n.messages[this.i18nLocale]['mile'];
     }
-    this.searchDistance = value;;
+    this.searchDistance = valueWithMiles;
     this.$store.commit('setSearchDistance', value);
 
     this.printCheckboxes = this.$store.state.printCheckboxes;
   },
   computed: {
+    searchDistanceOptions() {
+      return [
+        '1 ' + this.$i18n.messages[this.i18nLocale]['mile'],
+        '2 ' + this.$i18n.messages[this.i18nLocale]['miles'],
+        '3 ' + this.$i18n.messages[this.i18nLocale]['miles'],
+        '4 ' + this.$i18n.messages[this.i18nLocale]['miles'],
+        '5 ' + this.$i18n.messages[this.i18nLocale]['miles']
+      ];
+    },
     anySearch() {
       let value = true;
       if (Object.keys(this.$config).includes('anySearch')) {
@@ -412,8 +424,14 @@ export default {
       }
       return value;
     },
+    database() {
+      return this.$store.state.databaseWithoutHiddenItems;
+    },
+    databaseLength() {
+      return this.database.length
+    },
     summarySentenceStart() {
-      let sentence = this.$i18n.messages[this.i18nLocale]['showing'] + ' ' + this.currentData.length + ' ' + this.$i18n.messages[this.i18nLocale]['resources'];
+      let sentence = this.$i18n.messages[this.i18nLocale]['showing'] + ' ' + this.currentData.length + ' ' + this.$i18n.messages[this.i18nLocale]['outOf'] + ' ' + this.databaseLength + ' ' + this.$i18n.messages[this.i18nLocale]['results'];
       if (this.selectedKeywords.length || this.zipcodeEntered || this.addressEntered || this.selectedServices.length) {
         sentence += ' ' + this.$i18n.messages[this.i18nLocale]['for'] + ' '; 
       }
@@ -435,13 +453,13 @@ export default {
         sentence += ' - ';
         sentence += this.searchDistance;
 
-        let word;
-        if (this.searchDistance == 1) {
-          word = ' ' + this.$i18n.messages[this.i18nLocale]['mile'];
-        } else {
-          word = ' ' + this.$i18n.messages[this.i18nLocale]['miles'];
-        }
-        sentence += word;
+        // let word;
+        // if (this.searchDistance == 1) {
+        //   word = ' ' + this.$i18n.messages[this.i18nLocale]['mile'];
+        // } else {
+        //   word = ' ' + this.$i18n.messages[this.i18nLocale]['miles'];
+        // }
+        // sentence += word;
 
         if (this.selectedServices.length) {
           sentence += ': ';
@@ -452,13 +470,13 @@ export default {
         sentence += ' - ';
         sentence += this.searchDistance;
 
-        let word;
-        if (this.searchDistance == 1) {
-          word = ' ' + this.$i18n.messages[this.i18nLocale]['mile'];
-        } else {
-          word = ' ' + this.$i18n.messages[this.i18nLocale]['miles'];
-        }
-        sentence += word;
+        // let word;
+        // if (this.searchDistance == 1) {
+        //   word = ' ' + this.$i18n.messages[this.i18nLocale]['mile'];
+        // } else {
+        //   word = ' ' + this.$i18n.messages[this.i18nLocale]['miles'];
+        // }
+        // sentence += word;
         
         if (this.selectedServices.length) {
           sentence += ': ';
@@ -674,6 +692,15 @@ export default {
     },
   },
   watch: {
+    i18nLocale(nexti18nLocale){
+      let value = this.searchDistance.split(' ')[0];
+      console.log('i18nLocale change, nexti18nLocale:', nexti18nLocale, 'value:', value);
+      if (value == 1) {
+        this.searchDistance = value + ' ' + this.$i18n.messages[this.i18nLocale]['mile'];
+      } else {
+        this.searchDistance = value + ' ' + this.$i18n.messages[this.i18nLocale]['miles'];
+      }
+    },
     searchDistance(nextSearchDistance) {
       this.$store.commit('setSearchDistance', parseInt(nextSearchDistance));
     },

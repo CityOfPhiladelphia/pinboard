@@ -57,4 +57,5 @@ export default {
   noLocations: 'No hay ubicaciones seleccionadas para la impresión',
   copiedUrl: 'URL copiada al portapapeles',
   share: 'Compartir',
+  results: 'resultados',
 };

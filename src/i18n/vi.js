@@ -57,4 +57,5 @@ export default {
   noLocations: 'Không có vị trí nào được chọn để in',
   copiedUrl: 'URL được sao chép vào clipboard',
   share: 'Chia sẻ',
+  results: 'các kết quả',
 };

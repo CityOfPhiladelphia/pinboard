@@ -57,4 +57,5 @@ export default {
   noLocations: "Aucun emplacement n'a été sélectionné pour l'impression",
   copiedUrl: 'URL copiée dans le presse-papiers',
   share: 'Partager',
+  results: 'résultats',
 };

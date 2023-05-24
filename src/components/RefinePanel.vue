@@ -96,7 +96,8 @@
           class="box-value column is-narrow"
           @click="closeAddressBox(addressEntered)"
         >
-          {{ $t(getBoxValue(addressEntered)) + ' - ' + searchDistance }}
+          <!-- {{ $t(getBoxValue(addressEntered)) + ' - ' + searchDistance }} -->
+          {{ $t(getBoxValue(addressEntered)) }}
           <font-awesome-icon
             class="fa-x"
             :icon="[timesIconWeight,'times']"
@@ -701,11 +702,7 @@ export default {
       return value;
     },
     database() {
-      if (this.$store.state.sources[this.$appType]) {
-        if (this.$store.state.sources[this.$appType].data) {
-          return this.$store.state.sources[this.$appType].data.rows || this.$store.state.sources[this.$appType].data.features || this.$store.state.sources[this.$appType].data;
-        }
-      }
+      return this.$store.state.databaseWithoutHiddenItems;
     },
     i18nLocale() {
       return this.$i18n.locale;

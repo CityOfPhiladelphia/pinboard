@@ -57,4 +57,5 @@ export default {
   noLocations: 'Места для печати не выбраны',
   copiedUrl: 'URL-адрес скопирован в буфер обмена',
   share: 'Поделись',
+  results: 'результаты',
 };

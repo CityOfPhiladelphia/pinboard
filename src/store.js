@@ -32,6 +32,7 @@ function createStore(config) {
         selectedPopupLayer: null,
       },
       bufferList: null,
+      databaseWithoutHiddenItems: [],
       currentData: [],
       // selectedServices: [],
       // selectedKeywords: [],
@@ -48,6 +49,9 @@ function createStore(config) {
       refineList: {},
     },
     mutations: {
+      setDatabaseWithoutHiddenItems(state, payload) {
+        state.databaseWithoutHiddenItems = payload;
+      },
       setSearchDistance(state, payload) {
         state.searchDistance = payload;
       },

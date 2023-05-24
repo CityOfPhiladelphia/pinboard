@@ -515,6 +515,9 @@ export default {
     },
   },
   watch: {
+    database(nextDatabase) {
+      this.$store.commit('setDatabaseWithoutHiddenItems', nextDatabase);
+    },
     searchDistance(nextSearchDistance) {
       console.log('Main.vue watch searchDistance, nextSearchDistance:', nextSearchDistance);
       if (this.lastPinboardSearchMethod == 'geocode') {
@@ -835,6 +838,10 @@ export default {
       this.$store.commit('setCurrentSearch', val);
       this.$store.commit('setZipcodeCenter', []);
       this.$controller.handleSearchFormSubmit(val, searchBarType);
+
+      if (this.$store.state.shouldShowGreeting && !this.isMobile) {
+        this.$store.commit('setRefineOpen', true);
+      }
     },
     clearSearchTriggered() {
       let startQuery = { ...this.$route.query };
@@ -1432,6 +1439,15 @@ html, body {
 
 .refine-panel-holder-open {
   background: $ghost-grey;
+  border-width: 0px 0px 2px 0px;
+  border-style: solid;
+  border-color: #a1a1a1;
+}
+
+.refine-panel-holder {
+  border-width: 0px 0px 2px 0px;
+  border-style: solid;
+  border-color: #a1a1a1;
 }
 
 .locations-and-map-panels-holder {

@@ -57,4 +57,5 @@ export default {
   noLocations: '未选择要打印的位置',
   copiedUrl: 'URL 已复制到剪贴板',
   share: '分享',
+  results: '结果',
 };
