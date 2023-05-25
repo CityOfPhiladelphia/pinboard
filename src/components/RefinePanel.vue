@@ -780,7 +780,8 @@ export default {
           }
         }
       }
-      this.$emit('watchedSubmittedCheckboxValue');
+      console.log('RefinePanel about to emit watchedSubmittedCheckboxValue');
+      this.$emit('watched-submitted-checkbox-value');
     },
     // keywordsEntered(nextKeywordsEntered) {
     //   console.log('watch keywordsEntered, nextKeywordsEntered:', nextKeywordsEntered);
@@ -983,6 +984,7 @@ export default {
       this.$store.commit('setBufferShape', null);
     },
     closeKeywordsBox(box) {
+      console.log('closeKeywordsBox is running');
       let startQuery = { ...this.$route.query };
       let keywordsArray;
       if (startQuery.keyword && typeof startQuery.keyword === 'string' && startQuery.keyword != '') {
@@ -1010,8 +1012,10 @@ export default {
       this.$store.commit('setSelectedKeywords', keywordsArray);
     },
     closeBox(box) {
+      console.log('closeBox is running');
       if (this.refineType === 'categoryField_value') {
         this.$data.selectedList = [];
+        // this.$emit('watched-submitted-checkbox-value');
         return;
       }
       let section = box.split('_')[0];
@@ -1020,16 +1024,19 @@ export default {
         // console.log('it\'s there in selectedList');
         let boxIndex = this.$data.selectedList[section].indexOf(box);
         this.$data.selectedList[section].splice(boxIndex, 1);
+        // this.$emit('watched-submitted-checkbox-value');
       } else if (this.$data.selectedList['radio_' + section]) {
         // console.log('1 it\'s there in selectedList WITH radio, box:', box, 'this.$data.selectedList["radio_" + section]:', this.$data.selectedList['radio_' + section]);
         let test = 'radio_' + section;
         const { [test]: removedProperty, ...exceptBoth } = this.$data.selectedList;
         this.$data.selectedList = exceptBoth;
         // console.log('2 exceptBoth:', exceptBoth, 'it\'s there in selectedList WITH radio, box:', box, 'this.$data.selectedList["radio_" + section]:', this.$data.selectedList['radio_' + section]);
+        // this.$emit('watched-submitted-checkbox-value');
       } else if (this.$data.selected.includes(section)) {
         // console.log('its in the array');
         let boxIndex = this.$data.selected.indexOf(section);
         this.$data.selected.splice(boxIndex, 1);
+        // this.$emit('watched-submitted-checkbox-value');
       } else {
         // console.log('not there in selected list');
       }

@@ -425,6 +425,22 @@ export default {
         }
         //filter empty values from deleted database
         let finalDB = database.filter(_ => true);
+
+        console.log('Main.vue database computed, finalDB:', finalDB);
+        let languages = []
+        for (let row of finalDB) {
+          if (row.attributes.language) {
+            let langs = row.attributes.language.split(',');
+            // console.log('row.attributes.language:', row.attributes.language, 'langs:', langs);
+            for (let lang of langs) {
+              if (!languages.includes(lang.trim())) {
+                languages.push(lang.trim());
+              }
+            }
+          }
+        }
+        console.log('languages:', languages);
+
         return finalDB;
       }
     },
@@ -709,7 +725,7 @@ export default {
       this.$store.commit('setShouldShowGreeting', false);
     }
 
-
+    // console.log('Main.vue mounted, this.$store.state.sources[this.$appType].data.features:', this.$store.state.sources[this.$appType].data.features)
   },
   created() {
     let root = document.getElementsByTagName( 'html' )[0]; // '0' to assign the first (and only `HTML` tag)
@@ -793,9 +809,14 @@ export default {
           });
           return;
         } else {
+          console.log('in handleSubmit, checking checkboxText');
           if (this.checkboxText.includes(val.toLowerCase())) {
+            console.log('in handleSubmit, checking checkboxText - its there');
             // alert('There is already a checkbox or radio button for that search term');
             this.submittedCheckboxValue = val;
+            if (this.$store.state.shouldShowGreeting && !this.isMobile) {
+              this.$store.commit('setRefineOpen', true);
+            }
             return;
           }
           this.$store.commit('setLastPinboardSearchMethod', 'keyword');
@@ -917,7 +938,7 @@ export default {
       this.$store.commit('setZipcodeCenter', zipcodeCenter.geometry.coordinates);
     },
     filterPoints() {
-      // console.log('App.vue filterPoints is running, this.database:', this.database);
+      console.log('App.vue filterPoints is running, this.database:', this.database);
       const filteredRows = [];
 
       if (!this.database) {
