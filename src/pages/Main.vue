@@ -98,6 +98,7 @@
           @handle-search-form-submit="handleSubmit"
           @clear-search="clearSearchTriggered"
           @toggleMap="toggleMap"
+          @geolocate-control-fire="geolocateControlFire"
         />
       </div>
 
@@ -426,7 +427,7 @@ export default {
         //filter empty values from deleted database
         let finalDB = database.filter(_ => true);
 
-        console.log('Main.vue database computed, finalDB:', finalDB);
+        // console.log('Main.vue database computed, finalDB:', finalDB);
         let languages = []
         for (let row of finalDB) {
           if (row.attributes.language) {
@@ -535,7 +536,7 @@ export default {
       this.$store.commit('setDatabaseWithoutHiddenItems', nextDatabase);
     },
     searchDistance(nextSearchDistance) {
-      console.log('Main.vue watch searchDistance, nextSearchDistance:', nextSearchDistance);
+      // console.log('Main.vue watch searchDistance, nextSearchDistance:', nextSearchDistance);
       if (this.lastPinboardSearchMethod == 'geocode') {
         this.runBuffer();
       } else if (this.lastPinboardSearchMethod == 'zipcode') {
@@ -758,6 +759,17 @@ export default {
   },
 
   methods: {
+    geolocateControlFire(e) {
+      // console.log('Pinboard Main.vue geolocateControlFire is running, e.coords.latitude:', e.coords.latitude, 'e.coords.longitude:', e.coords.longitude);
+      if ( e.lng != null) {
+        this.runBuffer({ coordinates: [ e.lng, e.lat ] });
+      } else {
+        console.log('Main.vue geolocateControlFire is running, remove buffer');
+        this.$store.commit('setBufferShape', null);
+        this.$data.buffer = null;
+      }
+      // this.runBuffer({ coordinates: [ e.coords.longitude, e.coords.latitude ] });
+    },
     // handlePopStateChange() {
     //   console.log('Main.vue handlePopStateChange is running');
     //   location.reload();
@@ -915,10 +927,15 @@ export default {
       }
       // console.log('end of setUpData, this.$store.state.sources:', this.$store.state.sources);
     },
-    runBuffer() {
+    runBuffer(coords) {
       let searchDistance = this.searchDistance;
-      console.log('runBuffer is running, searchDistance:', searchDistance, 'this.geocodeGeom:', this.geocodeGeom);
-      if (this.geocodeGeom) {
+      console.log('runBuffer is running, coords:', coords, 'searchDistance:', searchDistance, 'this.geocodeGeom:', this.geocodeGeom);
+      if (coords && coords.coordinates[0] != null) {
+        const geocodePoint = point(coords.coordinates);
+        const pointBuffer = buffer(geocodePoint, searchDistance, { units: 'miles' });
+        this.$data.buffer = pointBuffer;
+        this.$store.commit('setBufferShape', pointBuffer);
+      } else if (this.geocodeGeom) {
         const geocodePoint = point(this.geocodeGeom.coordinates);
         const pointBuffer = buffer(geocodePoint, searchDistance, { units: 'miles' });
         this.$data.buffer = pointBuffer;
@@ -938,7 +955,7 @@ export default {
       this.$store.commit('setZipcodeCenter', zipcodeCenter.geometry.coordinates);
     },
     filterPoints() {
-      console.log('App.vue filterPoints is running, this.database:', this.database);
+      // console.log('App.vue filterPoints is running, this.database:', this.database);
       const filteredRows = [];
 
       if (!this.database) {
