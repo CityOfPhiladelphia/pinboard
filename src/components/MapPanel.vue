@@ -216,7 +216,7 @@
       <MglButtonControl
         :button-id="'buttonId-01'"
         :button-class="watchPositionOn ? 'padding-5 right top-button-1 active' : 'padding-5 right top-button-1 inactive'"
-        :image-link="sitePath + '/images/crosshairs-regular.svg'"
+        :image-link="sitePath + 'images/crosshairs-regular.svg'"
         :image-align="'center'"
         @click="handleGeolocationToggleClick"
       />
