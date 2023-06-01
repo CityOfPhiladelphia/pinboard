@@ -58,4 +58,5 @@ export default {
   copiedUrl: 'URL-адрес скопирован в буфер обмена',
   share: 'Поделись',
   results: 'результаты',
+  outOf: 'из',
 };

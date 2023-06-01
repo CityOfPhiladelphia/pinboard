@@ -58,4 +58,5 @@ export default {
   copiedUrl: 'URL copied to clipboard',
   share: 'Share',
   results: 'results',
+  outOf: 'out of',
 };

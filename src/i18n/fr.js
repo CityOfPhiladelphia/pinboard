@@ -58,4 +58,5 @@ export default {
   copiedUrl: 'URL copiée dans le presse-papiers',
   share: 'Partager',
   results: 'résultats',
+  outOf: 'hors de',
 };

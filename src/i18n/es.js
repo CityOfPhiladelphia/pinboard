@@ -58,4 +58,5 @@ export default {
   copiedUrl: 'URL copiada al portapapeles',
   share: 'Compartir',
   results: 'resultados',
+  outOf: 'fuera de',
 };

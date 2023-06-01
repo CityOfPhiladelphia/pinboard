@@ -58,4 +58,5 @@ export default {
   copiedUrl: 'URL được sao chép vào clipboard',
   share: 'Chia sẻ',
   results: 'các kết quả',
+  outOf: 'ra khỏi',
 };
