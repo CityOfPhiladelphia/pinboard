@@ -539,6 +539,8 @@ export default {
       // console.log('Main.vue watch searchDistance, nextSearchDistance:', nextSearchDistance);
       if (this.lastPinboardSearchMethod == 'geocode') {
         this.runBuffer();
+      } else if (this.$store.state.map.watchPositionOn) {
+        this.runBuffer({coordinates: [ this.$store.state.map.location.lng, this.$store.state.map.location.lat ]});
       } else if (this.lastPinboardSearchMethod == 'zipcode') {
         console.log('Main.vue watch searchDistance and lastPinboardSearchMethod is zipcode');
         let nextZipcodeData = this.zipcodeData;
@@ -761,19 +763,17 @@ export default {
   methods: {
     geolocateControlFire(e) {
       // console.log('Pinboard Main.vue geolocateControlFire is running, e.coords.latitude:', e.coords.latitude, 'e.coords.longitude:', e.coords.longitude);
-      if ( e.lng != null) {
+      if (e.lng != null) {
         this.runBuffer({ coordinates: [ e.lng, e.lat ] });
+        if (this.$store.state.shouldShowGreeting) {
+          this.$store.commit('setShouldShowGreeting', false);
+        }
       } else {
-        console.log('Main.vue geolocateControlFire is running, remove buffer');
+        // console.log('Main.vue geolocateControlFire is running, remove buffer');
         this.$store.commit('setBufferShape', null);
         this.$data.buffer = null;
       }
-      // this.runBuffer({ coordinates: [ e.coords.longitude, e.coords.latitude ] });
     },
-    // handlePopStateChange() {
-    //   console.log('Main.vue handlePopStateChange is running');
-    //   location.reload();
-    // },
     watchedSubmittedCheckboxValue() {
       console.log('Main.vue watchedSubmittedCheckboxValue is running');
       this.submittedCheckboxValue = null;
@@ -1141,7 +1141,11 @@ export default {
             const rowPoint = point([ row.latlng[1], row.latlng[0] ]);
             let geocodedPoint, options, theDistance;
             if (this.$store.state.geocode.data) {
+              // if (this.$store.state.geocode.data.geometry.coordinates[0]) {
               geocodedPoint = point(this.$store.state.geocode.data.geometry.coordinates);
+              // } else if (this.$store.state.map.location.lat != null) {
+              //   geocodedPoint = point([ this.$store.state.map.location.lng, this.$store.state.map.location.lat ]);
+              // }
               options = { units: 'miles' };
               theDistance = distance(geocodedPoint, rowPoint, options);
               row.distance = theDistance;
@@ -1150,6 +1154,12 @@ export default {
               let zipcodeCenter = point(this.$store.state.zipcodeCenter);
               options = { units: 'miles' };
               theDistance = distance(zipcodeCenter, rowPoint, options);
+              row.distance = theDistance;
+            } else if (this.$store.state.map.watchPositionOn) {
+              console.log('inside watchPositionOn else if');
+              geocodedPoint = point([ this.$store.state.map.location.lng, this.$store.state.map.location.lat ]);
+              options = { units: 'miles' };
+              theDistance = distance(geocodedPoint, rowPoint, options);
               row.distance = theDistance;
             }
             // console.log('rowPoint:', rowPoint, 'this.$data.buffer:', this.$data.buffer, 'booleanPointInPolygon(rowPoint, this.$data.buffer):', booleanPointInPolygon(rowPoint, this.$data.buffer));

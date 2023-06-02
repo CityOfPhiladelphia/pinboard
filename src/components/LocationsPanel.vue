@@ -541,12 +541,16 @@ export default {
       }
       return address;
     },
+    watchPositionOn() {
+      return this.$store.state.map.watchPositionOn;
+    },
     sortDisabled() {
       let value;
       let geocodeStatus = this.geocodeStatus;
       let zipcodeCenter = this.zipcodeCenter;
+      let watchPositionOn = this.watchPositionOn;
       // console.log('computed sortDisabled, geocodeStatus:', geocodeStatus, 'zipcodeCenter:', zipcodeCenter);
-      if (geocodeStatus || zipcodeCenter[0]) {
+      if (geocodeStatus || zipcodeCenter[0] || watchPositionOn) {
         value = false;
       } else {
         value = true;
@@ -624,7 +628,7 @@ export default {
       let currentQuery = { ...this.$route.query };
       let currentQueryKeys = Object.keys(currentQuery);
 
-      // console.log('LocationsPanel.vue currentData computed, currentQuery:', currentQuery, 'currentQueryKeys:', currentQueryKeys);
+      console.log('LocationsPanel.vue currentData computed, currentQuery:', currentQuery, 'currentQueryKeys:', currentQueryKeys);
 
       let valOrGetter = this.locationInfo.siteName;
       const valOrGetterType = typeof valOrGetter;
@@ -634,6 +638,7 @@ export default {
 
       // if (currentQueryKeys.includes('address')) {
       if (this.sortBy == 'Distance') {
+        console.log('LocationsPanel.vue currentData computed, this.sortBy:', this.sortBy);
         val = 'distance';
         // console.log('it includes address');
         locations.sort(function(a, b) {
@@ -650,6 +655,7 @@ export default {
             return 0;
         });
       } else {
+        console.log('LocationsPanel.vue currentData computed, this.sortBy:', this.sortBy);
         if (valOrGetterType === 'function') {
           const getter = valOrGetter;
           locations.sort(function(a, b) {
