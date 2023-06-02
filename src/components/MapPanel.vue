@@ -212,7 +212,6 @@
         :replace="true"
       />
 
-      <!-- :button-class="'padding-5 right top-button-1'" -->
       <MglButtonControl
         :button-id="'buttonId-01'"
         :button-class="watchPositionOn ? 'padding-5 right top-button-1 active' : 'padding-5 right top-button-1 inactive'"
@@ -220,11 +219,7 @@
         :image-align="'center'"
         @click="handleGeolocationToggleClick"
       />
-        <!-- :button-text="'wawa'" -->
 
-
-      <!-- v-show="$store.state.map.watchPositionOn" -->
-      <!-- :coordinates="[ -75.1632384, 39.9310848 ]" -->
       <MglCircleMarker
         v-if="watchPositionOn"
         v-for="(geolocatedLocation) in geolocatedLocation"
@@ -236,14 +231,6 @@
         :weight="1"
         :opacity="1"
       />
-        <!-- :markerId="'test'" -->
-      <!-- @click="handleMarkerClick" -->
-
-      <!-- <MglGeolocateControl
-        position="bottom-left"
-        :position-options="geolocationPositionOptions"
-        @geolocate-control-fire="handleGeolocateControlFire"
-      /> -->
 
     </MaplibreGlMap>
 
@@ -1212,7 +1199,7 @@ export default {
       console.log('moveToPosition is running, coordinates:', coordinates);
       this.$store.commit('setMapCenter', [ coordinates.lng, coordinates.lat ]);
       this.$store.commit('setMapZoom', 11);
-      this.$store.map.resize();
+      // this.$store.map.resize();
     },
     geofindError() {
       console.log('GeofindError');

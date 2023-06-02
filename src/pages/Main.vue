@@ -761,18 +761,35 @@ export default {
   },
 
   methods: {
-    geolocateControlFire(e) {
+    async geolocateControlFire(e) {
       // console.log('Pinboard Main.vue geolocateControlFire is running, e.coords.latitude:', e.coords.latitude, 'e.coords.longitude:', e.coords.longitude);
       if (e.lng != null) {
-        this.runBuffer({ coordinates: [ e.lng, e.lat ] });
-        if (this.$store.state.shouldShowGreeting) {
-          this.$store.commit('setShouldShowGreeting', false);
-        }
+
+        this.clearGeocodeAndZipcode();
+
+        this.$nextTick(() => {
+          this.$store.commit('setLastPinboardSearchMethod', 'geolocate');
+          this.runBuffer({ coordinates: [ e.lng, e.lat ] });
+          if (this.$store.state.shouldShowGreeting) {
+            this.$store.commit('setShouldShowGreeting', false);
+          }
+        });
+        
       } else {
         // console.log('Main.vue geolocateControlFire is running, remove buffer');
         this.$store.commit('setBufferShape', null);
         this.$data.buffer = null;
       }
+    },
+    async clearGeocodeAndZipcode() {
+      let startQuery = { ...this.$route.query };
+      delete startQuery['address'];
+      delete startQuery['zipcode'];
+      this.$router.push({ query: { ...startQuery }});
+      this.$controller.resetGeocode();
+      this.$store.commit('setSelectedZipcode', null);
+      this.$store.commit('setZipcodeCenter', []);
+      this.$store.commit('setCurrentSearch', null);
     },
     watchedSubmittedCheckboxValue() {
       console.log('Main.vue watchedSubmittedCheckboxValue is running');
@@ -844,6 +861,9 @@ export default {
       } else if (checkVals) {
         console.log('its a zipcode');
         if (this.$config.allowZipcodeSearch) {
+
+          this.$store.commit('setWatchPositionOn', false);
+
           this.$store.commit('setLastPinboardSearchMethod', 'zipcode');
           query = { 'zipcode': val };
           this.searchBarType = 'zipcode';
@@ -851,6 +871,9 @@ export default {
         }
       } else {
         console.log('its an address');
+
+        this.$store.commit('setWatchPositionOn', false);
+
         query = { ...startQuery, ...{ 'address': val }};
         this.$store.commit('setLastPinboardSearchMethod', 'geocode');
         this.searchBarType = 'address';
