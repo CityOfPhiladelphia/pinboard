@@ -226,6 +226,7 @@
       <!-- v-show="$store.state.map.watchPositionOn" -->
       <!-- :coordinates="[ -75.1632384, 39.9310848 ]" -->
       <MglCircleMarker
+        v-if="watchPositionOn"
         v-for="(geolocatedLocation) in geolocatedLocation"
         :coordinates="[ geolocatedLocation.lng, geolocatedLocation.lat ]"
         :key="'test'"
