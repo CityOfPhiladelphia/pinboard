@@ -31,6 +31,7 @@ import configMixin from './util/config-mixin';
 import notifications from './components/notifications';
 
 import zipcodes from './data-sources/zipcodes';
+import holidays from './data-sources/holidays';
 
 
 // baseConfig is right now coming in from within the project
@@ -48,12 +49,13 @@ const clientConfig = {
 };
 
 function initPinboard(clientConfig) {
-  console.log('initPinboard is running 1, clientConfig:', clientConfig, 'i18n:', i18n, 'zipcodes:', zipcodes);
+  console.log('initPinboard is running 1, clientConfig:', clientConfig, 'i18n:', i18n, 'zipcodes:', zipcodes, 'holidays:', holidays);
   clientConfig.pinboard = true;
   clientConfig = mergeDeep(i18n, clientConfig);
   if (clientConfig.searchBar.searchTypes.includes('zipcode')) {
     clientConfig = mergeDeep(zipcodes, clientConfig);
   }
+  clientConfig = mergeDeep(holidays, clientConfig);
   const baseConfigUrl = clientConfig.baseConfig;
   console.log('initPinboard is running 2, clientConfig:', clientConfig, 'baseConfigUrl:', baseConfigUrl);
 
