@@ -143,6 +143,9 @@
 
 import proj4 from 'proj4';
 import SharedFunctions from '../components/mixins/SharedFunctions.vue';
+import { format } from 'date-fns';
+import { parseISO } from 'date-fns';
+import { subWeeks } from 'date-fns';
 
 import 'maplibre-gl/dist/maplibre-gl.css';
 
@@ -169,7 +172,7 @@ import {
   Checkbox,
   LangSelector,
 } from '@phila/phila-ui';
-import { isThisSecond } from 'date-fns';
+// import { isThisSecond } from 'date-fns';
 
 export default {
   name: 'Main',
@@ -529,8 +532,51 @@ export default {
     searchDistance() {
       return this.$store.state.searchDistance;
     },
+    holidays() {
+      return this.$store.state.sources.holidays.data;
+    },
   },
   watch: {
+    holidays(nextHolidays) {
+      console.log('watch holidays, nextHolidays:', nextHolidays);
+      let currentYear = format(new Date(), 'yyyy');
+      let currentMonth = format(new Date(), 'MM');
+      let currentDay = format(new Date(), 'dd');
+      // let dateStart = new Date(currentYear, currentMonth-1, currentDay);
+      let dateStart = new Date(2023, 6, 3);
+      console.log('currentYear:', currentYear, 'currentMonth:', currentMonth, 'currentDay:', currentDay, 'dateStart:', dateStart, 'dateStartUnix:', parseInt(format(dateStart, 'T')));
+      let currentUnixDate = parseInt(format(dateStart, 'T'));
+
+      let holi = {
+        holiday_label: '',
+        start_date: '',
+        coming_soon: false,
+        current: false,
+      };
+
+      for (let holiday of nextHolidays.holidays) {
+        // console.log('holiday.start_date:', holiday.start_date, parseISO(format(holiday.start_date, 'T')));
+        console.log('currentUnixDate:', currentUnixDate, 'holiday.start_date:', holiday.start_date, parseInt(format(parseISO(holiday.start_date), 'T')));
+
+        let oneWeekAhead = parseInt(format(subWeeks(parseISO(holiday.start_date), 1), 'T'));
+        let actualHoliday = parseInt(format(parseISO(holiday.start_date), 'T'));
+
+        if (currentUnixDate >= oneWeekAhead && currentUnixDate < actualHoliday) {
+          holi.holiday_label = holiday.holiday_label;
+          holi.coming_soon = true;
+          holi.start_date = holiday.start_date;
+        } else if (currentUnixDate == actualHoliday) {
+          holi.holiday_label = holiday.holiday_label;
+          holi.current = true;
+          holi.start_date = holiday.start_date;
+        }
+
+        // console.log('holiday.start_date:', holiday.start_date, format(holiday.start_date, 'T'));
+      }
+      console.log('watch holidays, holi.holiday_label:', holi.holiday_label, 'holi.coming_soon:', holi.coming_soon, 'holi.current:', holi.current);
+      this.$store.commit('setHoliday', holi);
+
+    },
     database(nextDatabase) {
       this.$store.commit('setDatabaseWithoutHiddenItems', nextDatabase);
     },
@@ -724,6 +770,19 @@ export default {
     if (this.$config.app.skipGreeting) {
       this.$store.commit('setShouldShowGreeting', false);
     }
+
+    // let currentYear = format(new Date(), 'yyyy');
+    // let currentMonth = format(new Date(), 'MM');
+    // let currentDay = format(new Date(), 'dd');
+    // // let dateStart = new Date(currentYear, currentMonth-1, currentDay);
+    // let dateStart = new Date(2023, 5, 8);
+    // console.log('currentYear:', currentYear, 'currentMonth:', currentMonth, 'currentDay:', currentDay, 'dateStart:', dateStart, 'dateStartUnix:', parseInt(format(dateStart, 'T')));
+    // let currentUnixDate = parseInt(format(dateStart, 'T'));
+
+    // let holidays = this.$store.state.sources.holidays;
+
+    // console.log('Main.vue mounted, currentUnixDate:', currentUnixDate, 'holidays:', holidays);
+
 
     // console.log('Main.vue mounted, this.$store.state.sources[this.$appType].data.features:', this.$store.state.sources[this.$appType].data.features)
   },

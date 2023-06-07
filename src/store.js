@@ -47,8 +47,17 @@ function createStore(config) {
       },
       zipcodeBufferShape: null,
       refineList: {},
+      holiday: {
+        holiday_label: '',
+        coming_soon: false,
+        current: false,
+        start_date: '',
+      },
     },
     mutations: {
+      setHoliday(state, payload) {
+        state.holiday = payload;
+      },
       setDatabaseWithoutHiddenItems(state, payload) {
         state.databaseWithoutHiddenItems = payload;
       },
