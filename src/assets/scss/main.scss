@@ -22,3 +22,15 @@ h3 {
   margin-bottom: 0px !important;
   line-height: 30px !important;
 }
+
+.alert-modal-list li {
+  padding: 10px 5px 10px 5px;; 
+}
+
+// .alert-modal-list li:nth-child(odd) {
+//   background-color: #cfcfcf;
+// }
+
+.alert-modal-list li:nth-child(even) {
+  background-color: #f0f0f0;
+}

@@ -111,7 +111,7 @@ function createStore(config) {
         const t = format(fullDate,'k:mm');
 
         // console.log('store.js alertCheck, hc:', hc, 'alertHours:', alertHours, 'fullDate:', fullDate, 'year', year, 'month', month, 'date', date, 'day:', day, 't:', t);
-        // console.log('store.js alertCheck, hc:', hc, 'alertHours:', alertHours, 'isalert:', isalert, 'fullDate:', fullDate, 'year', year, 'month', month, 'date', date, 'day:', day, 't:', t);
+        // console.log('store.js alertCheck, hc:', hc, 'alertHours:', alertHours, 'isalertHours:', isalertHours, 'fullDate:', fullDate, 'year', year, 'month', month, 'date', date, 'day:', day, 't:', t);
         let response = {};
 
         if (alertHours.length === 1) {

@@ -29,6 +29,10 @@ Create pull request for changes and merge into `master` branch for travis-ci bui
 
 ## Release Notes
 
+### 1.1.47 - 6/8/2023
+
+* adds css for alert modal
+
 ### 1.1.46 - 3/24/2023
 
 * fixes bug with using maplibre
