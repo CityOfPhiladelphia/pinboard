@@ -24,6 +24,13 @@ h3 {
 }
 
 .alert-modal-list li {
-  margin-top: 10px;
-  margin-bottom: 10px;
+  padding: 10px 5px 10px 5px;; 
+}
+
+// .alert-modal-list li:nth-child(odd) {
+//   background-color: #cfcfcf;
+// }
+
+.alert-modal-list li:nth-child(even) {
+  background-color: #f0f0f0;
 }
