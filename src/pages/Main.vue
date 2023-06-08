@@ -64,6 +64,27 @@
     </div>
 
     <div
+      v-if="showHolidayBanner && holiday.coming_soon || showHolidayBanner && holiday.current"
+      class="holiday-banner"
+    >
+      {{ closureMessage }}
+      <button
+        class="button is-primary is-small is-pulled-right holiday-banner-close-button"
+        @click="closeHolidayBanner"
+      >
+        x
+      </button>
+    </div>
+
+    <!-- <div v-if="holiday.coming_soon">
+      holiday coming soon
+    </div>
+
+    <div v-if="holiday.current">
+      holiday today
+    </div> -->
+
+    <div
       v-show="isMobile && !this.$config.searchBar.hide"
       class="search-bar-container-class"
     >
@@ -216,6 +237,7 @@ export default {
       searchBarType: 'address',
       addressInputPlaceholder: null,
       submittedCheckboxValue: null,
+      showHolidayBanner: true,
     };
   },
   computed: {
@@ -535,6 +557,36 @@ export default {
     holidays() {
       return this.$store.state.sources.holidays.data;
     },
+    holiday() {
+      return this.$store.state.holiday;
+    },
+    futureHolidayClosure() {
+      let holiday = this.$store.state.holiday;
+      if (holiday.coming_soon) {
+        return true;
+      } 
+      return false;
+    },
+    currentHolidayClosure() {
+      let holiday = this.$store.state.holiday;
+      if (holiday.current) {
+        return true;
+      } 
+      return false;
+    },
+    closureMessage() {
+      let holiday = this.$store.state.holiday;
+      let message;
+      if (this.currentHolidayClosure) {
+        message = this.$t('holidayClosure') + holiday.holiday_label + ' ' + holiday.start_date;
+      } else if (this.futureHolidayClosure) {
+        message = this.$t('futureHolidayClosure') + holiday.holiday_label + ' ' + holiday.start_date;
+        // message = this.$t('futureHolidayClosure') + transforms.toLocaleDateString.transform(this.item.attributes.close_holiday_start);
+      } else {
+        message = null;
+      }
+      return message;
+    },
   },
   watch: {
     holidays(nextHolidays) {
@@ -817,6 +869,16 @@ export default {
   },
 
   methods: {
+    closeHolidayBanner() {
+      this.showHolidayBanner = false;
+      // let holiday = {
+      //   holiday_label: '',
+      //   coming_soon: false,
+      //   current: false,
+      //   start_date: '',
+      // };
+      // this.$store.commit('setHoliday', holiday);
+    },
     // handlePopStateChange() {
     //   console.log('Main.vue handlePopStateChange is running');
     //   location.reload();
@@ -1633,6 +1695,14 @@ html, body {
   .overflows {
     overflow-y: visible;
   }
+}
+
+.holiday-banner {
+  background-color: #fff7d0;
+}
+
+.holiday-banner-close-button {
+  height: 28px !important;
 }
 
 </style>
