@@ -64,6 +64,13 @@
     </div>
 
     <div
+      v-if="this.$config.holidays.current"
+      class="holiday-banner has-text-centered"
+    >
+      {{ $t(this.$config.holidays.holidayName) }}
+    </div>
+
+    <div
       v-show="isMobile && !this.$config.searchBar.hide"
       class="search-bar-container-class"
     >
@@ -1282,6 +1289,10 @@ html, body {
   bottom:0;
   width: 100%;
   z-index: 1002;
+}
+
+.holiday-banner {
+  background-color: #f3c613;
 }
 
 </style>
