@@ -63,7 +63,7 @@
       </app-header>
     </div>
 
-    <div
+    <!-- <div
       v-if="showHolidayBanner && holiday.coming_soon || showHolidayBanner && holiday.current"
       class="holiday-banner"
     >
@@ -74,14 +74,6 @@
       >
         x
       </button>
-    </div>
-
-    <!-- <div v-if="holiday.coming_soon">
-      holiday coming soon
-    </div>
-
-    <div v-if="holiday.current">
-      holiday today
     </div> -->
 
     <div
