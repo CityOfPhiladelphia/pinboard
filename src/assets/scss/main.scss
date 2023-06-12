@@ -1,4 +1,8 @@
 // All scss
+
+// $checkbox-border: .5rem solid $electric-blue;
+// $checkradio-focus: 5px dotted $ben-franklin-blue-dark;
+
 @import "@phila/phila-ui/src/assets/styles/scss/all.scss";
 @import "bulma/bulma.sass";
 // @import '~bulma-checkradio';
@@ -23,14 +27,16 @@ h3 {
   line-height: 30px !important;
 }
 
-.alert-modal-list li {
-  padding: 10px 5px 10px 5px;; 
-}
+.app-button {
+  text-transform: uppercase;
+  background-color: #0f4d90;
+  color: #ffffff;
+  padding-left: 32px;
+  padding-right: 32px;
+  // padding-top: 17px;
+  // padding-bottom: 17px;
 
-// .alert-modal-list li:nth-child(odd) {
-//   background-color: #cfcfcf;
-// }
-
-.alert-modal-list li:nth-child(even) {
-  background-color: #f0f0f0;
+  &:hover {
+    color: #ffffff !important;
+  }
 }

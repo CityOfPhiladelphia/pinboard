@@ -14,40 +14,16 @@
       title="addressform"
       @submit.prevent="handleSearchFormSubmit"
     >
-    <!-- alt="test test" -->
-    <!-- aria-label="button" -->
       <textbox
         id="map-textbox"
         v-model="addressEntered"
         :placeholder="placeholderComputed || 'Search by address or keyword'"
         :style="inputStyle"
       />
-      <!-- name="Submit Box" -->
-      <!-- rules="address" -->
-
-      <!-- <div
-        v-if="addressEntered != '' && addressEntered != null"
-        :class="'pvm-search-control-button ' + buttonClass"
-        aria-label="delete button"
-        title="delete button"
-        @click.prevent="handleFormX"
-      >
-        <font-awesome-icon icon="times" size="2x" />
-      </div>
-
-      <div
-        :class="'pvm-search-control-button ' + buttonClass"
-        aria-label="search button"
-        title="search button"
-        @click.prevent="handleSearchFormSubmit(validation)"
-      >
-        <font-awesome-icon icon="search" size="2x" aria-hidden="true" />
-      </div> -->
 
     </form>
-    <!-- </ValidationObserver> -->
 
-    <button
+    <!-- <button
       v-if="addressEntered != '' && addressEntered != null"
       :class="'pvm-search-control-x-button ' + buttonClass"
       aria-label="delete button"
@@ -58,7 +34,7 @@
         icon="times"
         size="2x"
       />
-    </button>
+    </button> -->
 
     <button
       :class="'pvm-search-control-button ' + buttonClass"
@@ -141,12 +117,12 @@ export default {
       } else {
         value = 'all';
       }
-      console.log('searchBarType computed, searchTypes:', searchTypes, 'value:', value);
+      // console.log('searchBarType computed, searchTypes:', searchTypes, 'value:', value);
       return value;
     },
     placeholderComputed() {
       if (this.i18nEnabled) {
-        console.log('placeholderComputed and i18nEnabled, this.searchBarType:', this.searchBarType, 'this.$i18n.messages[this.i18nLocale]:', this.$i18n.messages[this.i18nLocale]);
+        // console.log('placeholderComputed and i18nEnabled, this.searchBarType:', this.searchBarType, 'this.$i18n.messages[this.i18nLocale]:', this.$i18n.messages[this.i18nLocale]);
         return this.$i18n.messages[this.i18nLocale].app.searchPlaceholders[this.searchBarType];
       } else if (this.$config.searchBar && this.$config.searchBar.labelText) {
         if (typeof this.$config.searchBar.labelText === 'string') {
@@ -259,24 +235,16 @@ export default {
     // });
   },
   mounted() {
-    console.log('PhilaUiAddressInput mounted is running, this.currentSearch:', this.currentSearch);
-    if (this.currentSearch) {
-      console.log('inside mounted if');
-      this.addressEntered = this.currentSearch;
-    }
+    // console.log('PhilaUiAddressInput mounted is running, this.currentSearch:', this.currentSearch);
+    // if (this.currentSearch) {
+    //   console.log('inside mounted if');
+    //   this.addressEntered = this.currentSearch;
+    // }
   },
   watch: {
-    currentSearch(nextCurrentSearch) {
-      console.log('watch currentSearch, nextCurrentSearch:', nextCurrentSearch);
-      this.addressEntered = this.currentSearch;
-    },
-    // inputValidation(nextInputValidation) {
-    //   console.log('PhilaUiAddressInput watch inputValidation, nextInputValidation:', nextInputValidation);
-    //   if (nextInputValidation === false) {
-    //     this.$warning(`Oops wawa`, { duration: 2000 });
-    //   } else {
-    //     this.$success(`Success!`, { duration: 1000 });
-    //   }
+    // currentSearch(nextCurrentSearch) {
+    //   console.log('watch currentSearch, nextCurrentSearch:', nextCurrentSearch);
+    //   this.addressEntered = this.currentSearch;
     // },
   },
   methods: {
@@ -286,11 +254,14 @@ export default {
       this.$emit('clear-search');
     },
     async handleSearchFormSubmit() {
-      // console.log('MapAddressInput handleSearchFormSubmit is running, isValid:', isValid);
+      console.log('MapAddressInput handleSearchFormSubmit is running, this.$data.addressEntered:', this.$data.addressEntered);
       let value = this.$data.addressEntered;
       if (value) {
         this.$emit('handle-search-form-submit', value);
       }
+      this.$nextTick(() => {
+        this.$data.addressEntered = '';
+      });
     },
   },
 };

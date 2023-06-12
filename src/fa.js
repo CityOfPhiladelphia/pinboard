@@ -1,3 +1,5 @@
+import * as faMapping from '@phila/vue-mapping/src/fa.js';
+
 /* eslint-disable import/no-extraneous-dependencies */
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons/faSpinner';
@@ -21,6 +23,10 @@ import { faAngleDown } from '@fortawesome/free-solid-svg-icons/faAngleDown';
 import { faAngleUp } from '@fortawesome/free-solid-svg-icons/faAngleUp';
 import { faPlus } from '@fortawesome/free-solid-svg-icons/faPlus';
 import { faMinus } from '@fortawesome/free-solid-svg-icons/faMinus';
+import { faArrowLeft } from '@fortawesome/free-solid-svg-icons/faArrowLeft';
+import { faShareAlt } from '@fortawesome/free-solid-svg-icons/faShareAlt';
+import { faPrint } from '@fortawesome/free-solid-svg-icons/faPrint';
+
 
 // console.log('pinboard fa.js, faSearch:', faSearch, 'faAngleDown:', faAngleDown);
 
@@ -46,6 +52,9 @@ library.add(
   faAngleUp,
   faPlus,
   faMinus,
+  faArrowLeft,
+  faShareAlt,
+  faPrint,
 );
 
 // console.log('pinboard fa.js, library:', library);

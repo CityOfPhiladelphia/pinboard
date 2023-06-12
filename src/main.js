@@ -14,7 +14,8 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import fonts from './fa';
 
 import App from './App.vue';
-import router from './router';
+// import router from './router';
+import Router from 'vue-router';
 
 import ResponsiveHelpers from './plugins/ResponsiveHelpers.js';
 
@@ -28,6 +29,9 @@ import mergeDeep from './util/merge-deep';
 import configMixin from './util/config-mixin';
 
 import notifications from './components/notifications';
+
+import zipcodes from './data-sources/zipcodes';
+import holidays from './data-sources/holidays';
 
 
 // baseConfig is right now coming in from within the project
@@ -45,12 +49,18 @@ const clientConfig = {
 };
 
 function initPinboard(clientConfig) {
-  console.log('initPinboard is running 1, clientConfig:', clientConfig, 'i18n:', i18n);
+  console.log('initPinboard is running 1, clientConfig:', clientConfig, 'i18n:', i18n, 'zipcodes:', zipcodes, 'holidays:', holidays);
+  clientConfig.pinboard = true;
   clientConfig = mergeDeep(i18n, clientConfig);
+  if (clientConfig.searchBar.searchTypes.includes('zipcode')) {
+    clientConfig = mergeDeep(zipcodes, clientConfig);
+  }
+  clientConfig = mergeDeep(holidays, clientConfig);
   const baseConfigUrl = clientConfig.baseConfig;
   console.log('initPinboard is running 2, clientConfig:', clientConfig, 'baseConfigUrl:', baseConfigUrl);
 
   if (!baseConfigUrl || baseConfigUrl === null) {
+    console.log('about to call finishInit');
     finishInit(clientConfig);
   } else {
     // get base config
@@ -68,7 +78,7 @@ function initPinboard(clientConfig) {
 
       // deep merge base config and client config
       const config = mergeDeep(baseConfig, clientConfig);
-      // console.log('config:', config);
+      // console.log('baseConfig section, config:', config);
       finishInit(config);
     }).catch(err => {
       console.error('Error loading base config:', err);
@@ -90,6 +100,10 @@ function initPinboard(clientConfig) {
       // return 'return error';
     });
   }
+}
+
+function hasQueryParams(route) {
+  return !!Object.keys(route.query).length
 }
 
 function finishInit(config) {
@@ -121,6 +135,41 @@ function finishInit(config) {
     i18nData = {};
   }
   const i18n = new VueI18n(i18nData);
+
+  Vue.use(Router);
+
+  // console.log('process.env.VUE_APP_PUBLIC_PATH:', process.env.VUE_APP_PUBLIC_PATH);
+
+  let publicPath = '';
+  if (config.publicPath) {
+    publicPath = config.publicPath;
+  }
+
+  const router = new Router({
+    mode: 'history',
+    routes: [
+      {
+        path: publicPath + '/',
+        name: 'home',
+        component: () => import('./pages/Main'),
+      },
+      {
+        path: publicPath + '/print-view/',
+        name: 'printView',
+        component: () => import('./pages/PrintView'),
+      },
+    ],
+  });
+  
+  router.beforeEach((to, from, next) => {
+    console.log('router.beforeEach is firing, to:', to, 'from:', from);
+    if(to.name != from.name && !hasQueryParams(to) && hasQueryParams(from)){
+      next({name: to.name, query: from.query});
+    } else {
+      next()
+    }
+  })
+
 
   Vue.use(VueGtag, {
     config:{

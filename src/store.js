@@ -16,6 +16,10 @@ function createStore(config) {
   const sources = pvdStore.createSources(config);
   const rfStore = {
     state: {
+      searchDistance: null,
+      zipcodeCenter: [],
+      printCheckboxes: [],
+      lastPinboardSearchMethod: null,
       shouldShowGreeting: true,
       currentSearch: null,
       isMobileOrTablet: isMobileDevice(),
@@ -28,6 +32,7 @@ function createStore(config) {
         selectedPopupLayer: null,
       },
       bufferList: null,
+      databaseWithoutHiddenItems: [],
       currentData: [],
       // selectedServices: [],
       // selectedKeywords: [],
@@ -39,9 +44,51 @@ function createStore(config) {
       alertResponse: null,
       gtag: {
         category: 'unspecified-pinboard-app'
-      }
+      },
+      zipcodeBufferShape: null,
+      refineList: {},
+      holiday: {
+        holiday_label: '',
+        coming_soon: false,
+        current: false,
+        start_date: '',
+      },
     },
     mutations: {
+      setHoliday(state, payload) {
+        state.holiday = payload;
+      },
+      setDatabaseWithoutHiddenItems(state, payload) {
+        state.databaseWithoutHiddenItems = payload;
+      },
+      setSearchDistance(state, payload) {
+        state.searchDistance = payload;
+      },
+      setRefineList(state, payload) {
+        state.refineList = payload;
+      },
+      setZipcodeCenter(state, payload) {
+        state.zipcodeCenter = payload;
+      },
+      setPrintCheckboxes(state, payload) {
+        state.printCheckboxes = payload;
+      },
+      setZipcodeBufferShape(state, payload) {
+        state.zipcodeBufferShape = payload;
+      },
+      setLastPinboardSearchMethod(state, payload) {
+        state.lastPinboardSearchMethod = payload;
+      },
+      setMapBounds(state, payload) {
+        console.log('mapboard store.js setMapBounds is running');
+        // const { northEast, southWest } = payload || {};
+        // state.map.bounds.northEast = northEast;
+        // state.map.bounds.southWest = southWest;
+        state.map.bounds = payload;
+      },
+      setMapBoundsBasedOnShape(state, payload) {
+        state.map.boundsBasedOnShape = payload;
+      },
       // setSelectedServices(state, payload) {
       //   state.selectedServices = payload;
       // },
