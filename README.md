@@ -29,6 +29,30 @@ Create pull request for changes and merge into `master` branch for travis-ci bui
 
 ## Release Notes
 
+### 1.1.47 - 6/8/2023
+
+* adds css for alert modal
+
+### 1.1.46 - 3/24/2023
+
+* fixes bug with using maplibre
+
+### 1.1.45 - 3/24/2023
+
+* uses @phila/vue-mapping with updated maplibre and @phila/vue-datafetch with updated geoserver
+
+### 1.1.44 - 2/22/2023
+
+* fixes bug with apps that do not use circlemarkers
+
+### 1.1.43 - 2/21/2023
+
+* fixes bug with using tab and spacebar to open refine panel
+
+### 1.1.42 - 2/9/2023
+
+* updates packages
+
 ### 1.1.41 - 12/27/2022
 
 * undoes change to filtering of categoryField_array apps
