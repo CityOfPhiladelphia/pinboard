@@ -332,9 +332,11 @@ export default {
     appSubTitle() {
       let value;
       if (this.$config.app.subtitle) {
-        value = this.$config.app.printSubtitle;
+        // value = this.$config.app.printSubtitle;
+        value = this.$config.app.subtitle;
       } else if (this.i18nEnabled) {
-        value = this.$i18n.messages[this.i18nLocale].app.printSubtitle;
+        // value = this.$i18n.messages[this.i18nLocale].app.printSubtitle;
+        value = this.$i18n.messages[this.i18nLocale].app.subtitle;
       }
       return value;
     },
