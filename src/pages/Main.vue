@@ -3,7 +3,7 @@
     id="app"
     class="app"
   >
-    <a href="#main-area" class="skip-to-main-content-link">Skip to main content</a>
+    <!-- <a href="#main-area" class="skip-to-main-content-link">Skip to main content</a> -->
     <PhilaModal
       v-show="isModalOpen"
       @close="closeModal"
