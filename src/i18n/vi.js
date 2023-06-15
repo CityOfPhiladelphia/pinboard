@@ -59,4 +59,5 @@ export default {
   share: 'Chia sẻ',
   results: 'các kết quả',
   outOf: 'ra khỏi',
+  backToHome: 'Quay lại trang chủ',
 };

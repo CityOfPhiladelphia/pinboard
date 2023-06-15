@@ -59,4 +59,5 @@ export default {
   share: 'Compartir',
   results: 'resultados',
   outOf: 'fuera de',
+  backToHome: 'Volver a la página principal',
 };

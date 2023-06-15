@@ -59,4 +59,5 @@ export default {
   share: '分享',
   results: '结果',
   outOf: '出来了',
+  backToHome: '回到主页',
 };

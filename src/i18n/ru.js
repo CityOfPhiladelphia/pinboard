@@ -59,4 +59,5 @@ export default {
   share: 'Поделись',
   results: 'результаты',
   outOf: 'из',
+  backToHome: 'Назад на домашнюю страницу',
 };

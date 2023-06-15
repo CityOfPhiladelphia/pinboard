@@ -59,4 +59,5 @@ export default {
   share: 'Share',
   results: 'results',
   outOf: 'out of',
+  backToHome: 'Back to home',
 };

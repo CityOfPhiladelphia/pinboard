@@ -35,7 +35,7 @@
         class="button no-print"
         @click="clickedBackToHome"
       >
-        Back to home
+        {{ $t(this.$i18n.messages[this.i18nLocale].backToHome) }}
         <!-- @click="clickedPrint" -->
         <!-- <router-link to="/"><font-awesome-icon icon="arrow-left" /> Back to home</router-link> -->
         <!-- print -->
