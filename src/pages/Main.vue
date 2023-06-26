@@ -55,7 +55,7 @@
 
         <lang-selector
           slot="lang-selector-nav"
-          v-if="i18nEnabled"
+          v-if="i18nEnabled && !i18nSelectorHidden"
           :languages="i18nLanguages"
         >
         </lang-selector>
@@ -384,6 +384,13 @@ export default {
     },
     i18nEnabled() {
       if (this.$config.i18n && this.$config.i18n.enabled) {
+        return true;
+      } else {
+        return false;
+      }
+    },
+    i18nSelectorHidden() {
+      if (this.$config.i18n && this.$config.i18n.selectorHidden) {
         return true;
       } else {
         return false;
