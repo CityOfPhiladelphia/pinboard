@@ -597,7 +597,7 @@ export default {
       let currentDay = format(new Date(), 'dd');
       // let dateStart = new Date(currentYear, currentMonth-1, currentDay);
       let dateStart = new Date(2023, 6, 3);
-      console.log('currentYear:', currentYear, 'currentMonth:', currentMonth, 'currentDay:', currentDay, 'dateStart:', dateStart, 'dateStartUnix:', parseInt(format(dateStart, 'T')));
+      // console.log('currentYear:', currentYear, 'currentMonth:', currentMonth, 'currentDay:', currentDay, 'dateStart:', dateStart, 'dateStartUnix:', parseInt(format(dateStart, 'T')));
       let currentUnixDate = parseInt(format(dateStart, 'T'));
 
       let holi = {
@@ -609,7 +609,7 @@ export default {
 
       for (let holiday of nextHolidays.holidays) {
         // console.log('holiday.start_date:', holiday.start_date, parseISO(format(holiday.start_date, 'T')));
-        console.log('currentUnixDate:', currentUnixDate, 'holiday.start_date:', holiday.start_date, parseInt(format(parseISO(holiday.start_date), 'T')));
+        // console.log('currentUnixDate:', currentUnixDate, 'holiday.start_date:', holiday.start_date, parseInt(format(parseISO(holiday.start_date), 'T')));
 
         let oneWeekAhead = parseInt(format(subWeeks(parseISO(holiday.start_date), 1), 'T'));
         let actualHoliday = parseInt(format(parseISO(holiday.start_date), 'T'));
@@ -626,7 +626,7 @@ export default {
 
         // console.log('holiday.start_date:', holiday.start_date, format(holiday.start_date, 'T'));
       }
-      console.log('watch holidays, holi.holiday_label:', holi.holiday_label, 'holi.coming_soon:', holi.coming_soon, 'holi.current:', holi.current);
+      // console.log('watch holidays, holi.holiday_label:', holi.holiday_label, 'holi.coming_soon:', holi.coming_soon, 'holi.current:', holi.current);
       this.$store.commit('setHoliday', holi);
 
     },

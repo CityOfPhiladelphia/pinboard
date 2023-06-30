@@ -911,7 +911,7 @@ export default {
     //   return 'test';
     // },
     getBoxValue(box) {
-      console.log('getBoxValue is running, box:', box);
+      // console.log('getBoxValue is running, box:', box);
       let value;
       if (box) {
         value = box.replace("_", ".");
@@ -937,7 +937,7 @@ export default {
       return value;
     },
     clickedRefineBox(item) {
-      console.log('clickedRefineBox, item:', item, 'typeof item:', typeof item, 'this.$data.selected:', this.$data.selected);
+      // console.log('clickedRefineBox, item:', item, 'typeof item:', typeof item, 'this.$data.selected:', this.$data.selected);
       let data = this.$data;
       let gtag = this.$gtag
       let category = this.$store.state.gtag.category;
