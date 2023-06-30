@@ -50,6 +50,12 @@ export default {
     saturday: "星期六",
     sunday: "星期日",
   },
+  time: {
+    category: '一天中的时间',
+    morning: '早上',
+    afternoon: '下午',
+    evening: '晚上',
+  },
   Yes: '是',
   No: '否',
   Unknown: '未知',

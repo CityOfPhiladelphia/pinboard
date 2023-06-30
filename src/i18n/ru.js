@@ -50,6 +50,12 @@ export default {
     saturday: "Суббота",
     sunday: "Воскресенье",
   },
+  time: {
+    category: 'Время суток',
+    morning: 'Утро',
+    afternoon: 'После полудня',
+    evening: 'Вечер',
+  },
   Yes: 'Да',
   No: 'Нет',
   Unknown: 'Неизвестный',

@@ -50,6 +50,12 @@ export default {
     saturday: "Thứ Bảy",
     sunday: "Chủ nhật",
   },
+  time: {
+    category: 'Thời gian trong ngày',
+    morning: 'Buổi sáng',
+    afternoon: 'Buổi chiều',
+    evening: 'Buổi tối',
+  },
   Yes: 'Có',
   No: 'Không',
   Unknown: 'Không có thông tin',

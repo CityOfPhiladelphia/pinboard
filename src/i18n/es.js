@@ -50,6 +50,12 @@ export default {
     saturday: "Sábado",
     sunday: "Domingo",
   },
+  time: {
+    category: 'Hora del día',
+    morning: 'Mañana',
+    afternoon: 'Tarde',
+    evening: 'Noche',
+  },
   Yes: 'Sí',
   No: 'No',
   Unknown: 'Se desconoce',

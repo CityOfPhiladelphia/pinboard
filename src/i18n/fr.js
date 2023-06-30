@@ -50,6 +50,12 @@ export default {
     saturday: "Samedi",
     sunday: "Dimanche",
   },
+  time: {
+    category: 'Heure de la journée',
+    morning: 'Matin',
+    afternoon: "L'après-midi",
+    evening: 'Soirée',
+  },
   Yes: 'Oui',
   No: 'Non',
   Unknown: 'Inconnu',
