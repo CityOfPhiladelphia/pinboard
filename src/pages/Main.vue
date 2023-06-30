@@ -1169,17 +1169,17 @@ export default {
                   }
                   if (group !== 'keyword' && service.split('_', 1)[0] === group && this.$config.refine.multipleFieldGroups[group]['checkbox']) {
                     // console.log('group:', group, 'this.$config.refine.multipleFieldGroups[group]["dependent"]:', this.$config.refine.multipleFieldGroups[group]['dependent']);
-                    let independentGroups = this.$config.refine.multipleFieldGroups[group]['checkbox'][service.split('_')[1]]['independentGroups'] || [];
+                    let dependentGroups = this.$config.refine.multipleFieldGroups[group]['checkbox'][service.split('_')[1]]['dependentGroups'] || [];
                     // console.log('dependentGroup:', dependentGroup, 'service.split("_", 1)[0]:', service.split('_', 1)[0], 'service.split("_")[1]:', service.split('_')[1], 'group', group, 'this.$config.refine.multipleFieldsGroups[group]', this.$config.refine.multipleFieldsGroups[group], 'this.$config.refine.multipleFieldsGroups[group][service.split("_")[1]]:', this.$config.refine.multipleFieldsGroups[group][service.split('_')[1]]);
                     let getter = this.$config.refine.multipleFieldGroups[group]['checkbox'][service.split('_')[1]]['value'];
-                    let independentServices = [];
+                    let dependentServices = [];
                     for (let service of selectedServices) {
-                      if (independentGroups.length && independentGroups.includes(service.split('_')[0])) {
-                        independentServices.push(service.split('_')[1]);
+                      if (dependentGroups.length && dependentGroups.includes(service.split('_')[0])) {
+                        dependentServices.push(service.split('_')[1]);
                       }
                     }
                     // console.log('getter:', getter, 'dependentGroups:', dependentGroups, 'selectedServices:', selectedServices, 'dependentServices:', dependentServices);
-                    let val = getter(row, independentServices);
+                    let val = getter(row, dependentServices);
                     groupBooleanConditions.push(val);
                   }
                 }
