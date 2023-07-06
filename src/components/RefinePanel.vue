@@ -906,10 +906,10 @@ export default {
       }
       return selectedCategory;
     },
-    findTooltip(test) {
-      console.log('findTooltip is running, test:', test);
-      return 'test';
-    },
+    // findTooltip(test) {
+    //   console.log('findTooltip is running, test:', test);
+    //   return 'test';
+    // },
     getBoxValue(box) {
       console.log('getBoxValue is running, box:', box);
       let value;
@@ -919,14 +919,14 @@ export default {
       return value;
     },
     calculateColumns(ind, indName) {
-      console.log('calculateColumns is running, indName:', indName, 'ind:', ind, 'this.$config.refine.columns', this.$config.refine.columns, 'this.$config.refine.multipleFieldGroups', this.$config.refine.multipleFieldGroups);
+      // console.log('calculateColumns is running, indName:', indName, 'ind:', ind, 'this.$config.refine.columns', this.$config.refine.columns, 'this.$config.refine.multipleFieldGroups', this.$config.refine.multipleFieldGroups);
       let value;
       // if (this.isMobile || this.$config.refine.columns) {
       if (this.isMobile) {
         value = 1;
       } else if (this.$config.refine.columns) {
         if (this.$config.refine.multipleFieldGroups[indName].columns) {
-          console.log('calculateColumns is running, this.$config.refine.multipleFieldGroups[indName].columns:', this.$config.refine.multipleFieldGroups[indName].columns);
+          // console.log('calculateColumns is running, this.$config.refine.multipleFieldGroups[indName].columns:', this.$config.refine.multipleFieldGroups[indName].columns);
           value = this.$config.refine.multipleFieldGroups[indName].columns;
         } else {
           value = 1;

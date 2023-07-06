@@ -212,6 +212,27 @@
         :replace="true"
       />
 
+      <MglButtonControlSmall
+        :button-id="'buttonId-01'"
+        :button-class="watchPositionOn ? 'padding-5 right top-button-1 active' : 'padding-5 right top-button-1 inactive'"
+        :image-link="sitePath + 'images/location-crosshairs-solid.svg'"
+        :image-align="'center'"
+        :position="'bottom-right'"
+        @click="handleGeolocationToggleClick"
+      />
+
+      <MglCircleMarker
+        v-if="watchPositionOn"
+        v-for="(geolocatedLocation) in geolocatedLocation"
+        :coordinates="[ geolocatedLocation.lng, geolocatedLocation.lat ]"
+        :key="'test'"
+        :size="16"
+        :fill-color="'red'"
+        :color="'white'"
+        :weight="1"
+        :opacity="1"
+      />
+
     </MaplibreGlMap>
 
     <!-- <slot
@@ -257,6 +278,9 @@ export default {
     PhilaUiAddressInput,
     MglGeojsonLayer: () => import(/* webpackChunkName: "pvm_MglGeojsonLayer" */'@phila/vue-mapping/src/mapbox/layer/GeojsonLayer'),
     MglFontAwesomeMarker,
+    // MglGeolocateControl: () => import(/* webpackChunkName: "pvm_MglGeolocateControl" */'@phila/vue-mapping/src/mapbox/UI/controls/GeolocateControl'),
+    // MglButtonControl: () => import(/* webpackChunkName: "pvm_MglButtonControl" */'@phila/vue-mapping/src/mapbox/UI/controls/ButtonControl.vue'),
+    MglButtonControlSmall: () => import(/* webpackChunkName: "pvm_MglButtonControl" */'@phila/vue-mapping/src/mapbox/UI/controls/ButtonControlSmall.vue'),
   },
   props: {
     view: {
@@ -269,6 +293,10 @@ export default {
   ],
   data() {
     const data = {
+      geolocationPositionOptions: {
+        enableHighAccuracy: true,
+        timeout: 6000,
+      },
       rows: [],
       accessToken: process.env.VUE_APP_MAPBOX_ACCESSTOKEN,
       addressInputPlaceholder: null,
@@ -466,7 +494,7 @@ export default {
     geojsonForResource() {
       let selectedResource = this.$store.state.selectedResources[0];
       let selectedCurrentMapData = this.currentMapData.filter(test => test._featureId == selectedResource);
-      console.log('geojsonForResource computed, selectedResource:', selectedResource);
+      // console.log('geojsonForResource computed, selectedResource:', selectedResource);
       let coordinates = [];
       let result = [];
       if (this.$config && this.$config.geojsonForResource) {
@@ -877,6 +905,16 @@ export default {
       }
       return overlay;
     },
+    geolocatedLocation() {
+      let location = [];
+      if (this.$store.state.map.location && this.$store.state.map.location.lat) {
+        location.push(this.$store.state.map.location);
+      }
+      return location;
+    },
+    watchPositionOn() {
+      return this.$store.state.map.watchPositionOn;
+    },
 
   },
   watch: {
@@ -1023,7 +1061,7 @@ export default {
     },
 
     geojsonForResource(nextGeojson) {
-      console.log('watch geojsonForResource is firing, nextGeojson[0]:', nextGeojson[0]);
+      // console.log('watch geojsonForResource is firing, nextGeojson[0]:', nextGeojson[0]);
       if (this.$store.map) {
         // console.log('watch geojsonForResource is running, map.getStyle():', this.$store.map.getStyle(), 'map.getStyle().layers:', this.$store.map.getStyle().layers, 'nextGeojson:', nextGeojson);
       }
@@ -1122,6 +1160,59 @@ export default {
     window.removeEventListener('resize', this.handleResize);
   },
   methods: {
+    handleGeolocationToggleClick() {
+      // this.$emit('geolocation-toggle-click');
+      console.log('handleGeolocationToggleClick is running');
+      const watchPositionOn = this.watchPositionOn;
+      // const watchPositionOn = this.$store.state.map.watchPositionOn;
+      console.log('handleGeolocationToggleClick watchPositionOn', watchPositionOn);
+      if (!watchPositionOn) {
+        console.log('handleGeolocationToggleClick watchPositionOn is false, calling navigator watchPosition');
+        this.$store.commit('setWatchPositionOn', true);
+        navigator.geolocation.getCurrentPosition(this.geofindSuccess, this.geofindError, { enableHighAccuracy: true, timeout: 1000, maximumAge: 0, distanceFilter: 5 });
+        // navigator.geolocation.watchPosition(this.geofindSuccess, this.geofindError, { enableHighAccuracy: true, timeout: 1000, maximumAge: 0, distanceFilter: 5 });
+      } else {
+        console.log('handleGeolocationToggleClick watchPositionOn is true, removing buffer');
+        this.$store.commit('setWatchPositionOn', false);
+        const payload = {
+          lat: null,
+          lng: null,
+        };
+        this.$emit('geolocate-control-fire', payload);
+        // this.moveToPosition();
+      }
+    },
+    geofindSuccess(position) {
+      console.log('geofindSuccess is running, position:', position);
+      const payload = {
+        lat: position.coords.latitude,
+        lng: position.coords.longitude,
+      };
+      this.$store.commit('setLocation', payload);
+      this.$emit('geolocate-control-fire', payload);
+      // console.log('latitude', payload.lat, 'longitude', payload.lng);
+      if (this.watchPositionOn) {
+        this.moveToPosition(payload);
+        // this.locationOn = true;
+      }
+    },
+
+    moveToPosition(coordinates) {
+      console.log('moveToPosition is running, coordinates:', coordinates);
+      this.$store.commit('setMapCenter', [ coordinates.lng, coordinates.lat ]);
+      this.$store.commit('setMapZoom', 11);
+      // this.$store.map.resize();
+    },
+    geofindError() {
+      console.log('GeofindError');
+    },
+    handleGeolocateControlFire(e) {
+      console.log('MapPanel.vue handleGeolocateControlFire is running, e:', e);
+      this.$store.commit('setMapCenter', [ e.coords.longitude, e.coords.latitude ]);
+      this.$store.commit('setMapZoom', 11);
+      // this.$store.commit('setMapZoom', this.geocodeZoom);
+      this.$emit('geolocate-control-fire', e);
+    },
     handleSearchFormSubmit(value) {
       this.$emit('handle-search-form-submit', value);
     },
