@@ -212,11 +212,12 @@
         :replace="true"
       />
 
-      <MglButtonControl
+      <MglButtonControlSmall
         :button-id="'buttonId-01'"
         :button-class="watchPositionOn ? 'padding-5 right top-button-1 active' : 'padding-5 right top-button-1 inactive'"
-        :image-link="sitePath + 'images/crosshairs-regular.svg'"
+        :image-link="sitePath + 'images/location-crosshairs-solid.svg'"
         :image-align="'center'"
+        :position="'bottom-right'"
         @click="handleGeolocationToggleClick"
       />
 
@@ -278,7 +279,8 @@ export default {
     MglGeojsonLayer: () => import(/* webpackChunkName: "pvm_MglGeojsonLayer" */'@phila/vue-mapping/src/mapbox/layer/GeojsonLayer'),
     MglFontAwesomeMarker,
     // MglGeolocateControl: () => import(/* webpackChunkName: "pvm_MglGeolocateControl" */'@phila/vue-mapping/src/mapbox/UI/controls/GeolocateControl'),
-    MglButtonControl: () => import(/* webpackChunkName: "pvm_MglButtonControl" */'@phila/vue-mapping/src/mapbox/UI/controls/ButtonControl.vue'),
+    // MglButtonControl: () => import(/* webpackChunkName: "pvm_MglButtonControl" */'@phila/vue-mapping/src/mapbox/UI/controls/ButtonControl.vue'),
+    MglButtonControlSmall: () => import(/* webpackChunkName: "pvm_MglButtonControl" */'@phila/vue-mapping/src/mapbox/UI/controls/ButtonControlSmall.vue'),
   },
   props: {
     view: {
