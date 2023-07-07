@@ -60,4 +60,6 @@ export default {
   results: 'результаты',
   outOf: 'из',
   backToHome: 'Назад на домашнюю страницу',
+  back: 'Назад',
+  currentLocation: 'Текущее местоположение',
 };

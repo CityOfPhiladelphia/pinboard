@@ -238,8 +238,9 @@
           :showed="true"
         >
           <div
-            v-html="`<span class='popup-text'>Current location</span>`"
+            v-html="`<span class='popup-text'>` + currentLocationText + `</span>`"
           >
+            <!-- v-html="`<span class='popup-text'>` + this.$i18n.messages[this.i18nLocale]['currentLocation'] + `</span>`" -->
           </div>
         </MglPopup>
       </MglCircleMarker>
@@ -455,6 +456,12 @@ export default {
     return data;
   },
   computed: {
+    currentLocationText() {
+      return this.$i18n.messages[this.i18nLocale]['currentLocation'];
+    },
+    i18nLocale() {
+      return this.$i18n.locale;
+    },
     showBuffers() {
       let value = false;
       if (this.$config.showBuffers) {

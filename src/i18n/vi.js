@@ -60,4 +60,6 @@ export default {
   results: 'các kết quả',
   outOf: 'ra khỏi',
   backToHome: 'Quay lại trang chủ',
+  back: 'Quay lại',
+  currentLocation: 'Vị trí hiện tại',
 };
