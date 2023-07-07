@@ -227,11 +227,22 @@
         :coordinates="[ geolocatedLocation.lng, geolocatedLocation.lat ]"
         :key="'test'"
         :size="16"
-        :fill-color="'red'"
+        :fill-color="'#cc3000'"
         :color="'white'"
         :weight="1"
         :opacity="1"
-      />
+        @click="handleLocationMarkerClick"
+      >
+        <MglPopup
+          v-if="showCurrentLocationPopup"
+          :showed="true"
+        >
+          <div
+            v-html="`<span class='popup-text'>Current location</span>`"
+          >
+          </div>
+        </MglPopup>
+      </MglCircleMarker>
 
     </MaplibreGlMap>
 
@@ -293,6 +304,7 @@ export default {
   ],
   data() {
     const data = {
+      showCurrentLocationPopup: false,
       geolocationPositionOptions: {
         enableHighAccuracy: true,
         timeout: 6000,
@@ -1160,6 +1172,10 @@ export default {
     window.removeEventListener('resize', this.handleResize);
   },
   methods: {
+    handleLocationMarkerClick() {
+      console.log('handleLocationMarkerClick is running');
+      this.showCurrentLocationPopup = !this.showCurrentLocationPopup;
+    },
     handleGeolocationToggleClick() {
       // this.$emit('geolocation-toggle-click');
       console.log('handleGeolocationToggleClick is running');
