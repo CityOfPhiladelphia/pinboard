@@ -1636,13 +1636,13 @@ html, body {
   background: $ghost-grey;
   border-width: 0px 0px 1px 0px;
   border-style: solid;
-  border-color: #a1a1a1;
+  border-color: #cfcfcf;
 }
 
 .refine-panel-holder {
   border-width: 0px 0px 1px 0px;
   border-style: solid;
-  border-color: #a1a1a1;
+  border-color: #cfcfcf;
 }
 
 .locations-and-map-panels-holder {
