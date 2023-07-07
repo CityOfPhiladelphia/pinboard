@@ -62,4 +62,5 @@ export default {
   backToHome: '回到主页',
   back: '返回',
   currentLocation: '当前所在地',
+  useCurrentLocation: '使用当前位置',
 };

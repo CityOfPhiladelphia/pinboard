@@ -62,4 +62,5 @@ export default {
   backToHome: 'Quay lại trang chủ',
   back: 'Quay lại',
   currentLocation: 'Vị trí hiện tại',
+  useCurrentLocation: 'Sử dụng vị trí hiện tại',
 };

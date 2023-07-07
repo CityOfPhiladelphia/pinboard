@@ -218,6 +218,7 @@
         :image-link="sitePath + 'images/location-crosshairs-solid.svg'"
         :image-align="'center'"
         :position="'bottom-right'"
+        :tooltipText="useCurrentLocationText"
         @click="handleGeolocationToggleClick"
       />
 
@@ -240,7 +241,6 @@
           <div
             v-html="`<span class='popup-text'>` + currentLocationText + `</span>`"
           >
-            <!-- v-html="`<span class='popup-text'>` + this.$i18n.messages[this.i18nLocale]['currentLocation'] + `</span>`" -->
           </div>
         </MglPopup>
       </MglCircleMarker>
@@ -456,6 +456,9 @@ export default {
     return data;
   },
   computed: {
+    useCurrentLocationText() {
+      return this.$i18n.messages[this.i18nLocale]['useCurrentLocation'];
+    },
     currentLocationText() {
       return this.$i18n.messages[this.i18nLocale]['currentLocation'];
     },

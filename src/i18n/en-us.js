@@ -62,4 +62,5 @@ export default {
   backToHome: 'Back to home',
   back: 'Back',
   currentLocation: 'Current location',
+  useCurrentLocation: 'Use current location',
 };

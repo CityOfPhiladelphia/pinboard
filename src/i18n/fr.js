@@ -62,4 +62,5 @@ export default {
   backToHome: 'Retour à la page d\'accueil',
   back: 'Retour',
   currentLocation: 'Emplacement actuel',
+  useCurrentLocation: 'Utiliser la position actuelle',
 };
