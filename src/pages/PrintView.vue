@@ -31,29 +31,11 @@
     <div
       class="loc-item open"
     >
-      <button
-        class="button no-print"
-        @click="clickedBackToHome"
-      >
-        {{ $t(this.$i18n.messages[this.i18nLocale].back) }}
-        <!-- @click="clickedPrint" -->
-        <!-- <router-link to="/"><font-awesome-icon icon="arrow-left" /> Back to home</router-link> -->
-        <!-- print -->
-      </button>
-
-      <!-- <div
-        class="columns location-row is-mobile"
-        tabindex="0"
-      >
-        <div class="location-title column is-11">
-          <h2
-            class="h5"
-            :aria-expanded="locationOpen"
-          >
-            Test
-          </h2>
-        </div>
-      </div> -->
+      <div class="back-link no-print">
+        <a @click="clickedBackToHome">
+          < {{ $t(this.$i18n.messages[this.i18nLocale].back) }}
+        </a>
+      </div>
 
       <!-- <div class="map-holder">
         <map-panel
@@ -690,6 +672,13 @@ export default {
     visibility: hidden;
     // display: none;
   }
+}
+
+.back-link {
+  padding-left: 16px;
+  padding-top: 6px;
+  padding-bottom: 6px;
+  font-weight: bold;
 }
 
 </style>
