@@ -60,4 +60,7 @@ export default {
   results: 'results',
   outOf: 'out of',
   backToHome: 'Back to home',
+  back: 'Back',
+  currentLocation: 'Current location',
+  useCurrentLocation: 'Use current location',
 };

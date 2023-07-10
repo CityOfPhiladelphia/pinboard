@@ -23,7 +23,7 @@ export default {
       if (valOrGetterType === 'function') {
         const state = this.$store.state;
         const getter = valOrGetter;
-        if (currentQueryKeys.includes('address') || currentQueryKeys.includes('zipcode')) {
+        if (currentQueryKeys.includes('address') || currentQueryKeys.includes('zipcode') || this.$store.state.map.watchPositionOn) {
           // console.log('item:', item);
           if (item && item.distance) {
             val = '(' + item.distance.toFixed(2) + ' ' + this.$i18n.messages[this.i18nLocale]['miles'] + ') ' + getter(item, transforms);

@@ -60,4 +60,7 @@ export default {
   results: 'résultats',
   outOf: 'hors de',
   backToHome: 'Retour à la page d\'accueil',
+  back: 'Retour',
+  currentLocation: 'Emplacement actuel',
+  useCurrentLocation: 'Utiliser la position actuelle',
 };

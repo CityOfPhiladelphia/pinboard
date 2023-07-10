@@ -441,9 +441,9 @@ export default {
       let sentence = '';
       if (this.selectedKeywords.length) {
         for (let keyword of this.selectedKeywords) {
-          sentence += keyword;
+          sentence += '"' + keyword + '"';
           if (this.zipcodeEntered || this.addressEntered || this.selectedServices.length) {
-            sentence += ': ';
+            sentence += ' : ';
           }
         }
       }
@@ -462,7 +462,7 @@ export default {
         // sentence += word;
 
         if (this.selectedServices.length) {
-          sentence += ': ';
+          sentence += ' : ';
         }
       }
       if (this.addressEntered) {
@@ -479,7 +479,7 @@ export default {
         // sentence += word;
         
         if (this.selectedServices.length) {
-          sentence += ': ';
+          sentence += ' : ';
         }
       }
       if (this.selectedServices.length) {
@@ -491,7 +491,7 @@ export default {
             for (let service of this.selectedServices) {
               sentence += service;
               if (this.selectedServices.indexOf(service) < this.selectedServices.length-1) {
-                sentence += ': ';
+                sentence += ' : ';
               }
             }
           } else {
@@ -510,7 +510,7 @@ export default {
                 }
               }
               if (this.selectedServices.indexOf(service) < this.selectedServices.length-1) {
-                sentence += ': ';
+                sentence += ' : ';
               }
             }
           }
@@ -541,12 +541,16 @@ export default {
       }
       return address;
     },
+    watchPositionOn() {
+      return this.$store.state.map.watchPositionOn;
+    },
     sortDisabled() {
       let value;
       let geocodeStatus = this.geocodeStatus;
       let zipcodeCenter = this.zipcodeCenter;
+      let watchPositionOn = this.watchPositionOn;
       // console.log('computed sortDisabled, geocodeStatus:', geocodeStatus, 'zipcodeCenter:', zipcodeCenter);
-      if (geocodeStatus || zipcodeCenter[0]) {
+      if (geocodeStatus || zipcodeCenter[0] || watchPositionOn) {
         value = false;
       } else {
         value = true;
@@ -624,7 +628,7 @@ export default {
       let currentQuery = { ...this.$route.query };
       let currentQueryKeys = Object.keys(currentQuery);
 
-      // console.log('LocationsPanel.vue currentData computed, currentQuery:', currentQuery, 'currentQueryKeys:', currentQueryKeys);
+      console.log('LocationsPanel.vue currentData computed, currentQuery:', currentQuery, 'currentQueryKeys:', currentQueryKeys);
 
       let valOrGetter = this.locationInfo.siteName;
       const valOrGetterType = typeof valOrGetter;
@@ -634,6 +638,7 @@ export default {
 
       // if (currentQueryKeys.includes('address')) {
       if (this.sortBy == 'Distance') {
+        console.log('LocationsPanel.vue currentData computed, this.sortBy:', this.sortBy);
         val = 'distance';
         // console.log('it includes address');
         locations.sort(function(a, b) {
@@ -650,6 +655,7 @@ export default {
             return 0;
         });
       } else {
+        console.log('LocationsPanel.vue currentData computed, this.sortBy:', this.sortBy);
         if (valOrGetterType === 'function') {
           const getter = valOrGetter;
           locations.sort(function(a, b) {
@@ -815,9 +821,9 @@ export default {
     },
     clickedViewList() {
       // console.log('clickedViewList is running');
-      if (!this.isMobile) {
-        this.$store.commit('setRefineOpen', true);
-      }
+      // if (!this.isMobile) {
+      //   this.$store.commit('setRefineOpen', true);
+      // }
       this.$store.commit('setShouldShowGreeting', false);
       this.$gtag.event('click', {
         'event_category': this.$store.state.gtag.category,
