@@ -1019,9 +1019,9 @@ export default {
       this.$store.commit('setZipcodeCenter', []);
       this.$controller.handleSearchFormSubmit(val, searchBarType);
 
-      if (this.$store.state.shouldShowGreeting && !this.isMobile) {
-        this.$store.commit('setRefineOpen', true);
-      }
+      // if (this.$store.state.shouldShowGreeting && !this.isMobile) {
+      //   this.$store.commit('setRefineOpen', true);
+      // }
     },
     clearSearchTriggered() {
       let startQuery = { ...this.$route.query };
