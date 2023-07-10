@@ -441,9 +441,9 @@ export default {
       let sentence = '';
       if (this.selectedKeywords.length) {
         for (let keyword of this.selectedKeywords) {
-          sentence += keyword;
+          sentence += '"' + keyword + '"';
           if (this.zipcodeEntered || this.addressEntered || this.selectedServices.length) {
-            sentence += ': ';
+            sentence += ' : ';
           }
         }
       }
@@ -462,7 +462,7 @@ export default {
         // sentence += word;
 
         if (this.selectedServices.length) {
-          sentence += ': ';
+          sentence += ' : ';
         }
       }
       if (this.addressEntered) {
@@ -479,7 +479,7 @@ export default {
         // sentence += word;
         
         if (this.selectedServices.length) {
-          sentence += ': ';
+          sentence += ' : ';
         }
       }
       if (this.selectedServices.length) {
@@ -491,7 +491,7 @@ export default {
             for (let service of this.selectedServices) {
               sentence += service;
               if (this.selectedServices.indexOf(service) < this.selectedServices.length-1) {
-                sentence += ': ';
+                sentence += ' : ';
               }
             }
           } else {
@@ -510,7 +510,7 @@ export default {
                 }
               }
               if (this.selectedServices.indexOf(service) < this.selectedServices.length-1) {
-                sentence += ': ';
+                sentence += ' : ';
               }
             }
           }
