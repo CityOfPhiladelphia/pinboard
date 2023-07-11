@@ -11,9 +11,9 @@
       id="search-form"
       autocomplete="off"
       :class="formClass"
-      title="addressform"
+      :title="searchBarTranslation"
       @submit.prevent="handleSearchFormSubmit"
-    >
+      >
       <textbox
         id="map-textbox"
         v-model="addressEntered"
@@ -39,7 +39,7 @@
     <button
       :class="'pvm-search-control-button ' + buttonClass"
       aria-label="search button"
-      title="search button"
+      :title="searchButtonTranslation"
       @click="handleSearchFormSubmit"
     >
       <font-awesome-icon icon="search" size="2x" aria-hidden="true" />
@@ -106,6 +106,12 @@ export default {
     },
     i18nLocale() {
       return this.$i18n.locale;
+    },
+    searchBarTranslation() {
+      return this.$i18n.messages[this.i18nLocale]['searchBar'];
+    },
+    searchButtonTranslation() {
+      return this.$i18n.messages[this.i18nLocale]['searchButton'];
     },
     searchBarType() {
       let value;

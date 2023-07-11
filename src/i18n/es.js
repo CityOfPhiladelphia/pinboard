@@ -63,4 +63,6 @@ export default {
   back: 'Volver',
   currentLocation: 'Ubicación actual',
   useCurrentLocation: 'Usa la ubicación actual',
+  searchBar: 'Barra de búsqueda',
+  searchButton: 'Botón de búsqueda',
 };

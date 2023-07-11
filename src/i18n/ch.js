@@ -63,4 +63,6 @@ export default {
   back: '返回',
   currentLocation: '当前所在地',
   useCurrentLocation: '使用当前位置',
+  searchBar: '搜索栏',
+  searchButton: '“搜索” 按钮',
 };

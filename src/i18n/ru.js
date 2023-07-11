@@ -63,4 +63,6 @@ export default {
   back: 'Назад',
   currentLocation: 'Текущее местоположение',
   useCurrentLocation: 'Использовать текущее местоположение',
+  searchBar: 'Панель поиска',
+  searchButton: 'Кнопка поиска',
 };

@@ -63,4 +63,6 @@ export default {
   back: 'Back',
   currentLocation: 'Current location',
   useCurrentLocation: 'Use current location',
+  searchBar: 'Search bar',
+  searchButton: 'Search button',
 };

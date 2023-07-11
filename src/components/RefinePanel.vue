@@ -1069,6 +1069,12 @@ export default {
       delete startQuery['zipcode'];
       delete startQuery['keyword'];
       this.$router.push({ query: { ...startQuery }});
+      this.$store.commit('setWatchPositionOn', false);
+      const payload = {
+        lat: null,
+        lng: null,
+      };
+      this.$emit('geolocate-control-fire', payload);
     },
     getRefineSearchList() {
       // console.log('getRefineSearchList is running');

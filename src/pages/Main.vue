@@ -96,6 +96,7 @@
         :refine-title="refineTitle"
         :submitted-checkbox-value="submittedCheckboxValue"
         @watched-submitted-checkbox-value="watchedSubmittedCheckboxValue"
+        @geolocate-control-fire="geolocateControlFire"
       />
     </div>
 

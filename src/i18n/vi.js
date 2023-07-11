@@ -63,4 +63,6 @@ export default {
   back: 'Quay lại',
   currentLocation: 'Vị trí hiện tại',
   useCurrentLocation: 'Sử dụng vị trí hiện tại',
+  searchBar: 'Thanh tìm kiếm',
+  searchButton: 'Nút tìm kiếm',
 };

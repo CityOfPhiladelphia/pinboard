@@ -20,7 +20,7 @@
     "@fortawesome/free-brands-svg-icons": "^5.15.4",
     "@phila/phila-ui": "2.1.13",
     "@phila/vue-datafetch": "2.2.13",
-    "@phila/vue-mapping": "3.1.18",
+    "@phila/vue-mapping": "3.1.19",
     "animate.css": "^4.1.1",
     "axios": "^0.19.0",
     "bulma": "^0.9.4",
