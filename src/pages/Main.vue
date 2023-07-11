@@ -597,7 +597,7 @@ export default {
       let currentDay = format(new Date(), 'dd');
       // let dateStart = new Date(currentYear, currentMonth-1, currentDay);
       let dateStart = new Date(2023, 6, 3);
-      console.log('currentYear:', currentYear, 'currentMonth:', currentMonth, 'currentDay:', currentDay, 'dateStart:', dateStart, 'dateStartUnix:', parseInt(format(dateStart, 'T')));
+      // console.log('currentYear:', currentYear, 'currentMonth:', currentMonth, 'currentDay:', currentDay, 'dateStart:', dateStart, 'dateStartUnix:', parseInt(format(dateStart, 'T')));
       let currentUnixDate = parseInt(format(dateStart, 'T'));
 
       let holi = {
@@ -609,7 +609,7 @@ export default {
 
       for (let holiday of nextHolidays.holidays) {
         // console.log('holiday.start_date:', holiday.start_date, parseISO(format(holiday.start_date, 'T')));
-        console.log('currentUnixDate:', currentUnixDate, 'holiday.start_date:', holiday.start_date, parseInt(format(parseISO(holiday.start_date), 'T')));
+        // console.log('currentUnixDate:', currentUnixDate, 'holiday.start_date:', holiday.start_date, parseInt(format(parseISO(holiday.start_date), 'T')));
 
         let oneWeekAhead = parseInt(format(subWeeks(parseISO(holiday.start_date), 1), 'T'));
         let actualHoliday = parseInt(format(parseISO(holiday.start_date), 'T'));
@@ -626,7 +626,7 @@ export default {
 
         // console.log('holiday.start_date:', holiday.start_date, format(holiday.start_date, 'T'));
       }
-      console.log('watch holidays, holi.holiday_label:', holi.holiday_label, 'holi.coming_soon:', holi.coming_soon, 'holi.current:', holi.current);
+      // console.log('watch holidays, holi.holiday_label:', holi.holiday_label, 'holi.coming_soon:', holi.coming_soon, 'holi.current:', holi.current);
       this.$store.commit('setHoliday', holi);
 
     },
@@ -1169,17 +1169,17 @@ export default {
                   }
                   if (group !== 'keyword' && service.split('_', 1)[0] === group && this.$config.refine.multipleFieldGroups[group]['checkbox']) {
                     // console.log('group:', group, 'this.$config.refine.multipleFieldGroups[group]["dependent"]:', this.$config.refine.multipleFieldGroups[group]['dependent']);
-                    let independentGroups = this.$config.refine.multipleFieldGroups[group]['checkbox'][service.split('_')[1]]['independentGroups'] || [];
+                    let dependentGroups = this.$config.refine.multipleFieldGroups[group]['checkbox'][service.split('_')[1]]['dependentGroups'] || [];
                     // console.log('dependentGroup:', dependentGroup, 'service.split("_", 1)[0]:', service.split('_', 1)[0], 'service.split("_")[1]:', service.split('_')[1], 'group', group, 'this.$config.refine.multipleFieldsGroups[group]', this.$config.refine.multipleFieldsGroups[group], 'this.$config.refine.multipleFieldsGroups[group][service.split("_")[1]]:', this.$config.refine.multipleFieldsGroups[group][service.split('_')[1]]);
                     let getter = this.$config.refine.multipleFieldGroups[group]['checkbox'][service.split('_')[1]]['value'];
-                    let independentServices = [];
+                    let dependentServices = [];
                     for (let service of selectedServices) {
-                      if (independentGroups.length && independentGroups.includes(service.split('_')[0])) {
-                        independentServices.push(service.split('_')[1]);
+                      if (dependentGroups.length && dependentGroups.includes(service.split('_')[0])) {
+                        dependentServices.push(service.split('_')[1]);
                       }
                     }
                     // console.log('getter:', getter, 'dependentGroups:', dependentGroups, 'selectedServices:', selectedServices, 'dependentServices:', dependentServices);
-                    let val = getter(row, independentServices);
+                    let val = getter(row, dependentServices);
                     groupBooleanConditions.push(val);
                   }
                 }

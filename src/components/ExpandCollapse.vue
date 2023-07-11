@@ -166,8 +166,9 @@ export default {
     },
     section() {
       let section;
+      let category = this.item.attributes['CATEGORY'] || this.item.attributes['category'];
       if (Object.keys(this.subsections).length) {
-        section = this.subsections[this.$props.item.attributes['CATEGORY']];
+        section = this.subsections[category];
       } else if (this.$config.sections) {
         section = this.$props.item.site_type;
       }
