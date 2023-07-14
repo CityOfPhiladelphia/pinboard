@@ -29,6 +29,10 @@ Create pull request for changes and merge into `master` branch for travis-ci bui
 
 ## Release Notes
 
+### 1.2.0 - 7/14/2023
+
+* releases many features created during user testing
+
 ### 1.1.47 - 6/8/2023
 
 * adds css for alert modal
