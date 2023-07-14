@@ -1661,6 +1661,7 @@ html, body {
   min-height: 0px;
   padding: 0px !important;
   overflow-y: scroll;
+  position: relative;
 }
 
 .invisible-scrollbar {

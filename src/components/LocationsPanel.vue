@@ -20,7 +20,7 @@
       <div class="summary-container">
         <div
           v-if="!isMobile && geocodeStatus !== 'error' > 0"
-          class="columns is-desktop mb-0"
+          class="columns is-desktop cut-right mb-0"
         >
           <div
             v-if="allowPrint"
@@ -67,7 +67,7 @@
 
           <div
             v-if="anySearch"
-            class="column is-6-desktop is-12-tablet mr-0 mb-0 pb-0 columns loc-panel-widget"
+            class="column is-6-desktop is-12-tablet mr-0 mb-0 pb-0 pr-0 columns loc-panel-widget"
           >
             <div
               class="column is-6-tablet is-7-desktop p-0"
@@ -878,15 +878,17 @@ export default {
 
 .locations-panel {
   overflow-y: visible !important;
+  // width: 100%;
 }
 
 .summary-and-location-container {
   // padding: 1rem;
+  // width: 100%;
   overflow-y: visible;
 }
 
 .summary-container {
-  position: absolute;
+  // position: absolute;
   padding-left: 1rem;
   // padding-right: 1rem;
   padding-top: 1rem;
@@ -898,7 +900,7 @@ export default {
 
 @media (max-width: 767px) {
   .summary-container {
-    width: 100%;
+    // width: 100%;
   }
 }
 
@@ -908,36 +910,50 @@ export default {
 
 @media (min-width: 1024px) {
   .location-container {
-    padding-top: 150px;
+    width: 100%;
   }
 
   .summary-container {
-    width: 48.5%;
+    width: 100%;
+    position: sticky;
+    top: 0;
+    width: 100%;
   }
 }
 
 @media (min-width: 768px) and (max-width: 1023px) {
   .location-container {
-    padding-top: 270px;
+    // padding-top: 170px;
+    width: 100%;
   }
 
   .summary-container {
-    width: 48%;
+    position: sticky;
+    top: 0;
+    width: 100%;
+    padding-top: .5rem;
   }
 
   .loc-panel-widget {
     padding-top: 0px !important;
   }
 
-  .summary-container {
-    padding-top: .5rem;
-  }
 }
 
 @media (max-width: 767px) {
   .location-container {
-    padding-top: 200px;
+    // padding-top: 120px;
   }
+
+  .summary-container {
+    position: sticky;
+    top: 0;
+    width: 100%;
+  }
+}
+
+.cut-right {
+  margin-right: .1rem !important;
 }
 
 .no-results {
