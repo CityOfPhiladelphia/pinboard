@@ -455,7 +455,7 @@ export default {
         // console.log('Main.vue database computed, finalDB:', finalDB);
         let languages = []
         for (let row of finalDB) {
-          if (row.attributes.language) {
+          if (row.attributes && row.attributes.language) {
             let langs = row.attributes.language.split(',');
             // console.log('row.attributes.language:', row.attributes.language, 'langs:', langs);
             for (let lang of langs) {
