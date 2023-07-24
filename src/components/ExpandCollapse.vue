@@ -57,7 +57,7 @@
                 v-if="section && i18nEnabled"
                 class="section-name"
                 :style="{ 'background-color': sectionColor }"
-                v-html="'<b>'+$t(sectionTitle)+'</b>'"
+                v-html="'<b>'+$t('categoryType.' + sectionTitle)+'</b>'"
               >
               </div>
             </span>
@@ -184,6 +184,7 @@ export default {
     sectionTitle() {
       let sectionTitle;
       if (Object.keys(this.subsections).length) {
+        // sectionTitle = this.section;
         sectionTitle = this.$config.sections[this.section].titleSingular;
       } else if (this.$config.sections) {
         sectionTitle = this.$props.item.site_type;

@@ -29,6 +29,10 @@ Create pull request for changes and merge into `master` branch for travis-ci bui
 
 ## Release Notes
 
+### 1.2.1 - 7/24/2023
+
+* bugfix for singular section titles in expand-collapses
+
 ### 1.2.0 - 7/14/2023
 
 * releases many features created during user testing
