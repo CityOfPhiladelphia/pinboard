@@ -173,7 +173,7 @@ function finishInit(config) {
 
   Vue.use(VueGtag, {
     config:{
-      id: 'UA-860026-1',
+      id: '257091502',
       appName: 'My application',
       pageTrackerScreenviewEnabled: true,
       params: {},
