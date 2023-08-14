@@ -29,6 +29,10 @@ Create pull request for changes and merge into `master` branch for travis-ci bui
 
 ## Release Notes
 
+### 1.2.2 - 8/14/2023
+
+* changes gtag to use phila.gov GA4 id
+
 ### 1.2.1 - 7/24/2023
 
 * bugfix for singular section titles in expand-collapses
