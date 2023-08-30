@@ -29,6 +29,11 @@ Create pull request for changes and merge into `master` branch for travis-ci bui
 
 ## Release Notes
 
+### 1.2.3 - 8/30/2023
+
+* reverts gtag change
+* sets up automatic holiday banner
+
 ### 1.2.2 - 8/14/2023
 
 * changes gtag to use phila.gov GA4 id
