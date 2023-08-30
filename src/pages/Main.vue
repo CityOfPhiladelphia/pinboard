@@ -63,18 +63,18 @@
       </app-header>
     </div>
 
-    <!-- <div
+    <div
       v-if="showHolidayBanner && holiday.coming_soon || showHolidayBanner && holiday.current"
       class="holiday-banner"
     >
-      {{ closureMessage }}
+      {{ closureMessageAllSites }}
       <button
         class="button is-primary is-small is-pulled-right holiday-banner-close-button"
         @click="closeHolidayBanner"
       >
         x
       </button>
-    </div> -->
+    </div>
 
     <div
       v-show="isMobile && !this.$config.searchBar.hide"
@@ -231,7 +231,7 @@ export default {
       searchBarType: 'address',
       addressInputPlaceholder: null,
       submittedCheckboxValue: null,
-      showHolidayBanner: true,
+      showHolidayBanner: false,
     };
   },
   computed: {
@@ -579,9 +579,22 @@ export default {
       let holiday = this.$store.state.holiday;
       let message;
       if (this.currentHolidayClosure) {
-        message = this.$t('holidayClosure') + holiday.holiday_label + ' ' + holiday.start_date;
+        message = this.$t('holidayClosure') + holiday.holiday_label + ' ' + format(parseISO(holiday.start_date), 'MM/dd/yyyy');
       } else if (this.futureHolidayClosure) {
-        message = this.$t('futureHolidayClosure') + holiday.holiday_label + ' ' + holiday.start_date;
+        message = this.$t('futureHolidayClosure') + holiday.holiday_label + ' ' + format(parseISO(holiday.start_date), 'MM/dd/yyyy');
+        // message = this.$t('futureHolidayClosure') + transforms.toLocaleDateString.transform(this.item.attributes.close_holiday_start);
+      } else {
+        message = null;
+      }
+      return message;
+    },
+    closureMessageAllSites() {
+      let holiday = this.$store.state.holiday;
+      let message;
+      if (this.currentHolidayClosure) {
+        message = this.$t('holidayClosureAllSites') + holiday.holiday_label + ' ' + format(parseISO(holiday.start_date), 'MM/dd/yyyy');
+      } else if (this.futureHolidayClosure) {
+        message = this.$t('futureHolidayClosureAllSites') + holiday.holiday_label + ' ' + format(parseISO(holiday.start_date), 'MM/dd/yyyy');
         // message = this.$t('futureHolidayClosure') + transforms.toLocaleDateString.transform(this.item.attributes.close_holiday_start);
       } else {
         message = null;
@@ -595,8 +608,8 @@ export default {
       let currentYear = format(new Date(), 'yyyy');
       let currentMonth = format(new Date(), 'MM');
       let currentDay = format(new Date(), 'dd');
-      // let dateStart = new Date(currentYear, currentMonth-1, currentDay);
-      let dateStart = new Date(2023, 6, 3);
+      let dateStart = new Date(currentYear, currentMonth-1, currentDay);
+      // let dateStart = new Date(2023, 6, 3);
       // console.log('currentYear:', currentYear, 'currentMonth:', currentMonth, 'currentDay:', currentDay, 'dateStart:', dateStart, 'dateStartUnix:', parseInt(format(dateStart, 'T')));
       let currentUnixDate = parseInt(format(dateStart, 'T'));
 
@@ -824,6 +837,10 @@ export default {
 
     if (this.$config.app.skipGreeting) {
       this.$store.commit('setShouldShowGreeting', false);
+    }
+
+    if (this.$config.holidays && this.$config.holidays.showBanner) {
+      this.showHolidayBanner = true;
     }
 
     // let currentYear = format(new Date(), 'yyyy');
@@ -1753,6 +1770,7 @@ html, body {
 }
 
 .holiday-banner {
+  padding-left: 1rem;
   background-color: #fff7d0;
 }
 
