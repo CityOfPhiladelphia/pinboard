@@ -456,6 +456,13 @@ export default {
     return data;
   },
   computed: {
+    databaseWithoutHiddenItems() {
+      let value;
+      if (this.$store.state.databaseWithoutHiddenItems[0]) {
+        value = this.$store.state.databaseWithoutHiddenItems[0].latlng;
+      }
+      return value;
+    },
     useCurrentLocationText() {
       return this.$i18n.messages[this.i18nLocale]['useCurrentLocation'];
     },
@@ -940,6 +947,15 @@ export default {
 
   },
   watch: {
+    databaseWithoutHiddenItems(nextDatabase) {
+      console.log('database is loaded, nextDatabase:', nextDatabase);
+      // console.log('database is loaded, nextDatabase:', nextDatabase, 'nextDatabase.latlng:', nextDatabase.latlng);
+      // console.log('database is loaded, this.selectedResources[0], nextDatabase:', nextDatabase, 'nextDatabase[0].latlng:', nextDatabase[0].latlng, this.selectedResources[0]);
+      if (this.selectedResources.length) {
+        let selectedResource = this.selectedResources[0];
+        this.centerMapOnResource(selectedResource);
+      }
+    },
     selectedResources(nextSelectedResources) {
       if (this.latestSelectedResourceFromExpand == null && this.latestSelectedResourceFromMap == null) {
         this.$store.commit('setLatestSelectedResourceFromExpand', nextSelectedResources[0]);
@@ -1013,56 +1029,57 @@ export default {
       }
     },
     latestSelectedResourceFromExpand(nextLatestSelectedResource) {
-      // console.log('watch latestSelectedResourceFromExpand:', nextLatestSelectedResource, 'this.$appType:', this.$appType, 'this.$store.state.sources[this.$appType].data:', this.$store.state.sources[this.$appType].data);
-      if (nextLatestSelectedResource) {
-        // this.$store.commit('setLatestSelectedResourceFromMap', null);
-        console.log('watch latestSelectedResourceFromExpand, in if nextLatestSelectedResource:', nextLatestSelectedResource);
-        let rows;
-        const map = this.$store.map;
+      console.log('watch latestSelectedResourceFromExpand:', nextLatestSelectedResource, 'this.$appType:', this.$appType, 'this.$store.state.sources[this.$appType].data:', this.$store.state.sources[this.$appType].data);
+      this.centerMapOnResource(nextLatestSelectedResource);
+      // if (nextLatestSelectedResource) {
+      //   // this.$store.commit('setLatestSelectedResourceFromMap', null);
+      //   console.log('watch latestSelectedResourceFromExpand, in if nextLatestSelectedResource:', nextLatestSelectedResource);
+      //   let rows;
+      //   const map = this.$store.map;
 
-        if (!this.latestSelectedResourceFromMap || !this.latestSelectedResourceFromMap == nextLatestSelectedResource) {
+      //   if (!this.latestSelectedResourceFromMap || !this.latestSelectedResourceFromMap == nextLatestSelectedResource) {
         
-          // data coming as "rows" means it came from carto
-          if (this.$store.state.sources[this.$appType].data.rows) {
-            rows = this.$store.state.sources[this.$appType].data.rows;
-            const dataValue = rows.filter(row => row._featureId === nextLatestSelectedResource);
-            // console.log('in watch latestSelectedResourceFromExpand, rows, nextLatestSelectedResource:', nextLatestSelectedResource, 'rows:', rows, 'dataValue:', dataValue);
-            // do not set view if there is not lat value
-            if (dataValue[0].lat) {
-              map.setCenter([ dataValue[0].lon, dataValue[0].lat ], this.geocodeZoom);
-            }
+      //     // data coming as "rows" means it came from carto
+      //     if (this.$store.state.sources[this.$appType].data && this.$store.state.sources[this.$appType].data.rows) {
+      //       rows = this.$store.state.sources[this.$appType].data.rows;
+      //       const dataValue = rows.filter(row => row._featureId === nextLatestSelectedResource);
+      //       // console.log('in watch latestSelectedResourceFromExpand, rows, nextLatestSelectedResource:', nextLatestSelectedResource, 'rows:', rows, 'dataValue:', dataValue);
+      //       // do not set view if there is not lat value
+      //       if (dataValue[0].lat) {
+      //         map.setCenter([ dataValue[0].lon, dataValue[0].lat ], this.geocodeZoom);
+      //       }
 
-          // data coming as "features" means it came from arcgis
-          } else if (this.$store.state.sources[this.$appType].data.features) {
-            rows = this.$store.state.sources[this.$appType].data.features;
-            const dataValue = rows.filter(row => row._featureId === nextLatestSelectedResource);
-            console.log('in watch latestSelectedResourceFromExpand, features, nextLatestSelectedResource:', nextLatestSelectedResource, 'rows:', rows, 'dataValue:', dataValue, 'dataValue[0].latlng:', dataValue[0].latlng);
-            if (dataValue[0].latlng[0]) {
-              map.setCenter([ dataValue[0].latlng[1], dataValue[0].latlng[0] ], this.geocodeZoom);
-            }
+      //     // data coming as "features" means it came from arcgis
+      //     } else if (this.$store.state.sources[this.$appType].data && this.$store.state.sources[this.$appType].data.features) {
+      //       rows = this.$store.state.sources[this.$appType].data.features;
+      //       const dataValue = rows.filter(row => row._featureId === nextLatestSelectedResource);
+      //       console.log('in watch latestSelectedResourceFromExpand, features, nextLatestSelectedResource:', nextLatestSelectedResource, 'rows:', rows, 'dataValue:', dataValue, 'dataValue[0].latlng:', dataValue[0].latlng);
+      //       if (dataValue[0].latlng[0]) {
+      //         map.setCenter([ dataValue[0].latlng[1], dataValue[0].latlng[0] ], this.geocodeZoom);
+      //       }
 
-          // data coming in as "records" means it came from airtable
-          } else if (this.$store.state.sources[this.$appType].data.records) {
-            rows = this.$store.state.sources[this.$appType].data.records;
-            const dataValue = rows.filter(row => row._featureId === nextLatestSelectedResource);
-            // console.log('in watch latestSelectedResourceFromExpand, array, nextLatestSelectedResource:', nextLatestSelectedResource, 'rows:', rows, 'dataValue:', dataValue);
-            map.setCenter([ dataValue[0].latlng[1], dataValue[0].latlng[0] ], this.geocodeZoom);
+      //     // data coming in as "records" means it came from airtable
+      //     } else if (this.$store.state.sources[this.$appType].data && this.$store.state.sources[this.$appType].data.records) {
+      //       rows = this.$store.state.sources[this.$appType].data.records;
+      //       const dataValue = rows.filter(row => row._featureId === nextLatestSelectedResource);
+      //       // console.log('in watch latestSelectedResourceFromExpand, array, nextLatestSelectedResource:', nextLatestSelectedResource, 'rows:', rows, 'dataValue:', dataValue);
+      //       map.setCenter([ dataValue[0].latlng[1], dataValue[0].latlng[0] ], this.geocodeZoom);
           
-          // data coming in as an array means it came from a compiled datasource or airtable
-          } else if (Array.isArray(this.$store.state.sources[this.$appType].data)) {
-            rows = this.$store.state.sources[this.$appType].data;
-            const dataValue = rows.filter(row => row._featureId === nextLatestSelectedResource);
-            // console.log('in watch latestSelectedResourceFromExpand, array, nextLatestSelectedResource:', nextLatestSelectedResource, 'rows:', rows, 'dataValue:', dataValue);
-            map.setCenter([ dataValue[0].latlng[1], dataValue[0].latlng[0] ], this.geocodeZoom);
-          }
-        }
-        // this.$store.commit('setLatestSelectedResourceFromMap', nextLatestSelectedResource);
-        this.$store.commit('setLatestSelectedResourceFromMap', null);
+      //     // data coming in as an array means it came from a compiled datasource or airtable
+      //     } else if (Array.isArray(this.$store.state.sources[this.$appType].data)) {
+      //       rows = this.$store.state.sources[this.$appType].data;
+      //       const dataValue = rows.filter(row => row._featureId === nextLatestSelectedResource);
+      //       // console.log('in watch latestSelectedResourceFromExpand, array, nextLatestSelectedResource:', nextLatestSelectedResource, 'rows:', rows, 'dataValue:', dataValue);
+      //       map.setCenter([ dataValue[0].latlng[1], dataValue[0].latlng[0] ], this.geocodeZoom);
+      //     }
+      //   }
+      //   // this.$store.commit('setLatestSelectedResourceFromMap', nextLatestSelectedResource);
+      //   this.$store.commit('setLatestSelectedResourceFromMap', null);
 
-      } else {
-        // console.log('watch latestSelectedResourceFromExpand, in else nextLatestSelectedResource:', nextLatestSelectedResource);
-        this.$store.commit('setLatestSelectedResourceFromMap', null);
-      }
+      // } else {
+      //   // console.log('watch latestSelectedResourceFromExpand, in else nextLatestSelectedResource:', nextLatestSelectedResource);
+      //   this.$store.commit('setLatestSelectedResourceFromMap', null);
+      // }
     },
     latestSelectedResourceFromMap(nextLatestSelectedResource) {
       let test = document.getElementById('customPopup');
@@ -1182,6 +1199,58 @@ export default {
     window.removeEventListener('resize', this.handleResize);
   },
   methods: {
+    centerMapOnResource(nextLatestSelectedResource) {
+      // console.log('watch latestSelectedResourceFromExpand:', nextLatestSelectedResource, 'this.$appType:', this.$appType, 'this.$store.state.sources[this.$appType].data:', this.$store.state.sources[this.$appType].data);
+      if (nextLatestSelectedResource) {
+        // this.$store.commit('setLatestSelectedResourceFromMap', null);
+        console.log('centerMapOnResource, in if nextLatestSelectedResource:', nextLatestSelectedResource);
+        let rows;
+        const map = this.$store.map;
+
+        if (!this.latestSelectedResourceFromMap || !this.latestSelectedResourceFromMap == nextLatestSelectedResource) {
+        
+          // data coming as "rows" means it came from carto
+          if (this.$store.state.sources[this.$appType].data && this.$store.state.sources[this.$appType].data.rows) {
+            rows = this.$store.state.sources[this.$appType].data.rows;
+            const dataValue = rows.filter(row => row._featureId === nextLatestSelectedResource);
+            // console.log('in watch latestSelectedResourceFromExpand, rows, nextLatestSelectedResource:', nextLatestSelectedResource, 'rows:', rows, 'dataValue:', dataValue);
+            // do not set view if there is not lat value
+            if (dataValue[0].lat) {
+              map.setCenter([ dataValue[0].lon, dataValue[0].lat ], this.geocodeZoom);
+            }
+
+          // data coming as "features" means it came from arcgis
+          } else if (this.$store.state.sources[this.$appType].data && this.$store.state.sources[this.$appType].data.features) {
+            rows = this.$store.state.sources[this.$appType].data.features;
+            const dataValue = rows.filter(row => row._featureId === nextLatestSelectedResource);
+            console.log('in watch latestSelectedResourceFromExpand, features, nextLatestSelectedResource:', nextLatestSelectedResource, 'rows:', rows, 'dataValue:', dataValue, 'dataValue[0].latlng:', dataValue[0].latlng);
+            // if (dataValue[0].latlng[0]) {
+              map.setCenter([ dataValue[0].latlng[1], dataValue[0].latlng[0] ], this.geocodeZoom);
+            // }
+
+          // data coming in as "records" means it came from airtable
+          } else if (this.$store.state.sources[this.$appType].data && this.$store.state.sources[this.$appType].data.records) {
+            rows = this.$store.state.sources[this.$appType].data.records;
+            const dataValue = rows.filter(row => row._featureId === nextLatestSelectedResource);
+            // console.log('in watch latestSelectedResourceFromExpand, array, nextLatestSelectedResource:', nextLatestSelectedResource, 'rows:', rows, 'dataValue:', dataValue);
+            map.setCenter([ dataValue[0].latlng[1], dataValue[0].latlng[0] ], this.geocodeZoom);
+          
+          // data coming in as an array means it came from a compiled datasource or airtable
+          } else if (Array.isArray(this.$store.state.sources[this.$appType].data)) {
+            rows = this.$store.state.sources[this.$appType].data;
+            const dataValue = rows.filter(row => row._featureId === nextLatestSelectedResource);
+            // console.log('in watch latestSelectedResourceFromExpand, array, nextLatestSelectedResource:', nextLatestSelectedResource, 'rows:', rows, 'dataValue:', dataValue);
+            map.setCenter([ dataValue[0].latlng[1], dataValue[0].latlng[0] ], this.geocodeZoom);
+          }
+        }
+        // this.$store.commit('setLatestSelectedResourceFromMap', nextLatestSelectedResource);
+        this.$store.commit('setLatestSelectedResourceFromMap', null);
+
+      } else {
+        // console.log('watch latestSelectedResourceFromExpand, in else nextLatestSelectedResource:', nextLatestSelectedResource);
+        this.$store.commit('setLatestSelectedResourceFromMap', null);
+      }
+    },
     handleLocationMarkerClick() {
       console.log('handleLocationMarkerClick is running');
       this.showCurrentLocationPopup = !this.showCurrentLocationPopup;
