@@ -29,6 +29,10 @@ Create pull request for changes and merge into `master` branch for travis-ci bui
 
 ## Release Notes
 
+### 1.2.4 - 8/31/2023
+
+* small fix for holiday banner
+
 ### 1.2.3 - 8/30/2023
 
 * reverts gtag change

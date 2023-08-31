@@ -592,9 +592,9 @@ export default {
       let holiday = this.$store.state.holiday;
       let message;
       if (this.currentHolidayClosure) {
-        message = this.$t('holidayClosureAllSites') + holiday.holiday_label + ' ' + format(parseISO(holiday.start_date), 'MM/dd/yyyy');
+        message = this.$t('holidayClosureAllSites');// + holiday.holiday_label + ' ' + format(parseISO(holiday.start_date), 'MM/dd/yyyy');
       } else if (this.futureHolidayClosure) {
-        message = this.$t('futureHolidayClosureAllSites') + holiday.holiday_label + ' ' + format(parseISO(holiday.start_date), 'MM/dd/yyyy');
+        message = this.$t('futureHolidayClosureAllSites');// + holiday.holiday_label + ' ' + format(parseISO(holiday.start_date), 'MM/dd/yyyy');
         // message = this.$t('futureHolidayClosure') + transforms.toLocaleDateString.transform(this.item.attributes.close_holiday_start);
       } else {
         message = null;
@@ -609,7 +609,7 @@ export default {
       let currentMonth = format(new Date(), 'MM');
       let currentDay = format(new Date(), 'dd');
       let dateStart = new Date(currentYear, currentMonth-1, currentDay);
-      // let dateStart = new Date(2023, 6, 3);
+      // let dateStart = new Date(2023, 9, 8);
       // console.log('currentYear:', currentYear, 'currentMonth:', currentMonth, 'currentDay:', currentDay, 'dateStart:', dateStart, 'dateStartUnix:', parseInt(format(dateStart, 'T')));
       let currentUnixDate = parseInt(format(dateStart, 'T'));
 
