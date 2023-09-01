@@ -523,9 +523,13 @@ export default {
         let geojsonData = this.$store.state.sources[this.$config.geojsonForResource.source].data;
         // console.log('in geojsonForResource computed, geojsonData:', geojsonData, 'selectedCurrentMapData:', selectedCurrentMapData);
         if (geojsonData && geojsonData.features && selectedCurrentMapData[0]) {
-          let geojsonForResource = geojsonData.features.filter(test2 => test2.attributes.globalid == selectedCurrentMapData[0].attributes.globalid);
+          let linkField = 'globalId';
+          if (this.$config.geojsonForResource.link_field) {
+            linkField = this.$config.geojsonForResource.link_field;
+          }
+          let geojsonForResource = geojsonData.features.filter(feature => feature.attributes[linkField] == selectedCurrentMapData[0].attributes[linkField]);
           coordinates = geojsonForResource[0].geometry.rings[0];
-          console.log('in geojsonForResource computed, geojsonForResource:', geojsonForResource, 'coordinates:', coordinates, 'geojsonData:', geojsonData);
+          // console.log('in geojsonForResource computed, geojsonForResource:', geojsonForResource, 'coordinates:', coordinates, 'geojsonData:', geojsonData);
           result = [{
             'resource': selectedResource,
             'color':"#9e9ac8",
