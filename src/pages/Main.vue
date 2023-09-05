@@ -1010,6 +1010,20 @@ export default {
           query = { 'zipcode': val };
           this.searchBarType = 'zipcode';
           searchBarType = 'zipcode';
+        } else if (this.$config.allowZipcodeInDataSearch) {
+          // this.$store.commit('setLastPinboardSearchMethod', 'zipcode');
+          // query = { 'zipcode': val };
+          // this.searchBarType = 'zipcode';
+          // searchBarType = 'zipcode';
+          this.$store.commit('setLastPinboardSearchMethod', 'keyword');
+          let startKeyword;
+          if (startQuery['keyword'] && startQuery['keyword'] != '') {
+            startKeyword = startQuery['keyword'];
+            val = startKeyword + ',' + val;
+          }
+          query = { ...startQuery, ...{ 'keyword': val }};
+          this.searchBarType = 'keyword';
+          searchBarType = 'keyword';
         }
       } else {
         console.log('its an address');
@@ -1452,8 +1466,17 @@ export default {
           const fuse = new Fuse(description, options);
     			let results = {};
           for (let keyword of this.selectedKeywords) {
-            console.log('in selectedKeywords loop, keyword:', keyword);
-            results[keyword] = fuse.search(keyword);
+            console.log('in selectedKeywords loop, keyword.toString():', keyword.toString(), 'description[0].split(","):', description[0].split(','));
+            if (this.$config.skipFuse) {
+              let keywordString = '' + keyword;
+              console.log('skipFuse, keywordString:', keywordString);
+              if (description[0].split(',').includes(keywordString)) {
+                // console.log('19148 is in description');
+                results[keyword] = ['true'];
+              }
+            } else {
+              results[keyword] = fuse.search(keyword);
+            }
           }
     			// const result = fuse.search(this.selectedKeywords[0]);
           // console.log('App.vue filterPoints booleanKeywords section, result:', result, 'results:', results);
