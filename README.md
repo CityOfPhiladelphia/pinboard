@@ -29,6 +29,10 @@ Create pull request for changes and merge into `master` branch for travis-ci bui
 
 ## Release Notes
 
+### 1.2.5 - 9/5/2023
+
+* uses new gtag id for GA4 for 2nd time
+
 ### 1.2.4 - 8/31/2023
 
 * small fix for holiday banner
