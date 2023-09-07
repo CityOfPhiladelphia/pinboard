@@ -694,6 +694,19 @@ export default {
     keywordsEntered() {
       return this.$store.state.selectedKeywords;
     },
+    keywordsIdentified() {
+      let values;
+      if (!this.$config.tags || !this.$config.tags.tags) {
+        values = this.keywordsEntered;
+      } else {
+        for (let tag of this.$config.tags.tags) {
+          let data = this.$store.state.sources[this.$appType].data.features;
+          console.log('keywordsIdentified tag:', tag, 'data:', data);
+        }
+        values = ['wawa'];
+      }
+      return values;
+    },
     dataStatus() {
       let value;
       if (this.$store.state.sources[this.$appType]) {
