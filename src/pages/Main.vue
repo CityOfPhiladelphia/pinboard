@@ -1001,7 +1001,7 @@ export default {
           searchBarType = 'keyword';
         }
       } else if (checkVals) {
-        console.log('its a zipcode');
+        console.log('its a zipcode or police district, checkVals:', checkVals, 'val:', val, 'val.length:', val.length);
         if (this.$config.allowZipcodeSearch) {
 
           this.$store.commit('setWatchPositionOn', false);
@@ -1011,19 +1011,17 @@ export default {
           this.searchBarType = 'zipcode';
           searchBarType = 'zipcode';
         } else if (this.$config.allowZipcodeInDataSearch) {
-          // this.$store.commit('setLastPinboardSearchMethod', 'zipcode');
-          // query = { 'zipcode': val };
-          // this.searchBarType = 'zipcode';
-          // searchBarType = 'zipcode';
-          this.$store.commit('setLastPinboardSearchMethod', 'keyword');
-          let startKeyword;
-          if (startQuery['keyword'] && startQuery['keyword'] != '') {
-            startKeyword = startQuery['keyword'];
-            val = startKeyword + ',' + val;
-          }
-          query = { ...startQuery, ...{ 'keyword': val }};
-          this.searchBarType = 'keyword';
-          searchBarType = 'keyword';
+          // if (val.length == 5) {
+            this.$store.commit('setLastPinboardSearchMethod', 'keyword');
+            let startKeyword;
+            if (startQuery['keyword'] && startQuery['keyword'] != '') {
+              startKeyword = startQuery['keyword'];
+              val = startKeyword + ',' + val;
+            }
+            query = { ...startQuery, ...{ 'keyword': val }};
+            this.searchBarType = 'keyword';
+            searchBarType = 'keyword';
+          // }
         }
       } else {
         console.log('its an address');
@@ -1414,7 +1412,7 @@ export default {
         // console.log('row:', row, 'this.$config.tags', this.$config.tags, 'this.selectedKeywords:', this.selectedKeywords, 'this.selectedKeywords.length:', this.selectedKeywords.length);
         if (this.selectedKeywords.length > 0) {
           booleanKeywords = false;
-          let description = [];
+          let description;
           if (Array.isArray(row.tags)) {
             description = row.tags;
           } else if (row.tags) {
@@ -1426,13 +1424,15 @@ export default {
               description = this.$config.tags.location(row).split(', ');
             }
           } else if (this.$config.tags && this.$config.tags.type == 'fieldValues') {
+            description = {};
             for (let tag of this.$config.tags.tags) {
               // console.log('tag:', tag, 'tag.field:', tag.field, 'row.attributes[tag.field]:', row.attributes[tag.field]);
               if (tag.type == 'boolean' && row.attributes[tag.field] == 'Yes') {
-                description.push(tag.value);
+                description[tag.field] = tag.value;
               } else if (tag.type == 'value' && row.attributes[tag.field] !== null && row.attributes[tag.field] != ' ') {
-                // console.log('in else if, row.attributes[tag.field]:', row.attributes[tag.field]);
-                description.push(row.attributes[tag.field].charAt(0) + row.attributes[tag.field].substring(1).toLowerCase());
+                console.log('in else if, row.attributes[tag.field]:', row.attributes[tag.field]);
+                // description.push(row.attributes[tag.field].charAt(0) + row.attributes[tag.field].substring(1).toLowerCase());
+                description[tag.field] = row.attributes[tag.field];
               }
             }
           }
@@ -1466,7 +1466,12 @@ export default {
           const fuse = new Fuse(description, options);
     			let results = {};
           for (let keyword of this.selectedKeywords) {
-            console.log('in selectedKeywords loop, keyword.toString():', keyword.toString(), 'description[0].split(","):', description[0].split(','));
+            // let descriptionArray = [];
+            // for (let desc of description) {
+            //   descriptionArray.push(desc.split(','));
+            // }
+            // console.log('in selectedKeywords loop, keyword.toString():', keyword.toString(), 'description:', description, 'description[0].split(","):', description[0].split(','));
+            console.log('in selectedKeywords loop, keyword.toString():', keyword.toString(), 'description:', description);
             if (this.$config.skipFuse) {
               let keywordString = '' + keyword;
               console.log('skipFuse, keywordString:', keywordString);

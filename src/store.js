@@ -43,7 +43,7 @@ function createStore(config) {
       subsections: {},
       alertResponse: null,
       gtag: {
-        category: 'unspecified-pinboard-app'
+        category: 'unspecified-pinboard-app',
       },
       zipcodeBufferShape: null,
       refineList: {},
@@ -53,6 +53,7 @@ function createStore(config) {
         current: false,
         start_date: '',
       },
+      lastKeywordField: null,
     },
     mutations: {
       setHoliday(state, payload) {
