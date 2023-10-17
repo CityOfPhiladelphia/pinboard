@@ -23,7 +23,7 @@
 
     </form>
 
-    <!-- <button
+    <button
       v-if="addressEntered != '' && addressEntered != null"
       :class="'pvm-search-control-x-button ' + buttonClass"
       aria-label="delete button"
@@ -34,7 +34,7 @@
         icon="times"
         size="2x"
       />
-    </button> -->
+    </button>
 
     <button
       :class="'pvm-search-control-button ' + buttonClass"
