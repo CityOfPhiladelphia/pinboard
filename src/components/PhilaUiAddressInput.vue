@@ -257,7 +257,7 @@ export default {
     handleFormX() {
       console.log('handleFormX is running');
       this.$data.addressEntered = '';
-      this.$emit('clear-search');
+      // this.$emit('clear-search');
     },
     async handleSearchFormSubmit() {
       console.log('MapAddressInput handleSearchFormSubmit is running, this.$data.addressEntered:', this.$data.addressEntered);
