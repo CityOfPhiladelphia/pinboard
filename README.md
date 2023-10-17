@@ -29,6 +29,10 @@ Create pull request for changes and merge into `master` branch for travis-ci bui
 
 ## Release Notes
 
+### 1.2.7 - 10/17/2023
+
+* small bugfixes for running business resource finder off 1.2.x release
+
 ### 1.2.6 - 10/5/2023
 
 * sets up holiday banner for translating holiday names
