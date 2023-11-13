@@ -23,7 +23,7 @@
 
     </form>
 
-    <!-- <button
+    <button
       v-if="addressEntered != '' && addressEntered != null"
       :class="'pvm-search-control-x-button ' + buttonClass"
       aria-label="delete button"
@@ -34,7 +34,7 @@
         icon="times"
         size="2x"
       />
-    </button> -->
+    </button>
 
     <button
       :class="'pvm-search-control-button ' + buttonClass"
@@ -257,7 +257,7 @@ export default {
     handleFormX() {
       console.log('handleFormX is running');
       this.$data.addressEntered = '';
-      this.$emit('clear-search');
+      // this.$emit('clear-search');
     },
     async handleSearchFormSubmit() {
       console.log('MapAddressInput handleSearchFormSubmit is running, this.$data.addressEntered:', this.$data.addressEntered);
