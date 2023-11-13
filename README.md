@@ -29,6 +29,10 @@ Create pull request for changes and merge into `master` branch for travis-ci bui
 
 ## Release Notes
 
+### 1.2.8 - 11/13/2023
+
+* incorporates @phila/vue-datafetch 2.2.16, which has a small bugfix for pinboard after major changes for mapboard
+
 ### 1.2.7 - 10/17/2023
 
 * small bugfixes for running business resource finder off 1.2.x release
