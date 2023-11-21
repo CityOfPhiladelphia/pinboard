@@ -29,6 +29,10 @@ Create pull request for changes and merge into `master` branch for travis-ci bui
 
 ## Release Notes
 
+### 1.2.9 - 11/21/2023
+
+* sets up "forceBanner" option for holidays, which overrules the automatic holiday banner option
+
 ### 1.2.8 - 11/13/2023
 
 * incorporates @phila/vue-datafetch 2.2.16, which has a small bugfix for pinboard after major changes for mapboard

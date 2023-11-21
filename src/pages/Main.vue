@@ -64,7 +64,7 @@
     </div>
 
     <div
-      v-if="showHolidayBanner && holiday.coming_soon || showHolidayBanner && holiday.current"
+      v-if="showForceHolidayBanner || showAutomaticHolidayBanner && holiday.coming_soon || showAutomaticHolidayBanner && holiday.current"
       class="holiday-banner"
     >
       {{ closureMessageAllSites }}
@@ -231,7 +231,8 @@ export default {
       searchBarType: 'address',
       addressInputPlaceholder: null,
       submittedCheckboxValue: null,
-      showHolidayBanner: false,
+      showForceHolidayBanner: false,
+      showAutomaticHolidayBanner: false,
     };
   },
   computed: {
@@ -839,8 +840,12 @@ export default {
       this.$store.commit('setShouldShowGreeting', false);
     }
 
-    if (this.$config.holidays && this.$config.holidays.showBanner) {
-      this.showHolidayBanner = true;
+    if (this.$config.holidays && this.$config.holidays.automaticBanner) {
+      this.showAutomaticHolidayBanner = true;
+    }
+
+    if (this.$config.holidays && this.$config.holidays.forceBanner) {
+      this.showForceHolidayBanner = true;
     }
 
     // let currentYear = format(new Date(), 'yyyy');
@@ -890,7 +895,8 @@ export default {
 
   methods: {
     closeHolidayBanner() {
-      this.showHolidayBanner = false;
+      this.showAutomaticHolidayBanner = false;
+      this.showForceHolidayBanner = false;
       // let holiday = {
       //   holiday_label: '',
       //   coming_soon: false,
