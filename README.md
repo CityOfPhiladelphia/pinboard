@@ -29,6 +29,10 @@ Create pull request for changes and merge into `master` branch for travis-ci bui
 
 ## Release Notes
 
+### 1.2.10 - 11/27/2023
+
+* makes "forceBanner" option work for a week after a holiday
+
 ### 1.2.9 - 11/21/2023
 
 * sets up "forceBanner" option for holidays, which overrules the automatic holiday banner option

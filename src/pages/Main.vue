@@ -161,6 +161,7 @@ import SharedFunctions from '../components/mixins/SharedFunctions.vue';
 import { format } from 'date-fns';
 import { parseISO } from 'date-fns';
 import { subWeeks } from 'date-fns';
+import { addWeeks } from 'date-fns';
 
 import 'maplibre-gl/dist/maplibre-gl.css';
 
@@ -576,6 +577,13 @@ export default {
       } 
       return false;
     },
+    justPassedHolidayClosure() {
+      let holiday = this.$store.state.holiday;
+      if (holiday.just_passed) {
+        return true;
+      } 
+      return false;
+    },
     closureMessage() {
       let holiday = this.$store.state.holiday;
       let message;
@@ -597,6 +605,9 @@ export default {
       } else if (this.futureHolidayClosure) {
         message = this.$t(holiday.holiday_label) + ' - ' + this.$t('futureHolidayClosureAllSites');// + holiday.holiday_label + ' ' + format(parseISO(holiday.start_date), 'MM/dd/yyyy');
         // message = this.$t('futureHolidayClosure') + transforms.toLocaleDateString.transform(this.item.attributes.close_holiday_start);
+      } else if (this.justPassedHolidayClosure) {
+        message = this.$t(holiday.holiday_label) + ' - ' + this.$t('holidayClosureAllSites');// + holiday.holiday_label + ' ' + format(parseISO(holiday.start_date), 'MM/dd/yyyy');
+        // message = this.$t('futureHolidayClosure') + transforms.toLocaleDateString.transform(this.item.attributes.close_holiday_start);
       } else {
         message = null;
       }
@@ -610,7 +621,7 @@ export default {
       let currentMonth = format(new Date(), 'MM');
       let currentDay = format(new Date(), 'dd');
       let dateStart = new Date(currentYear, currentMonth-1, currentDay);
-      // let dateStart = new Date(2023, 9, 8);
+      // let dateStart = new Date(2023, 0, 2);
       // console.log('currentYear:', currentYear, 'currentMonth:', currentMonth, 'currentDay:', currentDay, 'dateStart:', dateStart, 'dateStartUnix:', parseInt(format(dateStart, 'T')));
       let currentUnixDate = parseInt(format(dateStart, 'T'));
 
@@ -619,6 +630,7 @@ export default {
         start_date: '',
         coming_soon: false,
         current: false,
+        just_passed: false,
       };
 
       for (let holiday of nextHolidays.holidays) {
@@ -627,6 +639,7 @@ export default {
 
         let oneWeekAhead = parseInt(format(subWeeks(parseISO(holiday.start_date), 1), 'T'));
         let actualHoliday = parseInt(format(parseISO(holiday.start_date), 'T'));
+        let oneWeekBehind = parseInt(format(addWeeks(parseISO(holiday.start_date), 1), 'T'));
 
         if (currentUnixDate >= oneWeekAhead && currentUnixDate < actualHoliday) {
           holi.holiday_label = holiday.holiday_label;
@@ -636,6 +649,10 @@ export default {
           holi.holiday_label = holiday.holiday_label;
           holi.current = true;
           holi.start_date = holiday.start_date;
+        } else if (currentUnixDate <= oneWeekBehind && currentUnixDate > actualHoliday) {
+          holi.holiday_label = holiday.holiday_label;
+          holi.just_passed = true;
+          // holi.start_date = holiday.start_date;
         }
 
         // console.log('holiday.start_date:', holiday.start_date, format(holiday.start_date, 'T'));
