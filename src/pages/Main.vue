@@ -927,6 +927,10 @@ export default {
       let startQuery = { ...this.$route.query };
       delete startQuery['address'];
       delete startQuery['zipcode'];
+      if (this.lastPinboardSearchMethod == 'zipcodeKeyword') {
+        delete startQuery['keyword'];
+        this.$store.commit('setSelectedKeywords', []);
+      }
       this.$router.push({ query: { ...startQuery }});
       this.$controller.resetGeocode();
       this.$store.commit('setSelectedZipcode', null);
@@ -1015,6 +1019,8 @@ export default {
           // query = { 'zipcode': val };
           // this.searchBarType = 'zipcode';
           // searchBarType = 'zipcode';
+
+          this.$store.commit('setWatchPositionOn', false);
           this.$store.commit('setLastPinboardSearchMethod', 'zipcodeKeyword');
 
           this.clearGeocodeAndZipcode();
