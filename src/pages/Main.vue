@@ -734,7 +734,7 @@ export default {
     geocodeStatus(nextGeocodeStatus) {
       if (nextGeocodeStatus === 'success') {
         this.runBuffer();
-      } else if (nextGeocodeStatus === null && this.lastPinboardSearchMethod != 'zipcode') {
+      } else if (nextGeocodeStatus === null && this.lastPinboardSearchMethod != 'zipcode' && this.lastPinboardSearchMethod != 'zipcodeKeyword') {
         this.$data.buffer = null;
       } else if (nextGeocodeStatus === 'error') {
         console.log('Main.vue watch geocodeStatus, nextGeocodeStatus is an error:', nextGeocodeStatus);
@@ -1038,7 +1038,12 @@ export default {
           // query = { 'zipcode': val };
           // this.searchBarType = 'zipcode';
           // searchBarType = 'zipcode';
-          this.$store.commit('setLastPinboardSearchMethod', 'keyword');
+          this.$store.commit('setLastPinboardSearchMethod', 'zipcodeKeyword');
+
+          this.clearGeocodeAndZipcode();
+          this.$store.commit('setBufferShape', null);
+          this.$data.buffer = null;
+          
           let startKeyword;
           if (startQuery['keyword'] && startQuery['keyword'] != '') {
             startKeyword = startQuery['keyword'];
@@ -1050,6 +1055,12 @@ export default {
         }
       } else {
         console.log('its an address');
+
+        if (this.lastPinboardSearchMethod == 'zipcodeKeyword') {
+          console.log('startQuery:', startQuery);
+          delete startQuery['keyword'];
+          this.$store.commit('setSelectedKeywords', []);
+        }
 
         this.$store.commit('setWatchPositionOn', false);
 
@@ -1157,7 +1168,7 @@ export default {
       this.$store.commit('setZipcodeCenter', zipcodeCenter.geometry.coordinates);
     },
     filterPoints() {
-      // console.log('App.vue filterPoints is running, this.database:', this.database);
+      console.log('App.vue filterPoints is running, this.database:', this.database);
       const filteredRows = [];
 
       if (!this.database) {
@@ -1165,7 +1176,7 @@ export default {
       }
 
       for (const [index, row] of [ ...this.database.entries() ]) {
-        // console.log('row:', row, 'index:', index);
+        console.log('row:', row, 'index:', index);
         let booleanServices;
         const { selectedServices } = this.$store.state;
         // console.log('row.services_offered:', row.services_offered);
@@ -1200,12 +1211,12 @@ export default {
                   selectedGroups.push(valueGroup)
                 }
               }
-              // console.log('App.vue filterPoints is running on multipleFieldGroups, selectedServices:', selectedServices, 'selectedGroups:', selectedGroups);
+              console.log('App.vue filterPoints is running on multipleFieldGroups, selectedServices:', selectedServices, 'selectedGroups:', selectedGroups);
               let groupValues = [];
               for (let group of selectedGroups) {
                 let groupBooleanConditions = [];
                 for (let service of selectedServices) {
-                  // console.log('App.vue filterPoints loop, service:', service);
+                  console.log('App.vue filterPoints loop, service:', service);
                   if (group !== 'keyword' && service.split('_', 1)[0] === group && this.$config.refine.multipleFieldGroups[group]['radio']) {
                     // console.log('group:', group, 'this.$config.refine.multipleFieldGroups[group]["radio"]:', this.$config.refine.multipleFieldGroups[group]['radio']);
                     let dependentGroups = this.$config.refine.multipleFieldGroups[group]['radio'][service.split('_')[1]]['dependentGroups'] || [];
@@ -1337,8 +1348,8 @@ export default {
           // console.log('!this.$data.buffer');
           booleanBuffer = true;
         } else if (row.latlng) {
-          // console.log('row.latlng:', row.latlng);
-          // console.log('buffer else if 1 is running, row:', row, 'booleanBuffer:', booleanBuffer, 'typeof row.latlng[0]:', typeof row.latlng[0], 'this.$store.state.zipcodeCenter:', this.$store.state.zipcodeCenter);
+          console.log('row.latlng:', row.latlng);
+          console.log('buffer else if 1 is running, row:', row, 'booleanBuffer:', booleanBuffer, 'typeof row.latlng[0]:', typeof row.latlng[0], 'this.$store.state.zipcodeCenter:', this.$store.state.zipcodeCenter);
           if (typeof row.latlng[0] === 'number' && row.latlng[0] !== null) {
             const rowPoint = point([ row.latlng[1], row.latlng[0] ]);
             let geocodedPoint, options, theDistance;
