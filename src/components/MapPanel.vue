@@ -963,6 +963,11 @@ export default {
         let startQuery = { ...this.$route.query };
         delete startQuery['address'];
         this.$router.push({ query: { ...startQuery }});
+      } else if (nextLastPinboardSearchMethod === 'zipcodeKeyword') {
+        this.$data.geojsonForBufferBoolean = false;
+        let startQuery = { ...this.$route.query };
+        delete startQuery['address'];
+        this.$router.push({ query: { ...startQuery }});
       }
     },
     zipcodeBufferShape(nextZipcodeBufferShape) {
