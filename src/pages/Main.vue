@@ -1182,7 +1182,7 @@ export default {
       }
 
       for (const [index, row] of [ ...this.database.entries() ]) {
-        console.log('row:', row, 'index:', index);
+        // console.log('row:', row, 'index:', index);
         let booleanServices;
         const { selectedServices } = this.$store.state;
         // console.log('row.services_offered:', row.services_offered);
