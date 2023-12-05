@@ -898,7 +898,18 @@ export default {
       this.brandingImage = {
         src: this.$config.app.logoSrc,
         alt: this.$config.app.logoAlt,
-        width: "200px",
+        width: this.$config.app.logoWidth || "200px",
+      }
+    }
+
+    if (this.$config.app.logoLink && this.$config.app.logoLink == 'none') {
+      this.brandingLink = {
+        style: 'pointer-events: none',
+      }
+    } else {
+      this.brandingLink = {
+        href: this.$config.app.logoLink,
+        target: '_blank',
       }
     }
 
