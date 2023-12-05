@@ -1254,11 +1254,27 @@ export default {
                     groupBooleanConditions.push(val);
                   }
                 }
-                // console.log('group:', group, 'groupBooleanConditions:', groupBooleanConditions);
-                if (groupBooleanConditions.includes(true)) {
-                  booleanConditions.push(true);
-                } else if (groupBooleanConditions.length) {
-                  booleanConditions.push(false);
+                // console.log('this.$config.refine.andOr:', this.$config.refine.andOr, 'group:', group, 'groupBooleanConditions:', groupBooleanConditions);
+                if (this.$config.refine.andOr) {
+                  if (this.$config.refine.andOr == 'and') {
+                    if (groupBooleanConditions.includes(false)) {
+                      booleanConditions.push(false);
+                    } else {
+                      booleanConditions.push(true);
+                    }
+                  } else if (this.$config.refine.andOr == 'or') {
+                    if (groupBooleanConditions.includes(true)) {
+                      booleanConditions.push(true);
+                    } else {
+                      booleanConditions.push(false);
+                    }
+                  }
+                } else {
+                  if (groupBooleanConditions.includes(true)) {
+                    booleanConditions.push(true);
+                  } else if (groupBooleanConditions.length) {
+                    booleanConditions.push(false);
+                  }
                 }
               }
             } else {
