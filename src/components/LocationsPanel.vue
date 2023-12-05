@@ -373,7 +373,7 @@ export default {
     }
 
     let value, valueWithMiles;
-    if (this.$config.searchBar.searchDistance) {
+    if (this.$config.searchBar.searchDistance && this.$config.searchBar.searchDistance != 1) {
       value = this.$config.searchBar.searchDistance;
       valueWithMiles = this.$config.searchBar.searchDistance + ' ' + this.$i18n.messages[this.i18nLocale]['miles'];
     } else {
