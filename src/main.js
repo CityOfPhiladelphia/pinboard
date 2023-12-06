@@ -49,7 +49,21 @@ const clientConfig = {
 };
 
 function initPinboard(clientConfig) {
-  console.log('initPinboard is running 1, clientConfig:', clientConfig, 'i18n:', i18n, 'zipcodes:', zipcodes, 'holidays:', holidays);
+  let pinboardMessages = i18n.i18n.data.messages;
+  let clientMessages = clientConfig.i18n.data.messages;
+
+  for (let key of Object.keys(pinboardMessages)) {
+    // console.log('key:', key);
+    if (!clientMessages[key]) {
+      // console.log('clientMessages[key]:', clientMessages[key]);
+      // pinboardMessages[key] = mergeDeep(pinboardMessages[key], clientMessages[key]);
+      delete pinboardMessages[key];
+    } //else {
+    // }
+  }
+
+  console.log('initPinboard is running 1, clientMessages:', clientMessages, 'pinboardMessages:', pinboardMessages, 'clientConfig:', clientConfig, 'i18n:', i18n, 'zipcodes:', zipcodes, 'holidays:', holidays);
+    
   clientConfig.pinboard = true;
   clientConfig = mergeDeep(i18n, clientConfig);
   if (clientConfig.searchBar.searchTypes.includes('zipcode')) {
