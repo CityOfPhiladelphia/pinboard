@@ -600,7 +600,9 @@ export default {
     closureMessageAllSites() {
       let holiday = this.$store.state.holiday;
       let message;
-      if (this.currentHolidayClosure) {
+      if (this.$config.holidays && this.$config.holidays.forceBannerMessage) {
+        message = this.$t(this.$config.holidays.forceBannerMessage);
+      } else if (this.currentHolidayClosure) {
         message = this.$t(holiday.holiday_label) + ' - ' + this.$t('holidayClosureAllSites');// + holiday.holiday_label + ' ' + format(parseISO(holiday.start_date), 'MM/dd/yyyy');
       } else if (this.futureHolidayClosure) {
         message = this.$t(holiday.holiday_label) + ' - ' + this.$t('futureHolidayClosureAllSites');// + holiday.holiday_label + ' ' + format(parseISO(holiday.start_date), 'MM/dd/yyyy');
