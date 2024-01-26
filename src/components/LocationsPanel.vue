@@ -297,10 +297,17 @@
               <div
                 v-if="item.services_offered"
               >
-                <h3>
+                <h3 v-if="!i18nEnabled">
                   Services offered
                 </h3>
-                <div class="columns is-multiline is-gapless">
+                <h3 v-if="i18nEnabled">
+                  {{ $t('servicesOffered') }}
+                </h3>
+
+                <div
+                  v-if="!i18nEnabled"
+                  class="columns is-multiline is-gapless"
+                >
                   <div
                     v-for="i in parseServiceList(item.services_offered)"
                     :key="i"
@@ -309,13 +316,31 @@
                     {{ i }}
                   </div>
                 </div>
+
+                <div
+                  v-if="i18nEnabled"
+                  class="columns is-multiline is-gapless"
+                >
+                  <div
+                    v-for="service in parseServiceList(item.services_offered)"
+                    :key="service"
+                    class="column is-half"
+                  >
+                    {{ $t(service) }}
+                  </div>
+                </div>
+
+                
               </div>
 
               <div
                 v-if="item.tags && item.tags.length"
               >
-                <h3>
-                  Tags
+                <h3 v-if="!i18nEnabled">
+                  {{ tagsPhrase }}
+                </h3>
+                <h3 v-if="i18nEnabled">
+                  {{ $t(tagsPhrase) }}
                 </h3>
                 <div>
                   {{ parseTagsList(item.tags) }}
@@ -386,6 +411,15 @@ export default {
     this.printCheckboxes = this.$store.state.printCheckboxes;
   },
   computed: {
+    tagsPhrase() {
+      let value;
+      if (this.$config.locationInfo.tagsPhrase) {
+        value = this.$config.locationInfo.tagsPhrase;
+      } else {
+        value = 'Tags';
+      }
+      return value;
+    },
     searchDistanceOptions() {
       return [
         '1 ' + this.$i18n.messages[this.i18nLocale]['mile'],

@@ -81,4 +81,6 @@ export default {
   useCurrentLocation: 'Usa la ubicación actual',
   searchBar: 'Barra de búsqueda',
   searchButton: 'Botón de búsqueda',
+  servicesOffered: 'Servicios ofrecidos',
+  languagesSpoken: 'Idiomas hablados',
 };

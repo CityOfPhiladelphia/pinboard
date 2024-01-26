@@ -81,4 +81,6 @@ export default {
   useCurrentLocation: 'Use current location',
   searchBar: 'Search bar',
   searchButton: 'Search button',
+  servicesOffered: 'Services offered',
+  languagesSpoken: 'Languages spoken',
 };
