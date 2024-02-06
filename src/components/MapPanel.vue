@@ -521,19 +521,26 @@ export default {
     geojsonForResource() {
       let selectedResource = this.$store.state.selectedResources[0];
       let selectedCurrentMapData = this.currentMapData.filter(test => test._featureId == selectedResource);
-      // console.log('geojsonForResource computed, selectedResource:', selectedResource);
+      console.log('geojsonForResource computed, selectedResource:', selectedResource);
       let coordinates = [];
       let result = [];
       if (this.$config && this.$config.geojsonForResource) {
         let geojsonData = this.$store.state.sources[this.$config.geojsonForResource.source].data;
-        // console.log('in geojsonForResource computed, geojsonData:', geojsonData, 'selectedCurrentMapData:', selectedCurrentMapData);
+        console.log('in geojsonForResource computed, geojsonData:', geojsonData, 'selectedCurrentMapData:', selectedCurrentMapData);
         if (geojsonData && geojsonData.features && selectedCurrentMapData[0]) {
           let linkField = 'globalId';
           if (this.$config.geojsonForResource.link_field) {
             linkField = this.$config.geojsonForResource.link_field;
           }
-          let geojsonForResource = geojsonData.features.filter(feature => feature.attributes[linkField] == selectedCurrentMapData[0].attributes[linkField]);
-          coordinates = geojsonForResource[0].geometry.rings[0];
+          let geojsonForResource;
+          if (selectedCurrentMapData[0].attributes) {
+            geojsonForResource = geojsonData.features.filter(feature => feature.attributes[linkField] == selectedCurrentMapData[0].attributes[linkField]);
+          } else if (selectedCurrentMapData[0].fields) {
+            geojsonForResource = geojsonData.features.filter(feature => feature.attributes[linkField] == selectedCurrentMapData[0].fields[linkField]);
+          }
+          if (geojsonForResource && geojsonForResource[0] && geojsonForResource[0].geometry) {
+            coordinates = geojsonForResource[0].geometry.rings[0];
+          }
           // console.log('in geojsonForResource computed, geojsonForResource:', geojsonForResource, 'coordinates:', coordinates, 'geojsonData:', geojsonData);
           result = [{
             'resource': selectedResource,
@@ -1097,7 +1104,7 @@ export default {
     },
 
     geojsonForResource(nextGeojson) {
-      // console.log('watch geojsonForResource is firing, nextGeojson[0]:', nextGeojson[0]);
+      console.log('watch geojsonForResource is firing, nextGeojson[0]:', nextGeojson[0]);
       if (this.$store.map) {
         // console.log('watch geojsonForResource is running, map.getStyle():', this.$store.map.getStyle(), 'map.getStyle().layers:', this.$store.map.getStyle().layers, 'nextGeojson:', nextGeojson);
       }
