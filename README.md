@@ -29,6 +29,10 @@ Create pull request for changes and merge into `master` branch for travis-ci bui
 
 ## Release Notes
 
+### 1.2.12 - 2/28/2024
+
+* uses @phila/vue-datafetch that adds headers to http request
+
 ### 1.2.11 - 12/21/2023
 
 * allows forced message in holiday banner
