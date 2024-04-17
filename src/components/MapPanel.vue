@@ -1027,7 +1027,7 @@ export default {
         if (!this.latestSelectedResourceFromMap || !this.latestSelectedResourceFromMap == nextLatestSelectedResource) {
         
           // data coming as "rows" means it came from carto
-          if (this.$store.state.sources[this.$appType].data.rows) {
+          if (this.$store.state.sources[this.$appType].data && this.$store.state.sources[this.$appType].data.rows) {
             rows = this.$store.state.sources[this.$appType].data.rows;
             const dataValue = rows.filter(row => row._featureId === nextLatestSelectedResource);
             // console.log('in watch latestSelectedResourceFromExpand, rows, nextLatestSelectedResource:', nextLatestSelectedResource, 'rows:', rows, 'dataValue:', dataValue);
@@ -1037,7 +1037,7 @@ export default {
             }
 
           // data coming as "features" means it came from arcgis
-          } else if (this.$store.state.sources[this.$appType].data.features) {
+          } else if (this.$store.state.sources[this.$appType].data && this.$store.state.sources[this.$appType].data.features) {
             rows = this.$store.state.sources[this.$appType].data.features;
             const dataValue = rows.filter(row => row._featureId === nextLatestSelectedResource);
             console.log('in watch latestSelectedResourceFromExpand, features, nextLatestSelectedResource:', nextLatestSelectedResource, 'rows:', rows, 'dataValue:', dataValue, 'dataValue[0].latlng:', dataValue[0].latlng);
@@ -1046,7 +1046,7 @@ export default {
             }
 
           // data coming in as "records" means it came from airtable
-          } else if (this.$store.state.sources[this.$appType].data.records) {
+          } else if (this.$store.state.sources[this.$appType].data && this.$store.state.sources[this.$appType].data.records) {
             rows = this.$store.state.sources[this.$appType].data.records;
             const dataValue = rows.filter(row => row._featureId === nextLatestSelectedResource);
             // console.log('in watch latestSelectedResourceFromExpand, array, nextLatestSelectedResource:', nextLatestSelectedResource, 'rows:', rows, 'dataValue:', dataValue);
