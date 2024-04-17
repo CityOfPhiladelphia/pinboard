@@ -29,6 +29,10 @@ Create pull request for changes and merge into `master` branch for travis-ci bui
 
 ## Release Notes
 
+### 1.2.13 - 4/17/2024
+
+* fixes bug in MapPanel.vue that was causing a console error when loading with a pin in the url
+
 ### 1.2.12 - 2/28/2024
 
 * uses @phila/vue-datafetch that adds headers to http request
