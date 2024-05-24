@@ -748,17 +748,32 @@ export default {
             row.latlng = [ row.lat, row.lon ];
           }
         } else if (row.geometry) {
-          // console.log('else if row.geometry is true, this.$config.projection:', this.$config.projection);
-          // let projection = this.getProjection(row);
-          // console.log('else if row.geometry is true, row.geometry:', row.geometry, 'projection:', projection, 'row.geometry.x:', row.geometry.x, 'row.geometry.y:', row.geometry.y);
-          if (projection === '3857') {
-            let lnglat = proj4(this.projection3857, this.projection4326, [ row.geometry.x, row.geometry.y ]);
-            row.latlng = [ lnglat[1], lnglat[0] ];
-          } else if (projection === '2272') {
-            let lnglat = proj4(this.projection2272, this.projection4326, [ row.geometry.x, row.geometry.y ]);
-            row.latlng = [ lnglat[1], lnglat[0] ];
-          } else {
-            row.latlng = [ row.geometry.y, row.geometry.x ];
+          if (row.geometry.x) {
+            // console.log('else if if row.geometry is true, this.$config.projection:', this.$config.projection);
+            // let projection = this.getProjection(row);
+            // console.log('else if if row.geometry is true, row.geometry:', row.geometry, 'projection:', projection, 'row.geometry.x:', row.geometry.x, 'row.geometry.y:', row.geometry.y);
+            if (projection === '3857') {
+              let lnglat = proj4(this.projection3857, this.projection4326, [ row.geometry.x, row.geometry.y ]);
+              row.latlng = [ lnglat[1], lnglat[0] ];
+            } else if (projection === '2272') {
+              let lnglat = proj4(this.projection2272, this.projection4326, [ row.geometry.x, row.geometry.y ]);
+              row.latlng = [ lnglat[1], lnglat[0] ];
+            } else {
+              row.latlng = [ row.geometry.y, row.geometry.x ];
+            }
+          } else if (row.geometry.coordinates){
+            // console.log('else if else row.geometry is true, this.$config.projection:', this.$config.projection);
+            // let projection = this.getProjection(row);
+            // console.log('else if if row.geometry is true, row.geometry:', row.geometry, 'projection:', projection, 'row.geometry.x:', row.geometry.x, 'row.geometry.y:', row.geometry.y);
+            if (projection === '3857') {
+              let lnglat = proj4(this.projection3857, this.projection4326, [ row.geometry.coordinates[0], row.geometry.coordinates[1] ]);
+              row.latlng = [ lnglat[1], lnglat[0] ];
+            } else if (projection === '2272') {
+              let lnglat = proj4(this.projection2272, this.projection4326, [ row.geometry.coordinates[0], row.geometry.coordinates[1] ]);
+              row.latlng = [ lnglat[1], lnglat[0] ];
+            } else {
+              row.latlng = [ row.geometry.coordinates[1], row.geometry.coordinates[0] ];
+            }
           }
         }
 
