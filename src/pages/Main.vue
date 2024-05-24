@@ -1439,6 +1439,39 @@ export default {
             }
             // console.log('buffer else if 2 IF is running, row:', row, 'rowPoint:', rowPoint, 'booleanBuffer:', booleanBuffer);
           }
+        } else if (row.geo && row.geo.coordinates) {
+          // console.log('buffer else if 3 is running, row:', row, 'booleanBuffer:', booleanBuffer);
+          if (typeof row.geo.coordinates[0] === 'number' && typeof row.geo.coordinates[1] === 'number') {
+            let projection = this.getProjection(row);
+            let lnglat;
+            if (projection === '3857') {
+              lnglat = proj4(this.projection3857, this.projection4326, [ row.geo.coordinates[0], row.geo.coordinates[1] ]);
+            } else if (projection === '2272') {
+              lnglat = proj4(this.projection2272, this.projection4326, [ row.geo.coordinates[0], row.geo.coordinates[1] ]);
+            } else {
+              lnglat = [ row.geo.coordinates[0], row.geo.coordinates[1] ];
+            }
+            const rowPoint = point(lnglat);
+
+            let geocodedPoint, options, theDistance;
+            if (this.$store.state.geocode.data) {
+              geocodedPoint = point(this.$store.state.geocode.data.geometry.coordinates);
+              options = { units: 'miles' };
+              theDistance = distance(geocodedPoint, rowPoint, options);
+              row.distance = theDistance;
+            } else if (this.$store.state.zipcodeCenter[0]) {
+              // console.log('inside zipcode center else if');
+              let zipcodeCenter = point(this.$store.state.zipcodeCenter);
+              options = { units: 'miles' };
+              theDistance = distance(zipcodeCenter, rowPoint, options);
+              row.distance = theDistance;
+            }
+
+            if (booleanPointInPolygon(rowPoint, this.$data.buffer)) {
+              booleanBuffer = true;
+            }
+            // console.log('buffer else if 3 IF is running, row:', row, 'rowPoint:', rowPoint, 'booleanBuffer:', booleanBuffer);
+          }
         } else if (row.geometry && row.geometry.x) {
           // console.log('buffer else if 3 is running, row:', row, 'booleanBuffer:', booleanBuffer);
           if (typeof row.geometry.x === 'number' && typeof row.geometry.y === 'number') {
