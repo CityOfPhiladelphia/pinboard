@@ -29,6 +29,10 @@ Create pull request for changes and merge into `master` branch for travis-ci bui
 
 ## Release Notes
 
+### 1.2.14 - 8/23/2024
+
+* merges all work for setting up lactation-spaces-finder
+
 ### 1.2.13 - 4/17/2024
 
 * fixes bug in MapPanel.vue that was causing a console error when loading with a pin in the url
