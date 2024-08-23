@@ -919,6 +919,10 @@ export default {
       // this.filterPoints();
       location.reload();
     });
+
+    if (this.$config.refineEnabled === false) {
+      this.refineEnabled = false;
+    }
   },
 
   methods: {
