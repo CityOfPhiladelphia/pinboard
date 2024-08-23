@@ -736,7 +736,7 @@ export default {
     geocodeStatus(nextGeocodeStatus) {
       if (nextGeocodeStatus === 'success') {
         this.runBuffer();
-      } else if (nextGeocodeStatus === null && this.lastPinboardSearchMethod != 'zipcode') {
+      } else if (nextGeocodeStatus === null && this.lastPinboardSearchMethod != 'zipcode' && this.lastPinboardSearchMethod != 'zipcodeKeyword') {
         this.$data.buffer = null;
       } else if (nextGeocodeStatus === 'error') {
         console.log('Main.vue watch geocodeStatus, nextGeocodeStatus is an error:', nextGeocodeStatus);
@@ -921,6 +921,10 @@ export default {
       // this.filterPoints();
       location.reload();
     });
+
+    if (this.$config.refineEnabled === false) {
+      this.refineEnabled = false;
+    }
   },
 
   methods: {
@@ -963,6 +967,10 @@ export default {
       let startQuery = { ...this.$route.query };
       delete startQuery['address'];
       delete startQuery['zipcode'];
+      if (this.lastPinboardSearchMethod == 'zipcodeKeyword') {
+        delete startQuery['keyword'];
+        this.$store.commit('setSelectedKeywords', []);
+      }
       this.$router.push({ query: { ...startQuery }});
       this.$controller.resetGeocode();
       this.$store.commit('setSelectedZipcode', null);
@@ -1046,9 +1054,36 @@ export default {
           query = { 'zipcode': val };
           this.searchBarType = 'zipcode';
           searchBarType = 'zipcode';
+        } else if (this.$config.allowZipcodeInDataSearch) {
+          // this.$store.commit('setLastPinboardSearchMethod', 'zipcode');
+          // query = { 'zipcode': val };
+          // this.searchBarType = 'zipcode';
+          // searchBarType = 'zipcode';
+
+          this.$store.commit('setWatchPositionOn', false);
+          this.$store.commit('setLastPinboardSearchMethod', 'zipcodeKeyword');
+
+          this.clearGeocodeAndZipcode();
+          this.$store.commit('setBufferShape', null);
+          this.$data.buffer = null;
+          
+          let startKeyword;
+          if (startQuery['keyword'] && startQuery['keyword'] != '') {
+            startKeyword = startQuery['keyword'];
+            val = startKeyword + ',' + val;
+          }
+          query = { ...startQuery, ...{ 'keyword': val }};
+          this.searchBarType = 'keyword';
+          searchBarType = 'keyword';
         }
       } else {
         console.log('its an address');
+
+        if (this.lastPinboardSearchMethod == 'zipcodeKeyword') {
+          console.log('startQuery:', startQuery);
+          delete startQuery['keyword'];
+          this.$store.commit('setSelectedKeywords', []);
+        }
 
         this.$store.commit('setWatchPositionOn', false);
 
@@ -1156,7 +1191,7 @@ export default {
       this.$store.commit('setZipcodeCenter', zipcodeCenter.geometry.coordinates);
     },
     filterPoints() {
-      // console.log('App.vue filterPoints is running, this.database:', this.database);
+      console.log('App.vue filterPoints is running, this.database:', this.database);
       const filteredRows = [];
 
       if (!this.database) {
@@ -1199,12 +1234,12 @@ export default {
                   selectedGroups.push(valueGroup)
                 }
               }
-              // console.log('App.vue filterPoints is running on multipleFieldGroups, selectedServices:', selectedServices, 'selectedGroups:', selectedGroups);
+              console.log('App.vue filterPoints is running on multipleFieldGroups, selectedServices:', selectedServices, 'selectedGroups:', selectedGroups);
               let groupValues = [];
               for (let group of selectedGroups) {
                 let groupBooleanConditions = [];
                 for (let service of selectedServices) {
-                  // console.log('App.vue filterPoints loop, service:', service);
+                  console.log('App.vue filterPoints loop, service:', service);
                   if (group !== 'keyword' && service.split('_', 1)[0] === group && this.$config.refine.multipleFieldGroups[group]['radio']) {
                     // console.log('group:', group, 'this.$config.refine.multipleFieldGroups[group]["radio"]:', this.$config.refine.multipleFieldGroups[group]['radio']);
                     let dependentGroups = this.$config.refine.multipleFieldGroups[group]['radio'][service.split('_')[1]]['dependentGroups'] || [];
@@ -1236,11 +1271,27 @@ export default {
                     groupBooleanConditions.push(val);
                   }
                 }
-                // console.log('group:', group, 'groupBooleanConditions:', groupBooleanConditions);
-                if (groupBooleanConditions.includes(true)) {
-                  booleanConditions.push(true);
-                } else if (groupBooleanConditions.length) {
-                  booleanConditions.push(false);
+                // console.log('this.$config.refine.andOr:', this.$config.refine.andOr, 'group:', group, 'groupBooleanConditions:', groupBooleanConditions);
+                if (this.$config.refine.andOr) {
+                  if (this.$config.refine.andOr == 'and') {
+                    if (groupBooleanConditions.includes(false)) {
+                      booleanConditions.push(false);
+                    } else {
+                      booleanConditions.push(true);
+                    }
+                  } else if (this.$config.refine.andOr == 'or') {
+                    if (groupBooleanConditions.includes(true)) {
+                      booleanConditions.push(true);
+                    } else {
+                      booleanConditions.push(false);
+                    }
+                  }
+                } else {
+                  if (groupBooleanConditions.includes(true)) {
+                    booleanConditions.push(true);
+                  } else if (groupBooleanConditions.length) {
+                    booleanConditions.push(false);
+                  }
                 }
               }
             } else {
@@ -1336,8 +1387,8 @@ export default {
           // console.log('!this.$data.buffer');
           booleanBuffer = true;
         } else if (row.latlng) {
-          // console.log('row.latlng:', row.latlng);
-          // console.log('buffer else if 1 is running, row:', row, 'booleanBuffer:', booleanBuffer, 'typeof row.latlng[0]:', typeof row.latlng[0], 'this.$store.state.zipcodeCenter:', this.$store.state.zipcodeCenter);
+          console.log('row.latlng:', row.latlng);
+          console.log('buffer else if 1 is running, row:', row, 'booleanBuffer:', booleanBuffer, 'typeof row.latlng[0]:', typeof row.latlng[0], 'this.$store.state.zipcodeCenter:', this.$store.state.zipcodeCenter);
           if (typeof row.latlng[0] === 'number' && row.latlng[0] !== null) {
             const rowPoint = point([ row.latlng[1], row.latlng[0] ]);
             let geocodedPoint, options, theDistance;
@@ -1393,6 +1444,39 @@ export default {
               booleanBuffer = true;
             }
             // console.log('buffer else if 2 IF is running, row:', row, 'rowPoint:', rowPoint, 'booleanBuffer:', booleanBuffer);
+          }
+        } else if (row.geo && row.geo.coordinates) {
+          // console.log('buffer else if 3 is running, row:', row, 'booleanBuffer:', booleanBuffer);
+          if (typeof row.geo.coordinates[0] === 'number' && typeof row.geo.coordinates[1] === 'number') {
+            let projection = this.getProjection(row);
+            let lnglat;
+            if (projection === '3857') {
+              lnglat = proj4(this.projection3857, this.projection4326, [ row.geo.coordinates[0], row.geo.coordinates[1] ]);
+            } else if (projection === '2272') {
+              lnglat = proj4(this.projection2272, this.projection4326, [ row.geo.coordinates[0], row.geo.coordinates[1] ]);
+            } else {
+              lnglat = [ row.geo.coordinates[0], row.geo.coordinates[1] ];
+            }
+            const rowPoint = point(lnglat);
+
+            let geocodedPoint, options, theDistance;
+            if (this.$store.state.geocode.data) {
+              geocodedPoint = point(this.$store.state.geocode.data.geometry.coordinates);
+              options = { units: 'miles' };
+              theDistance = distance(geocodedPoint, rowPoint, options);
+              row.distance = theDistance;
+            } else if (this.$store.state.zipcodeCenter[0]) {
+              // console.log('inside zipcode center else if');
+              let zipcodeCenter = point(this.$store.state.zipcodeCenter);
+              options = { units: 'miles' };
+              theDistance = distance(zipcodeCenter, rowPoint, options);
+              row.distance = theDistance;
+            }
+
+            if (booleanPointInPolygon(rowPoint, this.$data.buffer)) {
+              booleanBuffer = true;
+            }
+            // console.log('buffer else if 3 IF is running, row:', row, 'rowPoint:', rowPoint, 'booleanBuffer:', booleanBuffer);
           }
         } else if (row.geometry && row.geometry.x) {
           // console.log('buffer else if 3 is running, row:', row, 'booleanBuffer:', booleanBuffer);
@@ -1488,8 +1572,17 @@ export default {
           const fuse = new Fuse(description, options);
     			let results = {};
           for (let keyword of this.selectedKeywords) {
-            console.log('in selectedKeywords loop, keyword:', keyword);
-            results[keyword] = fuse.search(keyword);
+            console.log('in selectedKeywords loop, keyword.toString():', keyword.toString(), 'description[0].split(","):', description[0].split(','));
+            if (this.$config.skipFuse) {
+              let keywordString = '' + keyword;
+              console.log('skipFuse, keywordString:', keywordString);
+              if (description[0].split(',').includes(keywordString)) {
+                // console.log('19148 is in description');
+                results[keyword] = ['true'];
+              }
+            } else {
+              results[keyword] = fuse.search(keyword);
+            }
           }
     			// const result = fuse.search(this.selectedKeywords[0]);
           // console.log('App.vue filterPoints booleanKeywords section, result:', result, 'results:', results);

@@ -81,4 +81,6 @@ export default {
   useCurrentLocation: '使用当前位置',
   searchBar: '搜索栏',
   searchButton: '“搜索” 按钮',
+  servicesOffered: '提供的服务',
+  languagesSpoken: '使用的语言',
 };

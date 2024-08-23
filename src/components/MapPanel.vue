@@ -431,6 +431,8 @@ export default {
         'layout': {},
         'paint': {
           'fill-color': '#9e9ac8',
+          // 'fill-color': '#2176d2',
+          // 'fill-color': this.resourceFillColor,
           'fill-opacity': 0.4,
           'fill-outline-color': 'rgb(0,102,255)',
         },
@@ -456,6 +458,9 @@ export default {
     return data;
   },
   computed: {
+    resourceFillColor() {
+      return '#2176d2';
+    },
     useCurrentLocationText() {
       return this.$i18n.messages[this.i18nLocale]['useCurrentLocation'];
     },
@@ -516,19 +521,30 @@ export default {
     geojsonForResource() {
       let selectedResource = this.$store.state.selectedResources[0];
       let selectedCurrentMapData = this.currentMapData.filter(test => test._featureId == selectedResource);
-      // console.log('geojsonForResource computed, selectedResource:', selectedResource);
+      console.log('geojsonForResource computed, selectedResource:', selectedResource);
       let coordinates = [];
       let result = [];
       if (this.$config && this.$config.geojsonForResource) {
         let geojsonData = this.$store.state.sources[this.$config.geojsonForResource.source].data;
-        // console.log('in geojsonForResource computed, geojsonData:', geojsonData, 'selectedCurrentMapData:', selectedCurrentMapData);
+        console.log('in geojsonForResource computed, geojsonData:', geojsonData, 'selectedCurrentMapData:', selectedCurrentMapData);
         if (geojsonData && geojsonData.features && selectedCurrentMapData[0]) {
-          let linkField = 'globalId';
-          if (this.$config.geojsonForResource.link_field) {
-            linkField = this.$config.geojsonForResource.link_field;
+          let linkFieldData = 'globalId';
+          let linkFieldGeojson = 'globalid';
+          if (this.$config.geojsonForResource.link_field_data) {
+            linkFieldData = this.$config.geojsonForResource.link_field_data;
+            linkFieldGeojson = this.$config.geojsonForResource.link_field_geojson;
           }
-          let geojsonForResource = geojsonData.features.filter(feature => feature.attributes[linkField] == selectedCurrentMapData[0].attributes[linkField]);
-          coordinates = geojsonForResource[0].geometry.rings[0];
+          let geojsonForResource;
+          if (selectedCurrentMapData[0].attributes) {
+            geojsonForResource = geojsonData.features.filter(feature => feature.attributes[linkFieldGeojson] == selectedCurrentMapData[0].attributes[linkFieldData]);
+          } else if (selectedCurrentMapData[0].fields) {
+            geojsonForResource = geojsonData.features.filter(feature => feature.attributes[linkFieldGeojson] == selectedCurrentMapData[0].fields[linkFieldData]);
+          } else if (selectedCurrentMapData[0].properties) {
+            geojsonForResource = geojsonData.features.filter(feature => feature.attributes[linkFieldGeojson] == selectedCurrentMapData[0].properties[linkFieldData]);
+          }
+          if (geojsonForResource && geojsonForResource[0] && geojsonForResource[0].geometry) {
+            coordinates = geojsonForResource[0].geometry.rings[0];
+          }
           // console.log('in geojsonForResource computed, geojsonForResource:', geojsonForResource, 'coordinates:', coordinates, 'geojsonData:', geojsonData);
           result = [{
             'resource': selectedResource,
@@ -735,18 +751,43 @@ export default {
             // console.log('if row.lat, and else is running');
             row.latlng = [ row.lat, row.lon ];
           }
-        } else if (row.geometry) {
-          // console.log('else if row.geometry is true, this.$config.projection:', this.$config.projection);
-          // let projection = this.getProjection(row);
-          // console.log('else if row.geometry is true, row.geometry:', row.geometry, 'projection:', projection, 'row.geometry.x:', row.geometry.x, 'row.geometry.y:', row.geometry.y);
+        } else if (row.geo) {
           if (projection === '3857') {
-            let lnglat = proj4(this.projection3857, this.projection4326, [ row.geometry.x, row.geometry.y ]);
+            let lnglat = proj4(this.projection3857, this.projection4326, [ row.geo.coordinates[0], row.geo.coordinates[1] ]);
             row.latlng = [ lnglat[1], lnglat[0] ];
           } else if (projection === '2272') {
-            let lnglat = proj4(this.projection2272, this.projection4326, [ row.geometry.x, row.geometry.y ]);
+            let lnglat = proj4(this.projection2272, this.projection4326, [ row.geo.coordinates[0], row.geo.coordinates[1] ]);
             row.latlng = [ lnglat[1], lnglat[0] ];
           } else {
-            row.latlng = [ row.geometry.y, row.geometry.x ];
+            row.latlng = [ row.geo.coordinates[1], row.geo.coordinates[0] ];
+          }
+        } else if (row.geometry) {
+          if (row.geometry.x) {
+            // console.log('else if if row.geometry is true, this.$config.projection:', this.$config.projection);
+            // let projection = this.getProjection(row);
+            // console.log('else if if row.geometry is true, row.geometry:', row.geometry, 'projection:', projection, 'row.geometry.x:', row.geometry.x, 'row.geometry.y:', row.geometry.y);
+            if (projection === '3857') {
+              let lnglat = proj4(this.projection3857, this.projection4326, [ row.geometry.x, row.geometry.y ]);
+              row.latlng = [ lnglat[1], lnglat[0] ];
+            } else if (projection === '2272') {
+              let lnglat = proj4(this.projection2272, this.projection4326, [ row.geometry.x, row.geometry.y ]);
+              row.latlng = [ lnglat[1], lnglat[0] ];
+            } else {
+              row.latlng = [ row.geometry.y, row.geometry.x ];
+            }
+          } else if (row.geometry.coordinates){
+            // console.log('else if else row.geometry is true, this.$config.projection:', this.$config.projection);
+            // let projection = this.getProjection(row);
+            // console.log('else if if row.geometry is true, row.geometry:', row.geometry, 'projection:', projection, 'row.geometry.x:', row.geometry.x, 'row.geometry.y:', row.geometry.y);
+            if (projection === '3857') {
+              let lnglat = proj4(this.projection3857, this.projection4326, [ row.geometry.coordinates[0], row.geometry.coordinates[1] ]);
+              row.latlng = [ lnglat[1], lnglat[0] ];
+            } else if (projection === '2272') {
+              let lnglat = proj4(this.projection2272, this.projection4326, [ row.geometry.coordinates[0], row.geometry.coordinates[1] ]);
+              row.latlng = [ lnglat[1], lnglat[0] ];
+            } else {
+              row.latlng = [ row.geometry.coordinates[1], row.geometry.coordinates[0] ];
+            }
           }
         }
 
@@ -963,6 +1004,11 @@ export default {
         let startQuery = { ...this.$route.query };
         delete startQuery['address'];
         this.$router.push({ query: { ...startQuery }});
+      } else if (nextLastPinboardSearchMethod === 'zipcodeKeyword') {
+        this.$data.geojsonForBufferBoolean = false;
+        let startQuery = { ...this.$route.query };
+        delete startQuery['address'];
+        this.$router.push({ query: { ...startQuery }});
       }
     },
     zipcodeBufferShape(nextZipcodeBufferShape) {
@@ -1087,7 +1133,7 @@ export default {
     },
 
     geojsonForResource(nextGeojson) {
-      // console.log('watch geojsonForResource is firing, nextGeojson[0]:', nextGeojson[0]);
+      console.log('watch geojsonForResource is firing, nextGeojson[0]:', nextGeojson[0]);
       if (this.$store.map) {
         // console.log('watch geojsonForResource is running, map.getStyle():', this.$store.map.getStyle(), 'map.getStyle().layers:', this.$store.map.getStyle().layers, 'nextGeojson:', nextGeojson);
       }
@@ -1175,6 +1221,11 @@ export default {
         this.$data.geojsonForZipcodeBoolean = true;
         this.$data.geojsonForZipcodeBufferBoolean = true;
       }
+    }
+
+    if (this.$config.geojsonForResource && this.$config.geojsonForResource.fillColor) {
+      this.$data.geojsonForResourceFillLayer.paint['fill-color'] = this.$config.geojsonForResource.fillColor;
+      this.$data.geojsonForResourceLineLayer.paint['line-color'] = this.$config.geojsonForResource.fillColor;
     }
 
     if (this.$config.searchBar) {
@@ -1381,9 +1432,11 @@ export default {
           for (let geojsonFeature of this.geojsonForResource) {
             let theCoords = geojsonFeature.geojson.geometry.coordinates;
             console.log('theCoords:', theCoords);
-            let thePolygon = polygon(theCoords);
-            console.log('setMapToBounds geojsonFeature.geojson:', geojsonFeature.geojson, 'thePolygon:', thePolygon);
-            featureArray.push(thePolygon);
+            if (theCoords[0].length) {
+              let thePolygon = polygon(theCoords);
+              console.log('setMapToBounds geojsonFeature.geojson:', geojsonFeature.geojson, 'thePolygon:', thePolygon);
+              featureArray.push(thePolygon);
+            }
           }
         }
         const theFeatureCollection = featureCollection(featureArray);

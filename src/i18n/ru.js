@@ -81,4 +81,6 @@ export default {
   useCurrentLocation: 'Использовать текущее местоположение',
   searchBar: 'Панель поиска',
   searchButton: 'Кнопка поиска',
+  servicesOffered: 'Предлагаемые услуги',
+  languagesSpoken: 'Разговорные языки',
 };

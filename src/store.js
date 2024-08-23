@@ -53,8 +53,12 @@ function createStore(config) {
         current: false,
         start_date: '',
       },
+      agoToken: null,
     },
     mutations: {
+      setAgoToken(state, payload) {
+        state.agoToken = payload;
+      },
       setHoliday(state, payload) {
         state.holiday = payload;
       },

@@ -541,21 +541,30 @@ export default {
         }
         return mainArray;
       } else if (this.refineType !== 'multipleFieldGroups' && this.refineType !== 'multipleDependentFieldGroups') {
-        for (let refineObject of this.refineList) {
-          let translatedObject = {}
-          for (let category of Object.keys(refineObject)) {
-            // console.log('in refineListTranslated, category:', category);
-            if (category == 'textLabel') {
-              translatedObject[category] = this.$t(refineObject[category]);
-            } else {
-              translatedObject[category] = refineObject[category];
-            }
+        
+        if (typeof this.refineList[0] === 'string') {
+          for (let refineObject of this.refineList) {
+            // console.log('refineObject:', refineObject, 'typeof refineObject:', typeof refineObject);
+            mainObject[refineObject] = {textLabel: this.$t(refineObject), value: refineObject};
           }
+          return mainObject;
+        } else {
+          for (let refineObject of this.refineList) {
+            let translatedObject = {}
+            for (let category of Object.keys(refineObject)) {
+              // console.log('in refineListTranslated, category:', category);
+              if (category == 'textLabel') {
+                translatedObject[category] = this.$t(refineObject[category]);
+              } else {
+                translatedObject[category] = refineObject[category];
+              }
+            }
+            mainArray.push(translatedObject);
+          }
+          return mainArray;
           // console.log('in refineListTranslated, refineObject:', refineObject, 'translatedObject:', translatedObject);
-          mainArray.push(translatedObject);
           // console.log('refineListTranslated computed, category:', category, 'this.$t(category):', this.$t(category), 'mainArray:', mainArray);
         }
-        return mainArray;
       } else if (this.refineType == 'multipleFieldGroups') {
         if (this.refineList) {
           for (let category of Object.keys(this.refineList)) {

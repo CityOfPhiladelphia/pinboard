@@ -81,4 +81,6 @@ export default {
   useCurrentLocation: 'Sử dụng vị trí hiện tại',
   searchBar: 'Thanh tìm kiếm',
   searchButton: 'Nút tìm kiếm',
+  servicesOffered: 'Dịch vụ được cung cấp',
+  languagesSpoken: 'Ngôn ngữ được sử dụng',
 };
