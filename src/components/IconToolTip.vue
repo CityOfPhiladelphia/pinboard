@@ -82,6 +82,8 @@ export default {
         value = 'has-tooltip-right';
       } else if (this.position === 'bottom') {
         value = 'has-tooltip-bottom';
+      } else if (this.position === 'left') {
+        value = 'has-tooltip-left';
       }
       // }
       return value;

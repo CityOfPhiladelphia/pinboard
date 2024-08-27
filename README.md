@@ -29,9 +29,13 @@ Create pull request for changes and merge into `master` branch for travis-ci bui
 
 ## Release Notes
 
+### 1.3.1 - 8/27/2024
+
+* adds a fix for a tooltip for a multiple refine group
+
 ### 1.3.0 - 8/27/2024
 
-* fix to Fuse for handling keyword matches
+* adds a fix to Fuse for handling keyword matches
 
 ### 1.2.15 - 8/23/2024
 

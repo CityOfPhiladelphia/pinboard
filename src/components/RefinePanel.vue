@@ -229,7 +229,8 @@
                 v-if="!isMobile && refineListTranslated[ind]['tooltip']"
                 :tip="refineListTranslated[ind]['tooltip']"
                 :circle-type="click"
-                :position="'bottom'"
+                :position="refineList[ind]['tooltip']['position']"
+                :multiline="refineList[ind]['tooltip']['multiline']"
               />
               <div
                 v-if="isMobile && refineListTranslated[ind]['tooltip']"
