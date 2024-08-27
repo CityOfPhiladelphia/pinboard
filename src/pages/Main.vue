@@ -1538,7 +1538,10 @@ export default {
                 description.push(tag.value);
               } else if (tag.type == 'value' && row.attributes[tag.field] !== null && row.attributes[tag.field] != ' ') {
                 // console.log('in else if, row.attributes[tag.field]:', row.attributes[tag.field]);
-                description.push(row.attributes[tag.field].charAt(0) + row.attributes[tag.field].substring(1).toLowerCase());
+                // description.push(row.attributes[tag.field].charAt(0) + row.attributes[tag.field].substring(1).toLowerCase());
+                let value = row.attributes[tag.field].toLowerCase();
+                // console.log('value.split(","):', value.split(','));
+                description = description.concat(value.split(','));
               }
             }
           }
@@ -1572,15 +1575,16 @@ export default {
           const fuse = new Fuse(description, options);
     			let results = {};
           for (let keyword of this.selectedKeywords) {
-            console.log('in selectedKeywords loop, keyword.toString():', keyword.toString(), 'description[0].split(","):', description[0].split(','));
+            // console.log('in selectedKeywords loop, keyword.toString():', keyword.toString(), 'description:', description);//'description[0].split(","):', description[0].split(','));
             if (this.$config.skipFuse) {
               let keywordString = '' + keyword;
-              console.log('skipFuse, keywordString:', keywordString);
-              if (description[0].split(',').includes(keywordString)) {
+              // console.log('skipFuse, keywordString:', keywordString);
+              if (description.includes(keywordString)) {
                 // console.log('19148 is in description');
                 results[keyword] = ['true'];
               }
             } else {
+              // console.log('fuse.search(keyword):', fuse.search(keyword), 'description:', description);
               results[keyword] = fuse.search(keyword);
             }
           }
