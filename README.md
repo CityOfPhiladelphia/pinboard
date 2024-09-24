@@ -29,6 +29,10 @@ Create pull request for changes and merge into `master` branch for travis-ci bui
 
 ## Release Notes
 
+### 1.3.3 - 9/24/2024
+
+* comments out sorting of currentData in Map.vue, since it can be done in the data query
+
 ### 1.3.2 - 9/24/2024
 
 * fix for backwards compatibility for recycling finder

@@ -812,25 +812,25 @@ export default {
 
       }
       // console.log('MapPanel.vue currentMapData computed is finishing');
-      if (this.$config.dataSort) {
-        newRows.sort((a, b) => {
-          if (a[this.$config.dataSort.field] < b[this.$config.dataSort.field]) {
-            if (this.$config.dataSort.order === 'asc') {
-              return -1;
-            } else if (this.$config.dataSort.order === 'desc') {
-              return 1;
-            }
-          }
-          if (a[this.$config.dataSort.field] > b[this.$config.dataSort.field]) {
-            if (this.$config.dataSort.order === 'asc') {
-              return 1;
-            } else if (this.$config.dataSort.order === 'desc') {
-              return -1;
-            }
-          }
-          return 0;
-        });
-      }
+      // if (this.$config.dataSort) {
+      //   newRows.sort((a, b) => {
+      //     if (a[this.$config.dataSort.field] < b[this.$config.dataSort.field]) {
+      //       if (this.$config.dataSort.order === 'asc') {
+      //         return -1;
+      //       } else if (this.$config.dataSort.order === 'desc') {
+      //         return 1;
+      //       }
+      //     }
+      //     if (a[this.$config.dataSort.field] > b[this.$config.dataSort.field]) {
+      //       if (this.$config.dataSort.order === 'asc') {
+      //         return 1;
+      //       } else if (this.$config.dataSort.order === 'desc') {
+      //         return -1;
+      //       }
+      //     }
+      //     return 0;
+      //   });
+      // }
       return newRows;
     },
     lastPinboardSearchMethod() {
