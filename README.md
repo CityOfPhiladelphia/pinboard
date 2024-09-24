@@ -29,6 +29,11 @@ Create pull request for changes and merge into `master` branch for travis-ci bui
 
 ## Release Notes
 
+### 1.3.2 - 9/24/2024
+
+* fix for backwards compatibility for recycling finder
+* allows sorting the data for the map, so you can put some points above others (when they are doubled)
+
 ### 1.3.1 - 8/27/2024
 
 * adds a fix for a tooltip for a multiple refine group
