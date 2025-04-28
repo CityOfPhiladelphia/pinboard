@@ -1,5 +1,7 @@
 # Pinboard
 
+This repo has been archived.  This project is continued as [vue3-pinboard](https://github.com/CityOfPhiladelphia/vue3-pinboard).  It remains being simply called [@phila/pinboard in npm](https://www.npmjs.com/package/@phila/pinboard).
+
 Pinboard is a framework for creating apps for investigating a single data layer in great detail. It has a refine panel along the top, which you can use to filter some of the pins and data off of the app. It also shows a map panel on the right, and a list of pins on the left, which can opened and closed to show more data about the pin.
 
 The package is in npm as [@phila/pinboard](https://www.npmjs.com/package/@phila/pinboard).
